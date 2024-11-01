@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SignInView : View {
+    @Binding var isSignUp: Bool
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var checkMaintainLogin: Bool = false
@@ -68,11 +69,13 @@ struct SignInView : View {
                 .frame(width: screenWidth * 0.9, height: screenHeight * 0.06)
                 
                 HStack {
+                    Text("계정이 없으신가요?")
+                        .foregroundStyle(.gray.opacity(0.7))
                     Button {
-                        
+                        isSignUp.toggle()
                     } label : {
                         Text("회원가입")
-                            .foregroundStyle(.gray.opacity(0.7))
+                            .foregroundStyle(.accent)
                     }
                 }
             }
@@ -122,8 +125,4 @@ struct SignInView : View {
             }
         }
     }
-}
-
-#Preview {
-    SignInView()
 }

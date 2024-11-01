@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LoginView : View {
+    @State var isSignUp: Bool = false
     let screenWidth = UIScreen.main.bounds.width
     let screenHeight = UIScreen.main.bounds.height
     
@@ -26,8 +27,13 @@ struct LoginView : View {
             .padding(.top, screenHeight * 0.06)
             .padding(.bottom, screenHeight * 0.08)
             
-            SignInView()
-                .frame(width: screenWidth, height: screenHeight * 0.5)
+            if isSignUp {
+                SignUpView(isSignUp: $isSignUp)
+                    .frame(width: screenWidth, height: screenHeight * 0.5)
+            } else {
+                SignInView(isSignUp: $isSignUp)
+                    .frame(width: screenWidth, height: screenHeight * 0.5)
+            }
         }
     }
 }

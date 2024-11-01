@@ -69,6 +69,7 @@
 		FB36F6342CD4775B00E356FA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F6332CD4775B00E356FA /* GoogleSignInSwift */; };
 		FB36F6362CD48F9700E356FA /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6352CD48F9200E356FA /* SignInView.swift */; };
 		FB36F63A2CD4991600E356FA /* LoginViewTextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6392CD4990900E356FA /* LoginViewTextFieldModifier.swift */; };
+		FB36F63C2CD5150800E356FA /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F63B2CD5150400E356FA /* SignUpView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -126,6 +127,7 @@
 		FB36F6192CD474F600E356FA /* AuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
 		FB36F6352CD48F9200E356FA /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		FB36F6392CD4990900E356FA /* LoginViewTextFieldModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewTextFieldModifier.swift; sourceTree = "<group>"; };
+		FB36F63B2CD5150400E356FA /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -415,6 +417,7 @@
 			children = (
 				FB36F5FC2CD473E800E356FA /* LoginView.swift */,
 				FB36F6352CD48F9200E356FA /* SignInView.swift */,
+				FB36F63B2CD5150400E356FA /* SignUpView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -630,6 +633,7 @@
 				259AABC82CDA0AD900512CE6 /* PlaceAddingView.swift in Sources */,
 				FB36F5F02CD472F600E356FA /* MayTripApp.swift in Sources */,
 				FB36F63A2CD4991600E356FA /* LoginViewTextFieldModifier.swift in Sources */,
+				FB36F63C2CD5150800E356FA /* SignUpView.swift in Sources */,
 				FB36F60E2CD474C500E356FA /* Place.swift in Sources */,
 				FB36F61A2CD474F900E356FA /* AuthStore.swift in Sources */,
 				259AAB482CDA017500512CE6 /* WeekdayView.swift in Sources */,
