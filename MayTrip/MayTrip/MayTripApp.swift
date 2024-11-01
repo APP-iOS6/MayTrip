@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct MayTripApp: App {
+    let DB = DBConnection()
     var body: some Scene {
         WindowGroup {
             ContentView()
+                
         }
     }
 }
