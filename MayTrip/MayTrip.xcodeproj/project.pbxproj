@@ -67,6 +67,8 @@
 		FB36F62F2CD4774400E356FA /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F62E2CD4774400E356FA /* KakaoSDKAuth */; };
 		FB36F6322CD4775B00E356FA /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F6312CD4775B00E356FA /* GoogleSignIn */; };
 		FB36F6342CD4775B00E356FA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F6332CD4775B00E356FA /* GoogleSignInSwift */; };
+		FB36F6362CD48F9700E356FA /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6352CD48F9200E356FA /* SignInView.swift */; };
+		FB36F63A2CD4991600E356FA /* LoginViewTextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6392CD4990900E356FA /* LoginViewTextFieldModifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -122,6 +124,8 @@
 		FB36F6042CD4740C00E356FA /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		FB36F6072CD4742700E356FA /* StorageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageView.swift; sourceTree = "<group>"; };
 		FB36F6192CD474F600E356FA /* AuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
+		FB36F6352CD48F9200E356FA /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		FB36F6392CD4990900E356FA /* LoginViewTextFieldModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewTextFieldModifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -356,6 +360,7 @@
 			children = (
 				42405E132CD88A510061FB7A /* Info.plist */,
 				2518F6B62CD4928A00A8F951 /* App */,
+				FB36F6372CD498F900E356FA /* Common */,
 				FB36F5F22CD4735700E356FA /* Model */,
 				FB36F5F32CD4735F00E356FA /* Store */,
 				FB36F5F42CD4736300E356FA /* View */,
@@ -409,6 +414,7 @@
 			isa = PBXGroup;
 			children = (
 				FB36F5FC2CD473E800E356FA /* LoginView.swift */,
+				FB36F6352CD48F9200E356FA /* SignInView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -457,6 +463,22 @@
 				FB36F6072CD4742700E356FA /* StorageView.swift */,
 			);
 			path = Storage;
+			sourceTree = "<group>";
+		};
+		FB36F6372CD498F900E356FA /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F6382CD4990000E356FA /* Modifier */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		FB36F6382CD4990000E356FA /* Modifier */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F6392CD4990900E356FA /* LoginViewTextFieldModifier.swift */,
+			);
+			path = Modifier;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -548,6 +570,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB36F6362CD48F9700E356FA /* SignInView.swift in Sources */,
 				FB36F6052CD4740F00E356FA /* MyPageView.swift in Sources */,
 				FB36F60C2CD474BF00E356FA /* Category.swift in Sources */,
 				42405E0F2CD889FC0061FB7A /* PlaceSearchView.swift in Sources */,
@@ -606,6 +629,8 @@
 				259AABC72CDA0AD900512CE6 /* PlaceInfoView.swift in Sources */,
 				259AABC82CDA0AD900512CE6 /* PlaceAddingView.swift in Sources */,
 				FB36F5F02CD472F600E356FA /* MayTripApp.swift in Sources */,
+				FB36F63A2CD4991600E356FA /* LoginViewTextFieldModifier.swift in Sources */,
+				FB36F60E2CD474C500E356FA /* Place.swift in Sources */,
 				FB36F61A2CD474F900E356FA /* AuthStore.swift in Sources */,
 				259AAB482CDA017500512CE6 /* WeekdayView.swift in Sources */,
 				259AAB492CDA017500512CE6 /* YearAndMonthView.swift in Sources */,
