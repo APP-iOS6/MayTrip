@@ -6,23 +6,72 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FB36F5EE2CD472F600E356FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB36F5E92CD472F600E356FA /* Assets.xcassets */; };
+		FB36F5EF2CD472F600E356FA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F5EA2CD472F600E356FA /* ContentView.swift */; };
+		FB36F5F02CD472F600E356FA /* MayTripApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F5EB2CD472F600E356FA /* MayTripApp.swift */; };
+		FB36F5FD2CD473EA00E356FA /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F5FC2CD473E800E356FA /* LoginView.swift */; };
+		FB36F5FF2CD473F300E356FA /* TripRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F5FE2CD473EE00E356FA /* TripRouteView.swift */; };
+		FB36F6012CD473FA00E356FA /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6002CD473F800E356FA /* ChatView.swift */; };
+		FB36F6032CD4740900E356FA /* CommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6022CD4740600E356FA /* CommunityView.swift */; };
+		FB36F6052CD4740F00E356FA /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6042CD4740C00E356FA /* MyPageView.swift */; };
+		FB36F6082CD4742A00E356FA /* StorageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6072CD4742700E356FA /* StorageView.swift */; };
+		FB36F60A2CD4743F00E356FA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6092CD4743E00E356FA /* User.swift */; };
+		FB36F60C2CD474BF00E356FA /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F60B2CD474BB00E356FA /* Category.swift */; };
+		FB36F60E2CD474C500E356FA /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F60D2CD474C400E356FA /* Place.swift */; };
+		FB36F6102CD474CC00E356FA /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F60F2CD474CB00E356FA /* City.swift */; };
+		FB36F6122CD474D400E356FA /* ChatLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6112CD474D200E356FA /* ChatLog.swift */; };
+		FB36F6142CD474DB00E356FA /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6132CD474DA00E356FA /* ChatRoom.swift */; };
+		FB36F6162CD474E200E356FA /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6152CD474E100E356FA /* Post.swift */; };
+		FB36F6182CD474E600E356FA /* TripRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6172CD474E500E356FA /* TripRoute.swift */; };
+		FB36F61A2CD474F900E356FA /* AuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6192CD474F600E356FA /* AuthStore.swift */; };
+		FB36F61D2CD4752300E356FA /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F61C2CD4752300E356FA /* Auth */; };
+		FB36F61F2CD4752300E356FA /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F61E2CD4752300E356FA /* Functions */; };
+		FB36F6212CD4752300E356FA /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F6202CD4752300E356FA /* PostgREST */; };
+		FB36F6232CD4752300E356FA /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F6222CD4752300E356FA /* Realtime */; };
+		FB36F6252CD4752300E356FA /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F6242CD4752300E356FA /* Storage */; };
+		FB36F62D2CD4774400E356FA /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F62C2CD4774400E356FA /* KakaoSDK */; };
+		FB36F62F2CD4774400E356FA /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F62E2CD4774400E356FA /* KakaoSDKAuth */; };
+		FB36F6322CD4775B00E356FA /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F6312CD4775B00E356FA /* GoogleSignIn */; };
+		FB36F6342CD4775B00E356FA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F6332CD4775B00E356FA /* GoogleSignInSwift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		FB36F5D62CD472AF00E356FA /* MayTrip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MayTrip.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB36F5E92CD472F600E356FA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FB36F5EA2CD472F600E356FA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FB36F5EB2CD472F600E356FA /* MayTripApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MayTripApp.swift; sourceTree = "<group>"; };
+		FB36F5FC2CD473E800E356FA /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		FB36F5FE2CD473EE00E356FA /* TripRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripRouteView.swift; sourceTree = "<group>"; };
+		FB36F6002CD473F800E356FA /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		FB36F6022CD4740600E356FA /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
+		FB36F6042CD4740C00E356FA /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
+		FB36F6072CD4742700E356FA /* StorageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageView.swift; sourceTree = "<group>"; };
+		FB36F6092CD4743E00E356FA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		FB36F60B2CD474BB00E356FA /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		FB36F60D2CD474C400E356FA /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
+		FB36F60F2CD474CB00E356FA /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
+		FB36F6112CD474D200E356FA /* ChatLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLog.swift; sourceTree = "<group>"; };
+		FB36F6132CD474DA00E356FA /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
+		FB36F6152CD474E100E356FA /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		FB36F6172CD474E500E356FA /* TripRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripRoute.swift; sourceTree = "<group>"; };
+		FB36F6192CD474F600E356FA /* AuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		FB36F5D82CD472AF00E356FA /* MayTrip */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = MayTrip;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		FB36F5D32CD472AF00E356FA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB36F6342CD4775B00E356FA /* GoogleSignInSwift in Frameworks */,
+				FB36F62F2CD4774400E356FA /* KakaoSDKAuth in Frameworks */,
+				FB36F6322CD4775B00E356FA /* GoogleSignIn in Frameworks */,
+				FB36F6212CD4752300E356FA /* PostgREST in Frameworks */,
+				FB36F61F2CD4752300E356FA /* Functions in Frameworks */,
+				FB36F61D2CD4752300E356FA /* Auth in Frameworks */,
+				FB36F6252CD4752300E356FA /* Storage in Frameworks */,
+				FB36F6232CD4752300E356FA /* Realtime in Frameworks */,
+				FB36F62D2CD4774400E356FA /* KakaoSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32,7 +81,7 @@
 		FB36F5CD2CD472AF00E356FA = {
 			isa = PBXGroup;
 			children = (
-				FB36F5D82CD472AF00E356FA /* MayTrip */,
+				FB36F5EC2CD472F600E356FA /* MayTrip */,
 				FB36F5D72CD472AF00E356FA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +92,103 @@
 				FB36F5D62CD472AF00E356FA /* MayTrip.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FB36F5EC2CD472F600E356FA /* MayTrip */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F5F22CD4735700E356FA /* Model */,
+				FB36F5F32CD4735F00E356FA /* Store */,
+				FB36F5F42CD4736300E356FA /* View */,
+				FB36F5EA2CD472F600E356FA /* ContentView.swift */,
+				FB36F5EB2CD472F600E356FA /* MayTripApp.swift */,
+				FB36F5E92CD472F600E356FA /* Assets.xcassets */,
+			);
+			path = MayTrip;
+			sourceTree = "<group>";
+		};
+		FB36F5F22CD4735700E356FA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F6092CD4743E00E356FA /* User.swift */,
+				FB36F60B2CD474BB00E356FA /* Category.swift */,
+				FB36F60D2CD474C400E356FA /* Place.swift */,
+				FB36F60F2CD474CB00E356FA /* City.swift */,
+				FB36F6112CD474D200E356FA /* ChatLog.swift */,
+				FB36F6132CD474DA00E356FA /* ChatRoom.swift */,
+				FB36F6152CD474E100E356FA /* Post.swift */,
+				FB36F6172CD474E500E356FA /* TripRoute.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		FB36F5F32CD4735F00E356FA /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F6192CD474F600E356FA /* AuthStore.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		FB36F5F42CD4736300E356FA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F5F72CD473A200E356FA /* Login */,
+				FB36F5F82CD473B100E356FA /* TripRoute */,
+				FB36F5F92CD473C200E356FA /* Chat */,
+				FB36F5FA2CD473C600E356FA /* Community */,
+				FB36F6062CD4741200E356FA /* Storage */,
+				FB36F5FB2CD473CF00E356FA /* MyPage */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		FB36F5F72CD473A200E356FA /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F5FC2CD473E800E356FA /* LoginView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		FB36F5F82CD473B100E356FA /* TripRoute */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F5FE2CD473EE00E356FA /* TripRouteView.swift */,
+			);
+			path = TripRoute;
+			sourceTree = "<group>";
+		};
+		FB36F5F92CD473C200E356FA /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F6002CD473F800E356FA /* ChatView.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		FB36F5FA2CD473C600E356FA /* Community */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F6022CD4740600E356FA /* CommunityView.swift */,
+			);
+			path = Community;
+			sourceTree = "<group>";
+		};
+		FB36F5FB2CD473CF00E356FA /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F6042CD4740C00E356FA /* MyPageView.swift */,
+			);
+			path = MyPage;
+			sourceTree = "<group>";
+		};
+		FB36F6062CD4741200E356FA /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F6072CD4742700E356FA /* StorageView.swift */,
+			);
+			path = Storage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -60,11 +206,17 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				FB36F5D82CD472AF00E356FA /* MayTrip */,
-			);
 			name = MayTrip;
 			packageProductDependencies = (
+				FB36F61C2CD4752300E356FA /* Auth */,
+				FB36F61E2CD4752300E356FA /* Functions */,
+				FB36F6202CD4752300E356FA /* PostgREST */,
+				FB36F6222CD4752300E356FA /* Realtime */,
+				FB36F6242CD4752300E356FA /* Storage */,
+				FB36F62C2CD4774400E356FA /* KakaoSDK */,
+				FB36F62E2CD4774400E356FA /* KakaoSDKAuth */,
+				FB36F6312CD4775B00E356FA /* GoogleSignIn */,
+				FB36F6332CD4775B00E356FA /* GoogleSignInSwift */,
 			);
 			productName = MayTrip;
 			productReference = FB36F5D62CD472AF00E356FA /* MayTrip.app */;
@@ -94,6 +246,11 @@
 			);
 			mainGroup = FB36F5CD2CD472AF00E356FA;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				FB36F61B2CD4752300E356FA /* XCRemoteSwiftPackageReference "supabase-swift" */,
+				FB36F62B2CD4774400E356FA /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				FB36F6302CD4775B00E356FA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FB36F5D72CD472AF00E356FA /* Products */;
 			projectDirPath = "";
@@ -109,6 +266,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB36F5EE2CD472F600E356FA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +277,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB36F6052CD4740F00E356FA /* MyPageView.swift in Sources */,
+				FB36F60C2CD474BF00E356FA /* Category.swift in Sources */,
+				FB36F6122CD474D400E356FA /* ChatLog.swift in Sources */,
+				FB36F6102CD474CC00E356FA /* City.swift in Sources */,
+				FB36F6142CD474DB00E356FA /* ChatRoom.swift in Sources */,
+				FB36F5FD2CD473EA00E356FA /* LoginView.swift in Sources */,
+				FB36F5EF2CD472F600E356FA /* ContentView.swift in Sources */,
+				FB36F6032CD4740900E356FA /* CommunityView.swift in Sources */,
+				FB36F6182CD474E600E356FA /* TripRoute.swift in Sources */,
+				FB36F6082CD4742A00E356FA /* StorageView.swift in Sources */,
+				FB36F6162CD474E200E356FA /* Post.swift in Sources */,
+				FB36F60A2CD4743F00E356FA /* User.swift in Sources */,
+				FB36F6012CD473FA00E356FA /* ChatView.swift in Sources */,
+				FB36F5F02CD472F600E356FA /* MayTripApp.swift in Sources */,
+				FB36F60E2CD474C500E356FA /* Place.swift in Sources */,
+				FB36F61A2CD474F900E356FA /* AuthStore.swift in Sources */,
+				FB36F5FF2CD473F300E356FA /* TripRouteView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,7 +426,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"MayTrip/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6R3M7VGRP2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -260,6 +435,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -280,7 +456,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"MayTrip/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6R3M7VGRP2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -289,6 +465,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -324,6 +501,81 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FB36F61B2CD4752300E356FA /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase-community/supabase-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+		FB36F62B2CD4774400E356FA /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.23.0;
+			};
+		};
+		FB36F6302CD4775B00E356FA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FB36F61C2CD4752300E356FA /* Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB36F61B2CD4752300E356FA /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Auth;
+		};
+		FB36F61E2CD4752300E356FA /* Functions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB36F61B2CD4752300E356FA /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Functions;
+		};
+		FB36F6202CD4752300E356FA /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB36F61B2CD4752300E356FA /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		FB36F6222CD4752300E356FA /* Realtime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB36F61B2CD4752300E356FA /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Realtime;
+		};
+		FB36F6242CD4752300E356FA /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB36F61B2CD4752300E356FA /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Storage;
+		};
+		FB36F62C2CD4774400E356FA /* KakaoSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB36F62B2CD4774400E356FA /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDK;
+		};
+		FB36F62E2CD4774400E356FA /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB36F62B2CD4774400E356FA /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
+		};
+		FB36F6312CD4775B00E356FA /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB36F6302CD4775B00E356FA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		FB36F6332CD4775B00E356FA /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB36F6302CD4775B00E356FA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FB36F5CE2CD472AF00E356FA /* Project object */;
 }
