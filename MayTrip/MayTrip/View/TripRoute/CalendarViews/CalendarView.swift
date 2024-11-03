@@ -19,8 +19,9 @@ struct CalendarView: View {
         .padding()
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(.black.opacity(0.3), lineWidth: 2)
+                .stroke(Color(uiColor: .lightGray).opacity(0.3), lineWidth: 2)
         )
+        .background(Color.white)
     }
 }
 
