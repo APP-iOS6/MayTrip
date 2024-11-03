@@ -79,11 +79,10 @@ struct CellView: View {
     var body: some View {
         VStack(spacing: 0) {
             Rectangle()
-                .frame(width: 50, height: 50)
+                .frame(maxWidth: .infinity, minHeight: 50)
                 .background {
                     if isLeftCircle || isRightCircle {
                         Circle()
-                            .frame(width: 50, height: 50)
                             .foregroundStyle(.orange)
                     }
                 }
