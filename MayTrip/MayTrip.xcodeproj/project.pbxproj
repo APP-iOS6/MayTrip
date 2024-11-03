@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2518F6B52CD490F200A8F951 /* supabaseInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2518F6B42CD490F200A8F951 /* supabaseInfo.plist */; };
+		2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2518F6B72CD4929500A8F951 /* DBConnection.swift */; };
+		2518F6BB2CD4930300A8F951 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 2518F6BA2CD4930300A8F951 /* Supabase */; };
 		FB36F5EE2CD472F600E356FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB36F5E92CD472F600E356FA /* Assets.xcassets */; };
 		FB36F5EF2CD472F600E356FA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F5EA2CD472F600E356FA /* ContentView.swift */; };
 		FB36F5F02CD472F600E356FA /* MayTripApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F5EB2CD472F600E356FA /* MayTripApp.swift */; };
@@ -37,6 +40,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2518F6B42CD490F200A8F951 /* supabaseInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = supabaseInfo.plist; sourceTree = "<group>"; };
+		2518F6B72CD4929500A8F951 /* DBConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBConnection.swift; sourceTree = "<group>"; };
 		FB36F5D62CD472AF00E356FA /* MayTrip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MayTrip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB36F5E92CD472F600E356FA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FB36F5EA2CD472F600E356FA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -63,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2518F6BB2CD4930300A8F951 /* Supabase in Frameworks */,
 				FB36F6342CD4775B00E356FA /* GoogleSignInSwift in Frameworks */,
 				FB36F62F2CD4774400E356FA /* KakaoSDKAuth in Frameworks */,
 				FB36F6322CD4775B00E356FA /* GoogleSignIn in Frameworks */,
@@ -78,10 +84,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2518F6B62CD4928A00A8F951 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				2518F6B72CD4929500A8F951 /* DBConnection.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		2518F6B92CD4930300A8F951 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		FB36F5CD2CD472AF00E356FA = {
 			isa = PBXGroup;
 			children = (
 				FB36F5EC2CD472F600E356FA /* MayTrip */,
+				2518F6B92CD4930300A8F951 /* Frameworks */,
 				FB36F5D72CD472AF00E356FA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -97,12 +119,14 @@
 		FB36F5EC2CD472F600E356FA /* MayTrip */ = {
 			isa = PBXGroup;
 			children = (
+				2518F6B62CD4928A00A8F951 /* App */,
 				FB36F5F22CD4735700E356FA /* Model */,
 				FB36F5F32CD4735F00E356FA /* Store */,
 				FB36F5F42CD4736300E356FA /* View */,
 				FB36F5EA2CD472F600E356FA /* ContentView.swift */,
 				FB36F5EB2CD472F600E356FA /* MayTripApp.swift */,
 				FB36F5E92CD472F600E356FA /* Assets.xcassets */,
+				2518F6B42CD490F200A8F951 /* supabaseInfo.plist */,
 			);
 			path = MayTrip;
 			sourceTree = "<group>";
@@ -217,6 +241,7 @@
 				FB36F62E2CD4774400E356FA /* KakaoSDKAuth */,
 				FB36F6312CD4775B00E356FA /* GoogleSignIn */,
 				FB36F6332CD4775B00E356FA /* GoogleSignInSwift */,
+				2518F6BA2CD4930300A8F951 /* Supabase */,
 			);
 			productName = MayTrip;
 			productReference = FB36F5D62CD472AF00E356FA /* MayTrip.app */;
@@ -266,6 +291,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2518F6B52CD490F200A8F951 /* supabaseInfo.plist in Resources */,
 				FB36F5EE2CD472F600E356FA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,6 +306,7 @@
 				FB36F6052CD4740F00E356FA /* MyPageView.swift in Sources */,
 				FB36F60C2CD474BF00E356FA /* Category.swift in Sources */,
 				FB36F6122CD474D400E356FA /* ChatLog.swift in Sources */,
+				2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */,
 				FB36F6102CD474CC00E356FA /* City.swift in Sources */,
 				FB36F6142CD474DB00E356FA /* ChatRoom.swift in Sources */,
 				FB36F5FD2CD473EA00E356FA /* LoginView.swift in Sources */,
@@ -530,6 +557,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2518F6BA2CD4930300A8F951 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB36F61B2CD4752300E356FA /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
 		FB36F61C2CD4752300E356FA /* Auth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FB36F61B2CD4752300E356FA /* XCRemoteSwiftPackageReference "supabase-swift" */;
