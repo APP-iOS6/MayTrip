@@ -78,6 +78,19 @@ struct SignInView : View {
                                 
                             } else if password.isEmpty {
                                 
+                            } else {
+                                Task {
+                                    do {
+                                        try await DB.auth.signOut()
+                                        try await DB.auth.signIn (
+                                            email: email,
+                                            password: password
+                                        )
+                                        print("success")
+                                    } catch {
+                                        print(error)
+                                    }
+                                }
                             }
                         } label : {
                             ZStack {
