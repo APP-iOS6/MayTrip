@@ -22,7 +22,7 @@ struct TripRouteView: View {
                             HStack {
                                 Text("어디로 떠나시나요?")
                                 Spacer()
-                                Image(systemName: "xmark.circle.fill")
+                                Image(systemName: "magnifyingglass")
                             }
                         }
                             .foregroundStyle(Color(uiColor: .gray))
