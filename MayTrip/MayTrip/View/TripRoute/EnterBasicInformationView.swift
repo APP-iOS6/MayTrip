@@ -26,11 +26,7 @@ struct EnterBasicInformationView: View {
                             Image(systemName: "xmark")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-<<<<<<< HEAD
                                 .frame(width: 15, height: 15)
-
-=======
->>>>>>> a7d2b24 (Feat: 기본정보 입력 뷰 #4)
                         }
                         .foregroundStyle(.black)
                         
@@ -96,10 +92,7 @@ struct EnterBasicInformationView: View {
                     .padding()
             }
         }
-<<<<<<< HEAD
         .navigationBarBackButtonHidden()
-=======
->>>>>>> a7d2b24 (Feat: 기본정보 입력 뷰 #4)
     }
 }
 
