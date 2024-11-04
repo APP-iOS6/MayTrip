@@ -19,3 +19,12 @@ struct TripRoute: Codable{
     let created_at: Date
     let updated_at: Date
 }
+
+struct TripRoutePost: Codable{
+    var title: String
+    var tag: [String] = []
+    var city: [String]
+    var writeUser: User
+    var startDate: Date
+    var endDate: Date?
+}

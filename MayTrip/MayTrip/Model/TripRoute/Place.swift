@@ -17,3 +17,9 @@ struct Place: Codable, Identifiable {
     //let createdAt: Date
     //let updatedAt: Date
 }
+
+struct PlacePost: Codable{
+    let routeDay: Int
+    let name: String
+    let coordinate: [Double]
+}
