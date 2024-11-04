@@ -204,6 +204,17 @@
 			path = CalendarViews;
 			sourceTree = "<group>";
 		};
+		259AAB542CDA024500512CE6 /* PlaceAddViews */ = {
+			isa = PBXGroup;
+			children = (
+				259AAB502CDA024500512CE6 /* CityTagFlowLayout.swift */,
+				259AAB512CDA024500512CE6 /* PlaceAddingView.swift */,
+				259AAB522CDA024500512CE6 /* PlaceInfoView.swift */,
+				259AAB532CDA024500512CE6 /* PlaceSearchView.swift */,
+			);
+			path = PlaceAddViews;
+			sourceTree = "<group>";
+		};
 		6E690E7D2CD8B9540096DB7C /* HomeViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -316,6 +327,7 @@
 				6E690E712CD8B54F0096DB7C /* CalendarViews */,
 				6E690E722CD8B54F0096DB7C /* EnterBasicInformationView.swift */,
 				6E690E7D2CD8B9540096DB7C /* HomeViews */,
+				259AAB542CDA024500512CE6 /* PlaceAddViews */,
 				6E690E802CD8B9540096DB7C /* RecommendViews */,
 				6E690E832CD8B9540096DB7C /* SearchViews */,
 			);
@@ -444,9 +456,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB36F6052CD4740F00E356FA /* MyPageView.swift in Sources */,
+				259AAB552CDA024500512CE6 /* PlaceInfoView.swift in Sources */,
+				259AAB562CDA024500512CE6 /* PlaceAddingView.swift in Sources */,
+				259AAB572CDA024500512CE6 /* CityTagFlowLayout.swift in Sources */,
+				259AAB582CDA024500512CE6 /* PlaceSearchView.swift in Sources */,
 				FB36F60C2CD474BF00E356FA /* Category.swift in Sources */,
+				42405E0F2CD889FC0061FB7A /* PlaceSearchView.swift in Sources */,
+				42405E102CD889FC0061FB7A /* CityTagFlowLayout.swift in Sources */,
+				42405E112CD889FC0061FB7A /* PlaceAddingView.swift in Sources */,
+				259AAB372CDA00CA00512CE6 /* CellView.swift in Sources */,
+				259AAB382CDA00CA00512CE6 /* DateGridView.swift in Sources */,
+				259AAB642CDA026200512CE6 /* TripRouteView.swift in Sources */,
+				259AAB652CDA026200512CE6 /* MyTripCardView.swift in Sources */,
+				259AAB662CDA026200512CE6 /* TopContentsView.swift in Sources */,
+				259AAB392CDA00CA00512CE6 /* YearAndMonthView.swift in Sources */,
+				259AAB3A2CDA00CA00512CE6 /* WeekdayView.swift in Sources */,
+				259AAB3B2CDA00CA00512CE6 /* CalendarView.swift in Sources */,
+				42405E122CD889FC0061FB7A /* PlaceInfoView.swift in Sources */,
 				FB36F6122CD474D400E356FA /* ChatLog.swift in Sources */,
-				6E690E7A2CD8B5A50096DB7C /* DateStore.swift in Sources */,
+				259AAB5B2CDA025000512CE6 /* SearchView.swift in Sources */,
+				259AAB5C2CDA025000512CE6 /* RecentlySearchListView.swift in Sources */,
 				2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */,
 				FB36F6102CD474CC00E356FA /* City.swift in Sources */,
 				FB36F6142CD474DB00E356FA /* ChatRoom.swift in Sources */,
@@ -459,6 +488,8 @@
 				FB36F6032CD4740900E356FA /* CommunityView.swift in Sources */,
 				FB36F6182CD474E600E356FA /* TripRoute.swift in Sources */,
 				FB36F6082CD4742A00E356FA /* StorageView.swift in Sources */,
+				259AAB5F2CDA025900512CE6 /* RecommendRouteView.swift in Sources */,
+				259AAB602CDA025900512CE6 /* RecommendContentView.swift in Sources */,
 				FB36F6162CD474E200E356FA /* Post.swift in Sources */,
 				6E690E732CD8B54F0096DB7C /* CalendarView.swift in Sources */,
 				6E690E742CD8B54F0096DB7C /* DateGridView.swift in Sources */,
