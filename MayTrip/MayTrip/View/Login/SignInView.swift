@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import AuthenticationServices
+import Supabase
 
 struct SignInView : View {
     enum Field : Hashable{
@@ -13,6 +15,7 @@ struct SignInView : View {
         case password
     }
     
+    private var DB = DBConnection.shared
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var checkMaintainLogin: Bool = false
@@ -23,7 +26,8 @@ struct SignInView : View {
     let screenHeight: CGFloat = UIScreen.main.bounds.height
     
     var body : some View {
-            ScrollView {
+        ScrollView {
+            VStack {
                 VStack {
                     Image("appIcon")
                         .resizable()
@@ -36,6 +40,7 @@ struct SignInView : View {
                 }
                 .padding(.top, screenHeight * 0.08)
                 .padding(.bottom, screenHeight * 0.1)
+                
                 
                 VStack(spacing: screenHeight * 0.02) {
                     
@@ -106,74 +111,108 @@ struct SignInView : View {
                         }
                     }
                     .padding(.bottom, screenHeight * 0.03)
-                    
-                    
-                    
-                    HStack(spacing : screenWidth * 0.08) {
-                        Button { // 애플 로그인
-                            
-                        } label : {
-                            ZStack {
-                                Circle()
-                                    .stroke(.black, lineWidth: 1)
-                                Image("appleLogo")
-                                    .resizable()
-                                    .scaledToFit()
-                            }
-                            .clipShape(.circle)
-                            .frame(width: screenWidth * 0.15)
-                        }
-                        
-                        Button { // 구글 로그인
-                            
-                        } label : {
-                            ZStack {
-                                Image("googleLogo")
-                                    .resizable()
-                                    .scaledToFit()
-                            }
-                            .clipShape(.circle)
-                            .frame(width: screenWidth * 0.15)
-                        }
-                        
-                        Button { // 카카오 로그인
-                            
-                        } label : {
-                            ZStack {
-                                Circle()
-                                    .foregroundStyle(Color(red: 254/255, green: 229/255, blue: 0))
-                                    .frame(width: screenWidth * 0.15)
-                                Image("kakaoLogo")
-                            }
-                            .clipShape(.circle)
-                            .frame(width: screenWidth * 0.15)
-                        }
-                    }
                 }
             }
-            .scrollDisabled(!isKeyboardVisible)
+            .contentShape(Rectangle())
             .onTapGesture {
-                hideKeyboard()
-            }
-            .onAppear {
-                email = ""
-                password = ""
-                // 키보드 이벤트 감지
-                NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
-                    withAnimation {
-                        isKeyboardVisible = true
-                    }
-                }
-                NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
-                    withAnimation {
-                        isKeyboardVisible = false
-                    }
+                if isKeyboardVisible {
+                    hideKeyboard()
                 }
             }
-            .onDisappear {
-                // 뷰가 사라질 때 옵저버 제거
-                NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-                NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+            
+            HStack(spacing : screenWidth * 0.08) {
+                Button { // 애플 로그인
+                    
+                } label : {
+                    ZStack {
+                        Circle()
+                            .stroke(.black, lineWidth: 1)
+                        Image("appleLogo")
+                            .resizable()
+                            .scaledToFit()
+                    }
+                    .clipShape(.circle)
+                    .frame(width: screenWidth * 0.15)
+                    
+                }
+                .overlay {
+                    SignInWithAppleButton { request in
+                        request.requestedScopes = [.email, .fullName]
+                    } onCompletion: { result in
+                        Task {
+                            do {
+                                guard let credential = try result.get().credential as? ASAuthorizationAppleIDCredential
+                                else {
+                                    return
+                                }
+                                
+                                guard let idToken = credential.identityToken
+                                    .flatMap({ String(data: $0, encoding: .utf8) })
+                                else {
+                                    return
+                                }
+                                try await DB.auth.signInWithIdToken(
+                                    credentials: .init(
+                                        provider: .apple,
+                                        idToken: idToken
+                                    )
+                                )
+                            } catch {
+                                print("error")
+                                dump(error)
+                            }
+                        }
+                    }
+                    .blendMode(.overlay)
+                }
+                
+                Button { // 구글 로그인
+                    
+                } label : {
+                    ZStack {
+                        Image("googleLogo")
+                            .resizable()
+                            .scaledToFit()
+                    }
+                    .clipShape(.circle)
+                    .frame(width: screenWidth * 0.15)
+                }
+                
+                Button { // 카카오 로그인
+                    
+                } label : {
+                    ZStack {
+                        Circle()
+                            .foregroundStyle(Color(red: 254/255, green: 229/255, blue: 0))
+                            .frame(width: screenWidth * 0.15)
+                        Image("kakaoLogo")
+                    }
+                    .clipShape(.circle)
+                    .frame(width: screenWidth * 0.15)
+                }
+                
             }
         }
+        .scrollDisabled(!isKeyboardVisible)
+        .onAppear {
+            email = ""
+            password = ""
+            // 키보드 이벤트 감지
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
+                withAnimation {
+                    isKeyboardVisible = true
+                }
+            }
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
+                withAnimation {
+                    isKeyboardVisible = false
+                }
+            }
+        }
+        .onDisappear {
+            // 뷰가 사라질 때 옵저버 제거
+            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        }
+    }
 }

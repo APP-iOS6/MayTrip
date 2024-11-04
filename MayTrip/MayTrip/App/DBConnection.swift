@@ -38,7 +38,8 @@ final class DBConnection{
         guard let supabaseKey = dictionary["api_key"] as? String else {return nil}
         guard let url = URL(string: supabaseURL) else{ return nil}
         
-        
+        print(supabaseURL)
+        print(supabaseKey)
         return SupabaseClient(supabaseURL: url, supabaseKey: supabaseKey)
     }
     
