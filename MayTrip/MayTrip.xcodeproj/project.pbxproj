@@ -10,6 +10,7 @@
 		2518F6B52CD490F200A8F951 /* supabaseInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2518F6B42CD490F200A8F951 /* supabaseInfo.plist */; };
 		2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2518F6B72CD4929500A8F951 /* DBConnection.swift */; };
 		2518F6BB2CD4930300A8F951 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 2518F6BA2CD4930300A8F951 /* Supabase */; };
+		252CC2DD2CD89C0600345DE5 /* RouteDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252CC2DC2CD89BFF00345DE5 /* RouteDay.swift */; };
 		42405E032CD8888D0061FB7A /* Secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 42405E022CD8888D0061FB7A /* Secret.xcconfig */; };
 		42405E052CD889360061FB7A /* MarkerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42405E042CD889360061FB7A /* MarkerItem.swift */; };
 		42405E072CD8894A0061FB7A /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42405E062CD8894A0061FB7A /* LocationManager.swift */; };
@@ -50,6 +51,7 @@
 /* Begin PBXFileReference section */
 		2518F6B42CD490F200A8F951 /* supabaseInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = supabaseInfo.plist; sourceTree = "<group>"; };
 		2518F6B72CD4929500A8F951 /* DBConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBConnection.swift; sourceTree = "<group>"; };
+		252CC2DC2CD89BFF00345DE5 /* RouteDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDay.swift; sourceTree = "<group>"; };
 		42405E022CD8888D0061FB7A /* Secret.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secret.xcconfig; sourceTree = "<group>"; };
 		42405E042CD889360061FB7A /* MarkerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerItem.swift; sourceTree = "<group>"; };
 		42405E062CD8894A0061FB7A /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -116,6 +118,44 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		252CC2D82CD89BBB00345DE5 /* TripRoute */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F6172CD474E500E356FA /* TripRoute.swift */,
+				252CC2DC2CD89BFF00345DE5 /* RouteDay.swift */,
+				FB36F60D2CD474C400E356FA /* Place.swift */,
+				FB36F60F2CD474CB00E356FA /* City.swift */,
+				42405E042CD889360061FB7A /* MarkerItem.swift */,
+			);
+			path = TripRoute;
+			sourceTree = "<group>";
+		};
+		252CC2D92CD89BCB00345DE5 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F6132CD474DA00E356FA /* ChatRoom.swift */,
+				FB36F6112CD474D200E356FA /* ChatLog.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		252CC2DA2CD89BE500345DE5 /* Community */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F6152CD474E100E356FA /* Post.swift */,
+				FB36F60B2CD474BB00E356FA /* Category.swift */,
+			);
+			path = Community;
+			sourceTree = "<group>";
+		};
+		252CC2DB2CD89BF100345DE5 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F6092CD4743E00E356FA /* User.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
 		42405E0E2CD889FC0061FB7A /* PlaceAddViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -164,15 +204,10 @@
 		FB36F5F22CD4735700E356FA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				FB36F6092CD4743E00E356FA /* User.swift */,
-				FB36F60B2CD474BB00E356FA /* Category.swift */,
-				FB36F60D2CD474C400E356FA /* Place.swift */,
-				FB36F60F2CD474CB00E356FA /* City.swift */,
-				FB36F6112CD474D200E356FA /* ChatLog.swift */,
-				FB36F6132CD474DA00E356FA /* ChatRoom.swift */,
-				FB36F6152CD474E100E356FA /* Post.swift */,
-				FB36F6172CD474E500E356FA /* TripRoute.swift */,
-				42405E042CD889360061FB7A /* MarkerItem.swift */,
+				252CC2DB2CD89BF100345DE5 /* Auth */,
+				252CC2DA2CD89BE500345DE5 /* Community */,
+				252CC2D82CD89BBB00345DE5 /* TripRoute */,
+				252CC2D92CD89BCB00345DE5 /* Chat */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -348,6 +383,7 @@
 				2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */,
 				FB36F6102CD474CC00E356FA /* City.swift in Sources */,
 				FB36F6142CD474DB00E356FA /* ChatRoom.swift in Sources */,
+				252CC2DD2CD89C0600345DE5 /* RouteDay.swift in Sources */,
 				FB36F5FD2CD473EA00E356FA /* LoginView.swift in Sources */,
 				42405E092CD889690061FB7A /* SearchAddressStore.swift in Sources */,
 				FB36F5EF2CD472F600E356FA /* ContentView.swift in Sources */,
