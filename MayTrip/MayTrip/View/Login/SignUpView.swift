@@ -14,6 +14,7 @@ struct SignUpView: View {
         case confirmPassword
     }
     
+    private var DB = DBConnection.shared
     @Environment(\.dismiss) var dismiss
     @State private var email: String = ""
     @State private var password: String = ""
@@ -86,7 +87,17 @@ struct SignUpView: View {
                 
                 Button { // 회원가입
                     if checkValid() {
-                        dismiss()
+                        Task {
+                            do {
+                                try await DB.auth.signUp(
+                                    email: email,
+                                    password: password
+                                )
+                                dismiss()
+                            } catch {
+                                print(error)
+                            }
+                        }
                     }
                 } label : {
                     ZStack {

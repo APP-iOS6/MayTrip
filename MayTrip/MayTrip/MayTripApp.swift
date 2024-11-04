@@ -13,7 +13,9 @@ struct MayTripApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                
+                .onOpenURL { url in
+                    DB.auth.handle(url)
+                }
         }
     }
 }
