@@ -47,14 +47,9 @@ struct PlaceSearchView: View {
                 }
                 .onTapGesture { // 선택한 장소 places[일차] 배열에 추가, 시트 내림
                     // TODO: 이미 선택한 장소 추가할 경우에 시나리오 추가
-                    let place = Place(id: nil,
+                    let place = Place(id: 0,
                                       name: document.placeName,
-                                      tripRoute: nil,
-                                      visitDate: selectedDate(from: selectedDay),
-                                      latitude: Double(document.y)!,
-                                      longitude: Double(document.x)!,
-                                      createdAt: .now,
-                                      updatedAt: .now)
+                                      coordinate: [Double(document.y)!, Double(document.x)!])
                     
                     self.places[selectedDay - 1].append(place)
                     
@@ -65,8 +60,8 @@ struct PlaceSearchView: View {
                     }
                     
                     let newMarker = MarkerItem(coordinate: .init(
-                        latitude: place.latitude,
-                        longitude: place.longitude
+                        latitude: place.coordinate[0],
+                        longitude: place.coordinate[1]
                     ))
                     
                     self.markers[selectedDay - 1].append(newMarker)
