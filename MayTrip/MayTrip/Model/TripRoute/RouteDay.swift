@@ -11,4 +11,10 @@ struct RouteDay: Codable {
     let id: Int
     let tripDate: Date
     let places: [Place]
+}d
+
+struct RouteDayPost: Codable{
+    let tripDate: Date
+    let tripRoute: Int
+    let places: [Place]
 }
