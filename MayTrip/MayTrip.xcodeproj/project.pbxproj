@@ -316,6 +316,7 @@
 		FB36F5EC2CD472F600E356FA /* MayTrip */ = {
 			isa = PBXGroup;
 			children = (
+				42405E132CD88A510061FB7A /* Info.plist */,
 				2518F6B62CD4928A00A8F951 /* App */,
 				FB36F5F22CD4735700E356FA /* Model */,
 				FB36F5F32CD4735F00E356FA /* Store */,
@@ -324,6 +325,7 @@
 				FB36F5EB2CD472F600E356FA /* MayTripApp.swift */,
 				FB36F5E92CD472F600E356FA /* Assets.xcassets */,
 				2518F6B42CD490F200A8F951 /* supabaseInfo.plist */,
+				42405E022CD8888D0061FB7A /* Secret.xcconfig */,
 			);
 			path = MayTrip;
 			sourceTree = "<group>";
@@ -495,6 +497,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42405E032CD8888D0061FB7A /* Secret.xcconfig in Resources */,
 				2518F6B52CD490F200A8F951 /* supabaseInfo.plist in Resources */,
 				FB36F5EE2CD472F600E356FA /* Assets.xcassets in Resources */,
 			);
@@ -508,6 +511,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB36F6052CD4740F00E356FA /* MyPageView.swift in Sources */,
+				FB36F60C2CD474BF00E356FA /* Category.swift in Sources */,
+				42405E0F2CD889FC0061FB7A /* PlaceSearchView.swift in Sources */,
+				42405E102CD889FC0061FB7A /* CityTagFlowLayout.swift in Sources */,
+				42405E112CD889FC0061FB7A /* PlaceAddingView.swift in Sources */,
+				42405E122CD889FC0061FB7A /* PlaceInfoView.swift in Sources */,
+				FB36F6122CD474D400E356FA /* ChatLog.swift in Sources */,
 				2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */,
 				FB36F5FD2CD473EA00E356FA /* LoginView.swift in Sources */,
 				259AAB6D2CDA031700512CE6 /* LocationManager.swift in Sources */,
@@ -579,6 +588,7 @@
 /* Begin XCBuildConfiguration section */
 		FB36F5E22CD472B100E356FA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 42405E022CD8888D0061FB7A /* Secret.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -642,6 +652,7 @@
 		};
 		FB36F5E32CD472B100E356FA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 42405E022CD8888D0061FB7A /* Secret.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
