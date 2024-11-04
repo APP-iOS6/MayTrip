@@ -10,6 +10,14 @@
 		2518F6B52CD490F200A8F951 /* supabaseInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2518F6B42CD490F200A8F951 /* supabaseInfo.plist */; };
 		2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2518F6B72CD4929500A8F951 /* DBConnection.swift */; };
 		2518F6BB2CD4930300A8F951 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 2518F6BA2CD4930300A8F951 /* Supabase */; };
+		42405E032CD8888D0061FB7A /* Secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 42405E022CD8888D0061FB7A /* Secret.xcconfig */; };
+		42405E052CD889360061FB7A /* MarkerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42405E042CD889360061FB7A /* MarkerItem.swift */; };
+		42405E072CD8894A0061FB7A /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42405E062CD8894A0061FB7A /* LocationManager.swift */; };
+		42405E092CD889690061FB7A /* SearchAddressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42405E082CD889690061FB7A /* SearchAddressStore.swift */; };
+		42405E0F2CD889FC0061FB7A /* PlaceSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42405E0D2CD889FC0061FB7A /* PlaceSearchView.swift */; };
+		42405E102CD889FC0061FB7A /* CityTagFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42405E0A2CD889FC0061FB7A /* CityTagFlowLayout.swift */; };
+		42405E112CD889FC0061FB7A /* PlaceAddingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42405E0B2CD889FC0061FB7A /* PlaceAddingView.swift */; };
+		42405E122CD889FC0061FB7A /* PlaceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42405E0C2CD889FC0061FB7A /* PlaceInfoView.swift */; };
 		FB36F5EE2CD472F600E356FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB36F5E92CD472F600E356FA /* Assets.xcassets */; };
 		FB36F5EF2CD472F600E356FA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F5EA2CD472F600E356FA /* ContentView.swift */; };
 		FB36F5F02CD472F600E356FA /* MayTripApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F5EB2CD472F600E356FA /* MayTripApp.swift */; };
@@ -42,6 +50,15 @@
 /* Begin PBXFileReference section */
 		2518F6B42CD490F200A8F951 /* supabaseInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = supabaseInfo.plist; sourceTree = "<group>"; };
 		2518F6B72CD4929500A8F951 /* DBConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBConnection.swift; sourceTree = "<group>"; };
+		42405E022CD8888D0061FB7A /* Secret.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secret.xcconfig; sourceTree = "<group>"; };
+		42405E042CD889360061FB7A /* MarkerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerItem.swift; sourceTree = "<group>"; };
+		42405E062CD8894A0061FB7A /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		42405E082CD889690061FB7A /* SearchAddressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAddressStore.swift; sourceTree = "<group>"; };
+		42405E0A2CD889FC0061FB7A /* CityTagFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityTagFlowLayout.swift; sourceTree = "<group>"; };
+		42405E0B2CD889FC0061FB7A /* PlaceAddingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceAddingView.swift; sourceTree = "<group>"; };
+		42405E0C2CD889FC0061FB7A /* PlaceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfoView.swift; sourceTree = "<group>"; };
+		42405E0D2CD889FC0061FB7A /* PlaceSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchView.swift; sourceTree = "<group>"; };
+		42405E132CD88A510061FB7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FB36F5D62CD472AF00E356FA /* MayTrip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MayTrip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB36F5E92CD472F600E356FA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FB36F5EA2CD472F600E356FA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -99,6 +116,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		42405E0E2CD889FC0061FB7A /* PlaceAddViews */ = {
+			isa = PBXGroup;
+			children = (
+				42405E0A2CD889FC0061FB7A /* CityTagFlowLayout.swift */,
+				42405E0B2CD889FC0061FB7A /* PlaceAddingView.swift */,
+				42405E0C2CD889FC0061FB7A /* PlaceInfoView.swift */,
+				42405E0D2CD889FC0061FB7A /* PlaceSearchView.swift */,
+			);
+			path = PlaceAddViews;
+			sourceTree = "<group>";
+		};
 		FB36F5CD2CD472AF00E356FA = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +147,7 @@
 		FB36F5EC2CD472F600E356FA /* MayTrip */ = {
 			isa = PBXGroup;
 			children = (
+				42405E132CD88A510061FB7A /* Info.plist */,
 				2518F6B62CD4928A00A8F951 /* App */,
 				FB36F5F22CD4735700E356FA /* Model */,
 				FB36F5F32CD4735F00E356FA /* Store */,
@@ -127,6 +156,7 @@
 				FB36F5EB2CD472F600E356FA /* MayTripApp.swift */,
 				FB36F5E92CD472F600E356FA /* Assets.xcassets */,
 				2518F6B42CD490F200A8F951 /* supabaseInfo.plist */,
+				42405E022CD8888D0061FB7A /* Secret.xcconfig */,
 			);
 			path = MayTrip;
 			sourceTree = "<group>";
@@ -142,6 +172,7 @@
 				FB36F6132CD474DA00E356FA /* ChatRoom.swift */,
 				FB36F6152CD474E100E356FA /* Post.swift */,
 				FB36F6172CD474E500E356FA /* TripRoute.swift */,
+				42405E042CD889360061FB7A /* MarkerItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -150,6 +181,8 @@
 			isa = PBXGroup;
 			children = (
 				FB36F6192CD474F600E356FA /* AuthStore.swift */,
+				42405E062CD8894A0061FB7A /* LocationManager.swift */,
+				42405E082CD889690061FB7A /* SearchAddressStore.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -179,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				FB36F5FE2CD473EE00E356FA /* TripRouteView.swift */,
+				42405E0E2CD889FC0061FB7A /* PlaceAddViews */,
 			);
 			path = TripRoute;
 			sourceTree = "<group>";
@@ -291,6 +325,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42405E032CD8888D0061FB7A /* Secret.xcconfig in Resources */,
 				2518F6B52CD490F200A8F951 /* supabaseInfo.plist in Resources */,
 				FB36F5EE2CD472F600E356FA /* Assets.xcassets in Resources */,
 			);
@@ -305,16 +340,23 @@
 			files = (
 				FB36F6052CD4740F00E356FA /* MyPageView.swift in Sources */,
 				FB36F60C2CD474BF00E356FA /* Category.swift in Sources */,
+				42405E0F2CD889FC0061FB7A /* PlaceSearchView.swift in Sources */,
+				42405E102CD889FC0061FB7A /* CityTagFlowLayout.swift in Sources */,
+				42405E112CD889FC0061FB7A /* PlaceAddingView.swift in Sources */,
+				42405E122CD889FC0061FB7A /* PlaceInfoView.swift in Sources */,
 				FB36F6122CD474D400E356FA /* ChatLog.swift in Sources */,
 				2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */,
 				FB36F6102CD474CC00E356FA /* City.swift in Sources */,
 				FB36F6142CD474DB00E356FA /* ChatRoom.swift in Sources */,
 				FB36F5FD2CD473EA00E356FA /* LoginView.swift in Sources */,
+				42405E092CD889690061FB7A /* SearchAddressStore.swift in Sources */,
 				FB36F5EF2CD472F600E356FA /* ContentView.swift in Sources */,
 				FB36F6032CD4740900E356FA /* CommunityView.swift in Sources */,
 				FB36F6182CD474E600E356FA /* TripRoute.swift in Sources */,
 				FB36F6082CD4742A00E356FA /* StorageView.swift in Sources */,
 				FB36F6162CD474E200E356FA /* Post.swift in Sources */,
+				42405E072CD8894A0061FB7A /* LocationManager.swift in Sources */,
+				42405E052CD889360061FB7A /* MarkerItem.swift in Sources */,
 				FB36F60A2CD4743F00E356FA /* User.swift in Sources */,
 				FB36F6012CD473FA00E356FA /* ChatView.swift in Sources */,
 				FB36F5F02CD472F600E356FA /* MayTripApp.swift in Sources */,
@@ -329,6 +371,7 @@
 /* Begin XCBuildConfiguration section */
 		FB36F5E22CD472B100E356FA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 42405E022CD8888D0061FB7A /* Secret.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -392,6 +435,7 @@
 		};
 		FB36F5E32CD472B100E356FA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 42405E022CD8888D0061FB7A /* Secret.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -457,6 +501,8 @@
 				DEVELOPMENT_TEAM = 6R3M7VGRP2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MayTrip/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your app needs access to your location to provide";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -487,6 +533,8 @@
 				DEVELOPMENT_TEAM = 6R3M7VGRP2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MayTrip/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your app needs access to your location to provide";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

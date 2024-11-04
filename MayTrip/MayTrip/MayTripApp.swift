@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct MayTripApp: App {
-    let DB = DBConnection()
+    let DB = DBConnection.shared
     var body: some Scene {
         WindowGroup {
             ContentView()
