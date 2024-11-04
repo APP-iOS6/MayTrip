@@ -95,3 +95,5 @@ iOSInjectionProject/
 # 프로젝트의 모든 경로에서 GoogleService-Info.plist 파일을 포함하지 않도록 함
 **/GoogleService-Info.plist
 
+# 프로젝트의 모든 경로에서 수파베이스 프로젝트 주소 및 api key 노출 되지 않도록 함
+**/supabaseInfo.plist

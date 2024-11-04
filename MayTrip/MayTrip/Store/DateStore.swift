@@ -17,7 +17,7 @@ class DateStore {
     
     private var formatter: DateFormatter {
         let formatter = DateFormatter()
-        formatter.dateFormat = "YYYY MM d"
+        formatter.dateFormat = "yyyy MM d"
         formatter.locale = Locale(identifier: "ko_kr")
         return formatter
     }
@@ -48,12 +48,7 @@ class DateStore {
     // 해당 월의 일 수 (윤년 때문에 연도도 필요)
     func numberOfDays(_ isPreviousMonth: Bool = false) -> Int {
         var date: Date = .init()
-        
-        if isPreviousMonth {
-            date = previousMonth()
-        } else {
-            date = self.date
-        }
+        date = isPreviousMonth ? previousMonth() : self.date
         return Calendar.current.range(of: .day, in: .month, for: date)?.count ?? 0
     }
     
@@ -101,21 +96,21 @@ class DateStore {
     
     // 셀 누를때 여행 시작 날짜, 끝나는 날짜 설정
     func setTripDates(_ date: Date) {
-        if startDate == nil {
-            startDate = date
-        } else {
+        if let startDate = startDate {
             endDate = date
             
-            if startDate! > endDate! {
-                endDate = startDate!
-                startDate = date
+            if startDate > date {
+                endDate = startDate
+                self.startDate = date
             }
             
             // 여행 시작일이 토글될 때 여행 날짜 재설정 되도록
-            if startDate! == endDate! {
-                startDate = nil
+            if startDate == date {
+                self.startDate = nil
                 endDate = nil
             }
+        } else {
+            startDate = date
         }
     }
     

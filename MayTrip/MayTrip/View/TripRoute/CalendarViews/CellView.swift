@@ -18,24 +18,7 @@ struct CellView: View {
     var isSunday: Bool {
         let weekday: Int = dateStore.firstWeekdayOfMonth(date)
         
-        return switch weekday {
-        case 1:
-             day % 7 == 1
-        case 2:
-             day % 7 == 0
-        case 3:
-             day % 7 == 6
-        case 4:
-             day % 7 == 5
-        case 5:
-             day % 7 == 4
-        case 6:
-             day % 7 == 3
-        case 7:
-             day % 7 == 2
-        default:
-            false
-        }
+        return day % 7 == (9 - weekday) % 7
     }
     
     var textColor: Color {
@@ -47,33 +30,29 @@ struct CellView: View {
     }
     
     var opacity: Double {
-        if date == dateStore.startDate || date == dateStore.endDate {
+        guard let startDate = dateStore.startDate, let endDate = dateStore.endDate else {
+            return 0.0
+        }
+        if date == startDate || date == endDate || (date > startDate && date < endDate) {
             return 0.3
         }
-        
-        if dateStore.startDate != nil && dateStore.endDate != nil {
-            if date > dateStore.startDate! && date < dateStore.endDate! {
-                return 0.3
-            }
-        }
-        
         return 0.0
     }
     
     var isLeftCircle: Bool {
-        if dateStore.startDate == nil {
-            false
-        } else {
-            date == dateStore.startDate!
+        guard let startDate = dateStore.startDate else {
+            return false
         }
+        
+        return date == dateStore.startDate!
     }
     
     var isRightCircle: Bool {
-        if dateStore.endDate == nil {
-            false
-        } else {
-            date == dateStore.endDate!
+        guard let endDate = dateStore.endDate else {
+            return false
         }
+        
+        return date == dateStore.endDate!
     }
     
     var body: some View {
