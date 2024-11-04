@@ -10,9 +10,19 @@ import Foundation
 
 //Supabase DB 연결 - supabaseInfo.plist에 프로젝트url과 api key가 필요함
 final class DBConnection{
-    var client: SupabaseClient?
+    static let shared = DBConnection().getDB
     
-    init() {
+    private var client: SupabaseClient?
+    
+    private var getDB: SupabaseClient{
+        if let client = client{
+            return client
+        }else{
+            fatalError("DB Connection Error")
+        }
+    }
+    
+    private init() {
         do{
             self.client = try connect()
         }catch let error{
@@ -20,7 +30,7 @@ final class DBConnection{
         }
     }
     
-    func connect() throws-> SupabaseClient?{
+    private func connect() throws-> SupabaseClient?{
         guard let url = Bundle.main.url(forResource: "supabaseInfo", withExtension: "plist") else { return nil }
         guard let dictionary = NSDictionary(contentsOf: url) else { return nil }
         
@@ -31,6 +41,7 @@ final class DBConnection{
         
         return SupabaseClient(supabaseURL: url, supabaseKey: supabaseKey)
     }
+    
 }
 
 
