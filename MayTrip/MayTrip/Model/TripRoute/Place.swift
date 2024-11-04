@@ -6,13 +6,14 @@
 //
 import Foundation
 
-struct Place: Identifiable {
-    let id: Int?
+struct Place: Codable, Identifiable {
+    let id: Int
     let name: String
-    let tripRoute: Int?
-    let visitDate: Date
-    let latitude: Double
-    let longitude: Double
-    let createdAt: Date
-    let updatedAt: Date
+    let coordinate: [Double]
+    //let tripRoute: Int?
+    //let visitDate: Date
+    //let latitude: Double
+    //let longitude: Double
+    //let createdAt: Date
+    //let updatedAt: Date
 }
