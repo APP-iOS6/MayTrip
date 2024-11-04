@@ -158,7 +158,6 @@ struct SignInView : View {
                                     )
                                 )
                             } catch {
-                                print("error")
                                 dump(error)
                             }
                         }
@@ -179,7 +178,13 @@ struct SignInView : View {
                 }
                 
                 Button { // 카카오 로그인
-                    
+                    Task {
+                        do {
+                            try await DB.auth.signInWithOAuth(provider: .kakao, redirectTo: URL(string: "https://zmuqlogychbckqgfmzak.supabase.co/auth/v1/callback"))
+                        } catch {
+                            print(error)
+                        }
+                    }
                 } label : {
                     ZStack {
                         Circle()
