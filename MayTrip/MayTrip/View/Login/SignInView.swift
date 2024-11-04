@@ -179,7 +179,13 @@ struct SignInView : View {
                 }
                 
                 Button { // 구글 로그인
-                    
+                    Task {
+                        do {
+                            try await DB.auth.signInWithOAuth(provider: .google, redirectTo: URL(string:"https://zmuqlogychbckqgfmzak.supabase.co/auth/v1/callback"))
+                        } catch {
+                            print(error)
+                        }
+                    }
                 } label : {
                     ZStack {
                         Image("googleLogo")
