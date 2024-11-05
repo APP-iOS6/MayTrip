@@ -13,7 +13,7 @@ struct TripRoute: Codable{
     let tag: [String]
     let city: [String]
     let writeUser: User
-    let RouteDays: [RouteDay]
+    let Place: [Place]
     let start_date: Date
     let end_date: Date?
     let created_at: Date
