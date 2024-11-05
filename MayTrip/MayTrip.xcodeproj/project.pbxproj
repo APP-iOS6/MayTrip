@@ -10,6 +10,7 @@
 		2518F6B52CD490F200A8F951 /* supabaseInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2518F6B42CD490F200A8F951 /* supabaseInfo.plist */; };
 		2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2518F6B72CD4929500A8F951 /* DBConnection.swift */; };
 		2518F6BB2CD4930300A8F951 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 2518F6BA2CD4930300A8F951 /* Supabase */; };
+		259AAAFB2CD9A6B100512CE6 /* TripRouteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259AAAFA2CD9A6A900512CE6 /* TripRouteStore.swift */; };
 		42405E032CD8888D0061FB7A /* Secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 42405E022CD8888D0061FB7A /* Secret.xcconfig */; };
 		42405E052CD889360061FB7A /* MarkerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42405E042CD889360061FB7A /* MarkerItem.swift */; };
 		42405E072CD8894A0061FB7A /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42405E062CD8894A0061FB7A /* LocationManager.swift */; };
@@ -50,6 +51,7 @@
 /* Begin PBXFileReference section */
 		2518F6B42CD490F200A8F951 /* supabaseInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = supabaseInfo.plist; sourceTree = "<group>"; };
 		2518F6B72CD4929500A8F951 /* DBConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBConnection.swift; sourceTree = "<group>"; };
+		259AAAFA2CD9A6A900512CE6 /* TripRouteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripRouteStore.swift; sourceTree = "<group>"; };
 		42405E022CD8888D0061FB7A /* Secret.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secret.xcconfig; sourceTree = "<group>"; };
 		42405E042CD889360061FB7A /* MarkerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerItem.swift; sourceTree = "<group>"; };
 		42405E062CD8894A0061FB7A /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 		FB36F5F32CD4735F00E356FA /* Store */ = {
 			isa = PBXGroup;
 			children = (
+				259AAAFA2CD9A6A900512CE6 /* TripRouteStore.swift */,
 				FB36F6192CD474F600E356FA /* AuthStore.swift */,
 				42405E062CD8894A0061FB7A /* LocationManager.swift */,
 				42405E082CD889690061FB7A /* SearchAddressStore.swift */,
@@ -380,6 +383,7 @@
 				2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */,
 				FB36F6102CD474CC00E356FA /* City.swift in Sources */,
 				FB36F6142CD474DB00E356FA /* ChatRoom.swift in Sources */,
+				259AAAFB2CD9A6B100512CE6 /* TripRouteStore.swift in Sources */,
 				FB36F5FD2CD473EA00E356FA /* LoginView.swift in Sources */,
 				42405E092CD889690061FB7A /* SearchAddressStore.swift in Sources */,
 				FB36F5EF2CD472F600E356FA /* ContentView.swift in Sources */,
