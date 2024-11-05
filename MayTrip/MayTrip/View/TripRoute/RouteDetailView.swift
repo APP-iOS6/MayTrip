@@ -127,6 +127,7 @@ struct RouteDetailView: View {
                 )
             )
         }
+        .toolbar(.hidden)
     }
     
     // 주어진 날짜 범위의 날짜 배열을 반환하는 함수
@@ -250,4 +251,48 @@ struct RouteDetailView: View {
         created_at: .now,
         updated_at: .now)
     )
+}
+
+class SampleTripRoute {
+    
+    static let sampleRoute = TripRoute(
+        id: 0,
+        title: "샘플 루트",
+        tag: ["태그1", "태그2"],
+        city: ["샘플도시1", "샘플도시2", "샘플도시3", "샘플도시4"],
+        writeUser: TripRouteUser(
+            id: -1,
+            nickname: "테스터",
+            profileImage: nil
+        ),
+        place: [
+            Place(id: 0,
+                  name: "테스트1",
+                  tripRoute: 0,
+                  tripDate: "2024 11 11",
+                  ordered: 1,
+                  coordinates: [37.5301, 127.1144]),
+            Place(id: 1,
+                  name: "테스트2",
+                  tripRoute: 0,
+                  tripDate: "2024 11 11",
+                  ordered: 2,
+                  coordinates: [37.5513, 127.0816]),
+            Place(id: 2,
+                  name: "테스트3",
+                  tripRoute: 0,
+                  tripDate: "2024 11 11",
+                  ordered: 3,
+                  coordinates: [37.5577, 127.0544]),
+            Place(id: 3,
+                  name: "테스트4",
+                  tripRoute: 0,
+                  tripDate: "2024 11 12",
+                  ordered: 1,
+                  coordinates: [37.5513, 126.9881])
+        ],
+        startDate: "2024 11 11",
+        endDate: "2024 11 12",
+        created_at: .now,
+        updated_at: .now)
 }

@@ -15,6 +15,7 @@ struct RecommendContentView: View {
     var body: some View {
         NavigationLink {
             // 디테일 뷰 이동
+            RouteDetailView(tripRoute: SampleTripRoute.sampleRoute)
         } label: {
             VStack(alignment: .leading) {
                 HStack(alignment: .top) {

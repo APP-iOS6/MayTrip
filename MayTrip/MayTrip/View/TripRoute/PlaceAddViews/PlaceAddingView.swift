@@ -85,15 +85,6 @@ struct PlaceAddingView: View {
             LazyVStack(pinnedViews: [.sectionHeaders]){
                 ForEach(Array(datesInRange(from: startDate, to: endDate).enumerated()), id: \.element) { dateIndex, date in
                     Section {
-                        // 일차별 장소 카드 뷰
-                        PlaceInfoView(dateIndex: dateIndex,
-                                      date: date,
-                                      isEditing: true,
-                                      places: $places,
-                                      markers: $markers,
-                                      isShowSheet: $isShowSheet,
-                                      selectedDay: $selectedDay)
-                    } header: {
                         Map(position: $mapRegion) {
                             if markers.count > 0 {
                                 ForEach(Array(markers[dateIndex].enumerated()), id: \.element.id) { markerIndex, marker in
@@ -104,9 +95,32 @@ struct PlaceAddingView: View {
                                 }
                             }
                         }
-                        .frame(height: 300)
+                        .frame(height: 200)
                         .mapControlVisibility(.hidden)
+                        // 일차별 장소 카드 뷰
+                        PlaceInfoView(dateIndex: dateIndex,
+                                      date: date,
+                                      isEditing: true,
+                                      places: $places,
+                                      markers: $markers,
+                                      isShowSheet: $isShowSheet,
+                                      selectedDay: $selectedDay)
                     }
+//                        header: {
+//                        Map(position: $mapRegion) {
+//                            if markers.count > 0 {
+//                                ForEach(Array(markers[dateIndex].enumerated()), id: \.element.id) { markerIndex, marker in
+//                                    Annotation("", coordinate: marker.coordinate) {
+//                                        Image(systemName: "\(markerIndex + 1).circle.fill")
+//                                            .foregroundStyle(.blue)
+//                                    }
+//                                }
+//                            }
+//                        }
+//                        .frame(height: 200)
+//                        .mapControlVisibility(.hidden)
+//                    }
+                    
                 }
             }
         }
@@ -136,6 +150,7 @@ struct PlaceAddingView: View {
                             cities: $cities,
                             markers: $markers)
         }
+        .toolbar(.hidden)
     }
     
     // 주어진 날짜 범위의 날짜 배열을 반환하는 함수
