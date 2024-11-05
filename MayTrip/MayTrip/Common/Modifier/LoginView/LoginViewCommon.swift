@@ -34,7 +34,7 @@ func CreateLoginViewTextField(text: Binding<String>, symbolName: String, placeho
         if text.wrappedValue.isEmpty {
             HStack {
                 HStack {
-                    if symbolName != "" {
+                    if !symbolName.isEmpty {
                         Image(systemName: symbolName)
                     }
                     Text(placeholder)
@@ -44,11 +44,5 @@ func CreateLoginViewTextField(text: Binding<String>, symbolName: String, placeho
             .foregroundStyle(Color(uiColor: .systemGray3))
             .frame(width: width - 20, height: height)
         }
-    }
-}
-
-extension View {
-    func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }

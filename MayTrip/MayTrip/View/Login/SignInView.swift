@@ -23,7 +23,6 @@ struct SignInView : View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var checkMaintainLogin: Bool = false
-    @State private var isKeyboardVisible: Bool = false
     @FocusState private var focusField: Field?
     
     let screenWidth: CGFloat = UIScreen.main.bounds.width
@@ -132,9 +131,7 @@ struct SignInView : View {
             }
             .contentShape(Rectangle())
             .onTapGesture {
-                if isKeyboardVisible {
-                    hideKeyboard()
-                }
+                focusField = nil
             }
             
             HStack(spacing : screenWidth * 0.08) {
@@ -183,13 +180,6 @@ struct SignInView : View {
                 }
                 
                 Button { // 구글 로그인
-//                    Task {
-//                        do {
-//                            try await authStore.DB.auth.signInWithOAuth(provider: .google, redirectTo: URL(string:"https://zmuqlogychbckqgfmzak.supabase.co/auth/v1/callback"))
-//                        } catch {
-//                            print(error)
-//                        }
-//                    }
                     authStore.googleLogin()
                 } label : {
                     ZStack {
@@ -202,13 +192,6 @@ struct SignInView : View {
                 }
                 
                 Button { // 카카오 로그인
-//                    Task {
-//                        do {
-//                            try await authStore.DB.auth.signInWithOAuth(provider: .kakao, redirectTo: URL(string: "https://zmuqlogychbckqgfmzak.supabase.co/auth/v1/callback"))
-//                        } catch {
-//                            print(error)
-//                        }
-//                    }
                     authStore.kakaoLogin()
                 } label : {
                     kakaoLoginButtonLabel(width: screenWidth)
@@ -216,30 +199,10 @@ struct SignInView : View {
                 
             }
         }
-        .scrollDisabled(!isKeyboardVisible)
+        .scrollDisabled(focusField == nil)
         .onAppear {
             email = ""
             password = ""
-            // 키보드 이벤트 감지
-            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
-                withAnimation {
-                    isKeyboardVisible = true
-                }
-            }
-            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
-                withAnimation {
-                    isKeyboardVisible = false
-                }
-            }
-        }
-        .onDisappear {
-            // 뷰가 사라질 때 옵저버 제거
-            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         }
     }
-}
-
-extension SignInView {
-    
 }

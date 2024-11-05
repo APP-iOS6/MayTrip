@@ -20,7 +20,6 @@ struct SignUpView: View {
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
     @State private var errorMessage: String = ""
-    @State private var isKeyboardVisible: Bool = false
     @FocusState private var focusField: Field?
     
     let screenWidth: CGFloat = UIScreen.main.bounds.width
@@ -111,31 +110,14 @@ struct SignUpView: View {
                 .padding(.bottom, screenHeight * 0.05)
             }
         }
-        .scrollDisabled(!isKeyboardVisible)
+        .scrollDisabled(focusField == nil)
         .onTapGesture {
-            if isKeyboardVisible {
-                hideKeyboard()
-            }
+            focusField = nil
         }
         .onAppear {
             email = ""
             password = ""
-            // 키보드 이벤트 감지
-            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
-                withAnimation {
-                    isKeyboardVisible = true
-                }
-            }
-            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
-                withAnimation {
-                    isKeyboardVisible = false
-                }
-            }
-        }
-        .onDisappear {
-            // 뷰가 사라질 때 옵저버 제거
-            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+            
         }
         .navigationTitle("회원가입")
         .navigationBarTitleDisplayMode(.automatic)
