@@ -7,62 +7,87 @@
 import SwiftUI
 
 struct MyTripCardView: View {
+    var routeStore: DummyRouteStore = .shared
+    let name: String = user1.nickname
     // TODO: DB 연결해서 데이터 넣기
     var body: some View {
-        NavigationLink {
-            // TODO: 디테일 뷰 이동
-        } label: {
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(.tint, lineWidth: 1)
-                .overlay {
-                    // storke 쓰면 배경색이 안먹혀서 사각형 한번 더 그려줌
-                    RoundedRectangle(cornerRadius: 10)
-                    // 현재 여행 중인 카드만 진한 컬러로
-//                        .foregroundStyle(.tint)
-                        .foregroundStyle(.white)
-                        .overlay {
-                            HStack {
-                                VStack(alignment: .leading) {
-                                    HStack {
-                                        Text("도쿄여행까지")
-                                        
-                                        Text("D-2")
-                                            .foregroundStyle(.tint)
+        ScrollView(.horizontal) {
+            HStack {
+                ForEach(0..<routeStore.createdRoutes.count, id: \.self) { index in
+                    let route = routeStore.createdRoutes[index]
+                    
+                    NavigationLink {
+                        // TODO: 디테일 뷰 이동
+                    } label: {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.tint, lineWidth: 2)
+                            .overlay {
+                                // storke 쓰면 배경색이 안먹혀서 사각형 한번 더 그려줌
+                                RoundedRectangle(cornerRadius: 10)
+                                // 현재 여행 중인 카드만 진한 컬러로
+                                    .foregroundStyle(routeStore.isOnATrip(route.start_date, end: route.end_date) ? Color(uiColor: .tintColor) : .white)
+                                    .overlay {
+                                        HStack {
+                                            VStack(alignment: .leading, spacing: 10) {
+                                                HStack {
+                                                    Text("\(route.title)")
+                                                    
+                                                    Spacer()
+                                                }
+                                                .bold()
+                                                
+                                                VStack(alignment: .leading, spacing: 5) {
+                                                    
+                                                    Text("\(name)님의 \(routeStore.convertPeriodToString(route.start_date, end: route.end_date))여행")
+                                                        .font(.system(size: 15))
+                                                        .lineLimit(1)
+                                                    
+                                                    HStack {
+                                                        ForEach(0..<3) { index in
+                                                            if index < route.cities.count {
+                                                                Text("\(index == 0 ? route.cities[index] : "·  \(route.cities[index])")")
+                                                                    .lineLimit(1)
+                                                            }
+                                                        }
+                                                    }
+                                                    .fontWeight(.semibold)
+                                                    
+                                                    HStack {
+                                                        ForEach(0..<3) { index in
+                                                            if index < route.tags.count {
+                                                                Text("#\(route.tags[index]) ")
+                                                                    .font(.system(size: 13))
+                                                                    .lineLimit(1)
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                .font(.system(size: 15))
+                                                .foregroundStyle(routeStore.isOnATrip(route.start_date, end: route.end_date) ? .white : .gray)
+                                            }
                                             
-                                        Spacer()
+                                            Spacer()
+                                            
+                                            Image(systemName: "chevron.right")
+                                        }
+                                        // 현재 여행 중인 카드만 진한 컬러로
+                                        .foregroundStyle(routeStore.isOnATrip(route.start_date, end: route.end_date) ? .white : .black)
+                                        .padding()
+                                        .padding(.vertical)
                                     }
-                                    .bold()
-                                    
-                                    HStack() {
-                                        Text("일본 도쿄")
-                                        Divider()
-                                        Text("10.29(화) - 11.03(월)")
-                                        Text("4박 5일")
-                                            .fontWeight(.semibold)
-                                    }
-                                    .font(.system(size: 12))
-                                    .foregroundStyle(.gray)
-                                }
-                                
-                                Spacer()
-                                
-                                Image(systemName: "chevron.right")
                             }
-                            // 현재 여행 중인 카드만 진한 컬러로
-                            .foregroundStyle(.black)
-//                            .foregroundStyle(.white)
-                            .padding()
-                            .padding(.vertical)
-                        }
+                            .frame(width: 350, height: 120)
+                    }
+                    .padding(2)
                 }
-                .frame(width: 350, height: 100)
+            }
         }
-        .padding(1)
+        .padding(.horizontal)
+        .scrollIndicators(.hidden)
     }
 }
 
+
 #Preview {
-    NavigationStack {
-        MyTripCardView()
-    }
+    MyTripCardView()
 }

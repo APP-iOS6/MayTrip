@@ -40,7 +40,7 @@ struct CellView: View {
     }
     
     var isLeftCircle: Bool {
-        guard let startDate = dateStore.startDate else {
+        guard dateStore.startDate != nil else {
             return false
         }
         
@@ -48,7 +48,7 @@ struct CellView: View {
     }
     
     var isRightCircle: Bool {
-        guard let endDate = dateStore.endDate else {
+        guard dateStore.endDate != nil else {
             return false
         }
         

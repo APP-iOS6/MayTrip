@@ -26,7 +26,8 @@ struct EnterBasicInformationView: View {
                             Image(systemName: "xmark")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 15, height:  15)
+                                .frame(width: 15, height: 15)
+
                         }
                         .foregroundStyle(.black)
                         
