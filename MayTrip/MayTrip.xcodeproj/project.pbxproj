@@ -186,6 +186,38 @@
 			path = Auth;
 			sourceTree = "<group>";
 		};
+		259AAB402CDA015900512CE6 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				42405E0D2CD889FC0061FB7A /* PlaceSearchView.swift */,
+				42405E0A2CD889FC0061FB7A /* CityTagFlowLayout.swift */,
+				42405E0B2CD889FC0061FB7A /* PlaceAddingView.swift */,
+				259AAB322CDA00CA00512CE6 /* CellView.swift */,
+				259AAB332CDA00CA00512CE6 /* DateGridView.swift */,
+				259AAB352CDA00CA00512CE6 /* YearAndMonthView.swift */,
+				259AAB342CDA00CA00512CE6 /* WeekdayView.swift */,
+				259AAB312CDA00CA00512CE6 /* CalendarView.swift */,
+				42405E0C2CD889FC0061FB7A /* PlaceInfoView.swift */,
+				259AAB3C2CDA00D000512CE6 /* EnterBasicInformationView.swift */,
+				42405E082CD889690061FB7A /* SearchAddressStore.swift */,
+				259AAB3E2CDA00FA00512CE6 /* DateStore.swift */,
+				259AAB7C2CDA03C500512CE6 /* User.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		259AAB462CDA017500512CE6 /* CalendarViews */ = {
+			isa = PBXGroup;
+			children = (
+				259AAB412CDA017500512CE6 /* CalendarView.swift */,
+				259AAB422CDA017500512CE6 /* CellView.swift */,
+				259AAB432CDA017500512CE6 /* DateGridView.swift */,
+				259AAB442CDA017500512CE6 /* WeekdayView.swift */,
+				259AAB452CDA017500512CE6 /* YearAndMonthView.swift */,
+			);
+			path = CalendarViews;
+			sourceTree = "<group>";
+		};
 		259AAB542CDA024500512CE6 /* PlaceAddViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -478,10 +510,12 @@
 				FB36F6052CD4740F00E356FA /* MyPageView.swift in Sources */,
 				2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */,
 				FB36F5FD2CD473EA00E356FA /* LoginView.swift in Sources */,
-				259AAB912CDA06FA00512CE6 /* PlaceSearchView.swift in Sources */,
-				259AAB922CDA06FA00512CE6 /* PlaceInfoView.swift in Sources */,
-				259AAB932CDA06FA00512CE6 /* CityTagFlowLayout.swift in Sources */,
-				259AAB942CDA06FA00512CE6 /* PlaceAddingView.swift in Sources */,
+				259AAB6D2CDA031700512CE6 /* LocationManager.swift in Sources */,
+				259AAB6E2CDA031700512CE6 /* SearchAddressStore.swift in Sources */,
+				259AAB6F2CDA031700512CE6 /* DateStore.swift in Sources */,
+				259AAB702CDA031700512CE6 /* ChatStore.swift in Sources */,
+				42405E092CD889690061FB7A /* SearchAddressStore.swift in Sources */,
+				259AAB872CDA046000512CE6 /* User.swift in Sources */,
 				FB36F5EF2CD472F600E356FA /* ContentView.swift in Sources */,
 				FB36F6032CD4740900E356FA /* CommunityView.swift in Sources */,
 				FB36F6082CD4742A00E356FA /* StorageView.swift in Sources */,
