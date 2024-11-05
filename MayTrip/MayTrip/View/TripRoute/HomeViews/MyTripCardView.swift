@@ -18,6 +18,7 @@ struct MyTripCardView: View {
                     
                     NavigationLink {
                         // TODO: 디테일 뷰 이동
+                        RouteDetailView(tripRoute: SampleTripRoute.sampleRoute)
                     } label: {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(.tint, lineWidth: 2)

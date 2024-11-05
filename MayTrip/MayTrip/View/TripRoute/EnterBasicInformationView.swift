@@ -9,6 +9,8 @@ import SwiftUI
 struct EnterBasicInformationView: View {
     @Environment(\.dismiss) var dismiss
     
+    var dateStore = DateStore.shared
+    
     @State var title: String = ""
     @State var isCalendarShow: Bool = false
     @State var tag: String = ""
@@ -32,18 +34,34 @@ struct EnterBasicInformationView: View {
                         
                         Spacer()
                         
-                        Button {
-                            
-                        } label: {
-                            Text("다음")
-                                .padding(8)
-                        }
-                        .padding(.horizontal, 5)
-                        .background {
-                            RoundedRectangle(cornerRadius: 20)
-                                .foregroundStyle(.tint)
-                        }
-                        .foregroundStyle(.white)
+//                        Button {
+//                            
+//                        } label: {
+//                            Text("다음")
+//                                .padding(8)
+//                        }
+//                        .padding(.horizontal, 5)
+//                        .background {
+//                            RoundedRectangle(cornerRadius: 20)
+//                                .foregroundStyle(.tint)
+//                        }
+//                        .foregroundStyle(.white)
+                        
+                        NavigationLink(
+                            destination:PlaceAddingView(
+                                startDate: dateStore.startDate ?? .now,
+                                endDate: dateStore.endDate ?? .now
+                            )) {
+                                Text("다음")
+                                    .padding(8)
+                            }
+                            .padding(.horizontal, 5)
+                            .background {
+                                RoundedRectangle(cornerRadius: 20)
+                                    .foregroundStyle(.tint)
+                            }
+                            .foregroundStyle(.white)
+                            .disabled(dateStore.endDate == nil)
                     }
                     .frame(height: 20)
                     .padding(.bottom, 10)
