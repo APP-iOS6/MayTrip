@@ -8,6 +8,7 @@
 import SwiftUI
 import KakaoSDKAuth
 import KakaoSDKCommon
+import GoogleSignIn
 
 @main
 struct MayTripApp: App {
@@ -22,6 +23,7 @@ struct MayTripApp: App {
                     if (AuthApi.isKakaoTalkLoginUrl(url)) {
                         _ = AuthController.handleOpenUrl(url: url)
                     } else {
+                        GIDSignIn.sharedInstance.handle(url)
                         authStore.DB.auth.handle(url)
                     }
                 }

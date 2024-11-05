@@ -10,6 +10,8 @@ import AuthenticationServices
 import KakaoSDKAuth
 import KakaoSDKUser
 import Supabase
+import GoogleSignInSwift
+import GoogleSignIn
 
 struct SignInView : View {
     enum Field : Hashable{
@@ -181,13 +183,14 @@ struct SignInView : View {
                 }
                 
                 Button { // 구글 로그인
-                    Task {
-                        do {
-                            try await authStore.DB.auth.signInWithOAuth(provider: .google, redirectTo: URL(string:"https://zmuqlogychbckqgfmzak.supabase.co/auth/v1/callback"))
-                        } catch {
-                            print(error)
-                        }
-                    }
+//                    Task {
+//                        do {
+//                            try await authStore.DB.auth.signInWithOAuth(provider: .google, redirectTo: URL(string:"https://zmuqlogychbckqgfmzak.supabase.co/auth/v1/callback"))
+//                        } catch {
+//                            print(error)
+//                        }
+//                    }
+                    authStore.googleLogin()
                 } label : {
                     ZStack {
                         Image("googleLogo")
@@ -235,4 +238,8 @@ struct SignInView : View {
             NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         }
     }
+}
+
+extension SignInView {
+    
 }

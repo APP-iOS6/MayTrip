@@ -56,4 +56,14 @@ class AuthStore: ObservableObject {
             }
         }
     }
+    
+    func googleLogin() {
+        guard let presentingViewController  = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else { return }
+        
+        GIDSignIn.sharedInstance.signIn(withPresenting: presentingViewController) { signInResult, error in
+            guard let result = signInResult else { return }
+            
+            guard let profile = result.user.profile else { return }
+        }
+    }
 }
