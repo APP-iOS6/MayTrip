@@ -26,41 +26,41 @@ struct PlaceInfoView: View {
             .font(.system(size: 14))
             
             // 중앙 장소 정보
-            HStack {
-                
-                if places.count > 0 {
-                    VStack {
-                        ForEach(Array(places[dateIndex].enumerated()), id: \.element.coordinate) { placeIndex, place in
-                            HStack {
-                                // 좌측 번호 영역
-                                VStack {
-                                    Image(systemName: "\(placeIndex + 1).circle.fill")
-                                }
-                                
-                                // 우측 장소 카드 영역
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text("\(place.name)")
-                                        .font(.system(size: 16))
-                                        .bold()
-                                    
-                                    Text("관광명소 | 예약가능")
-                                        .font(.system(size: 12))
-                                        .foregroundStyle(.gray)
-                                }
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding()
-                                .background {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color(UIColor.systemGray5), lineWidth: 1)
-                                }
-                                .padding(.leading)
-                            }
-                        }
-                    }
-                }
-            }
-            .padding()
-            
+//            HStack {
+//                
+//                if places.count > 0 {
+//                    VStack {
+//                        ForEach(Array(places[dateIndex].enumerated()), id: \.element.coordinate) { placeIndex, place in
+//                            HStack {
+//                                // 좌측 번호 영역
+//                                VStack {
+//                                    Image(systemName: "\(placeIndex + 1).circle.fill")
+//                                }
+//                                
+//                                // 우측 장소 카드 영역
+//                                VStack(alignment: .leading, spacing: 4) {
+//                                    Text("\(place.name)")
+//                                        .font(.system(size: 16))
+//                                        .bold()
+//                                    
+//                                    Text("관광명소 | 예약가능")
+//                                        .font(.system(size: 12))
+//                                        .foregroundStyle(.gray)
+//                                }
+//                                .frame(maxWidth: .infinity, alignment: .leading)
+//                                .padding()
+//                                .background {
+//                                    RoundedRectangle(cornerRadius: 10)
+//                                        .stroke(Color(UIColor.systemGray5), lineWidth: 1)
+//                                }
+//                                .padding(.leading)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            .padding()
+//            
             // 하단 '장소추가' 버튼
             Button {
                 isShowSheet.toggle()
