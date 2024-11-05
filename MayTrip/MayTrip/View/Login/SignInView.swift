@@ -7,6 +7,8 @@
 
 import SwiftUI
 import AuthenticationServices
+import KakaoSDKAuth
+import KakaoSDKUser
 import Supabase
 
 struct SignInView : View {
@@ -15,7 +17,7 @@ struct SignInView : View {
         case password
     }
     
-    private var DB = DBConnection.shared
+    @EnvironmentObject var authStore: AuthStore
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var checkMaintainLogin: Bool = false
@@ -81,8 +83,8 @@ struct SignInView : View {
                             } else {
                                 Task {
                                     do {
-                                        try await DB.auth.signOut()
-                                        try await DB.auth.signIn (
+                                        try await authStore.DB.auth.signOut()
+                                        try await authStore.DB.auth.signIn (
                                             email: email,
                                             password: password
                                         )
@@ -164,7 +166,7 @@ struct SignInView : View {
                                 else {
                                     return
                                 }
-                                try await DB.auth.signInWithIdToken(
+                                try await authStore.DB.auth.signInWithIdToken(
                                     credentials: .init(
                                         provider: .apple,
                                         idToken: idToken
@@ -181,7 +183,7 @@ struct SignInView : View {
                 Button { // 구글 로그인
                     Task {
                         do {
-                            try await DB.auth.signInWithOAuth(provider: .google, redirectTo: URL(string:"https://zmuqlogychbckqgfmzak.supabase.co/auth/v1/callback"))
+                            try await authStore.DB.auth.signInWithOAuth(provider: .google, redirectTo: URL(string:"https://zmuqlogychbckqgfmzak.supabase.co/auth/v1/callback"))
                         } catch {
                             print(error)
                         }
@@ -197,22 +199,16 @@ struct SignInView : View {
                 }
                 
                 Button { // 카카오 로그인
-                    Task {
-                        do {
-                            try await DB.auth.signInWithOAuth(provider: .kakao, redirectTo: URL(string: "https://zmuqlogychbckqgfmzak.supabase.co/auth/v1/callback"))
-                        } catch {
-                            print(error)
-                        }
-                    }
+//                    Task {
+//                        do {
+//                            try await authStore.DB.auth.signInWithOAuth(provider: .kakao, redirectTo: URL(string: "https://zmuqlogychbckqgfmzak.supabase.co/auth/v1/callback"))
+//                        } catch {
+//                            print(error)
+//                        }
+//                    }
+                    authStore.kakaoLogin()
                 } label : {
-                    ZStack {
-                        Circle()
-                            .foregroundStyle(Color(red: 254/255, green: 229/255, blue: 0))
-                            .frame(width: screenWidth * 0.15)
-                        Image("kakaoLogo")
-                    }
-                    .clipShape(.circle)
-                    .frame(width: screenWidth * 0.15)
+                    kakaoLoginButtonLabel(width: screenWidth)
                 }
                 
             }

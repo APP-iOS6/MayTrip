@@ -70,6 +70,8 @@
 		FB36F6362CD48F9700E356FA /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6352CD48F9200E356FA /* SignInView.swift */; };
 		FB36F63A2CD4991600E356FA /* LoginViewCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6392CD4990900E356FA /* LoginViewCommon.swift */; };
 		FB36F63C2CD5150800E356FA /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F63B2CD5150400E356FA /* SignUpView.swift */; };
+		FBC09BA02CD9DB3400B059FB /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FBC09B9F2CD9DB3400B059FB /* Config.xcconfig */; };
+		FBC09BA22CD9DBAA00B059FB /* LoginButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09BA12CD9DBA400B059FB /* LoginButtons.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -129,6 +131,9 @@
 		FB36F6392CD4990900E356FA /* LoginViewCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewCommon.swift; sourceTree = "<group>"; };
 		FB36F63B2CD5150400E356FA /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		FBC09B952CD8721900B059FB /* MayTrip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MayTrip.entitlements; sourceTree = "<group>"; };
+		FBC09B9A2CD9D68D00B059FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		FBC09B9F2CD9DB3400B059FB /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		FBC09BA12CD9DBA400B059FB /* LoginButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButtons.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -361,8 +366,9 @@
 		FB36F5EC2CD472F600E356FA /* MayTrip */ = {
 			isa = PBXGroup;
 			children = (
-				42405E132CD88A510061FB7A /* Info.plist */,
+				FBC09B9A2CD9D68D00B059FB /* Info.plist */,
 				FBC09B952CD8721900B059FB /* MayTrip.entitlements */,
+				FBC09B9F2CD9DB3400B059FB /* Config.xcconfig */,
 				2518F6B62CD4928A00A8F951 /* App */,
 				FB36F6372CD498F900E356FA /* Common */,
 				FB36F5F22CD4735700E356FA /* Model */,
@@ -417,6 +423,7 @@
 		FB36F5F72CD473A200E356FA /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				FBC09BA12CD9DBA400B059FB /* LoginButtons.swift */,
 				FB36F5FC2CD473E800E356FA /* LoginView.swift */,
 				FB36F6352CD48F9200E356FA /* SignInView.swift */,
 				FB36F63B2CD5150400E356FA /* SignUpView.swift */,
@@ -572,6 +579,7 @@
 			files = (
 				42405E032CD8888D0061FB7A /* Secret.xcconfig in Resources */,
 				2518F6B52CD490F200A8F951 /* supabaseInfo.plist in Resources */,
+				FBC09BA02CD9DB3400B059FB /* Config.xcconfig in Resources */,
 				FB36F5EE2CD472F600E356FA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -643,6 +651,7 @@
 				259AABC82CDA0AD900512CE6 /* PlaceAddingView.swift in Sources */,
 				FB36F5F02CD472F600E356FA /* MayTripApp.swift in Sources */,
 				FB36F63A2CD4991600E356FA /* LoginViewCommon.swift in Sources */,
+				FBC09BA22CD9DBAA00B059FB /* LoginButtons.swift in Sources */,
 				FB36F63C2CD5150800E356FA /* SignUpView.swift in Sources */,
 				FB36F60E2CD474C500E356FA /* Place.swift in Sources */,
 				FB36F61A2CD474F900E356FA /* AuthStore.swift in Sources */,
@@ -789,6 +798,7 @@
 		};
 		FB36F5E52CD472B100E356FA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FBC09B9F2CD9DB3400B059FB /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -824,6 +834,7 @@
 		};
 		FB36F5E62CD472B100E356FA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FBC09B9F2CD9DB3400B059FB /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

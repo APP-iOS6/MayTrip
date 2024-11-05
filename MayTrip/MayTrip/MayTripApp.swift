@@ -6,15 +6,24 @@
 //
 
 import SwiftUI
+import KakaoSDKAuth
+import KakaoSDKCommon
 
 @main
 struct MayTripApp: App {
-    let DB = DBConnection.shared
+    
+    @StateObject var authStore = AuthStore()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(authStore)
                 .onOpenURL { url in
-                    DB.auth.handle(url)
+                    if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                        _ = AuthController.handleOpenUrl(url: url)
+                    } else {
+                        authStore.DB.auth.handle(url)
+                    }
                 }
         }
     }
