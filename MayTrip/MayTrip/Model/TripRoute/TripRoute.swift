@@ -12,12 +12,26 @@ struct TripRoute: Codable{
     let title: String
     let tag: [String]
     let city: [String]
-    let writeUser: User
-    let Place: [Place]
-    let start_date: Date
-    let end_date: Date?
+    let writeUser: TripRouteUser
+    let place: [Place]
+    let startDate: String
+    let endDate: String?
     let created_at: Date
     let updated_at: Date
+    
+    enum CodingKeys: String,CodingKey {
+        case id
+        case title
+        case tag
+        case city
+        case writeUser
+        case place
+        case startDate = "start_date"
+        case endDate = "end_date"
+        case created_at
+        case updated_at
+    }
+
 }
 
 struct TripRoutePost: Codable{
@@ -27,4 +41,13 @@ struct TripRoutePost: Codable{
     var writeUser: User
     var startDate: Date
     var endDate: Date?
+}
+
+struct TripRouteSimple: Codable{
+    var id: Int
+    var title: String
+    var tag: [String]?
+    var city: [String]
+    var start_date: String
+    var end_date: String?
 }
