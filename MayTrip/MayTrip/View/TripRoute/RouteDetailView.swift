@@ -1,22 +1,22 @@
 //
-//  PlaceAddingView.swift
+//  RouteDetailView.swift
 //  MayTrip
 //
-//  Created by 최승호 on 11/1/24.
+//  Created by 최승호 on 11/5/24.
 //
 
 import SwiftUI
 import MapKit
 
-/**
- 여행 시작날짜와 끝날짜를 Date 인자로 필요로 합니다.
- */
-struct PlaceAddingView: View {
+struct RouteDetailView: View {
     @Environment(\.dismiss) var dismiss
     
     var locationManager = LocationManager.shared
-    var startDate: Date
-    var endDate: Date
+    var dateStore = DateStore.shared
+    @State var startDate: Date = .now
+    @State var endDate: Date = .now
+    var tripRoute: TripRoute
+    
     @State var isShowSheet: Bool = false    // 장소 추가시트 띄우기
     @State var selectedDay: Int = 0         // 장소 추가시에 몇일차에 장소 추가하는지
     @State var cities: [String] = []        // 추가된 도시
@@ -88,11 +88,12 @@ struct PlaceAddingView: View {
                         // 일차별 장소 카드 뷰
                         PlaceInfoView(dateIndex: dateIndex,
                                       date: date,
-                                      isEditing: true,
+                                      isEditing: false,
                                       places: $places,
                                       markers: $markers,
                                       isShowSheet: $isShowSheet,
                                       selectedDay: $selectedDay)
+                        .padding(.bottom)
                     } header: {
                         Map(position: $mapRegion) {
                             if markers.count > 0 {
@@ -112,10 +113,10 @@ struct PlaceAddingView: View {
         }
         .padding(.top)
         .onAppear {
-            // 1. 시작날짜,끝날짜 계산해서 총 몇일인지 구하여 2차원배열 길이 조정
-            let count = datesInRange(from: startDate, to: endDate).count
-            places = Array(repeating: [], count: count)
-            markers = Array(repeating: [], count: count)
+            // 임시
+            startDate = dateToString(tripRoute.startDate)!
+            endDate = dateToString(tripRoute.endDate!)!
+            (places, markers) = groupPlacesToPlacePostAndMarkersByDate(tripRoute.place)
             
             // 2. 사용자의 현재위치를 가져옴.
             locationManager.checkLocationAuthorization()
@@ -125,16 +126,6 @@ struct PlaceAddingView: View {
                     span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
                 )
             )
-        }
-        .sheet(isPresented: $isShowSheet) {
-            // 장소 검색 뷰
-            PlaceSearchView(startDate: startDate,
-                            endDate: endDate,
-                            selectedDay: $selectedDay,
-                            isShowSheet: $isShowSheet,
-                            places: $places,
-                            cities: $cities,
-                            markers: $markers)
         }
     }
     
@@ -150,12 +141,113 @@ struct PlaceAddingView: View {
         
         return dates
     }
+    
+    func dateToString(_ date: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.locale = Locale(identifier: "ko_KR") // 로케일 설정 (옵션)
+        dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul") // 시간대 설정 (옵션)
+        
+        return dateFormatter.date(from: date)
+    }
+    
+    func groupPlacesToPlacePostAndMarkersByDate(_ places: [Place]) -> ([[PlacePost]], [[MarkerItem]]) {
+        // 1. tripDate 문자열을 기준으로 그룹화하여 딕셔너리 생성
+        let groupedDict = Dictionary(grouping: places, by: { $0.tripDate })
+        
+        // 2. 날짜 문자열을 Date 객체로 변환하여 정렬된 날짜 문자열 배열 생성
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy MM dd"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        
+        let sortedDateStrings = groupedDict.keys.sorted { dateStr1, dateStr2 in
+            if let date1 = dateFormatter.date(from: dateStr1),
+               let date2 = dateFormatter.date(from: dateStr2) {
+                return date1 < date2
+            } else {
+                return dateStr1 < dateStr2
+            }
+        }
+        
+        // 3. 정렬된 날짜를 사용하여 [[PlacePost]]와 [[MarkerItem]] 생성
+        var groupedPlacePosts: [[PlacePost]] = []
+        var groupedMarkers: [[MarkerItem]] = []
+        
+        for dateString in sortedDateStrings {
+            if let placesForDate = groupedDict[dateString],
+               let tripDate = dateToString(dateString) {
+                // Place를 PlacePost로 변환하고 ordered로 정렬
+                let placePosts = placesForDate.map { place -> PlacePost in
+                    PlacePost(
+                        name: place.name,
+                        tripRoute: place.tripRoute,
+                        tripDate: tripDate,
+                        ordered: place.ordered,
+                        coordinates: place.coordinates
+                    )
+                }.sorted { $0.ordered < $1.ordered }
+                groupedPlacePosts.append(placePosts)
+                
+                // PlacePost를 기반으로 MarkerItem 생성
+                let markers = placePosts.map { placePost -> MarkerItem in
+                    let coordinate = CLLocationCoordinate2D(
+                        latitude: placePost.coordinates[0],
+                        longitude: placePost.coordinates[1]
+                    )
+                    let marker = MarkerItem(coordinate: coordinate)
+                    return marker
+                }
+                groupedMarkers.append(markers)
+            } else {
+                // 날짜 변환 실패 시 처리 (필요에 따라 작성)
+                print("날짜 변환 실패 또는 데이터 없음: \(dateString)")
+            }
+        }
+        
+        return (groupedPlacePosts, groupedMarkers)
+    }
 }
 
-
 #Preview {
-    let startDate = DateComponents(year: 2024, month: 11, day: 24)
-    let endDate = DateComponents(year: 2024, month: 11, day: 29)
-    let calendar = Calendar.current
-    PlaceAddingView(startDate: calendar.date(from: startDate)!, endDate: calendar.date(from: endDate)!)
+    RouteDetailView(tripRoute: TripRoute(
+        id: 0,
+        title: "샘플 루트",
+        tag: ["태그1", "태그2"],
+        city: ["샘플도시1", "샘플도시2", "샘플도시3", "샘플도시4"],
+        writeUser: TripRouteUser(
+            id: -1,
+            nickname: "테스터",
+            profileImage: nil
+        ),
+        place: [
+            Place(id: 0,
+                  name: "테스트1",
+                  tripRoute: 0,
+                  tripDate: "2024 11 11",
+                  ordered: 1,
+                  coordinates: [37.5301, 127.1144]),
+            Place(id: 1,
+                  name: "테스트2",
+                  tripRoute: 0,
+                  tripDate: "2024 11 11",
+                  ordered: 2,
+                  coordinates: [37.5513, 127.0816]),
+            Place(id: 2,
+                  name: "테스트3",
+                  tripRoute: 0,
+                  tripDate: "2024 11 11",
+                  ordered: 3,
+                  coordinates: [37.5577, 127.0544]),
+            Place(id: 3,
+                  name: "테스트4",
+                  tripRoute: 0,
+                  tripDate: "2024 11 12",
+                  ordered: 1,
+                  coordinates: [37.5513, 126.9881])
+        ],
+        startDate: "2024 11 11",
+        endDate: "2024 11 12",
+        created_at: .now,
+        updated_at: .now)
+    )
 }

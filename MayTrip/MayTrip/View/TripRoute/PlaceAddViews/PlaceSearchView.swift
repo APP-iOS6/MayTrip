@@ -16,7 +16,7 @@ struct PlaceSearchView: View {
     @State var documents: [Document] = []   // 검색 결과 장소 배열
     @Binding var selectedDay: Int             // 장소 추가시에 몇일차에 장소 추가하는지
     @Binding var isShowSheet: Bool          // 장소 추가시트 띄우기
-    @Binding var places: [[Place]]          // 추가된 장소 (배열당 한 일차 장소배열)
+    @Binding var places: [[PlacePost]]          // 추가된 장소 (배열당 한 일차 장소배열)
     @Binding var cities: [String]
     @Binding var markers: [[MarkerItem]]
 
@@ -32,44 +32,48 @@ struct PlaceSearchView: View {
                 .padding(.top, 20)
                 .padding(.horizontal)
             
-//            List(documents) { document in
-//                VStack(alignment: .leading, spacing: 8) {
-//                    Text(document.placeName)
-//                        .font(.headline)
-//                        .bold()
-//                    HStack{
-//                        Text(document.roadAddressName)
-//                            .font(.subheadline)
-//                        Spacer()
-//                        Text(searchAddressStore.getDistance(from: document.distance))
-//                            .font(.subheadline)
-//                    }
-//                }
-//                .onTapGesture { // 선택한 장소 places[일차] 배열에 추가, 시트 내림
-//                    // TODO: 이미 선택한 장소 추가할 경우에 시나리오 추가
+            List(documents) { document in
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(document.placeName)
+                        .font(.headline)
+                        .bold()
+                    HStack{
+                        Text(document.roadAddressName)
+                            .font(.subheadline)
+                        Spacer()
+                        Text(searchAddressStore.getDistance(from: document.distance))
+                            .font(.subheadline)
+                    }
+                }
+                .onTapGesture { // 선택한 장소 places[일차] 배열에 추가, 시트 내림
+                    // TODO: 이미 선택한 장소 추가할 경우에 시나리오 추가
 //                    let place = Place(id: 0,
 //                                      name: document.placeName,
 //                                      coordinate: [Double(document.y)!, Double(document.x)!])
-//                    
-//                    self.places[selectedDay - 1].append(place)
-//                    
-//                    let city = document.addressName.components(separatedBy: " ").first ?? ""    // 결과의 도시부분 추출
-//                    
-//                    if !cities.contains(city) { // 존재하지 않은 도시일 경우에 요소 추가
-//                        self.cities.append(city)
-//                    }
-//                    
-//                    let newMarker = MarkerItem(coordinate: .init(
-//                        latitude: place.coordinate[0],
-//                        longitude: place.coordinate[1]
-//                    ))
-//                    
-//                    self.markers[selectedDay - 1].append(newMarker)
-//                    
-//                    isShowSheet.toggle()
-//                }
-//            }
-//            .listStyle(.plain)
+                    let place = PlacePost(name: document.placeName,
+                                          tripDate: selectedDate(from: selectedDay),
+                                          ordered: 0,
+                                          coordinates: [Double(document.y)!, Double(document.x)!])
+                    
+                    self.places[selectedDay - 1].append(place)
+                    
+                    let city = document.addressName.components(separatedBy: " ").first ?? ""    // 결과의 도시부분 추출
+                    
+                    if !cities.contains(city) { // 존재하지 않은 도시일 경우에 요소 추가
+                        self.cities.append(city)
+                    }
+                    
+                    let newMarker = MarkerItem(coordinate: .init(
+                        latitude: place.coordinates[0],
+                        longitude: place.coordinates[1]
+                    ))
+                    
+                    self.markers[selectedDay - 1].append(newMarker)
+                    
+                    isShowSheet.toggle()
+                }
+            }
+            .listStyle(.plain)
         }
         .onChange(of: keyword) {
             Task {
