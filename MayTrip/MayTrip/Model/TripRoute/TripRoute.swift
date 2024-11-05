@@ -60,12 +60,3 @@ struct TripRouteSimple: Codable{
     var start_date: String
     var end_date: String?
 }
-
-struct TripRouteSimple: Codable{
-    var id: Int
-    var title: String
-    var tag: [String]?
-    var city: [String]
-    var start_date: String
-    var end_date: String?
-}

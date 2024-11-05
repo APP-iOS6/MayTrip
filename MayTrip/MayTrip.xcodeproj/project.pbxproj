@@ -557,6 +557,20 @@
 				259AABC82CDA0AD900512CE6 /* PlaceAddingView.swift in Sources */,
 				FB36F5F02CD472F600E356FA /* MayTripApp.swift in Sources */,
 				FB36F61A2CD474F900E356FA /* AuthStore.swift in Sources */,
+				259AAB482CDA017500512CE6 /* WeekdayView.swift in Sources */,
+				259AAB492CDA017500512CE6 /* YearAndMonthView.swift in Sources */,
+				259AAB4A2CDA017500512CE6 /* EnterBasicInformationView.swift in Sources */,
+				259AAB682CDA02F800512CE6 /* ChattingRoomView.swift in Sources */,
+				259AAB772CDA03BD00512CE6 /* MarkerItem.swift in Sources */,
+				259AAB782CDA03BD00512CE6 /* Place.swift in Sources */,
+				259AAB792CDA03BD00512CE6 /* TripRoute.swift in Sources */,
+				259AAB7A2CDA03BD00512CE6 /* City.swift in Sources */,
+				259AAB4B2CDA017500512CE6 /* CellView.swift in Sources */,
+				259AAB4C2CDA017500512CE6 /* DateGridView.swift in Sources */,
+				259AAB4D2CDA017500512CE6 /* CalendarView.swift in Sources */,
+				259AAB3F2CDA00FA00512CE6 /* DateStore.swift in Sources */,
+				259AAB802CDA03CD00512CE6 /* Category.swift in Sources */,
+				259AAB812CDA03CD00512CE6 /* Post.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

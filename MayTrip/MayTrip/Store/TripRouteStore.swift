@@ -23,13 +23,13 @@ class TripRouteStore{
     var endDate: String? = nil
     
     //장소 저장 테스트용
-    var places: [PlacePost] = [
-        PlacePost(name: "테스트장소1", tripDate: .now, ordered: 1, coordinates: [34.99648581414221, 135.78456033453412]),
-        PlacePost(name: "테스트장소2", tripDate: .now, ordered: 2, coordinates: [34.99648581414221, 135.78456033453412]),
-        PlacePost(name: "테스트장소3", tripDate: .now, ordered: 3, coordinates: [34.99648581414221, 135.78456033453412]),
-        
-    ]
-    //var places: [PlacePost] = []
+//    var places: [PlacePost] = [
+//        PlacePost(name: "테스트장소1", tripDate: .now, ordered: 1, coordinates: [34.99648581414221, 135.78456033453412]),
+//        PlacePost(name: "테스트장소2", tripDate: .now, ordered: 2, coordinates: [34.99648581414221, 135.78456033453412]),
+//        PlacePost(name: "테스트장소3", tripDate: .now, ordered: 3, coordinates: [34.99648581414221, 135.78456033453412]),
+//        
+//    ]
+    var places: [PlacePost] = []
     
     //여행 루트 리스트 가져오는 함수
     func getTripRouteList() async throws-> Void{
