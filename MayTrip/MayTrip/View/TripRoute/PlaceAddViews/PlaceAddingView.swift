@@ -12,6 +12,8 @@ import MapKit
  여행 시작날짜와 끝날짜를 Date 인자로 필요로 합니다.
  */
 struct PlaceAddingView: View {
+    @Environment(\.dismiss) var dismiss
+    
     var locationManager = LocationManager.shared
     var startDate: Date
     var endDate: Date
@@ -28,6 +30,36 @@ struct PlaceAddingView: View {
     )
     
     var body: some View {
+        HStack {    // 소영님이 작성하신 상단 뷰 영역입니다. 나중에 subView로 빼서 써도될거같아요. 수평패딩만 추가되었습니다.
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "xmark")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+            }
+            .foregroundStyle(.black)
+            
+            Spacer()
+            // TODO: 작성한 TripRoute db에 저장하는 로직
+            
+            Button {
+                
+            } label: {
+                Text("다음")
+                    .padding(8)
+            }
+            .padding(.horizontal, 5)
+            .background {
+                RoundedRectangle(cornerRadius: 20)
+                    .foregroundStyle(.tint)
+            }
+            .foregroundStyle(.white)
+        }
+        .frame(height: 20)
+        .padding(.bottom, 10)
+        .padding(.horizontal)
+
         HStack{
             VStack {
                 CityTagFlowLayout(spacing: 10) {
@@ -88,7 +120,7 @@ struct PlaceAddingView: View {
             self.mapRegion = MapCameraPosition.region(
                 MKCoordinateRegion(
                     center: locationManager.lastKnownLocation ?? CLLocationCoordinate2D(latitude: 36.6337, longitude: 128.0179), // 초기 위치
-                    span: MKCoordinateSpan(latitudeDelta: 4, longitudeDelta: 4)
+                    span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
                 )
             )
         }

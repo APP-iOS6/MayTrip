@@ -30,7 +30,7 @@ struct PlaceInfoView: View {
                 
                 if places.count > 0 {
                     VStack {
-                        ForEach(Array(places[dateIndex].enumerated()), id: \.element.createdAt) { placeIndex, place in
+                        ForEach(Array(places[dateIndex].enumerated()), id: \.element.coordinate) { placeIndex, place in
                             HStack {
                                 // 좌측 번호 영역
                                 VStack {
