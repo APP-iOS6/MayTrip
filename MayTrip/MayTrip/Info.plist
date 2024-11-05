@@ -4,6 +4,8 @@
 <dict>
 	<key>RestKey</key>
 	<string>$(RestKey)</string>
+	<key>GIDClientID</key>
+	<string>${GOOGLE_CLIENT_ID}</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -14,6 +16,16 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>kakao${KAKAO_NATIVE_APP_KEY}</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>CFBundleURLSchemes</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>${GOOGLE_REVERSE_URL}</string>
 			</array>
 		</dict>
 	</array>
