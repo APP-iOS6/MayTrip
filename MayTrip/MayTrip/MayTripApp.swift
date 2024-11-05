@@ -6,14 +6,27 @@
 //
 
 import SwiftUI
+import KakaoSDKAuth
+import KakaoSDKCommon
+import GoogleSignIn
 
 @main
 struct MayTripApp: App {
-    let DB = DBConnection.shared
+    
+    @StateObject var authStore = AuthStore()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
-                
+                .environmentObject(authStore)
+                .onOpenURL { url in
+                    if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                        _ = AuthController.handleOpenUrl(url: url)
+                    } else {
+                        GIDSignIn.sharedInstance.handle(url)
+                        authStore.DB.auth.handle(url)
+                    }
+                }
         }
     }
 }
