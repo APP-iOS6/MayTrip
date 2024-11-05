@@ -14,9 +14,14 @@ import Alamofire
 
 class AuthStore: ObservableObject {
     let DB = DBConnection.shared
+    @Published var isLogin: Bool = false
     
     init() {
         kakaoInit()
+    }
+    
+    func successLogin() {
+        self.isLogin = true
     }
     
     func kakaoInit() {
@@ -36,6 +41,7 @@ class AuthStore: ObservableObject {
                                                 switch response.result {
                                                 case .success:
                                                     if let data = try! response.result.get() as? [String: Any] {
+                                                        self.successLogin()
                                                         print(data["app_id"])
                                                         print(data["id"]!) // 카카오 고유 id
                                                     }
@@ -52,6 +58,7 @@ class AuthStore: ObservableObject {
                     print(error)
                 }
                 else {
+                    self.successLogin()
                 }
             }
         }
@@ -64,6 +71,7 @@ class AuthStore: ObservableObject {
             guard let result = signInResult else { return }
             
             guard let profile = result.user.profile else { return }
+            self.successLogin()
         }
     }
 }
