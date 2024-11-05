@@ -38,9 +38,18 @@ struct TripRoutePost: Codable{
     var title: String
     var tag: [String] = []
     var city: [String]
-    var writeUser: User
-    var startDate: Date
-    var endDate: Date?
+    var writeUser: Int
+    var startDate: String
+    var endDate: String?
+    
+    enum CodingKeys: String,CodingKey {
+        case title
+        case tag
+        case city
+        case writeUser = "write_user"
+        case startDate = "start_date"
+        case endDate = "end_date"
+    }
 }
 
 struct TripRouteSimple: Codable{

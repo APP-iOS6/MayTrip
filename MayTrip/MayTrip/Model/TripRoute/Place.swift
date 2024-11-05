@@ -28,10 +28,16 @@ struct Place: Codable, Identifiable {
 
 struct PlacePost: Codable{
     let name: String
-    let coordinate: [Double]
-    let tripRoute: Int
+    var tripRoute: Int = 0
     let tripDate: Date
     let ordered: Int
     let coordinates: [Double]
-    let createdAt: Date
+    
+    enum CodingKeys: String, CodingKey {
+        case name
+        case tripRoute = "trip_route"
+        case tripDate = "trip_date"
+        case ordered
+        case coordinates
+    }
 }
