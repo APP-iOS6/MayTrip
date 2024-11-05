@@ -89,7 +89,7 @@ struct SignInView : View {
                                             email: email,
                                             password: password
                                         )
-                                        print("success")
+                                        authStore.successLogin()
                                     } catch {
                                         print(error)
                                     }
@@ -171,6 +171,7 @@ struct SignInView : View {
                                         idToken: idToken
                                     )
                                 )
+                                authStore.successLogin()
                             } catch {
                                 dump(error)
                             }

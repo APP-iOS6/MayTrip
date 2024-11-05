@@ -66,6 +66,7 @@
 		FBC09C382CDA72A800B059FB /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C372CDA72A800B059FB /* ChatRoom.swift */; };
 		FBC09C392CDA72A800B059FB /* ChatLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C362CDA72A800B059FB /* ChatLog.swift */; };
 		FBC09C3B2CDA72D200B059FB /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FBC09C3A2CDA72D200B059FB /* Config.xcconfig */; };
+		FBC09C3D2CDA7A5600B059FB /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C3C2CDA7A5000B059FB /* MainView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -133,6 +134,7 @@
 		FBC09C362CDA72A800B059FB /* ChatLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLog.swift; sourceTree = "<group>"; };
 		FBC09C372CDA72A800B059FB /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		FBC09C3A2CDA72D200B059FB /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		FBC09C3C2CDA7A5000B059FB /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -342,6 +344,7 @@
 		FB36F5F42CD4736300E356FA /* View */ = {
 			isa = PBXGroup;
 			children = (
+				FBC09C3C2CDA7A5000B059FB /* MainView.swift */,
 				FB36F5F72CD473A200E356FA /* Login */,
 				FB36F5F82CD473B100E356FA /* TripRoute */,
 				FB36F5F92CD473C200E356FA /* Chat */,
@@ -542,6 +545,7 @@
 				259AABB92CDA0ABA00512CE6 /* Category.swift in Sources */,
 				259AABBA2CDA0ABA00512CE6 /* Post.swift in Sources */,
 				259AAB8B2CDA06CD00512CE6 /* LocationManager.swift in Sources */,
+				FBC09C3D2CDA7A5600B059FB /* MainView.swift in Sources */,
 				6E690E852CD8B9540096DB7C /* TopContentsView.swift in Sources */,
 				6E690E862CD8B9540096DB7C /* SearchView.swift in Sources */,
 				259AABA42CDA07F500512CE6 /* TripRouteStore.swift in Sources */,
