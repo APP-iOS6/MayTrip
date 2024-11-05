@@ -10,12 +10,6 @@ import SwiftUI
 struct MainView:  View {
     @State private var selection = 0
     
-//    init() {
-//        let appearance = UITabBarAppearance()
-//        appearance.configureWithTransparentBackground()
-//        UITabBar.appearance().standardAppearance = appearance
-//    }
-    
     var body: some View {
         TabView(selection: $selection) {
             TripRouteView()
