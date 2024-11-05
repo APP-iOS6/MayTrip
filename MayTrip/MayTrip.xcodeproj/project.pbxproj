@@ -24,6 +24,9 @@
 		259AABC62CDA0AD900512CE6 /* PlaceSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259AABC42CDA0AD900512CE6 /* PlaceSearchView.swift */; };
 		259AABC72CDA0AD900512CE6 /* PlaceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259AABC32CDA0AD900512CE6 /* PlaceInfoView.swift */; };
 		259AABC82CDA0AD900512CE6 /* PlaceAddingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259AABC22CDA0AD900512CE6 /* PlaceAddingView.swift */; };
+		42702D482CDA34510093F9E3 /* DateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E792CD8B5A50096DB7C /* DateStore.swift */; };
+		42702D502CDA56AE0093F9E3 /* RouteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42702D4F2CDA56AE0093F9E3 /* RouteDetailView.swift */; };
+		42702D512CDA7BF70093F9E3 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6352CD48F9200E356FA /* SignInView.swift */; };
 		6E690E732CD8B54F0096DB7C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E6C2CD8B54F0096DB7C /* CalendarView.swift */; };
 		6E690E742CD8B54F0096DB7C /* DateGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E6E2CD8B54F0096DB7C /* DateGridView.swift */; };
 		6E690E752CD8B54F0096DB7C /* EnterBasicInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E722CD8B54F0096DB7C /* EnterBasicInformationView.swift */; };
@@ -57,11 +60,9 @@
 		FB36F62F2CD4774400E356FA /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F62E2CD4774400E356FA /* KakaoSDKAuth */; };
 		FB36F6322CD4775B00E356FA /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F6312CD4775B00E356FA /* GoogleSignIn */; };
 		FB36F6342CD4775B00E356FA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F6332CD4775B00E356FA /* GoogleSignInSwift */; };
-		FB36F6362CD48F9700E356FA /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6352CD48F9200E356FA /* SignInView.swift */; };
 		FB36F63A2CD4991600E356FA /* LoginViewCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6392CD4990900E356FA /* LoginViewCommon.swift */; };
 		FB36F63C2CD5150800E356FA /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F63B2CD5150400E356FA /* SignUpView.swift */; };
 		FBC09BA22CD9DBAA00B059FB /* LoginButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09BA12CD9DBA400B059FB /* LoginButtons.swift */; };
-		FBC09C352CDA728B00B059FB /* DateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E792CD8B5A50096DB7C /* DateStore.swift */; };
 		FBC09C382CDA72A800B059FB /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C372CDA72A800B059FB /* ChatRoom.swift */; };
 		FBC09C392CDA72A800B059FB /* ChatLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C362CDA72A800B059FB /* ChatLog.swift */; };
 		FBC09C3B2CDA72D200B059FB /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FBC09C3A2CDA72D200B059FB /* Config.xcconfig */; };
@@ -94,6 +95,9 @@
 		259AABC22CDA0AD900512CE6 /* PlaceAddingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceAddingView.swift; sourceTree = "<group>"; };
 		259AABC32CDA0AD900512CE6 /* PlaceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfoView.swift; sourceTree = "<group>"; };
 		259AABC42CDA0AD900512CE6 /* PlaceSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchView.swift; sourceTree = "<group>"; };
+		42702D492CDA34600093F9E3 /* ChatLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLog.swift; sourceTree = "<group>"; };
+		42702D4A2CDA34600093F9E3 /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
+		42702D4F2CDA56AE0093F9E3 /* RouteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDetailView.swift; sourceTree = "<group>"; };
 		6E690E6C2CD8B54F0096DB7C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		6E690E6D2CD8B54F0096DB7C /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		6E690E6E2CD8B54F0096DB7C /* DateGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateGridView.swift; sourceTree = "<group>"; };
@@ -228,6 +232,8 @@
 				259AABA72CDA0A4A00512CE6 /* CityTagFlowLayout.swift */,
 				259AABBB2CDA0AC100512CE6 /* ChatLog.swift */,
 				259AABBC2CDA0AC100512CE6 /* ChatRoom.swift */,
+				42702D4A2CDA34600093F9E3 /* ChatRoom.swift */,
+				42702D492CDA34600093F9E3 /* ChatLog.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -362,6 +368,7 @@
 			children = (
 				6E690E712CD8B54F0096DB7C /* CalendarViews */,
 				6E690E722CD8B54F0096DB7C /* EnterBasicInformationView.swift */,
+				42702D4F2CDA56AE0093F9E3 /* RouteDetailView.swift */,
 				6E690E7D2CD8B9540096DB7C /* HomeViews */,
 				259AAB542CDA024500512CE6 /* PlaceAddViews */,
 				6E690E802CD8B9540096DB7C /* RecommendViews */,
@@ -516,8 +523,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FBC09C352CDA728B00B059FB /* DateStore.swift in Sources */,
-				FB36F6362CD48F9700E356FA /* SignInView.swift in Sources */,
+				42702D482CDA34510093F9E3 /* DateStore.swift in Sources */,
+				42702D502CDA56AE0093F9E3 /* RouteDetailView.swift in Sources */,
 				FB36F6052CD4740F00E356FA /* MyPageView.swift in Sources */,
 				2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */,
 				FB36F5FD2CD473EA00E356FA /* LoginView.swift in Sources */,
@@ -554,6 +561,7 @@
 				259AABC62CDA0AD900512CE6 /* PlaceSearchView.swift in Sources */,
 				259AABC72CDA0AD900512CE6 /* PlaceInfoView.swift in Sources */,
 				259AABC82CDA0AD900512CE6 /* PlaceAddingView.swift in Sources */,
+				42702D512CDA7BF70093F9E3 /* SignInView.swift in Sources */,
 				FB36F5F02CD472F600E356FA /* MayTripApp.swift in Sources */,
 				FB36F63A2CD4991600E356FA /* LoginViewCommon.swift in Sources */,
 				FBC09BA22CD9DBAA00B059FB /* LoginButtons.swift in Sources */,

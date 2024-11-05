@@ -20,7 +20,7 @@ struct PlaceAddingView: View {
     @State var isShowSheet: Bool = false    // 장소 추가시트 띄우기
     @State var selectedDay: Int = 0         // 장소 추가시에 몇일차에 장소 추가하는지
     @State var cities: [String] = []        // 추가된 도시
-    @State var places: [[Place]] = []       // 추가된 장소 (배열당 한 일차 장소배열)
+    @State var places: [[PlacePost]] = []       // 추가된 장소 (배열당 한 일차 장소배열)
     @State private var markers: [[MarkerItem]] = []
     @State private var mapRegion = MapCameraPosition.region(
         MKCoordinateRegion(
@@ -88,7 +88,9 @@ struct PlaceAddingView: View {
                         // 일차별 장소 카드 뷰
                         PlaceInfoView(dateIndex: dateIndex,
                                       date: date,
+                                      isEditing: true,
                                       places: $places,
+                                      markers: $markers,
                                       isShowSheet: $isShowSheet,
                                       selectedDay: $selectedDay)
                     } header: {
