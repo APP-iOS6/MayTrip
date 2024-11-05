@@ -8,18 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @EnvironmentObject var authStore: AuthStore
+    
     var body: some View {
-//        VStack {
-//            Image(systemName: "globe")
-//                .imageScale(.large)
-//                .foregroundStyle(.tint)
-//            Text("Hello, world!")
-//        }
-//        .padding()
-        LoginView()
+        if !authStore.isLogin {
+            MainView()
+        } else {
+            LoginView()
+        }
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(AuthStore())
 }
