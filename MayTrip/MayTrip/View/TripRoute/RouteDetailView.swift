@@ -41,12 +41,12 @@ struct RouteDetailView: View {
             .foregroundStyle(.black)
             
             Spacer()
-            // TODO: 작성한 TripRoute db에 저장하는 로직
+            // TODO: TripRoute 편집화면으로 이동하는 로직 추가
             
             Button {
                 
             } label: {
-                Text("다음")
+                Text("편집")
                     .padding(8)
             }
             .padding(.horizontal, 5)
