@@ -120,7 +120,7 @@ struct PlaceAddingView: View {
             self.mapRegion = MapCameraPosition.region(
                 MKCoordinateRegion(
                     center: locationManager.lastKnownLocation ?? CLLocationCoordinate2D(latitude: 36.6337, longitude: 128.0179), // 초기 위치
-                    span: MKCoordinateSpan(latitudeDelta: 4, longitudeDelta: 4)
+                    span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
                 )
             )
         }
