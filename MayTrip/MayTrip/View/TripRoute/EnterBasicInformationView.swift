@@ -26,6 +26,7 @@ struct EnterBasicInformationView: View {
                             Image(systemName: "xmark")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
+                                .frame(width: 15, height: 15)
                         }
                         .foregroundStyle(.black)
                         
@@ -91,6 +92,7 @@ struct EnterBasicInformationView: View {
                     .padding()
             }
         }
+        .navigationBarBackButtonHidden()
     }
 }
 
