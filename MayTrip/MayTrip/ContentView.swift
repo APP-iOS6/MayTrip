@@ -12,8 +12,8 @@ struct ContentView: View {
     @EnvironmentObject var authStore: AuthStore
     
     var body: some View {
-        if authStore.isLogin {
-            Text("contents view")
+        if !authStore.isLogin {
+            MainView()
         } else {
             LoginView()
         }
