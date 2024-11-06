@@ -97,17 +97,16 @@ class DateStore {
     // 셀 누를때 여행 시작 날짜, 끝나는 날짜 설정
     func setTripDates(_ date: Date) {
         if let startDate = startDate {
-            endDate = date
             
-            if startDate > date {
-                endDate = startDate
-                self.startDate = date
-            }
-            
-            // 여행 시작일이 토글될 때 여행 날짜 재설정 되도록
-            if startDate == date {
+            if let _ = endDate {
                 self.startDate = nil
-                endDate = nil
+                self.endDate = nil
+            } else {
+                if startDate > date {
+                    self.startDate = date
+                } else {
+                    endDate = date
+                }
             }
         } else {
             startDate = date
