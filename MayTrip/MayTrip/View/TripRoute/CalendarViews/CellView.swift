@@ -65,7 +65,7 @@ struct CellView: View {
                             .foregroundStyle(.orange)
                     }
                 }
-                .cornerRadius(isLeftCircle || isRightCircle ? 25 : 0, corners: isLeftCircle ? [.topLeft, .bottomLeft] : [.topRight, .bottomRight])
+                .cornerRadius(isLeftCircle || isRightCircle ? 25 : 0, corners: isLeftCircle && isRightCircle ? [.topRight, .topLeft, .bottomLeft, .bottomRight] : isLeftCircle ? [.topLeft, .bottomLeft] : [.topRight, .bottomRight])
                 .foregroundStyle(opacity == 0 ? .clear : .orange.opacity(opacity))
                 .overlay(
                     Text("\(day)")
