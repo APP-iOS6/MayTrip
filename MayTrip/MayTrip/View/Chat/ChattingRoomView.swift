@@ -125,7 +125,7 @@ struct ChattingRoomView: View {
                     .onSubmit {
                         chatStore.saveChatLog(chatRoom.id, message: message)
                         message = ""
-                        focused = false
+                        focused = true
                         isSend = true
                     }
                 
