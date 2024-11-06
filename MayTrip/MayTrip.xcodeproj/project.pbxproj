@@ -42,6 +42,7 @@
 		6E690E8B2CD8B97E0096DB7C /* TripRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E8A2CD8B97E0096DB7C /* TripRouteView.swift */; };
 		6E690E8F2CD8E2F10096DB7C /* ChatStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E8E2CD8E2EB0096DB7C /* ChatStore.swift */; };
 		6E690E912CD8EE280096DB7C /* ChattingRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E902CD8EE180096DB7C /* ChattingRoomView.swift */; };
+		6EDBE8AF2CDA468500D9A233 /* DateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E792CD8B5A50096DB7C /* DateStore.swift */; };
 		FB36F5EE2CD472F600E356FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB36F5E92CD472F600E356FA /* Assets.xcassets */; };
 		FB36F5EF2CD472F600E356FA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F5EA2CD472F600E356FA /* ContentView.swift */; };
 		FB36F5F02CD472F600E356FA /* MayTripApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F5EB2CD472F600E356FA /* MayTripApp.swift */; };
@@ -528,6 +529,7 @@
 			files = (
 				42702D482CDA34510093F9E3 /* DateStore.swift in Sources */,
 				42702D502CDA56AE0093F9E3 /* RouteDetailView.swift in Sources */,
+				6EDBE8AF2CDA468500D9A233 /* DateStore.swift in Sources */,
 				FB36F6052CD4740F00E356FA /* MyPageView.swift in Sources */,
 				2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */,
 				FB36F5FD2CD473EA00E356FA /* LoginView.swift in Sources */,
