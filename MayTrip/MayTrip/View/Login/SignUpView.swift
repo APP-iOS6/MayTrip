@@ -102,6 +102,7 @@ struct SignUpView: View {
                 } label : {
                     ZStack {
                         RoundedRectangle(cornerRadius: 5)
+                            .foregroundStyle(.accent)
                         Text("회원가입")
                             .foregroundStyle(.white)
                     }

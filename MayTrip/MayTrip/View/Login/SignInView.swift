@@ -89,6 +89,7 @@ struct SignInView : View {
                         } label : {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 5)
+                                    .foregroundStyle(.accent)
                                 Text("LOGIN")
                                     .foregroundStyle(.white)
                             }
@@ -100,8 +101,9 @@ struct SignInView : View {
                         } label : {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 5)
-                                    .stroke(lineWidth: 1)
+                                    .stroke(Color.accent, lineWidth: 1)
                                 Text("게스트 로그인")
+                                    .foregroundStyle(Color.accent)
                             }
                         }
                         .frame(width: screenWidth * 0.9, height: screenHeight * 0.07)
