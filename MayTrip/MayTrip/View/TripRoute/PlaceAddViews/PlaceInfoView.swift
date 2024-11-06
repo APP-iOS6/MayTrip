@@ -12,7 +12,6 @@ struct PlaceInfoView: View {
     var date: Date
     var isEditing: Bool
     @Binding var places: [[PlacePost]]      // 추가된 장소 (배열당 한 일차 장소배열)
-    @Binding var markers: [[MarkerItem]]    // 추가된 지도 마커 (배열당 한 일차 마커배열)
     @Binding var isShowSheet: Bool      // 장소 추가시트 띄우기
     @Binding var selectedDay: Int       // 장소 추가시에 몇일차에 장소 추가하는지
 
@@ -61,11 +60,9 @@ struct PlaceInfoView: View {
                         }
                         .onDelete { indexSet in
                             places[dateIndex].remove(atOffsets: indexSet)   // 리스트 내 장소정보 삭제
-                            markers[dateIndex].remove(atOffsets: indexSet)  // 지도 내 마커 삭제
                         }
                         .onMove { (source: IndexSet, destination: Int) -> Void in
                             self.places[dateIndex].move(fromOffsets: source, toOffset: destination)
-                            self.markers[dateIndex].move(fromOffsets: source, toOffset: destination)
                         }
                     }
                     .listStyle(.plain)
@@ -92,7 +89,7 @@ struct PlaceInfoView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding()
-                .padding(.bottom, 100)
+                .padding(.bottom, 20)
             }
         }
     }
