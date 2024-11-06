@@ -24,6 +24,7 @@ struct SignInView : View {
     @State private var password: String = ""
     @State private var checkMaintainLogin: Bool = false
     @FocusState private var focusField: Field?
+    @State var errorMessage: String = ""
     
     let screenWidth: CGFloat = UIScreen.main.bounds.width
     let screenHeight: CGFloat = UIScreen.main.bounds.height
@@ -55,32 +56,21 @@ struct SignInView : View {
                     CreateLoginViewTextField(text: $password, symbolName: "lock", placeholder: "비밀번호 입력", width: screenWidth * 0.9, height: screenHeight * 0.07, isSecure: true, isFocused: focusField == .password)
                         .focused($focusField, equals: .password)
                     
-                    HStack { // 로그인 상태 유지
-                        Button {
-                            checkMaintainLogin.toggle()
-                        } label: {
-                            HStack(spacing: 4) {
-                                if checkMaintainLogin {
-                                    Image(systemName: "checkmark.square.fill")
-                                } else {
-                                    Image(systemName: "square")
-                                        .foregroundStyle(.gray.opacity(0.7))
-                                }
-                                Text("로그인 상태 유지")
-                                    .font(.system(size: 14))
-                                    .foregroundStyle(.gray.opacity(0.7))
-                            }
-                        }
+                    HStack {
+                        Text(errorMessage)
+                            .foregroundStyle(.red)
                         Spacer()
                     }
+                    .font(.system(size: 14))
                     .frame(width: screenWidth * 0.9)
+                    
                     
                     VStack(spacing : 10) {
                         Button { // 로그인 버튼
                             if email.isEmpty {
-                                
+                                errorMessage = "이메일을 작성해주세요"
                             } else if password.isEmpty {
-                                
+                                errorMessage = "비밀번호를 작성해주세요"
                             } else {
                                 Task {
                                     do {
@@ -91,6 +81,7 @@ struct SignInView : View {
                                         )
                                         authStore.successLogin()
                                     } catch {
+                                        errorMessage = "이메일 또는 비밀번호를 확인해주세요"
                                         print(error)
                                     }
                                 }
