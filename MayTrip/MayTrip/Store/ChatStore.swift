@@ -30,10 +30,10 @@ class ChatStore {
         if case let (year?, month?, day?, hour?, minute?, second?) = (dateDiff.year, dateDiff.month, dateDiff.day, dateDiff.hour, dateDiff.minute, dateDiff.second) {
             
             if year == 0 || month == 0 || day == 0 {
-                return hour > minute ? "\(hour)시간 전" : (minute > second ? "\(minute)분 전" : "방금 전")
+                return hour != 0 ? "\(hour)시간 전" : minute != 0 ? "\(minute)분 전" : "방금 전"
             }
         }
-        
         return dateString
     }
+
 }
