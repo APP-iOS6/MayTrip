@@ -68,9 +68,9 @@ struct SignInView : View {
                     VStack(spacing : 10) {
                         Button { // 로그인 버튼
                             if email.isEmpty {
-                                errorMessage = "이메일을 작성해주세요"
+                                errorMessage = "이메일을 입력해주세요"
                             } else if password.isEmpty {
-                                errorMessage = "비밀번호를 작성해주세요"
+                                errorMessage = "비밀번호를 입력해주세요"
                             } else {
                                 Task {
                                     do {
@@ -197,6 +197,7 @@ struct SignInView : View {
         .onAppear {
             email = ""
             password = ""
+            errorMessage = ""
         }
     }
 }

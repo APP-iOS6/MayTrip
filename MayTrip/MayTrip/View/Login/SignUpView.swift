@@ -119,7 +119,7 @@ struct SignUpView: View {
         .onAppear {
             email = ""
             password = ""
-            
+            errorMessage = ""
         }
         .navigationTitle("회원가입")
         .navigationBarTitleDisplayMode(.automatic)
