@@ -15,6 +15,8 @@ import Alamofire
 class AuthStore: ObservableObject {
     let DB = DBConnection.shared
     @Published var isLogin: Bool = false
+    @Published var nickname: String = ""
+    @Published var profileImage: UIImage?
     
     init() {
         kakaoInit()
@@ -22,6 +24,14 @@ class AuthStore: ObservableObject {
     
     func successLogin() {
         self.isLogin = true
+    }
+    
+    func updateProfile(nickname: String, image: UIImage?) {
+        if let image = image {
+            profileImage = image
+        }
+        
+        self.nickname = nickname
     }
     
     func kakaoInit() {
@@ -58,7 +68,21 @@ class AuthStore: ObservableObject {
                     print(error)
                 }
                 else {
-                    self.successLogin()
+                    let url : String = "https://kapi.kakao.com/v1/user/access_token_info"
+                    AF.request(url, method: .get, parameters: nil, encoding: URLEncoding.httpBody, headers: ["Authorization" : "Bearer \(oauthToken!.accessToken)"]).responseJSON() { response in
+                                                switch response.result {
+                                                case .success:
+                                                    if let data = try! response.result.get() as? [String: Any] {
+                                                        self.successLogin()
+                                                        print(data["app_id"])
+                                                        print(data["id"]!) // 카카오 고유 id
+                                                        print("---------------------------")
+                                                        print(data)
+                                                    }
+                                                case .failure(let error):
+                                                    print("Error: \(error)")
+                                                }
+                                            }
                 }
             }
         }
@@ -71,6 +95,7 @@ class AuthStore: ObservableObject {
             guard let result = signInResult else { return }
             
             guard let profile = result.user.profile else { return }
+            print(profile.email)
             self.successLogin()
         }
     }
