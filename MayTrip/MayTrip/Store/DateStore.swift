@@ -131,4 +131,11 @@ class DateStore {
     func convertStringToDate(_ date: String) -> Date {
         formatter.date(from: date) ?? .init()
     }
+    
+    func convertDateToString(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yy.MM.dd(EEEEE)"
+        formatter.locale = Locale(identifier:"ko_KR")
+        return formatter.string(from: date)
+   }
 }
