@@ -13,17 +13,17 @@ struct Place: Codable, Identifiable {
     let tripDate: String
     let ordered: Int
     let coordinates: [Double]
-    //let createdAt: Date
-    //let updatedAt: Date
+    let category: String
     
     enum CodingKeys: String, CodingKey {
-                case id
-                case name
-                case tripRoute = "trip_route"
-                case tripDate = "trip_date"
-                case ordered
-                case coordinates
-            }
+        case id
+        case name
+        case tripRoute = "trip_route"
+        case tripDate = "trip_date"
+        case ordered
+        case coordinates
+        case category
+    }
 }
 
 struct PlacePost: Codable{
@@ -32,6 +32,7 @@ struct PlacePost: Codable{
     let tripDate: Date
     let ordered: Int
     let coordinates: [Double]
+    let categoryCode: String
     
     enum CodingKeys: String, CodingKey {
         case name
@@ -39,5 +40,6 @@ struct PlacePost: Codable{
         case tripDate = "trip_date"
         case ordered
         case coordinates
+        case categoryCode = "category"
     }
 }
