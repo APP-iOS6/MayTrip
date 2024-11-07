@@ -21,13 +21,8 @@ struct MyTripCardView: View {
                         RouteDetailView(tripRoute: SampleTripRoute.sampleRoute)
                     } label: {
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.tint, lineWidth: 2)
+                            .foregroundStyle(routeStore.isOnATrip(route.start_date, end: route.end_date) ? Color(uiColor: .tintColor) : Color(uiColor: .systemGray6))
                             .overlay {
-                                // storke 쓰면 배경색이 안먹혀서 사각형 한번 더 그려줌
-                                RoundedRectangle(cornerRadius: 10)
-                                // 현재 여행 중인 카드만 진한 컬러로
-                                    .foregroundStyle(routeStore.isOnATrip(route.start_date, end: route.end_date) ? Color(uiColor: .tintColor) : .white)
-                                    .overlay {
                                         HStack {
                                             VStack(alignment: .leading, spacing: 10) {
                                                 HStack {
@@ -75,7 +70,6 @@ struct MyTripCardView: View {
                                         .foregroundStyle(routeStore.isOnATrip(route.start_date, end: route.end_date) ? .white : .black)
                                         .padding()
                                         .padding(.vertical)
-                                    }
                             }
                             .frame(width: 350, height: 120)
                     }

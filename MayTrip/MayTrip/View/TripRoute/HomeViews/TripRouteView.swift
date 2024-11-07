@@ -227,7 +227,11 @@ class DummyRouteStore {
     func isOnATrip(_ start: Date, end: Date) -> Bool {
         let date = Date()
         
-        return date == start || date == end || (date > start && date < end)
+        let today = Calendar.current.dateComponents([.year, .month, .day], from: date)
+        let startDay = Calendar.current.dateComponents([.year, .month, .day], from: start)
+        let endDay = Calendar.current.dateComponents([.year, .month, .day], from: end)
+        
+        return today == startDay || today == endDay || (date > start && date < end)
     }
     
     func categorizeRoute(_ standard: Standard) -> [DummyTripRoute] {

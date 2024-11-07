@@ -16,6 +16,24 @@ struct EnterBasicInformationView: View {
     @State var tag: String = ""
     @FocusState var focused: Bool
     
+    var dateString: String {
+        if let start = dateStore.startDate, let end = dateStore.endDate {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yy.MM.dd"
+            
+            let startString = formatter.string(from: start)
+            let endString = formatter.string(from: end)
+            
+            return "\(startString) - \(endString)"
+        } else {
+            return "여행 기간을 입력해주세요"
+        }
+    }
+    
+    var isCompleteDateSetting: Bool {
+        dateStore.startDate != nil && dateStore.endDate != nil
+    }
+    
     var body: some View {
         ZStack {
             ScrollView {
@@ -61,7 +79,7 @@ struct EnterBasicInformationView: View {
                                     .foregroundStyle(.tint)
                             }
                             .foregroundStyle(.white)
-                            .disabled(dateStore.endDate == nil)
+                            .disabled(dateStore.endDate == nil || !isCompleteDateSetting || title.count == 0)
                     }
                     .frame(height: 20)
                     .padding(.bottom, 10)
@@ -81,7 +99,7 @@ struct EnterBasicInformationView: View {
                             isCalendarShow = true
                         } label: {
                             Image(systemName: "calendar")
-                            Text("여행 기간을 입력해주세요")
+                            Text("\(dateString)")
                         }
                         .foregroundStyle(Color(uiColor: .lightGray))
                         
@@ -91,7 +109,7 @@ struct EnterBasicInformationView: View {
                     
                     Divider()
                     
-                    
+                    // TODO: #으로 태그 구분해서 자르는 로직 필요
                     HStack {
                         TextField("#을 이용해 태그를 입력해보세요", text: $tag, axis: .vertical)
                             .focused($focused)
@@ -111,6 +129,9 @@ struct EnterBasicInformationView: View {
             }
         }
         .navigationBarBackButtonHidden()
+        .onChange(of: isCompleteDateSetting) { oldValue, newValue in
+            
+        }
     }
 }
 
