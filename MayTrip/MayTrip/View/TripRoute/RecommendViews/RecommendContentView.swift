@@ -74,8 +74,7 @@ struct RecommendContentView: View {
 }
 
 #Preview {
-    var routeStore: DummyRouteStore = .shared
     NavigationStack {
-        RecommendContentView(route: routeStore.tripRoutes[2])
+        RecommendContentView(route: tripRoutes[2])
     }
 }

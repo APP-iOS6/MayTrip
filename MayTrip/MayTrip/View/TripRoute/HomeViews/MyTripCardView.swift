@@ -8,7 +8,7 @@ import SwiftUI
 
 struct MyTripCardView: View {
     var routeStore: DummyRouteStore = .shared
-    let name: String = user1.nickname
+    let name: String = signedUser.nickname
     // TODO: DB 연결해서 데이터 넣기
     var body: some View {
         ScrollView(.horizontal) {

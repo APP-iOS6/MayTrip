@@ -110,9 +110,18 @@ struct DummySavedRoute: Identifiable {
     var user_id: Set<Int> = []
 }
 
-let user1: DummyUser = DummyUser(id: 0, nickname: "프로여행러", profile_image: "person.crop.circle", email: "test@test.com") // signed in user
-let user2: DummyUser = DummyUser(id: 1, nickname: "방랑자", profile_image: "person.circle", email: "test1@test.com")
+let signedUser: DummyUser = DummyUser(id: 0, nickname: "프로여행러", profile_image: "person.crop.circle", email: "test@test.com")
+          
+var tripRoutes: [DummyTripRoute] = [
+    DummyTripRoute(id: 0, title: "나 혼자 떠나는 강원도여행", tags: ["서핑", "바다", "여름"], cities: ["양양", "속초"], write_user: 0, start_date: Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 1)) ?? .init(), end_date: Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 6)) ?? .init()),
+    DummyTripRoute(id: 1, title: "해산물 을왕리여행", tags: ["조개구이", "대하구이"], cities: ["을왕리"], write_user: 0, start_date: Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 1)) ?? .init(), end_date: Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 3)) ?? .init()),
+    DummyTripRoute(id: 2, title: "먹는게 제일 조아 먹방여행", tags: ["막창", "게란후라이", "아이스크림", "딸기모찌", "전주비빔밥"], cities: ["대구", "부산", "여수", "전주"], write_user: 0, start_date: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 10)) ?? .init(), end_date: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 10)) ?? .init()),
+    DummyTripRoute(id: 3, title: "먹는게 제일 조아 먹방여행", tags: ["막창", "게란후라이", "아이스크림", "딸기모찌", "전주비빔밥"], cities: ["대구", "부산", "여수", "전주"], write_user: 0, start_date: Calendar.current.date(from: DateComponents(year: 2024, month: 3, day: 10)) ?? .init(), end_date: Calendar.current.date(from: DateComponents(year: 2024, month: 4, day: 10)) ?? .init()),
+    DummyTripRoute(id: 4, title: "먹는게 제일 조아 먹방여행2", tags: ["짜장면", "짬뽕", "탕수육", "치킨"], cities: ["대구", "부산", "여수", "전주"], write_user: 0, start_date: Calendar.current.date(from: DateComponents(year: 2024, month: 4, day: 10)) ?? .init(), end_date: Calendar.current.date(from: DateComponents(year: 2024, month: 4, day: 12)) ?? .init()),
+    DummyTripRoute(id: 5, title: "먹는게 제일 조아 먹방여행3", tags: ["떡볶이", "게란말이", "계란찜"], cities: ["대구", "부산", "여수", "전주"], write_user: 0, start_date: Calendar.current.date(from: DateComponents(year: 2024, month: 5, day: 5)) ?? .init(), end_date: Calendar.current.date(from: DateComponents(year: 2024, month: 5, day: 8)) ?? .init()),
+    DummyTripRoute(id: 6, title: "먹는게 제일 조아 먹방여행4", tags: ["핫바", "김밥"], cities: ["대구", "부산", "여수", "전주"], write_user: 0, start_date: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 10)) ?? .init(), end_date: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 10)) ?? .init())]
 
+var users: [DummyUser] = [signedUser, DummyUser(id: 1, nickname: "방랑자", profile_image: "person.circle", email: "test1@test.com"), DummyUser(id: 2, nickname: "여행가자", profile_image: "person.crop.circle", email: "test@test.com"), DummyUser(id: 3, nickname: "좋아요", profile_image: "person.circle", email: "test1@test.com")]
 
 enum Standard: String, CaseIterable {
     case savedAlot = "찜을 가장 많이 받은 여행"
@@ -123,20 +132,11 @@ enum Standard: String, CaseIterable {
 class DummyRouteStore {
     static let shared: DummyRouteStore = DummyRouteStore()
     
-    private(set) var tripRoutes: [DummyTripRoute] = [
-        DummyTripRoute(id: 0, title: "나 혼자 떠나는 강원도여행", tags: ["서핑", "바다", "여름"], cities: ["양양", "속초"], write_user: 0, start_date: Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 1)) ?? .init(), end_date: Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 6)) ?? .init()),
-        DummyTripRoute(id: 1, title: "해산물 을왕리여행", tags: ["조개구이", "대하구이"], cities: ["을왕리"], write_user: 0, start_date: Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 1)) ?? .init(), end_date: Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 3)) ?? .init()),
-        DummyTripRoute(id: 2, title: "먹는게 제일 조아 먹방여행", tags: ["막창", "게란후라이", "아이스크림", "딸기모찌", "전주비빔밥"], cities: ["대구", "부산", "여수", "전주"], write_user: 0, start_date: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 10)) ?? .init(), end_date: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 10)) ?? .init()),
-        DummyTripRoute(id: 3, title: "먹는게 제일 조아 먹방여행", tags: ["막창", "게란후라이", "아이스크림", "딸기모찌", "전주비빔밥"], cities: ["대구", "부산", "여수", "전주"], write_user: 0, start_date: Calendar.current.date(from: DateComponents(year: 2024, month: 3, day: 10)) ?? .init(), end_date: Calendar.current.date(from: DateComponents(year: 2024, month: 4, day: 10)) ?? .init()),
-        DummyTripRoute(id: 4, title: "먹는게 제일 조아 먹방여행2", tags: ["짜장면", "짬뽕", "탕수육", "치킨"], cities: ["대구", "부산", "여수", "전주"], write_user: 0, start_date: Calendar.current.date(from: DateComponents(year: 2024, month: 4, day: 10)) ?? .init(), end_date: Calendar.current.date(from: DateComponents(year: 2024, month: 4, day: 12)) ?? .init()),
-        DummyTripRoute(id: 5, title: "먹는게 제일 조아 먹방여행3", tags: ["떡볶이", "게란말이", "계란찜"], cities: ["대구", "부산", "여수", "전주"], write_user: 0, start_date: Calendar.current.date(from: DateComponents(year: 2024, month: 5, day: 5)) ?? .init(), end_date: Calendar.current.date(from: DateComponents(year: 2024, month: 5, day: 8)) ?? .init()),
-        DummyTripRoute(id: 6, title: "먹는게 제일 조아 먹방여행4", tags: ["핫바", "김밥"], cities: ["대구", "부산", "여수", "전주"], write_user: 0, start_date: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 10)) ?? .init(), end_date: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 10)) ?? .init())]
-    
     private var savedRouteList: [DummySavedRoute] = [DummySavedRoute(id: 0, user_id: [0]), DummySavedRoute(id: 4, user_id: [0]), DummySavedRoute(id: 3, user_id: [0])]
     
     var createdRoutes: [DummyTripRoute] {
         tripRoutes.filter {
-            $0.write_user == user1.id
+            $0.write_user == signedUser.id
         }
     }
     
@@ -146,7 +146,7 @@ class DummyRouteStore {
         
         for route in savedRouteList {
             for user in route.user_id {
-                if user == user1.id {
+                if user == signedUser.id {
                     filteredRoutes.append(route)
                 }
             }
@@ -161,6 +161,10 @@ class DummyRouteStore {
         return savedRoutes
     }
     
+    func getRoute(_ id: Int) -> DummyTripRoute {
+        tripRoutes.filter { $0.id == id }.first!
+    }
+    
     func createRoute(_ route: DummyTripRoute) {
         tripRoutes.append(route)
     }
@@ -171,13 +175,13 @@ class DummyRouteStore {
         }.first ?? nil
         
         if var saved = savedRoute {
-            saved.user_id.insert(user1.id)
+            saved.user_id.insert(signedUser.id)
             
             if let index = savedRouteList.firstIndex(where: { $0.id == route }) {
                 savedRouteList[index] = saved
             }
         } else {
-            savedRouteList.append(DummySavedRoute(id: route, user_id: [user1.id]))
+            savedRouteList.append(DummySavedRoute(id: route, user_id: [signedUser.id]))
         }
     }
     
