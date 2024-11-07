@@ -99,7 +99,7 @@ class DateStore {
         if let startDate = startDate {
             
             if let _ = endDate {
-                self.startDate = nil
+                self.startDate = date
                 self.endDate = nil
             } else {
                 if startDate > date {
