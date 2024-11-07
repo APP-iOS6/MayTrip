@@ -58,7 +58,7 @@ struct EnterBasicInformationView: View {
                             .padding(.horizontal, 5)
                             .background {
                                 RoundedRectangle(cornerRadius: 20)
-                                    .foregroundStyle(.tint)
+                                    .foregroundStyle(Color("accentColor"))
                             }
                             .foregroundStyle(.white)
                             .disabled(dateStore.endDate == nil)
@@ -106,7 +106,7 @@ struct EnterBasicInformationView: View {
             }
             
             if isCalendarShow {
-                CalendarView()
+                CalendarView(isShowing: $isCalendarShow)
                     .padding()
             }
         }
