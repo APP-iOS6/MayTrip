@@ -99,7 +99,7 @@ struct PlaceAddingView: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
+            .padding([.horizontal, .top])
         }
     }
     
