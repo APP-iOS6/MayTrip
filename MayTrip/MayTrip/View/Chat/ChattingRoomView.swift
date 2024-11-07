@@ -73,7 +73,7 @@ struct ChattingRoomView: View {
                                         .padding()
                                         .background {
                                             Rectangle()
-                                                .foregroundStyle(.tint)
+                                                .foregroundStyle(Color("accentColor"))
                                                 .cornerRadius(10, corners: [.topLeft, .bottomLeft, .bottomRight])
                                         }
                                         .padding(.horizontal)
@@ -137,7 +137,7 @@ struct ChattingRoomView: View {
                 } label: {
                     VStack {
                         Image(systemName: "paperplane")
-                            .foregroundStyle(.tint)
+                            .foregroundStyle(Color("accentColor"))
                     }
                     .foregroundStyle(Color(uiColor: .gray))
                 }

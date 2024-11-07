@@ -16,27 +16,31 @@ struct RecommendRouteView: View {
                 NavigationLink {
                     // TODO: 루트 리스트 뷰 이동
                 } label: {
-                    HStack {
+                    HStack(alignment: .center) {
                         Text("\(standard.rawValue)")
                             .font(.title3)
+                            .foregroundStyle(.black)
                         
                         Spacer()
                         
-                        Image(systemName: "chevron.right")
+                        Text("더보기")
                     }
+                    .fontWeight(.semibold)
+                    .foregroundStyle(Color("accentColor"))
                 }
-                .padding(.vertical, 8)
-                .foregroundStyle(.black)
+                .padding(.trailing)
                 
                 ScrollView(.horizontal) {
                     HStack {
                         ForEach(routeStore.categorizeRoute(standard)) { route in
                             RecommendContentView(route: route)
+                                .padding(2)
                         }
                     }
+                    .padding(.trailing)
                 }
             }
-            .padding()
+            .padding([.leading, .vertical])
         }
     }
 }

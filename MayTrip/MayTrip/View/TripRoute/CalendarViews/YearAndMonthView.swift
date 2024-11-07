@@ -10,6 +10,7 @@ import SwiftUI
 
 struct YearAndMonthView: View {
     var dateStore: DateStore = DateStore.shared
+    @Binding var isShowing: Bool
     
     var body: some View {
         HStack {
@@ -39,8 +40,23 @@ struct YearAndMonthView: View {
                 }
                 .frame(width: 60, height: 40)
             }
+            
+            Spacer()
+            
+            
+            Button {
+                isShowing = false
+            } label: {
+                Text("취소")
+                    .padding(10)
+            }
+            .foregroundStyle(.gray)
         }
         .foregroundStyle(.black)
         .padding(.vertical)
     }
 }
+
+//#Preview {
+//    YearAndMonthView()
+//}

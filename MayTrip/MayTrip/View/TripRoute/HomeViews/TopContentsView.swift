@@ -17,7 +17,7 @@ struct TopContentsView: View {
                     ForEach(0..<3) { index in
                         // TODO: 프로모션 컨텐츠 뷰 만들어야 함
                         Rectangle()
-                            .frame(width: UIScreen.main.bounds.width, height: 300)
+                            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 10 * 2)
                             .foregroundStyle(.gray)
                     }
                 }

@@ -12,68 +12,43 @@ struct TripRouteView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                ScrollView {
+            ScrollView {
+                LazyVStack(alignment: .leading) {
                     TopContentsView()
+                        .padding(.bottom, 8)
                     
-                    LazyVStack(alignment: .leading, pinnedViews: [.sectionHeaders]) {
-                        Section(header:
-                                    NavigationLink {
-                            SearchView()
-                        } label: {
-                            HStack {
-                                Text("어디로 떠나시나요?")
-                                Spacer()
-                                Image(systemName: "magnifyingglass")
-                            }
-                        }
-                            .foregroundStyle(Color(uiColor: .gray))
-                            .padding(10)
-                            .background {
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(.gray, lineWidth: 1)
-                            }
-                            .padding()
-                            .background {
-                                Rectangle()
-                                    .cornerRadius(10, corners: [.topLeft, .topRight])
-                                    .foregroundColor(.white)
-                            }
-                        ) {
-                            VStack {
-                                MyTripCardView()
-                                
-                                RecommendRouteView()
-                            }
-                            .padding(.bottom, 20)
-                        }
-                    }
+                    MyTripCardView()
+                        .padding(.bottom, 15)
+                    
+                    RecommendRouteView()
                 }
                 .padding(.vertical)
-                .scrollIndicators(.hidden)
-                
-                VStack(alignment: .trailing) {
+            }
+            .padding(.vertical)
+            .scrollIndicators(.hidden)
+            .toolbar {
+                HStack(spacing: 20) {
+                    Image("appLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxHeight: 35)
+                    
                     Spacer()
                     
-                    HStack(alignment: .bottom) {
-                        Spacer()
-                        
-                        NavigationLink {
-                            EnterBasicInformationView()
-                        } label: {
-                            Image(systemName: "plus")
-                                .resizable()
-                                .frame(width: 15, height:  15)
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundStyle(.white)
-                                .padding(10)
-                                .frame(width: 40, height: 40)
-                                .background {
-                                    Circle()
-                                        .foregroundStyle(Color(uiColor: .darkGray))
-                                }
-                                .padding()
-                        }
+                    NavigationLink {
+                        SearchView()
+                    } label: {
+                        Image(systemName: "magnifyingglass")
+                            .frame(width: 15, height:  15)
+                            .foregroundStyle(Color("accentColor"))
+                    }
+                    
+                    NavigationLink {
+                        EnterBasicInformationView()
+                    } label: {
+                        Image(systemName: "plus")
+                            .frame(width: 15, height:  15)
+                            .foregroundStyle(Color("accentColor"))
                     }
                 }
             }
@@ -111,7 +86,7 @@ struct DummySavedRoute: Identifiable {
 }
 
 let signedUser: DummyUser = DummyUser(id: 0, nickname: "프로여행러", profile_image: "person.crop.circle", email: "test@test.com")
-          
+
 var tripRoutes: [DummyTripRoute] = [
     DummyTripRoute(id: 0, title: "나 혼자 떠나는 강원도여행", tags: ["서핑", "바다", "여름"], cities: ["양양", "속초"], write_user: 0, start_date: Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 1)) ?? .init(), end_date: Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 6)) ?? .init()),
     DummyTripRoute(id: 1, title: "해산물 을왕리여행", tags: ["조개구이", "대하구이"], cities: ["을왕리"], write_user: 0, start_date: Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 1)) ?? .init(), end_date: Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 3)) ?? .init()),
@@ -195,7 +170,7 @@ class DummyRouteStore {
         let dateDiff = Calendar.current.dateComponents([.year, .month, .day], from: start, to: end)
         
         var dateString = "당일치기"
-
+        
         if case let (year?, month?, day?) = (dateDiff.year, dateDiff.month, dateDiff.day) {
             if day != 0 {
                 dateString = "\(day)박 \(day + 1)일"
@@ -205,7 +180,7 @@ class DummyRouteStore {
                 dateString = "장기"
             }
         }
-
+        
         return dateString
     }
     
@@ -220,7 +195,7 @@ class DummyRouteStore {
         case 10, 11: season = "가을"
         default: break
         }
-
+        
         return season
     }
     

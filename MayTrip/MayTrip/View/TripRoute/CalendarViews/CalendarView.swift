@@ -8,9 +8,11 @@ import SwiftUI
 import Observation
 
 struct CalendarView: View {
+    @Binding var isShowing: Bool
+    
     var body: some View {
         VStack {
-            YearAndMonthView()
+            YearAndMonthView(isShowing: $isShowing)
             
             WeekdayView()
             
@@ -25,6 +27,6 @@ struct CalendarView: View {
     }
 }
 
-#Preview {
-    CalendarView()
-}
+//#Preview {
+//    CalendarView()
+//}

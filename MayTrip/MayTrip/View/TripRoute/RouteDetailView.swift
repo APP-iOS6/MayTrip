@@ -67,7 +67,7 @@ struct RouteDetailView: View {
             .padding(.horizontal, 5)
             .background {
                 RoundedRectangle(cornerRadius: 20)
-                    .foregroundStyle(.tint)
+                    .foregroundStyle(Color("accentColor"))
             }
             .foregroundStyle(.white)
         }
