@@ -43,7 +43,9 @@ struct ProfileInitView: View {
                         } else if !isValid {
                             errorMessage = "닉네임 중복확인을 해주세요"
                         } else {
-                            authStore.updateProfile(nickname: nickname, image: profileImage)
+                            Task {
+                                try await authStore.setUserInfo(nickname: nickname, image: profileImage)
+                            }
                         }
                     } label : {
                         Text("적용")

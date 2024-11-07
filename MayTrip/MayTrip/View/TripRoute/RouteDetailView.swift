@@ -181,7 +181,7 @@ struct RouteDetailView: View {
                         tripRoute: place.tripRoute,
                         tripDate: dateStore.convertStringToDate(place.tripDate),
                         ordered: place.ordered,
-                        coordinates: place.coordinates
+                        coordinates: place.coordinates, categoryCode: ""
                     )
                 }
                 return placePosts
@@ -243,31 +243,31 @@ class SampleTripRoute {
                   tripRoute: 0,
                   tripDate: "2024 11 11",
                   ordered: 1,
-                  coordinates: [37.5301, 127.1144]),
+                  coordinates: [37.5301, 127.1144], category: ""),
             Place(id: 1,
                   name: "테스트2",
                   tripRoute: 0,
                   tripDate: "2024 11 11",
                   ordered: 2,
-                  coordinates: [37.5513, 127.0816]),
+                  coordinates: [37.5513, 127.0816], category: ""),
             Place(id: 2,
                   name: "테스트3",
                   tripRoute: 0,
                   tripDate: "2024 11 11",
                   ordered: 3,
-                  coordinates: [37.5577, 127.0544]),
+                  coordinates: [37.5577, 127.0544], category: ""),
             Place(id: 3,
                   name: "테스트4",
                   tripRoute: 0,
                   tripDate: "2024 11 12",
                   ordered: 1,
-                  coordinates: [37.5513, 126.9881]),
+                  coordinates: [37.5513, 126.9881], category: ""),
             Place(id: 4,
                   name: "테스트5",
                   tripRoute: 0,
                   tripDate: "2024 11 12",
                   ordered: 2,
-                  coordinates: [37.6513, 126.7881])
+                  coordinates: [37.6513, 126.7881], category: "")
         ],
         startDate: "2024 11 11",
         endDate: "2024 11 12",

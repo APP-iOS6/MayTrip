@@ -12,7 +12,7 @@ struct MainView:  View {
     @EnvironmentObject var authStore: AuthStore
     
     var body: some View {
-        if authStore.nickname.isEmpty {
+        if authStore.isFirstLogin {
             ProfileInitView()
         } else {
             TabView(selection: $selection) {
