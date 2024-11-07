@@ -60,6 +60,7 @@ struct SignUpView: View {
                     CreateLoginViewTextField(text: $confirmPassword, symbolName: "", placeholder: "비밀번호를 다시 한 번 입력해주세요", width: screenWidth * 0.75, height: screenHeight * 0.06, isSecure: true, isFocused: focusField == .confirmPassword)
                         .focused($focusField, equals: .confirmPassword)
                 }
+                .padding(.bottom, -25)
                 
                 if !errorMessage.isEmpty {
                     HStack(spacing:5) {
@@ -68,6 +69,7 @@ struct SignUpView: View {
                             .foregroundStyle(Color(uiColor: .systemGray))
                             .frame(width: screenWidth * 0.15, height: screenHeight * 0.06, alignment: .leading)
                         Text(errorMessage)
+                            .font(.system(size: 14))
                             .foregroundStyle(.red)
                         Spacer()
                     }
@@ -82,8 +84,6 @@ struct SignUpView: View {
                     .opacity(0.0001)
                 }
                 
-                //            Spacer()
-                
                 Button { // 회원가입
                     if checkValid() {
                         Task {
@@ -94,6 +94,7 @@ struct SignUpView: View {
                                 )
                                 dismiss()
                             } catch {
+                                errorMessage = "이미 가입되 이메일입니다"
                                 print(error)
                             }
                         }
@@ -101,6 +102,7 @@ struct SignUpView: View {
                 } label : {
                     ZStack {
                         RoundedRectangle(cornerRadius: 5)
+                            .foregroundStyle(.accent)
                         Text("회원가입")
                             .foregroundStyle(.white)
                     }
@@ -117,7 +119,7 @@ struct SignUpView: View {
         .onAppear {
             email = ""
             password = ""
-            
+            errorMessage = ""
         }
         .navigationTitle("회원가입")
         .navigationBarTitleDisplayMode(.automatic)
@@ -129,7 +131,7 @@ struct SignUpView: View {
                     dismiss()
                 } label : {
                     Image(systemName: "chevron.left")
-                        .foregroundStyle(.gray.opacity(0.8))
+                        .foregroundStyle(Color.accentColor)
                 }
             }
         }

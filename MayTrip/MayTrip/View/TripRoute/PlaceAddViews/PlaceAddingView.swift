@@ -17,6 +17,7 @@ struct PlaceAddingView: View {
     var locationManager = LocationManager.shared
     var startDate: Date
     var endDate: Date
+    @State private var focusedDayIndex: Int = 0  // 현재 포커스된 일차
     @State var isShowSheet: Bool = false    // 장소 추가시트 띄우기
     @State var selectedDay: Int = 0         // 장소 추가시에 몇일차에 장소 추가하는지
     @State var cities: [String] = []        // 추가된 도시
@@ -30,7 +31,32 @@ struct PlaceAddingView: View {
     )
     
     var body: some View {
-        HStack {    // 소영님이 작성하신 상단 뷰 영역입니다. 나중에 subView로 빼서 써도될거같아요. 수평패딩만 추가되었습니다.
+        VStack {
+            headerView
+            cityTagsView
+            mapView
+            placesListView
+        }
+        .padding(.top)
+        .onAppear {
+            setupInitialData()
+            updateMapForDay(focusedDayIndex)
+        }
+        .sheet(isPresented: $isShowSheet) {
+            PlaceSearchView(
+                startDate: startDate,
+                endDate: endDate,
+                selectedDay: $selectedDay,
+                isShowSheet: $isShowSheet,
+                places: $places,
+                cities: $cities
+            )
+        }
+        .toolbar(.hidden)
+    }
+    
+    var headerView: some View {
+        HStack {
             Button {
                 dismiss()
             } label: {
@@ -41,12 +67,11 @@ struct PlaceAddingView: View {
             .foregroundStyle(.black)
             
             Spacer()
-            // TODO: 작성한 TripRoute db에 저장하는 로직
             
             Button {
-                
+                // TODO: 작성한 TripRoute db에 저장하는 로직
             } label: {
-                Text("다음")
+                Text("완료")
                     .padding(8)
             }
             .padding(.horizontal, 5)
@@ -59,8 +84,10 @@ struct PlaceAddingView: View {
         .frame(height: 20)
         .padding(.bottom, 10)
         .padding(.horizontal)
-
-        HStack{
+    }
+    
+    var cityTagsView: some View {
+        HStack {
             VStack {
                 CityTagFlowLayout(spacing: 10) {
                     ForEach(cities, id: \.self) { city in
@@ -68,89 +95,62 @@ struct PlaceAddingView: View {
                             .font(.system(size: 14))
                             .bold()
                             .foregroundStyle(Color(UIColor.darkGray))
-                            .padding(.horizontal)
-                            .background {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color(UIColor.systemGray5))
-                            }
                     }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
+            .padding([.horizontal, .top])
         }
-        .padding(.top)
-        
-        ScrollView(.vertical) {
-            LazyVStack(pinnedViews: [.sectionHeaders]){
-                ForEach(Array(datesInRange(from: startDate, to: endDate).enumerated()), id: \.element) { dateIndex, date in
-                    Section {
-                        Map(position: $mapRegion) {
-                            if markers.count > 0 {
-                                ForEach(Array(markers[dateIndex].enumerated()), id: \.element.id) { markerIndex, marker in
-                                    Annotation("", coordinate: marker.coordinate) {
-                                        Image(systemName: "\(markerIndex + 1).circle.fill")
-                                            .foregroundStyle(.blue)
-                                    }
-                                }
-                            }
+    }
+    
+    var mapView: some View {
+        Map(position: $mapRegion) {
+            if places.count > 0 {
+                if !places[focusedDayIndex].isEmpty {
+                    ForEach(Array(places[focusedDayIndex].enumerated()), id: \.offset) { index, place in
+                        Annotation("", coordinate: PlaceStore.shared.getCoordinate(for: place)) {
+                            Image(systemName: "\(index + 1).circle.fill")
+                                .foregroundStyle(.tint)
+                                .font(.title)
+                                .background(Circle().fill(.white))
                         }
-                        .frame(height: 200)
-                        .mapControlVisibility(.hidden)
-                        // 일차별 장소 카드 뷰
-                        PlaceInfoView(dateIndex: dateIndex,
-                                      date: date,
-                                      isEditing: true,
-                                      places: $places,
-                                      markers: $markers,
-                                      isShowSheet: $isShowSheet,
-                                      selectedDay: $selectedDay)
                     }
-//                        header: {
-//                        Map(position: $mapRegion) {
-//                            if markers.count > 0 {
-//                                ForEach(Array(markers[dateIndex].enumerated()), id: \.element.id) { markerIndex, marker in
-//                                    Annotation("", coordinate: marker.coordinate) {
-//                                        Image(systemName: "\(markerIndex + 1).circle.fill")
-//                                            .foregroundStyle(.blue)
-//                                    }
-//                                }
-//                            }
-//                        }
-//                        .frame(height: 200)
-//                        .mapControlVisibility(.hidden)
-//                    }
-                    
+                    MapPolyline(coordinates: PlaceStore.shared.getCoordinates(for: places[focusedDayIndex]))
+                        .stroke(.blue, style: StrokeStyle(lineWidth: 1, dash: [5, 2], dashPhase: 0))
                 }
             }
         }
-        .padding(.top)
-        .onAppear {
-            // 1. 시작날짜,끝날짜 계산해서 총 몇일인지 구하여 2차원배열 길이 조정
-            let count = datesInRange(from: startDate, to: endDate).count
-            places = Array(repeating: [], count: count)
-            markers = Array(repeating: [], count: count)
-            
-            // 2. 사용자의 현재위치를 가져옴.
-            locationManager.checkLocationAuthorization()
-            self.mapRegion = MapCameraPosition.region(
-                MKCoordinateRegion(
-                    center: locationManager.lastKnownLocation ?? CLLocationCoordinate2D(latitude: 36.6337, longitude: 128.0179), // 초기 위치
-                    span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-                )
-            )
-        }
-        .sheet(isPresented: $isShowSheet) {
-            // 장소 검색 뷰
-            PlaceSearchView(startDate: startDate,
-                            endDate: endDate,
-                            selectedDay: $selectedDay,
-                            isShowSheet: $isShowSheet,
+        .frame(height: 200)
+    }
+    
+    var placesListView: some View {
+        ScrollView(.vertical) {
+            LazyVStack(pinnedViews: [.sectionHeaders]) {
+                ForEach(Array(datesInRange(from: startDate, to: endDate).enumerated()), id: \.element) { dateIndex, date in
+                    Section {
+                        PlaceInfoView(
+                            dateIndex: dateIndex,
+                            date: date,
+                            isEditing: true,
                             places: $places,
-                            cities: $cities,
-                            markers: $markers)
+                            isShowSheet: $isShowSheet,
+                            selectedDay: $selectedDay
+                        )
+                        .background(
+                            GeometryReader { geo in
+                                Color.clear.onChange(of: geo.frame(in: .global).minY) { minY, _ in
+                                    if minY < 300 && minY > 250, dateIndex < places.count, focusedDayIndex != dateIndex {
+                                        focusedDayIndex = dateIndex
+                                        updateMapForDay(focusedDayIndex)
+                                    }
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+            .padding(.bottom, 350)
         }
-        .toolbar(.hidden)
     }
     
     // 주어진 날짜 범위의 날짜 배열을 반환하는 함수
@@ -165,6 +165,34 @@ struct PlaceAddingView: View {
         
         return dates
     }
+    
+    private func setupInitialData() {
+        let count = datesInRange(from: startDate, to: endDate).count
+        places = Array(repeating: [], count: count)
+        markers = Array(repeating: [], count: count)
+        
+        locationManager.checkLocationAuthorization()
+        self.mapRegion = MapCameraPosition.region(
+            MKCoordinateRegion(
+                center: locationManager.lastKnownLocation ?? CLLocationCoordinate2D(latitude: 36.6337, longitude: 128.0179), // 초기 위치
+                span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+            )
+        )
+    }
+    
+    private func updateMapForDay(_ dayIndex: Int) {
+        guard dayIndex < places.count, !places[dayIndex].isEmpty else { return }
+        
+        let coordinates = PlaceStore.shared.getCoordinates(for: places[dayIndex])
+        if let centerCoordinate = coordinates.first {
+            mapRegion = MapCameraPosition.region(
+                MKCoordinateRegion(
+                    center: centerCoordinate,
+                    span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+                )
+            )
+        }
+    }
 }
 
 
@@ -173,4 +201,20 @@ struct PlaceAddingView: View {
     let endDate = DateComponents(year: 2024, month: 11, day: 29)
     let calendar = Calendar.current
     PlaceAddingView(startDate: calendar.date(from: startDate)!, endDate: calendar.date(from: endDate)!)
+}
+
+class PlaceStore {
+    static let shared = PlaceStore()
+    
+    func getCoordinate(for place: PlacePost) -> CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: place.coordinates[0], longitude: place.coordinates[1])
+    }
+    
+    func getCoordinates(for place: [PlacePost]) -> [CLLocationCoordinate2D] {
+        place.map{ CLLocationCoordinate2D(latitude: $0.coordinates[0], longitude: $0.coordinates[1]) }
+    }
+    
+    func getPlace(for date: Date, places: [PlacePost]) -> [PlacePost]? {
+        places.filter{ $0.tripDate == date }
+    }
 }
