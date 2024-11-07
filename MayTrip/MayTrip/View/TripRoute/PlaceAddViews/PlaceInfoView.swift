@@ -25,7 +25,7 @@ struct PlaceInfoView: View {
                     .foregroundStyle(.gray)
             }
             .font(.system(size: 14))
-            .padding()
+            .padding([.horizontal, .top])
             
             // 중앙 장소 정보
                 
@@ -64,6 +64,8 @@ struct PlaceInfoView: View {
                         .onMove { (source: IndexSet, destination: Int) -> Void in
                             self.places[dateIndex].move(fromOffsets: source, toOffset: destination)
                         }
+                        .deleteDisabled(!isEditing)
+                        .moveDisabled(!isEditing)
                     }
                     .listStyle(.plain)
                     .scrollDisabled(true)
@@ -88,8 +90,8 @@ struct PlaceInfoView: View {
                         }
                 }
                 .frame(maxWidth: .infinity)
-                .padding()
-                .padding(.bottom, 20)
+                .padding(.horizontal)
+                .padding(.bottom, 15)
             }
         }
     }
