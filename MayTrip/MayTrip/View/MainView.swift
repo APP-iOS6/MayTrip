@@ -9,10 +9,11 @@ import SwiftUI
 
 struct MainView:  View {
     @State private var selection = 0
-    @EnvironmentObject var authStore: AuthStore
+    @Environment(AuthStore.self) var authStore: AuthStore
+    let userStore = UserStore.shared
     
     var body: some View {
-        if authStore.nickname.isEmpty {
+        if authStore.isFirstLogin {
             ProfileInitView()
         } else {
             TabView(selection: $selection) {

@@ -49,7 +49,7 @@ struct PlaceSearchView: View {
                     let place = PlacePost(name: document.placeName,
                                           tripDate: selectedDate(from: selectedDay),
                                           ordered: 0,
-                                          coordinates: [Double(document.y)!, Double(document.x)!])
+                                          coordinates: [Double(document.y)!, Double(document.x)!], categoryCode: "")
                     
                     self.places[selectedDay - 1].append(place)
                     

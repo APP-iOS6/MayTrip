@@ -7,11 +7,7 @@
 
 import SwiftUI
 import AuthenticationServices
-import KakaoSDKAuth
-import KakaoSDKUser
 import Supabase
-import GoogleSignInSwift
-import GoogleSignIn
 
 struct SignInView : View {
     enum Field : Hashable{
@@ -19,7 +15,9 @@ struct SignInView : View {
         case password
     }
     
-    @EnvironmentObject var authStore: AuthStore
+    @Environment(AuthStore.self) var authStore: AuthStore
+    let userStore = UserStore.shared
+    
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var checkMaintainLogin: Bool = false
@@ -79,7 +77,9 @@ struct SignInView : View {
                                             email: email,
                                             password: password
                                         )
-                                        authStore.successLogin()
+                                        Task {
+                                            await authStore.successLogin(email: email, provider: "email")
+                                        }
                                     } catch {
                                         errorMessage = "이메일 또는 비밀번호를 확인해주세요"
                                         print(error)
@@ -128,69 +128,11 @@ struct SignInView : View {
             }
             
             HStack(spacing : screenWidth * 0.08) {
-                Button { // 애플 로그인
-                    
-                } label : {
-                    ZStack {
-                        Circle()
-                            .stroke(.black, lineWidth: 1)
-                        Image("appleLogo")
-                            .resizable()
-                            .scaledToFit()
-                    }
-                    .clipShape(.circle)
-                    .frame(width: screenWidth * 0.15)
-                    
-                }
-                .overlay {
-                    SignInWithAppleButton { request in
-                        request.requestedScopes = [.email, .fullName]
-                    } onCompletion: { result in
-                        Task {
-                            do {
-                                guard let credential = try result.get().credential as? ASAuthorizationAppleIDCredential
-                                else {
-                                    return
-                                }
-                                
-                                guard let idToken = credential.identityToken
-                                    .flatMap({ String(data: $0, encoding: .utf8) })
-                                else {
-                                    return
-                                }
-                                try await authStore.DB.auth.signInWithIdToken(
-                                    credentials: .init(
-                                        provider: .apple,
-                                        idToken: idToken
-                                    )
-                                )
-                                authStore.successLogin()
-                            } catch {
-                                dump(error)
-                            }
-                        }
-                    }
-                    .blendMode(.overlay)
-                }
+                appleLoginButton()
                 
-                Button { // 구글 로그인
-                    authStore.googleLogin()
-                } label : {
-                    ZStack {
-                        Image("googleLogo")
-                            .resizable()
-                            .scaledToFit()
-                    }
-                    .clipShape(.circle)
-                    .frame(width: screenWidth * 0.15)
-                }
+                googleLoginButton()
                 
-                Button { // 카카오 로그인
-                    authStore.kakaoLogin()
-                } label : {
-                    kakaoLoginButtonLabel(width: screenWidth)
-                }
-                
+                kakaoLoginButton()
             }
         }
         .scrollDisabled(focusField == nil)

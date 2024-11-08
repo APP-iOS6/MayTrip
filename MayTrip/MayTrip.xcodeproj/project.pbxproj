@@ -64,7 +64,10 @@
 		FB36F63A2CD4991600E356FA /* LoginViewCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6392CD4990900E356FA /* LoginViewCommon.swift */; };
 		FB36F63C2CD5150800E356FA /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F63B2CD5150400E356FA /* SignUpView.swift */; };
 		FB8AC00C2CDBBF5C0001AB05 /* ProfileInitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC00B2CDBBF560001AB05 /* ProfileInitView.swift */; };
-		FBC09BA22CD9DBAA00B059FB /* LoginButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09BA12CD9DBA400B059FB /* LoginButtons.swift */; };
+		FB8AC01A2CDCAE8A0001AB05 /* AuthStore+Kakao.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC0192CDCAE7C0001AB05 /* AuthStore+Kakao.swift */; };
+		FB8AC01C2CDCAEC30001AB05 /* AuthStore+Google.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC01B2CDCAEBE0001AB05 /* AuthStore+Google.swift */; };
+		FB8AC01E2CDD93CC0001AB05 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC01D2CDD93C80001AB05 /* UserStore.swift */; };
+		FBC09BA22CD9DBAA00B059FB /* SocialLoginButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09BA12CD9DBA400B059FB /* SocialLoginButtons.swift */; };
 		FBC09C382CDA72A800B059FB /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C372CDA72A800B059FB /* ChatRoom.swift */; };
 		FBC09C392CDA72A800B059FB /* ChatLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C362CDA72A800B059FB /* ChatLog.swift */; };
 		FBC09C3B2CDA72D200B059FB /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FBC09C3A2CDA72D200B059FB /* Config.xcconfig */; };
@@ -131,9 +134,12 @@
 		FB36F6392CD4990900E356FA /* LoginViewCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewCommon.swift; sourceTree = "<group>"; };
 		FB36F63B2CD5150400E356FA /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		FB8AC00B2CDBBF560001AB05 /* ProfileInitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInitView.swift; sourceTree = "<group>"; };
+		FB8AC0192CDCAE7C0001AB05 /* AuthStore+Kakao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthStore+Kakao.swift"; sourceTree = "<group>"; };
+		FB8AC01B2CDCAEBE0001AB05 /* AuthStore+Google.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthStore+Google.swift"; sourceTree = "<group>"; };
+		FB8AC01D2CDD93C80001AB05 /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
 		FBC09B952CD8721900B059FB /* MayTrip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MayTrip.entitlements; sourceTree = "<group>"; };
 		FBC09B9A2CD9D68D00B059FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		FBC09BA12CD9DBA400B059FB /* LoginButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButtons.swift; sourceTree = "<group>"; };
+		FBC09BA12CD9DBA400B059FB /* SocialLoginButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtons.swift; sourceTree = "<group>"; };
 		FBC09C362CDA72A800B059FB /* ChatLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLog.swift; sourceTree = "<group>"; };
 		FBC09C372CDA72A800B059FB /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		FBC09C3A2CDA72D200B059FB /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
@@ -336,8 +342,11 @@
 			children = (
 				259AABA32CDA07F500512CE6 /* TripRouteStore.swift */,
 				FB36F6192CD474F600E356FA /* AuthStore.swift */,
+				FB8AC0192CDCAE7C0001AB05 /* AuthStore+Kakao.swift */,
+				FB8AC01B2CDCAEBE0001AB05 /* AuthStore+Google.swift */,
 				6E690E792CD8B5A50096DB7C /* DateStore.swift */,
 				6E690E8E2CD8E2EB0096DB7C /* ChatStore.swift */,
+				FB8AC01D2CDD93C80001AB05 /* UserStore.swift */,
 				259AAB882CDA06CD00512CE6 /* LocationManager.swift */,
 				259AAB892CDA06CD00512CE6 /* SearchAddressStore.swift */,
 			);
@@ -361,7 +370,7 @@
 		FB36F5F72CD473A200E356FA /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				FBC09BA12CD9DBA400B059FB /* LoginButtons.swift */,
+				FBC09BA12CD9DBA400B059FB /* SocialLoginButtons.swift */,
 				FB36F5FC2CD473E800E356FA /* LoginView.swift */,
 				FB36F6352CD48F9200E356FA /* SignInView.swift */,
 				FB36F63B2CD5150400E356FA /* SignUpView.swift */,
@@ -534,8 +543,10 @@
 				42702D502CDA56AE0093F9E3 /* RouteDetailView.swift in Sources */,
 				6EDBE8AF2CDA468500D9A233 /* DateStore.swift in Sources */,
 				FB36F6052CD4740F00E356FA /* MyPageView.swift in Sources */,
+				FB8AC01A2CDCAE8A0001AB05 /* AuthStore+Kakao.swift in Sources */,
 				2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */,
 				FB36F5FD2CD473EA00E356FA /* LoginView.swift in Sources */,
+				FB8AC01C2CDCAEC30001AB05 /* AuthStore+Google.swift in Sources */,
 				FB36F5EF2CD472F600E356FA /* ContentView.swift in Sources */,
 				FB36F6032CD4740900E356FA /* CommunityView.swift in Sources */,
 				FB36F6082CD4742A00E356FA /* StorageView.swift in Sources */,
@@ -559,6 +570,7 @@
 				6E690E872CD8B9540096DB7C /* MyTripCardView.swift in Sources */,
 				6E690E8F2CD8E2F10096DB7C /* ChatStore.swift in Sources */,
 				259AABB32CDA0AB200512CE6 /* Place.swift in Sources */,
+				FB8AC01E2CDD93CC0001AB05 /* UserStore.swift in Sources */,
 				259AABB42CDA0AB200512CE6 /* MarkerItem.swift in Sources */,
 				259AABB52CDA0AB200512CE6 /* TripRoute.swift in Sources */,
 				259AABC02CDA0AC800512CE6 /* User.swift in Sources */,
@@ -574,7 +586,7 @@
 				42702D512CDA7BF70093F9E3 /* SignInView.swift in Sources */,
 				FB36F5F02CD472F600E356FA /* MayTripApp.swift in Sources */,
 				FB36F63A2CD4991600E356FA /* LoginViewCommon.swift in Sources */,
-				FBC09BA22CD9DBAA00B059FB /* LoginButtons.swift in Sources */,
+				FBC09BA22CD9DBAA00B059FB /* SocialLoginButtons.swift in Sources */,
 				FB36F63C2CD5150800E356FA /* SignUpView.swift in Sources */,
 				FBC09C382CDA72A800B059FB /* ChatRoom.swift in Sources */,
 				FBC09C392CDA72A800B059FB /* ChatLog.swift in Sources */,

@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    
-    @EnvironmentObject var authStore: AuthStore
+    @Environment(AuthStore.self) var authStore: AuthStore
     
     var body: some View {
         if authStore.isLogin {
@@ -22,5 +21,4 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .environmentObject(AuthStore())
 }
