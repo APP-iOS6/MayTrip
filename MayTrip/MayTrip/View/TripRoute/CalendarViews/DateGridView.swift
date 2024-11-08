@@ -55,6 +55,7 @@ struct DateGridView: View {
                 }
             }
         }
-        .padding(.vertical)
+        .frame(width: 280)
+        .padding(.bottom, 5)
     }
 }

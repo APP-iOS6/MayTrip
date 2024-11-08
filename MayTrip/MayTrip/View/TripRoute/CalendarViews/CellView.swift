@@ -58,14 +58,14 @@ struct CellView: View {
     var body: some View {
         VStack(spacing: 0) {
             Rectangle()
-                .frame(maxWidth: .infinity, minHeight: 50)
+                .frame(width: 40, height: 40)
                 .background {
                     if isLeftCircle || isRightCircle {
                         Circle()
                             .foregroundStyle(.orange)
                     }
                 }
-                .cornerRadius(isLeftCircle || isRightCircle ? 25 : 0, corners: isLeftCircle && isRightCircle ? [.topRight, .topLeft, .bottomLeft, .bottomRight] : isLeftCircle ? [.topLeft, .bottomLeft] : [.topRight, .bottomRight])
+                .cornerRadius(isLeftCircle || isRightCircle ? 20 : 0, corners: isLeftCircle && isRightCircle ? [.topRight, .topLeft, .bottomLeft, .bottomRight] : isLeftCircle ? [.topLeft, .bottomLeft] : [.topRight, .bottomRight])
                 .foregroundStyle(opacity == 0 ? .clear : .orange.opacity(opacity))
                 .overlay(
                     Text("\(day)")
