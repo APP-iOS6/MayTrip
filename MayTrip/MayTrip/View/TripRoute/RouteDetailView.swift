@@ -19,6 +19,7 @@ struct RouteDetailView: View {
     
     @State private var focusedDayIndex: Int = 0  // 현재 포커스된 일차
     @State var isShowSheet: Bool = false    // 장소 추가시트 띄우기
+    @State var isShowDatePickerSheet: Bool = false // 날짜 선택 시트 표시 여부
     @State var selectedDay: Int = 0         // 장소 추가시에 몇일차에 장소 추가하는지
     @State var cities: [String] = []        // 추가된 도시
     @State var places: [[PlacePost]] = []       // 추가된 장소 (배열당 한 일차 장소배열)
@@ -125,6 +126,7 @@ struct RouteDetailView: View {
                             isEditing: false,
                             places: $places,
                             isShowSheet: $isShowSheet,
+                            isShowDatePicker: $isShowDatePickerSheet,
                             selectedDay: $selectedDay
                         )
                         .background(

@@ -142,13 +142,21 @@ class DateStore {
         formatter.string(from: date)
     }
     
+    func dateToString(with format: String, date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "\(format)"
+        formatter.locale = Locale(identifier:"ko_KR")
+        print("\(formatter.string(from: date))")
+        return formatter.string(from: date)
+    }
+    
     // 시작 날짜 부터 끝날짜 범위의 날짜 배열을 반환하는 함수
     func datesInRange() -> [Date] {
         var dates: [Date] = []
         var currentDate = startDate ?? .now
-        let lastDate = endDate ?? startDate
+        let lastDate = (endDate ?? startDate)!
         
-        while currentDate <= lastDate! {
+        while currentDate <= lastDate {
             dates.append(currentDate)
             currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
         }

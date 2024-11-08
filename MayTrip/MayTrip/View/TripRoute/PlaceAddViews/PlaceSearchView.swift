@@ -53,7 +53,7 @@ struct PlaceSearchView: View {
                                           coordinates: [Double(document.y)!, Double(document.x)!],
                                           categoryCode: category)
                     
-                    self.places[selectedDay - 1].append(place)
+                    self.places[selectedDay].append(place)
                     
                     let city = document.addressName.components(separatedBy: " ").first ?? ""    // 결과의 도시부분 추출
                     
@@ -81,7 +81,7 @@ struct PlaceSearchView: View {
     // 선택된 일차의 날짜를 반환하는 함수
     func selectedDate(from day: Int) -> Date {
         let date = self.datesInRange(from: startDate, to: endDate)
-        return date[day - 1]
+        return date[day]
     }
     
     // 주어진 날짜 범위의 날짜 배열을 반환하는 함수

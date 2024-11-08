@@ -21,18 +21,21 @@ struct PlaceAddingView: View {
     var locationManager = LocationManager.shared
     var startDate: Date
     var endDate: Date
+    @State private var scrollingIndex: Int = 1
     @State private var focusedDayIndex: Int = 0  // 현재 포커스된 일차
+    @State private var selectedDate: Date? = nil // 사용자가 선택한 날짜
+    @State var isShowDatePickerSheet: Bool = false // 날짜 선택 시트 표시 여부
     @State var isShowSheet: Bool = false    // 장소 추가시트 띄우기
     @State var selectedDay: Int = 0         // 장소 추가시에 몇일차에 장소 추가하는지
     @State var cities: [String] = []        // 추가된 도시
     @State var places: [[PlacePost]] = []       // 추가된 장소 (배열당 한 일차 장소배열)
-    @State private var markers: [[MarkerItem]] = []
-    @State private var mapRegion = MapCameraPosition.region(
-        MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194), // 초기 위치
-            span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-        )
-    )
+//    @State private var mapRegion = MapCameraPosition.region(
+//        MKCoordinateRegion(
+//            center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194), // 초기 위치
+//            span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+//        )
+//    )
+    @State private var mapRegion: MapCameraPosition = .automatic
     
     var body: some View {
         VStack {
@@ -73,7 +76,6 @@ struct PlaceAddingView: View {
             Spacer()
             
             Button {
-                // TODO: 작성한 TripRoute db에 저장하는 로직
                 let orderedPlaces = PlaceStore().indexingPlace(places)
                 tripStore.places = orderedPlaces.flatMap{ $0 }
                 tripStore.city = cities
@@ -98,7 +100,6 @@ struct PlaceAddingView: View {
         .frame(height: 20)
         .padding(.bottom, 10)
         .padding(.horizontal)
-//        ./*task*/
     }
     
     var cityTagsView: some View {
@@ -121,8 +122,8 @@ struct PlaceAddingView: View {
     var mapView: some View {
         Map(position: $mapRegion) {
             if places.count > 0 {
-                if !places[focusedDayIndex].isEmpty {
-                    ForEach(Array(places[focusedDayIndex].enumerated()), id: \.offset) { index, place in
+                if !places[scrollingIndex].isEmpty {
+                    ForEach(Array(places[scrollingIndex].enumerated()), id: \.offset) { index, place in
                         Annotation("", coordinate: PlaceStore.shared.getCoordinate(for: place)) {
                             Image(systemName: "\(index + 1).circle.fill")
                                 .foregroundStyle(.tint)
@@ -130,32 +131,39 @@ struct PlaceAddingView: View {
                                 .background(Circle().fill(.white))
                         }
                     }
-                    MapPolyline(coordinates: PlaceStore.shared.getCoordinates(for: places[focusedDayIndex]))
+                    MapPolyline(coordinates: PlaceStore.shared.getCoordinates(for: places[scrollingIndex]))
                         .stroke(.blue, style: StrokeStyle(lineWidth: 1, dash: [5, 2], dashPhase: 0))
                 }
             }
+        }
+        .onChange(of: places) {
+            focusedDayIndex = selectedDay
+            scrollingIndex = selectedDay
+            mapRegion = .automatic
         }
         .frame(height: 200)
     }
     
     var placesListView: some View {
-        ScrollView(.vertical) {
-            LazyVStack(pinnedViews: [.sectionHeaders]) {
-                ForEach(Array(dateStore.datesInRange().enumerated()), id: \.element) { dateIndex, date in
-                    Section {
+        ScrollViewReader { proxy in
+            ScrollView {
+                LazyVStack(pinnedViews: [.sectionHeaders]) {
+                    ForEach(Array(dateStore.datesInRange().enumerated()), id: \.element) { dateIndex, date in
                         PlaceInfoView(
                             dateIndex: dateIndex,
                             date: date,
                             isEditing: true,
                             places: $places,
                             isShowSheet: $isShowSheet,
+                            isShowDatePicker: $isShowDatePickerSheet,
                             selectedDay: $selectedDay
                         )
+                        .id(dateIndex)
                         .background(
                             GeometryReader { geo in
                                 Color.clear.onChange(of: geo.frame(in: .global).minY) { minY, _ in
-                                    if minY < 300 && minY > 250, dateIndex < places.count, focusedDayIndex != dateIndex {
-                                        focusedDayIndex = dateIndex
+                                    if minY < 350 && minY > 300, dateIndex < places.count, scrollingIndex != dateIndex {
+                                        scrollingIndex = dateIndex
                                         updateMapForDay(focusedDayIndex)
                                     }
                                 }
@@ -163,15 +171,70 @@ struct PlaceAddingView: View {
                         )
                     }
                 }
+                .padding(.bottom, 350)
             }
-            .padding(.bottom, 350)
+            .onChange(of: focusedDayIndex) { index, oldvalue in
+                withAnimation {
+                    scrollingIndex = oldvalue
+                    proxy.scrollTo(oldvalue, anchor: .top)
+                }
+            }
+        }
+        .sheet(isPresented: $isShowDatePickerSheet) {
+            datePickerSheet
+        }
+    }
+    
+    var headerViewForDate: (Int, Date) -> AnyView {
+        { dateIndex, date in
+            AnyView(
+                HStack {
+                    Text(dateStore.convertDateToString(date))
+                        .bold()
+                        .font(.system(size: 18))
+                    Spacer()
+                }
+                .padding()
+                .background(Color.white)
+            )
+        }
+    }
+    
+    var datePickerSheet: some View {
+        VStack(alignment: .leading) {
+            Text("날짜 선택")
+                .font(.headline)
+                .padding([.top, .horizontal])
+                .padding([.top, .horizontal])
+            
+            List {
+                ForEach(Array(dateStore.datesInRange().enumerated()), id: \.element) { index, date in
+                    Button {
+                        focusedDayIndex = index
+                        isShowDatePickerSheet = false
+                    } label: {
+                        HStack {
+                            Text("Day\(index+1) \(dateStore.dateToString(with: "MM.dd(E)", date: date))")
+                                .foregroundStyle(.primary)
+                            if index == focusedDayIndex {
+                                Spacer()
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                        .foregroundStyle(index == focusedDayIndex ? .accent : Color.primary)
+                        .padding(.horizontal)
+                    }
+                    .listRowSeparator(.hidden)
+                }
+            }
+            .listStyle(.plain)
+            .presentationDetents([.medium])
         }
     }
     
     private func setupInitialData() {
         let count = dateStore.datesInRange().count
         places = Array(repeating: [], count: count)
-        markers = Array(repeating: [], count: count)
         
         locationManager.checkLocationAuthorization()
         self.mapRegion = MapCameraPosition.region(
@@ -185,15 +248,7 @@ struct PlaceAddingView: View {
     private func updateMapForDay(_ dayIndex: Int) {
         guard dayIndex < places.count, !places[dayIndex].isEmpty else { return }
         
-        let coordinates = PlaceStore.shared.getCoordinates(for: places[dayIndex])
-        if let centerCoordinate = coordinates.first {
-            mapRegion = MapCameraPosition.region(
-                MKCoordinateRegion(
-                    center: centerCoordinate,
-                    span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-                )
-            )
-        }
+        mapRegion = .automatic
     }
 }
 
@@ -221,27 +276,6 @@ class PlaceStore {
     }
     
     func isEmpty(for places: [[PlacePost]]) -> Bool {
-//        // 날짜 배열 생성
-//        var allDates = DateStore.shared.datesInRange()
-//        let calendar = Calendar.current
-//
-//
-//        // 각 날짜에 대한 데이터가 있는지 검사
-//        for date in allDates {
-//            let dateExists = places.contains { dailyPlaces in
-//                dailyPlaces.contains { place in
-//                    calendar.isDate(place.tripDate, inSameDayAs: date)
-//                }
-//            }
-//            
-//            // 날짜에 해당하는 데이터가 없으면 false 반환
-//            if !dateExists {
-//                return false
-//            }
-//        }
-//        
-//        return true // 모든 날짜에 데이터가 있으면 true 반환
-        
         // 값이 하나라도 있는지 검사.
         let result = places.flatMap{ $0 }.isEmpty
         return result
