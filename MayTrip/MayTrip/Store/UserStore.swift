@@ -10,7 +10,7 @@ import SwiftUI
 final class UserStore {
     let DB = DBConnection.shared
     static let shared = UserStore()
-    @Published var user: User = User(id: 0, nickname: "", profileImage: nil, email: "", exp: 0, provider: "")
+    var user: User = User(id: 0, nickname: "", profileImage: nil, email: "", exp: 0, provider: "")
     
     func getUserInfo(email: String, provider: String) async throws -> Void {
         do {
