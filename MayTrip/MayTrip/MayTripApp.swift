@@ -13,12 +13,12 @@ import GoogleSignIn
 @main
 struct MayTripApp: App {
     
-    @StateObject var authStore = AuthStore()
+    var authStore = AuthStore()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(authStore)
+                .environment(authStore)
                 .onOpenURL { url in
                     if (AuthApi.isKakaoTalkLoginUrl(url)) {
                         _ = AuthController.handleOpenUrl(url: url)

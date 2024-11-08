@@ -15,7 +15,9 @@ struct SignInView : View {
         case password
     }
     
-    @EnvironmentObject var authStore: AuthStore
+    @Environment(AuthStore.self) var authStore: AuthStore
+    let userStore = UserStore.shared
+    
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var checkMaintainLogin: Bool = false

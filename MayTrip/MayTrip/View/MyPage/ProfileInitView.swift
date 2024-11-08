@@ -9,12 +9,13 @@ import SwiftUI
 import PhotosUI
 
 struct ProfileInitView: View {
-    @EnvironmentObject var authStore: AuthStore
+    @Environment(AuthStore.self) var authStore: AuthStore
     @State private var selectedPhotos: [PhotosPickerItem] = []
     @State var nickname:String = ""
     @State private var profileImage: UIImage?
     @State var isValid: Bool = false
     @State var errorMessage: String = ""
+    let userStore = UserStore.shared
     
     var body: some View {
         GeometryReader { proxy in
@@ -44,12 +45,15 @@ struct ProfileInitView: View {
                             errorMessage = "닉네임 중복확인을 해주세요"
                         } else {
                             Task {
-                                try await authStore.setUserInfo(nickname: nickname, image: profileImage)
+                                try await userStore.setUserInfo(nickname: nickname, image: profileImage)
+                                if !userStore.user.nickname.isEmpty {
+                                    authStore.isFirstLogin = false
+                                }
                             }
                         }
                     } label : {
                         Text("적용")
-                            .font(.system(size: 22))
+                            .font(.system(size: 18))
                             .frame(width: proxy.size.width * 0.1)
                     }
                 }
