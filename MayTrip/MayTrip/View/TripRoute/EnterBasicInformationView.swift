@@ -17,7 +17,11 @@ struct EnterBasicInformationView: View {
     @FocusState var focused: Bool
     
     private var tags: [String] {
-        tag.components(separatedBy: "#").filter{ $0 != "" }
+        var tags = tag.components(separatedBy: "#").filter{ $0 != "" }
+        for i in 0..<tags.count {
+            tags[i] = tags[i].components(separatedBy: "#").joined().trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        return tags
     }
     
     var dateString: String {
