@@ -9,12 +9,16 @@ import SwiftUI
 struct EnterBasicInformationView: View {
     @Environment(\.dismiss) var dismiss
     
-    var dateStore = DateStore.shared
+    private var dateStore = DateStore.shared
     
     @State var title: String = ""
     @State var isCalendarShow: Bool = false
     @State var tag: String = ""
     @FocusState var focused: Bool
+    
+    private var tags: [String] {
+        tag.components(separatedBy: "#")
+    }
     
     var dateString: String {
         if let start = dateStore.startDate, let end = dateStore.endDate {
@@ -30,8 +34,12 @@ struct EnterBasicInformationView: View {
         }
     }
     
-    var isCompleteDateSetting: Bool {
+    private var isCompleteDateSetting: Bool {
         dateStore.startDate != nil && dateStore.endDate != nil
+    }
+    
+    private var isEditedDateSetting: Bool {
+        dateStore.startDate == nil || dateStore.endDate == nil || !isCompleteDateSetting
     }
     
     var body: some View {
@@ -76,7 +84,7 @@ struct EnterBasicInformationView: View {
                             .padding(.horizontal, 5)
                             .background {
                                 RoundedRectangle(cornerRadius: 20)
-                                    .foregroundStyle(Color("accentColor"))
+                                    .foregroundStyle(dateStore.endDate == nil || !isCompleteDateSetting || title.count == 0 ? Color.gray : Color("accentColor"))
                             }
                             .foregroundStyle(.white)
                             .disabled(dateStore.endDate == nil || !isCompleteDateSetting || title.count == 0)
@@ -109,7 +117,6 @@ struct EnterBasicInformationView: View {
                     
                     Divider()
                     
-                    // TODO: #으로 태그 구분해서 자르는 로직 필요
                     HStack {
                         TextField("#을 이용해 태그를 입력해보세요", text: $tag, axis: .vertical)
                             .focused($focused)
@@ -128,9 +135,10 @@ struct EnterBasicInformationView: View {
                     .padding()
             }
         }
+        .animation(.default, value: isCalendarShow)
         .navigationBarBackButtonHidden()
-        .onChange(of: isCompleteDateSetting) { oldValue, newValue in
-            
+        .onChange(of: isEditedDateSetting) { oldValue, newValue in
+            isCalendarShow = isEditedDateSetting
         }
     }
 }

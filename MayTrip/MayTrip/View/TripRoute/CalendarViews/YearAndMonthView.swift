@@ -47,7 +47,7 @@ struct YearAndMonthView: View {
             Button {
                 isShowing = false
             } label: {
-                Text("취소")
+                Text("닫기")
                     .padding(10)
             }
             .foregroundStyle(.gray)
