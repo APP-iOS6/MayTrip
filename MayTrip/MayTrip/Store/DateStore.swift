@@ -136,5 +136,23 @@ class DateStore {
         formatter.dateFormat = "yy.MM.dd(EEEEE)"
         formatter.locale = Locale(identifier:"ko_KR")
         return formatter.string(from: date)
-   }
+    }
+    
+    func convertDateToSimpleString(_ date: Date) -> String {
+        formatter.string(from: date)
+    }
+    
+    // 시작 날짜 부터 끝날짜 범위의 날짜 배열을 반환하는 함수
+    func datesInRange() -> [Date] {
+        var dates: [Date] = []
+        var currentDate = startDate ?? .now
+        let lastDate = endDate ?? startDate
+        
+        while currentDate <= lastDate! {
+            dates.append(currentDate)
+            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
+        }
+        
+        return dates
+    }
 }

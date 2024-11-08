@@ -17,7 +17,7 @@ struct EnterBasicInformationView: View {
     @FocusState var focused: Bool
     
     private var tags: [String] {
-        tag.components(separatedBy: "#")
+        tag.components(separatedBy: "#").filter{ $0 != "" }
     }
     
     var dateString: String {
@@ -59,19 +59,6 @@ struct EnterBasicInformationView: View {
                         .foregroundStyle(.black)
                         
                         Spacer()
-                        
-//                        Button {
-//                            
-//                        } label: {
-//                            Text("다음")
-//                                .padding(8)
-//                        }
-//                        .padding(.horizontal, 5)
-//                        .background {
-//                            RoundedRectangle(cornerRadius: 20)
-//                                .foregroundStyle(.tint)
-//                        }
-//                        .foregroundStyle(.white)
                         
                         NavigationLink(
                             destination:PlaceAddingView(
@@ -139,6 +126,12 @@ struct EnterBasicInformationView: View {
         .navigationBarBackButtonHidden()
         .onChange(of: isEditedDateSetting) { oldValue, newValue in
             isCalendarShow = isEditedDateSetting
+        }
+        .onDisappear {
+            let tripRouteStore = TripRouteStore.shared
+            tripRouteStore.title = self.title
+            tripRouteStore.tag = self.tags
+            print("tags: \(self.tags)")
         }
     }
 }

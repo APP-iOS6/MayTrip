@@ -46,10 +46,12 @@ struct PlaceSearchView: View {
                 }
                 .onTapGesture { // 선택한 장소 places[일차] 배열에 추가, 시트 내림
                     // TODO: 이미 선택한 장소 추가할 경우에 시나리오 추가
+                    let category = document.categoryGroupCode == "" ? "ETC" : document.categoryGroupCode
                     let place = PlacePost(name: document.placeName,
                                           tripDate: selectedDate(from: selectedDay),
                                           ordered: 0,
-                                          coordinates: [Double(document.y)!, Double(document.x)!], categoryCode: "")
+                                          coordinates: [Double(document.y)!, Double(document.x)!],
+                                          categoryCode: category)
                     
                     self.places[selectedDay - 1].append(place)
                     
@@ -58,9 +60,6 @@ struct PlaceSearchView: View {
                     if !cities.contains(city) { // 존재하지 않은 도시일 경우에 요소 추가
                         self.cities.append(city)
                     }
-                    
-                    let category = document.categoryGroupName   // 장소 카테고리 이름
-//                    print("category: \(category)")
                     
                     isShowSheet.toggle()
                 }

@@ -30,7 +30,7 @@ struct PlacePost: Codable{
     let name: String
     var tripRoute: Int = 0
     let tripDate: Date
-    let ordered: Int
+    var ordered: Int
     let coordinates: [Double]
     let categoryCode: String
     

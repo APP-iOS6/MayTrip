@@ -59,9 +59,9 @@ struct RouteDetailView: View {
             Spacer()
             
             Button {
-                // TODO: 작성한 TripRoute db에 저장하는 로직
+                // TODO: 보고있는 루트 편집화면으로 이동하는 로직
             } label: {
-                Text("완료")
+                Text("편집")
                     .padding(8)
             }
             .padding(.horizontal, 5)
@@ -181,7 +181,8 @@ struct RouteDetailView: View {
                         tripRoute: place.tripRoute,
                         tripDate: dateStore.convertStringToDate(place.tripDate),
                         ordered: place.ordered,
-                        coordinates: place.coordinates, categoryCode: ""
+                        coordinates: place.coordinates,
+                        categoryCode: place.category
                     )
                 }
                 return placePosts
@@ -243,31 +244,36 @@ class SampleTripRoute {
                   tripRoute: 0,
                   tripDate: "2024 11 11",
                   ordered: 1,
-                  coordinates: [37.5301, 127.1144], category: ""),
+                  coordinates: [37.5301, 127.1144],
+                  category: "MT1"),
             Place(id: 1,
                   name: "테스트2",
                   tripRoute: 0,
                   tripDate: "2024 11 11",
                   ordered: 2,
-                  coordinates: [37.5513, 127.0816], category: ""),
+                  coordinates: [37.5513, 127.0816],
+                  category: "CT1"),
             Place(id: 2,
                   name: "테스트3",
                   tripRoute: 0,
                   tripDate: "2024 11 11",
                   ordered: 3,
-                  coordinates: [37.5577, 127.0544], category: ""),
+                  coordinates: [37.5577, 127.0544],
+                  category: "HP8"),
             Place(id: 3,
                   name: "테스트4",
                   tripRoute: 0,
                   tripDate: "2024 11 12",
                   ordered: 1,
-                  coordinates: [37.5513, 126.9881], category: ""),
+                  coordinates: [37.5513, 126.9881],
+                  category: "FD6"),
             Place(id: 4,
                   name: "테스트5",
                   tripRoute: 0,
                   tripDate: "2024 11 12",
                   ordered: 2,
-                  coordinates: [37.6513, 126.7881], category: "")
+                  coordinates: [37.6513, 126.7881],
+                  category: "PS3")
         ],
         startDate: "2024 11 11",
         endDate: "2024 11 12",
