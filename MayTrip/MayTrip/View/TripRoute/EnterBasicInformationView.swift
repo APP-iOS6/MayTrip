@@ -60,19 +60,6 @@ struct EnterBasicInformationView: View {
                         
                         Spacer()
                         
-//                        Button {
-//                            
-//                        } label: {
-//                            Text("다음")
-//                                .padding(8)
-//                        }
-//                        .padding(.horizontal, 5)
-//                        .background {
-//                            RoundedRectangle(cornerRadius: 20)
-//                                .foregroundStyle(.tint)
-//                        }
-//                        .foregroundStyle(.white)
-                        
                         NavigationLink(
                             destination:PlaceAddingView(
                                 startDate: dateStore.startDate ?? .now,
