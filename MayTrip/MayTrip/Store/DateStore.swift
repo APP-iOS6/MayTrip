@@ -146,7 +146,6 @@ class DateStore {
         let formatter = DateFormatter()
         formatter.dateFormat = "\(format)"
         formatter.locale = Locale(identifier:"ko_KR")
-        print("\(formatter.string(from: date))")
         return formatter.string(from: date)
     }
     

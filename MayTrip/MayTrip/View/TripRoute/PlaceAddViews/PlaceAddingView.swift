@@ -16,7 +16,6 @@ struct PlaceAddingView: View {
     
     var userStore = UserStore.shared
     var tripStore = TripRouteStore.shared
-//    var tripStore = TripRouteStore()
     var dateStore = DateStore.shared
     var locationManager = LocationManager.shared
     var startDate: Date
@@ -29,12 +28,6 @@ struct PlaceAddingView: View {
     @State var selectedDay: Int = 0         // 장소 추가시에 몇일차에 장소 추가하는지
     @State var cities: [String] = []        // 추가된 도시
     @State var places: [[PlacePost]] = []       // 추가된 장소 (배열당 한 일차 장소배열)
-//    @State private var mapRegion = MapCameraPosition.region(
-//        MKCoordinateRegion(
-//            center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194), // 초기 위치
-//            span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-//        )
-//    )
     @State private var mapRegion: MapCameraPosition = .automatic
     
     var body: some View {
@@ -136,10 +129,21 @@ struct PlaceAddingView: View {
                 }
             }
         }
-        .onChange(of: places) {
+        .onChange(of: places) { newValue, oldValue in
             focusedDayIndex = selectedDay
             scrollingIndex = selectedDay
-            mapRegion = .automatic
+            if oldValue[selectedDay].count == 1 {
+                let coordinates: [Double] = places[selectedDay].first?.coordinates ?? [0,0]
+                self.mapRegion = MapCameraPosition.region(
+                    MKCoordinateRegion(
+                        center: CLLocationCoordinate2D(
+                            latitude: coordinates[0],
+                            longitude: coordinates[1]), // 초기 위치
+                        span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+                    ))
+            } else {
+                mapRegion = .automatic
+            }
         }
         .frame(height: 200)
     }
@@ -182,21 +186,6 @@ struct PlaceAddingView: View {
         }
         .sheet(isPresented: $isShowDatePickerSheet) {
             datePickerSheet
-        }
-    }
-    
-    var headerViewForDate: (Int, Date) -> AnyView {
-        { dateIndex, date in
-            AnyView(
-                HStack {
-                    Text(dateStore.convertDateToString(date))
-                        .bold()
-                        .font(.system(size: 18))
-                    Spacer()
-                }
-                .padding()
-                .background(Color.white)
-            )
         }
     }
     

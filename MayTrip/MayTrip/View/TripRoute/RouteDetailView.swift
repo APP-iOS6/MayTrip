@@ -17,6 +17,7 @@ struct RouteDetailView: View {
     @State var endDate: Date = .now
     var tripRoute: TripRoute
     
+    @State private var scrollingIndex: Int = 1
     @State private var focusedDayIndex: Int = 0  // 현재 포커스된 일차
     @State var isShowSheet: Bool = false    // 장소 추가시트 띄우기
     @State var isShowDatePickerSheet: Bool = false // 날짜 선택 시트 표시 여부
@@ -98,8 +99,8 @@ struct RouteDetailView: View {
     var mapView: some View {
         Map(position: $mapRegion) {
             if places.count > 0 {
-                if !places[focusedDayIndex].isEmpty {
-                    ForEach(Array(places[focusedDayIndex].enumerated()), id: \.offset) { index, place in
+                if !places[scrollingIndex].isEmpty {
+                    ForEach(Array(places[scrollingIndex].enumerated()), id: \.offset) { index, place in
                         Annotation("", coordinate: PlaceStore.shared.getCoordinate(for: place)) {
                             Image(systemName: "\(index + 1).circle.fill")
                                 .foregroundStyle(.tint)
@@ -107,7 +108,7 @@ struct RouteDetailView: View {
                                 .background(Circle().fill(.white))
                         }
                     }
-                    MapPolyline(coordinates: PlaceStore.shared.getCoordinates(for: places[focusedDayIndex]))
+                    MapPolyline(coordinates: PlaceStore.shared.getCoordinates(for: places[scrollingIndex]))
                         .stroke(.blue, style: StrokeStyle(lineWidth: 1, dash: [5, 2], dashPhase: 0))
                 }
             }
@@ -116,33 +117,77 @@ struct RouteDetailView: View {
     }
     
     var placesListView: some View {
-        ScrollView(.vertical) {
-            LazyVStack(pinnedViews: [.sectionHeaders]) {
-                ForEach(Array(datesInRange(from: startDate, to: endDate).enumerated()), id: \.element) { dateIndex, date in
-                    Section {
-                        PlaceInfoView(
-                            dateIndex: dateIndex,
-                            date: date,
-                            isEditing: false,
-                            places: $places,
-                            isShowSheet: $isShowSheet,
-                            isShowDatePicker: $isShowDatePickerSheet,
-                            selectedDay: $selectedDay
-                        )
-                        .background(
-                            GeometryReader { geo in
-                                Color.clear.onChange(of: geo.frame(in: .global).minY) { minY, _ in
-                                    if minY < 300 && minY > 250, dateIndex < places.count, focusedDayIndex != dateIndex {
-                                        focusedDayIndex = dateIndex
-                                        updateMapForDay(focusedDayIndex)
+        ScrollViewReader { proxy in
+            ScrollView {
+                LazyVStack(pinnedViews: [.sectionHeaders]) {
+                    ForEach(Array(datesInRange(from: startDate, to: endDate).enumerated()), id: \.element) { dateIndex, date in
+                        Section {
+                            PlaceInfoView(
+                                dateIndex: dateIndex,
+                                date: date,
+                                isEditing: false,
+                                places: $places,
+                                isShowSheet: $isShowSheet,
+                                isShowDatePicker: $isShowDatePickerSheet,
+                                selectedDay: $selectedDay
+                            )
+                            .id(dateIndex)
+                            .background(
+                                GeometryReader { geo in
+                                    Color.clear.onChange(of: geo.frame(in: .global).minY) { minY, _ in
+                                        if minY < 350 && minY > 300, dateIndex < places.count, scrollingIndex != dateIndex {
+                                            scrollingIndex = dateIndex
+                                            updateMapForDay(focusedDayIndex)
+                                        }
                                     }
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
+                .padding(.bottom, 350)
             }
-            .padding(.bottom, 350)
+            .onChange(of: focusedDayIndex) { index, oldvalue in
+                withAnimation {
+                    scrollingIndex = oldvalue
+                    proxy.scrollTo(oldvalue, anchor: .top)
+                }
+            }
+        }
+        .sheet(isPresented: $isShowDatePickerSheet) {
+            datePickerSheet
+        }
+    }
+    
+    var datePickerSheet: some View {
+        VStack(alignment: .leading) {
+            Text("날짜 선택")
+                .font(.headline)
+                .padding([.top, .horizontal])
+                .padding([.top, .horizontal])
+            
+            List {
+                ForEach(Array(datesInRange(from: startDate, to: endDate).enumerated()), id: \.element) { index, date in
+                    Button {
+                        focusedDayIndex = index
+                        isShowDatePickerSheet = false
+                    } label: {
+                        HStack {
+                            Text("Day\(index+1) \(dateStore.dateToString(with: "MM.dd(E)", date: date))")
+                                .foregroundStyle(.primary)
+                            if index == focusedDayIndex {
+                                Spacer()
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                        .foregroundStyle(index == focusedDayIndex ? .accent : Color.primary)
+                        .padding(.horizontal)
+                    }
+                    .listRowSeparator(.hidden)
+                }
+            }
+            .listStyle(.plain)
+            .presentationDetents([.medium])
         }
     }
     
@@ -212,15 +257,7 @@ struct RouteDetailView: View {
     private func updateMapForDay(_ dayIndex: Int) {
         guard dayIndex < places.count, !places[dayIndex].isEmpty else { return }
         
-        let coordinates = PlaceStore.shared.getCoordinates(for: places[dayIndex])
-        if let centerCoordinate = coordinates.first {
-            mapRegion = MapCameraPosition.region(
-                MKCoordinateRegion(
-                    center: centerCoordinate,
-                    span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-                )
-            )
-        }
+        mapRegion = .automatic
     }
 }
 
