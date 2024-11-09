@@ -37,4 +37,33 @@ class AuthStore {
             print("Failed to fetch user info: \(error)")
         }
     }
+    
+    func signOut() async throws {
+        let provider = userStore.user.provider
+        
+        do {
+            switch provider {
+            case "google":
+                GIDSignIn.sharedInstance.signOut()
+                print("google logout success")
+                self.isLogin = false
+            case "kakao":
+                UserApi.shared.logout {(error) in
+                    if let error = error {
+                        print(error)
+                    }
+                    else {
+                        print("kakao logout success.")
+                        self.isLogin = false
+                    }
+                }
+            default: // 이메일, 애플 로그인 경우 Supabase
+                try await DB.auth.signOut()
+                print("email, apple logout success")
+                self.isLogin = false
+            }
+        } catch {
+            print(error)
+        }
+    }
 }
