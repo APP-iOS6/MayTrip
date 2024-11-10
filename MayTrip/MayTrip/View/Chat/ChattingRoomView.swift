@@ -126,7 +126,10 @@ struct ChattingRoomView: View {
                     .focused($focused)
                     .onSubmit {
                         Task {
+                            guard message != "" else { return }
+                            
                             try await chatStore.saveChatLog(chatRoom.id, message: message, route: route, image: image)
+                            
                             message = ""
                             focused = true
                             isSend = true
@@ -135,7 +138,10 @@ struct ChattingRoomView: View {
                 
                 Button {
                     Task {
+                        guard message != "" else { return }
+                        
                         try await chatStore.saveChatLog(chatRoom.id, message: message, route: route, image: image)
+                        
                         message = ""
                         focused = false
                         isSend = true
