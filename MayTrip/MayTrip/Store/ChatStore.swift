@@ -43,9 +43,11 @@ class ChatStore {
                 let otherUser = try await getOtherUser(chatRoom)
                 let forChatComponent: (ChatRoom, [ChatLog], User) = (chatRoom, chatLogs, otherUser)
 
-                forChatComponents.removeAll(where: { $0.chatRoom.id == chatRoom.id })
-                forChatComponents.append(forChatComponent)
-                
+                // 화면 관련 부분은 메인에서 작업
+                DispatchQueue.main.asyncAndWait {
+                    forChatComponents.removeAll(where: { $0.chatRoom.id == chatRoom.id })
+                    forChatComponents.append(forChatComponent)
+                }
             }
         }
     }
