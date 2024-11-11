@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TripRouteView: View {
     var routeStore: DummyRouteStore = .shared
+    let tripRouteStore = TripRouteStore()
     
     var body: some View {
         NavigationStack {

@@ -10,14 +10,17 @@ struct EnterBasicInformationView: View {
     @Environment(\.dismiss) var dismiss
     
     private var dateStore = DateStore.shared
-    
     @State var title: String = ""
     @State var isCalendarShow: Bool = false
     @State var tag: String = ""
     @FocusState var focused: Bool
     
     private var tags: [String] {
-        tag.components(separatedBy: "#")
+        var tags = tag.components(separatedBy: "#").filter{ $0 != "" }
+        for i in 0..<tags.count {
+            tags[i] = tags[i].components(separatedBy: "#").joined().trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        return tags
     }
     
     var dateString: String {
@@ -60,24 +63,14 @@ struct EnterBasicInformationView: View {
                         
                         Spacer()
                         
-//                        Button {
-//                            
-//                        } label: {
-//                            Text("다음")
-//                                .padding(8)
-//                        }
-//                        .padding(.horizontal, 5)
-//                        .background {
-//                            RoundedRectangle(cornerRadius: 20)
-//                                .foregroundStyle(.tint)
-//                        }
-//                        .foregroundStyle(.white)
-                        
                         NavigationLink(
-                            destination:PlaceAddingView(
-                                startDate: dateStore.startDate ?? .now,
-                                endDate: dateStore.endDate ?? .now
-                            )) {
+                            destination:
+                                PlaceAddingView(
+                                    title: title,
+                                    tags: tags,
+                                    startDate: dateStore.startDate ?? .now,
+                                    endDate: dateStore.endDate ?? .now)
+                            ) {
                                 Text("다음")
                                     .padding(8)
                             }
