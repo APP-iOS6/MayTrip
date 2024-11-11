@@ -10,6 +10,7 @@ import SwiftUI
 struct MainView:  View {
     @State private var selection = 0
     @Environment(AuthStore.self) var authStore: AuthStore
+    @Environment(ChatStore.self) var chatStore: ChatStore
     let userStore = UserStore.shared
     
     var body: some View {
@@ -37,6 +38,11 @@ struct MainView:  View {
                         Text("채팅")
                     }
                     .tag(2)
+                    .onAppear {
+                        Task {
+                            try await chatStore.setAllComponents()
+                        }
+                    }
                 
                 StorageView()
                     .tabItem {

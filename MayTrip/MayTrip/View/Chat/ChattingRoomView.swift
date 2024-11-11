@@ -10,7 +10,7 @@ import UIKit
 
 struct ChattingRoomView: View {
     @Environment(\.dismiss) var dismiss
-    let chatStore = ChatStore.shared
+    @Environment(ChatStore.self) private var chatStore: ChatStore
     let routeStore = DummyRouteStore.shared
     let userStore = UserStore.shared
     @State var message: String = ""

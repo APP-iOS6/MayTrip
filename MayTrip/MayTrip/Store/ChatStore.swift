@@ -11,7 +11,6 @@ import Realtime
 
 @Observable
 class ChatStore {
-    static let shared: ChatStore = ChatStore()
     private let db = DBConnection.shared
     private let userStore = UserStore.shared
     
@@ -19,7 +18,7 @@ class ChatStore {
  
     private(set) var forChatComponents: [(chatRoom: ChatRoom, chatLogs: [ChatLog], otherUser: User)] = []
 
-    private init() {
+    init() {
         Task {
             try await setAllComponents()
             

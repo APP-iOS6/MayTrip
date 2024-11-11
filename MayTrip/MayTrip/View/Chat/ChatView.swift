@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ChatView: View {
-    var chatStore = ChatStore.shared
+    @Environment(ChatStore.self) private var chatStore: ChatStore
     let userStore = UserStore.shared
     
     var body: some View {
