@@ -14,9 +14,8 @@ import MapKit
 struct PlaceAddingView: View {
     @Environment(\.dismiss) var dismiss
     
-    var userStore = UserStore.shared
-    var tripStore = TripRouteStore.shared
-//    var tripStore = TripRouteStore()
+    var userStore: UserStore = UserStore.shared
+    var tripStore: TripRouteStore
     var dateStore = DateStore.shared
     var locationManager = LocationManager.shared
     var startDate: Date
@@ -73,12 +72,12 @@ struct PlaceAddingView: View {
             Spacer()
             
             Button {
-                // TODO: 작성한 TripRoute db에 저장하는 로직
+                //작성한 TripRoute db에 저장하는 로직
                 let orderedPlaces = PlaceStore().indexingPlace(places)
-                tripStore.places = orderedPlaces.flatMap{ $0 }
-                tripStore.city = cities
-                tripStore.startDate = dateStore.convertDateToSimpleString(startDate)
-                tripStore.endDate = dateStore.convertDateToSimpleString(endDate)
+                tripStore.inputDatas(places: orderedPlaces.flatMap{ $0 },
+                                     cities: cities,
+                                     startDate: dateStore.convertDateToSimpleString(startDate),
+                                     endDate: dateStore.convertDateToSimpleString(endDate))
                 Task {
                     try await tripStore.addTripRoute(userId: userStore.user.id)
                     tripStore.resetDatas()
@@ -98,7 +97,6 @@ struct PlaceAddingView: View {
         .frame(height: 20)
         .padding(.bottom, 10)
         .padding(.horizontal)
-//        ./*task*/
     }
     
     var cityTagsView: some View {
@@ -202,106 +200,5 @@ struct PlaceAddingView: View {
     let startDate = DateComponents(year: 2024, month: 11, day: 24)
     let endDate = DateComponents(year: 2024, month: 11, day: 29)
     let calendar = Calendar.current
-    PlaceAddingView(startDate: calendar.date(from: startDate)!, endDate: calendar.date(from: endDate)!)
-}
-
-class PlaceStore {
-    static let shared = PlaceStore()
-    
-    func getCoordinate(for place: PlacePost) -> CLLocationCoordinate2D {
-        CLLocationCoordinate2D(latitude: place.coordinates[0], longitude: place.coordinates[1])
-    }
-    
-    func getCoordinates(for place: [PlacePost]) -> [CLLocationCoordinate2D] {
-        place.map{ CLLocationCoordinate2D(latitude: $0.coordinates[0], longitude: $0.coordinates[1]) }
-    }
-    
-    func getPlace(for date: Date, places: [PlacePost]) -> [PlacePost]? {
-        places.filter{ $0.tripDate == date }
-    }
-    
-    func isEmpty(for places: [[PlacePost]]) -> Bool {
-//        // 날짜 배열 생성
-//        var allDates = DateStore.shared.datesInRange()
-//        let calendar = Calendar.current
-//
-//
-//        // 각 날짜에 대한 데이터가 있는지 검사
-//        for date in allDates {
-//            let dateExists = places.contains { dailyPlaces in
-//                dailyPlaces.contains { place in
-//                    calendar.isDate(place.tripDate, inSameDayAs: date)
-//                }
-//            }
-//            
-//            // 날짜에 해당하는 데이터가 없으면 false 반환
-//            if !dateExists {
-//                return false
-//            }
-//        }
-//        
-//        return true // 모든 날짜에 데이터가 있으면 true 반환
-        
-        // 값이 하나라도 있는지 검사.
-        let result = places.flatMap{ $0 }.isEmpty
-        return result
-    }
-    
-    // index에 맞게 ordered값 재정의
-    func indexingPlace(_ places: [[PlacePost]]) -> [[PlacePost]] {
-        var places = places
-        
-        for i in 0..<places.count {
-            for j in 0..<places[i].count {
-                places[i][j].ordered = j + 1
-            }
-        }
-        
-        return places
-    }
-    
-    func getCategory(_ category: String) -> String {
-        switch category {
-        case "MT1":
-            return "대형마트"
-        case "CS2":
-            return "편의점"
-        case "PS3":
-            return "어린이집, 유치원"
-        case "SC4":
-            return "학교"
-        case "AC5":
-            return "학원"
-        case "PK6":
-            return "주차장"
-        case "OL7":
-            return "주유소, 충전소"
-        case "SW8":
-            return "지하철역"
-        case "BK9":
-            return "은행"
-        case "CT1":
-            return "문화시설"
-        case "AG2":
-            return "중개업소"
-        case "PO3":
-            return "공공기관"
-        case "AT4":
-            return "관광명소"
-        case "AD5":
-            return "숙박"
-        case "FD6":
-            return "음식점"
-        case "CE7":
-            return "카페"
-        case "HP8":
-            return "병원"
-        case "PM9":
-            return "약국"
-        case "ETC":
-            return "기타"
-        default:
-            return category
-        }
-    }
+    PlaceAddingView(tripStore: TripRouteStore(), startDate: calendar.date(from: startDate)!, endDate: calendar.date(from: endDate)!)
 }

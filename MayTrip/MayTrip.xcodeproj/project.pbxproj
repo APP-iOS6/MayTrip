@@ -27,6 +27,7 @@
 		42702D482CDA34510093F9E3 /* DateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E792CD8B5A50096DB7C /* DateStore.swift */; };
 		42702D502CDA56AE0093F9E3 /* RouteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42702D4F2CDA56AE0093F9E3 /* RouteDetailView.swift */; };
 		42702D512CDA7BF70093F9E3 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6352CD48F9200E356FA /* SignInView.swift */; };
+		42F2F9D42CE187F60013F147 /* PlaceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2F9D32CE187F60013F147 /* PlaceStore.swift */; };
 		6E690E732CD8B54F0096DB7C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E6C2CD8B54F0096DB7C /* CalendarView.swift */; };
 		6E690E742CD8B54F0096DB7C /* DateGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E6E2CD8B54F0096DB7C /* DateGridView.swift */; };
 		6E690E752CD8B54F0096DB7C /* EnterBasicInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E722CD8B54F0096DB7C /* EnterBasicInformationView.swift */; };
@@ -104,6 +105,7 @@
 		42702D492CDA34600093F9E3 /* ChatLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLog.swift; sourceTree = "<group>"; };
 		42702D4A2CDA34600093F9E3 /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		42702D4F2CDA56AE0093F9E3 /* RouteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDetailView.swift; sourceTree = "<group>"; };
+		42F2F9D32CE187F60013F147 /* PlaceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceStore.swift; sourceTree = "<group>"; };
 		6E690E6C2CD8B54F0096DB7C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		6E690E6D2CD8B54F0096DB7C /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		6E690E6E2CD8B54F0096DB7C /* DateGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateGridView.swift; sourceTree = "<group>"; };
@@ -347,6 +349,7 @@
 				6E690E792CD8B5A50096DB7C /* DateStore.swift */,
 				6E690E8E2CD8E2EB0096DB7C /* ChatStore.swift */,
 				FB8AC01D2CDD93C80001AB05 /* UserStore.swift */,
+				42F2F9D32CE187F60013F147 /* PlaceStore.swift */,
 				259AAB882CDA06CD00512CE6 /* LocationManager.swift */,
 				259AAB892CDA06CD00512CE6 /* SearchAddressStore.swift */,
 			);
@@ -545,6 +548,7 @@
 				FB36F6052CD4740F00E356FA /* MyPageView.swift in Sources */,
 				FB8AC01A2CDCAE8A0001AB05 /* AuthStore+Kakao.swift in Sources */,
 				2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */,
+				42F2F9D42CE187F60013F147 /* PlaceStore.swift in Sources */,
 				FB36F5FD2CD473EA00E356FA /* LoginView.swift in Sources */,
 				FB8AC01C2CDCAEC30001AB05 /* AuthStore+Google.swift in Sources */,
 				FB36F5EF2CD472F600E356FA /* ContentView.swift in Sources */,

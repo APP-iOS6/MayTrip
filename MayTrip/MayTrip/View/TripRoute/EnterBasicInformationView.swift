@@ -10,7 +10,7 @@ struct EnterBasicInformationView: View {
     @Environment(\.dismiss) var dismiss
     
     private var dateStore = DateStore.shared
-    
+    private var tripRouteStore = TripRouteStore()
     @State var title: String = ""
     @State var isCalendarShow: Bool = false
     @State var tag: String = ""
@@ -66,6 +66,7 @@ struct EnterBasicInformationView: View {
                         
                         NavigationLink(
                             destination:PlaceAddingView(
+                                tripStore: tripRouteStore,
                                 startDate: dateStore.startDate ?? .now,
                                 endDate: dateStore.endDate ?? .now
                             )) {
@@ -132,7 +133,6 @@ struct EnterBasicInformationView: View {
             isCalendarShow = isEditedDateSetting
         }
         .onDisappear {
-            let tripRouteStore = TripRouteStore.shared
             tripRouteStore.title = self.title
             tripRouteStore.tag = self.tags
             print("tags: \(self.tags)")

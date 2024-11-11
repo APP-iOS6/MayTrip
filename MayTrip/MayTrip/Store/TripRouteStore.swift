@@ -14,8 +14,6 @@ class TripRouteStore{
     var list: [TripRouteSimple] = []
     var tripRoute: [TripRoute] = []
     
-    static let shared = TripRouteStore()
-    
     //트립 루트 저장용
     var title: String = ""
     var tag: [String] = []
@@ -113,6 +111,13 @@ class TripRouteStore{
                 .execute()
             print("place insert error: \(error)")
         }
+    }
+    
+    func inputDatas(places: [PlacePost], cities: [String], startDate: String, endDate: String) {
+        self.places = places
+        self.city = cities
+        self.startDate = startDate
+        self.endDate = endDate
     }
     
     func resetDatas() {
