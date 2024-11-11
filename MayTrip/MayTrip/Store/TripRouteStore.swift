@@ -8,20 +8,17 @@ import Foundation
 import Observation
 
 
-@Observable
-class TripRouteStore{
+class TripRouteStore: ObservableObject {
     let db = DBConnection.shared
-    var list: [TripRouteSimple] = []
-    var tripRoute: [TripRoute] = []
-    
-    static let shared = TripRouteStore()
+    @Published var list: [TripRouteSimple] = []
+    @Published var tripRoute: [TripRoute] = []
     
     //트립 루트 저장용
-    var title: String = ""
-    var tag: [String] = []
-    var city: [String] = []
-    var startDate: String = ""
-    var endDate: String? = nil
+    @Published var title: String = ""
+    @Published var tag: [String] = []
+    @Published var city: [String] = []
+    @Published var startDate: String = ""
+    @Published var endDate: String? = nil
     
     //장소 저장 테스트용
 //    var places: [PlacePost] = [
@@ -30,7 +27,7 @@ class TripRouteStore{
 //        PlacePost(name: "테스트장소3", tripDate: .now, ordered: 3, coordinates: [34.99648581414221, 135.78456033453412]),
 //        
 //    ]
-    var places: [PlacePost] = []
+    @Published var places: [PlacePost] = []
     
     //여행 루트 리스트 가져오는 함수
     func getTripRouteList() async throws-> Void{
@@ -113,6 +110,15 @@ class TripRouteStore{
                 .execute()
             print("place insert error: \(error)")
         }
+    }
+    
+    func inputDatas(title: String, tags: [String], places: [PlacePost], cities: [String], startDate: String, endDate: String) {
+        self.title = title
+        self.tag = tags
+        self.places = places
+        self.city = cities
+        self.startDate = startDate
+        self.endDate = endDate
     }
     
     func resetDatas() {

@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct PlaceInfoView: View {
-    let placeStore = PlaceStore.shared
-    
     var dateIndex: Int
     var date: Date
     var isEditing: Bool
@@ -54,7 +52,7 @@ struct PlaceInfoView: View {
                                         .font(.system(size: 16))
                                         .bold()
                                     
-                                    Text("\(placeStore.getCategory(place.categoryCode))")
+                                    Text("\(PlaceStore.getCategory(place.categoryCode))")
                                         .font(.system(size: 12))
                                         .foregroundStyle(.gray)
                                 }

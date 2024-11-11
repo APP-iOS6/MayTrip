@@ -11,8 +11,9 @@ import MapKit
 struct RouteDetailView: View {
     @Environment(\.dismiss) var dismiss
     
-    var locationManager = LocationManager.shared
-    var dateStore = DateStore.shared
+    var locationManager: LocationManager = LocationManager.shared
+    var dateStore: DateStore = DateStore.shared
+    
     @State var startDate: Date = .now
     @State var endDate: Date = .now
     var tripRoute: TripRoute
@@ -101,14 +102,14 @@ struct RouteDetailView: View {
             if places.count > 0 {
                 if !places[scrollingIndex].isEmpty {
                     ForEach(Array(places[scrollingIndex].enumerated()), id: \.offset) { index, place in
-                        Annotation("", coordinate: PlaceStore.shared.getCoordinate(for: place)) {
+                        Annotation("", coordinate: PlaceStore.getCoordinate(for: place)) {
                             Image(systemName: "\(index + 1).circle.fill")
                                 .foregroundStyle(.tint)
                                 .font(.title)
                                 .background(Circle().fill(.white))
                         }
                     }
-                    MapPolyline(coordinates: PlaceStore.shared.getCoordinates(for: places[scrollingIndex]))
+                    MapPolyline(coordinates: PlaceStore.getCoordinates(for: places[scrollingIndex]))
                         .stroke(.blue, style: StrokeStyle(lineWidth: 1, dash: [5, 2], dashPhase: 0))
                 }
             }
@@ -192,7 +193,7 @@ struct RouteDetailView: View {
     }
     
     // 주어진 날짜 범위의 날짜 배열을 반환하는 함수
-    func datesInRange(from start: Date, to end: Date) -> [Date] {
+    private func datesInRange(from start: Date, to end: Date) -> [Date] {
         var dates: [Date] = []
         var currentDate = start
         
@@ -204,7 +205,7 @@ struct RouteDetailView: View {
         return dates
     }
     
-    func dateToString(_ date: String) -> Date? {
+    private func dateToString(_ date: String) -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy MM dd"
         dateFormatter.locale = Locale(identifier: "ko_KR") // 로케일 설정 (옵션)
@@ -213,7 +214,7 @@ struct RouteDetailView: View {
         return dateFormatter.date(from: date)
     }
     
-    func convertPlacesToPlacePosts(_ places: [Place]) -> [[PlacePost]] {
+    private func convertPlacesToPlacePosts(_ places: [Place]) -> [[PlacePost]] {
         // 날짜별로 Place 배열을 그룹화하고, ordered 순으로 정렬
         let groupedByDate = Dictionary(grouping: places) { $0.tripDate }
         
