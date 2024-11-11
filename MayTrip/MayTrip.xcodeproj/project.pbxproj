@@ -70,6 +70,7 @@
 		FB8AC01E2CDD93CC0001AB05 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC01D2CDD93C80001AB05 /* UserStore.swift */; };
 		FB8AC02B2CE195490001AB05 /* CommunityHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC02A2CE195490001AB05 /* CommunityHeaderView.swift */; };
 		FB8AC02D2CE1966B0001AB05 /* CommunityBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC02C2CE1966B0001AB05 /* CommunityBodyView.swift */; };
+		FB8AC02F2CE19D010001AB05 /* CommunityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC02E2CE19CFA0001AB05 /* CommunityStore.swift */; };
 		FBC09BA22CD9DBAA00B059FB /* SocialLoginButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09BA12CD9DBA400B059FB /* SocialLoginButtons.swift */; };
 		FBC09C382CDA72A800B059FB /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C372CDA72A800B059FB /* ChatRoom.swift */; };
 		FBC09C392CDA72A800B059FB /* ChatLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C362CDA72A800B059FB /* ChatLog.swift */; };
@@ -143,6 +144,7 @@
 		FB8AC01D2CDD93C80001AB05 /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
 		FB8AC02A2CE195490001AB05 /* CommunityHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHeaderView.swift; sourceTree = "<group>"; };
 		FB8AC02C2CE1966B0001AB05 /* CommunityBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityBodyView.swift; sourceTree = "<group>"; };
+		FB8AC02E2CE19CFA0001AB05 /* CommunityStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityStore.swift; sourceTree = "<group>"; };
 		FBC09B952CD8721900B059FB /* MayTrip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MayTrip.entitlements; sourceTree = "<group>"; };
 		FBC09B9A2CD9D68D00B059FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FBC09BA12CD9DBA400B059FB /* SocialLoginButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtons.swift; sourceTree = "<group>"; };
@@ -356,6 +358,7 @@
 				42F2F9D32CE187F60013F147 /* PlaceStore.swift */,
 				259AAB882CDA06CD00512CE6 /* LocationManager.swift */,
 				259AAB892CDA06CD00512CE6 /* SearchAddressStore.swift */,
+				FB8AC02E2CE19CFA0001AB05 /* CommunityStore.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -586,6 +589,7 @@
 				259AABB42CDA0AB200512CE6 /* MarkerItem.swift in Sources */,
 				259AABB52CDA0AB200512CE6 /* TripRoute.swift in Sources */,
 				259AABC02CDA0AC800512CE6 /* User.swift in Sources */,
+				FB8AC02F2CE19D010001AB05 /* CommunityStore.swift in Sources */,
 				259AABB62CDA0AB200512CE6 /* City.swift in Sources */,
 				6E690E8B2CD8B97E0096DB7C /* TripRouteView.swift in Sources */,
 				6E690E882CD8B9540096DB7C /* RecommendContentView.swift in Sources */,
