@@ -162,4 +162,17 @@ class DateStore {
         
         return dates
     }
+    
+    func datesInRange() -> [Date] {
+        var dates: [Date] = []
+        var currentDate = startDate ?? .now
+        let lastDate = endDate ?? .now
+        
+        while currentDate <= lastDate {
+            dates.append(currentDate)
+            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
+        }
+        
+        return dates
+    }
 }
