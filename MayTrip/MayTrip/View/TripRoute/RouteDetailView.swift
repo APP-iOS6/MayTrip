@@ -121,7 +121,7 @@ struct RouteDetailView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(pinnedViews: [.sectionHeaders]) {
-                    ForEach(Array(datesInRange(from: startDate, to: endDate).enumerated()), id: \.element) { dateIndex, date in
+                    ForEach(Array(dateStore.datesInRange(from: startDate, to: endDate).enumerated()), id: \.element) { dateIndex, date in
                         Section {
                             PlaceInfoView(
                                 dateIndex: dateIndex,
@@ -168,7 +168,7 @@ struct RouteDetailView: View {
                 .padding([.top, .horizontal])
             
             List {
-                ForEach(Array(datesInRange(from: startDate, to: endDate).enumerated()), id: \.element) { index, date in
+                ForEach(Array(dateStore.datesInRange(from: startDate, to: endDate).enumerated()), id: \.element) { index, date in
                     Button {
                         focusedDayIndex = index
                         isShowDatePickerSheet = false
@@ -190,28 +190,6 @@ struct RouteDetailView: View {
             .listStyle(.plain)
             .presentationDetents([.medium])
         }
-    }
-    
-    // 주어진 날짜 범위의 날짜 배열을 반환하는 함수
-    private func datesInRange(from start: Date, to end: Date) -> [Date] {
-        var dates: [Date] = []
-        var currentDate = start
-        
-        while currentDate <= end {
-            dates.append(currentDate)
-            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
-        }
-        
-        return dates
-    }
-    
-    private func dateToString(_ date: String) -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy MM dd"
-        dateFormatter.locale = Locale(identifier: "ko_KR") // 로케일 설정 (옵션)
-        dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul") // 시간대 설정 (옵션)
-        
-        return dateFormatter.date(from: date)
     }
     
     private func convertPlacesToPlacePosts(_ places: [Place]) -> [[PlacePost]] {

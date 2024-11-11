@@ -23,7 +23,7 @@ struct PlaceAddingView: View {
     var tags: [String]
     var startDate: Date
     var endDate: Date
-    @State private var scrollingIndex: Int = 1
+    @State private var scrollingIndex: Int = 0
     @State private var focusedDayIndex: Int = 0  // 현재 포커스된 일차
     @State private var selectedDate: Date? = nil // 사용자가 선택한 날짜
     @State var isShowDatePickerSheet: Bool = false // 날짜 선택 시트 표시 여부
@@ -135,22 +135,6 @@ struct PlaceAddingView: View {
                 }
             }
         }
-        .onChange(of: places) { newValue, oldValue in
-            focusedDayIndex = selectedDay
-            scrollingIndex = selectedDay
-            if oldValue[selectedDay].count == 1 {
-                let coordinates: [Double] = places[selectedDay].first?.coordinates ?? [0,0]
-                self.mapRegion = MapCameraPosition.region(
-                    MKCoordinateRegion(
-                        center: CLLocationCoordinate2D(
-                            latitude: coordinates[0],
-                            longitude: coordinates[1]), // 초기 위치
-                        span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-                    ))
-            } else {
-                mapRegion = .automatic
-            }
-        }
         .frame(height: 200)
     }
     
@@ -158,7 +142,7 @@ struct PlaceAddingView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(pinnedViews: [.sectionHeaders]) {
-                    ForEach(Array(dateStore.datesInRange().enumerated()), id: \.element) { dateIndex, date in
+                    ForEach(Array(dateStore.datesInRange(from: startDate, to: endDate).enumerated()), id: \.element) { dateIndex, date in
                         PlaceInfoView(
                             dateIndex: dateIndex,
                             date: date,
@@ -172,9 +156,9 @@ struct PlaceAddingView: View {
                         .background(
                             GeometryReader { geo in
                                 Color.clear.onChange(of: geo.frame(in: .global).minY) { minY, _ in
-                                    if minY < 350 && minY > 300, dateIndex < places.count, scrollingIndex != dateIndex {
+                                    if minY < 380 && minY > 340, dateIndex < places.count, scrollingIndex != dateIndex {
                                         scrollingIndex = dateIndex
-                                        updateMapForDay(focusedDayIndex)
+                                        updateMapForDay(dateIndex)
                                     }
                                 }
                             }
@@ -188,6 +172,28 @@ struct PlaceAddingView: View {
                     scrollingIndex = oldvalue
                     proxy.scrollTo(oldvalue, anchor: .top)
                 }
+            }
+            .onChange(of: places) { newValue, oldValue in
+                print("selected Day: \(selectedDay)")
+                
+                proxy.scrollTo(selectedDay, anchor: .top)
+                
+                if oldValue[selectedDay].count == 1 {
+                    print("have one item")
+                    let coordinates: [Double] = places[selectedDay].first?.coordinates ?? [0,0]
+                    self.mapRegion = MapCameraPosition.region(
+                        MKCoordinateRegion(
+                            center: CLLocationCoordinate2D(
+                                latitude: coordinates[0],
+                                longitude: coordinates[1]), // 초기 위치
+                            span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+                        ))
+                } else {
+                    mapRegion = .automatic
+                }
+                
+                focusedDayIndex = selectedDay
+                scrollingIndex = selectedDay
             }
         }
         .sheet(isPresented: $isShowDatePickerSheet) {
@@ -203,7 +209,7 @@ struct PlaceAddingView: View {
                 .padding([.top, .horizontal])
             
             List {
-                ForEach(Array(dateStore.datesInRange().enumerated()), id: \.element) { index, date in
+                ForEach(Array(dateStore.datesInRange(from: startDate, to: endDate).enumerated()), id: \.element) { index, date in
                     Button {
                         focusedDayIndex = index
                         isShowDatePickerSheet = false
@@ -225,10 +231,13 @@ struct PlaceAddingView: View {
             .listStyle(.plain)
             .presentationDetents([.medium])
         }
+        .onAppear {
+            focusedDayIndex = scrollingIndex
+        }
     }
     
     private func setupInitialData() {
-        let count = dateStore.datesInRange().count
+        let count = dateStore.datesInRange(from: self.startDate, to: self.endDate).count
         places = Array(repeating: [], count: count)
         
         locationManager.checkLocationAuthorization()
@@ -243,7 +252,19 @@ struct PlaceAddingView: View {
     private func updateMapForDay(_ dayIndex: Int) {
         guard dayIndex < places.count, !places[dayIndex].isEmpty else { return }
         
-        mapRegion = .automatic
+        if places[dayIndex].count == 1 {
+            let coordinates: [Double] = places[dayIndex].first?.coordinates ?? [0,0]
+            self.mapRegion = MapCameraPosition.region(
+                MKCoordinateRegion(
+                    center: CLLocationCoordinate2D(
+                        latitude: coordinates[0],
+                        longitude: coordinates[1]), // 초기 위치
+                    span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+                )
+            )
+        } else {
+            self.mapRegion = .automatic
+        }
     }
 }
 

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PlaceInfoView: View {
+    let dateStore: DateStore = DateStore()
     var dateIndex: Int
     var date: Date
     var isEditing: Bool
@@ -26,7 +27,7 @@ struct PlaceInfoView: View {
                     Text("DAY\(dateIndex + 1)")
                         .foregroundStyle(Color.primary)
                         .bold()
-                    Text(dateString(from: date))
+                    Text(dateStore.dateToString(with: "MM.dd(E)", date: date))
                         .foregroundStyle(.gray)
                     Image(systemName: "chevron.right")
                         .foregroundStyle(Color.primary)
@@ -102,13 +103,5 @@ struct PlaceInfoView: View {
                 .padding(.bottom, 15)
             }
         }
-    }
-    
-    // 날짜를 원하는 형식으로 변환하는 함수
-    func dateString(from date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM.dd(E)" // 10.26(월) 형식
-        dateFormatter.locale = Locale(identifier: "ko_KR") // 한국어 로케일 설정
-        return dateFormatter.string(from: date)
     }
 }

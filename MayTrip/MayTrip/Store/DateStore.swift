@@ -150,10 +150,10 @@ class DateStore {
     }
     
     // 시작 날짜 부터 끝날짜 범위의 날짜 배열을 반환하는 함수
-    func datesInRange() -> [Date] {
+    func datesInRange(from startDate: Date, to endDate: Date) -> [Date] {
         var dates: [Date] = []
-        var currentDate = startDate ?? .now
-        let lastDate = (endDate ?? startDate)!
+        var currentDate = startDate
+        let lastDate = endDate
         
         while currentDate <= lastDate {
             dates.append(currentDate)

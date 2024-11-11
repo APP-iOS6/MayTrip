@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PlaceSearchView: View {
+    let dateStore: DateStore = DateStore()
     var searchAddressStore = SearchAddressStore.shared
     var locationManager = LocationManager.shared
     var startDate: Date
@@ -79,21 +80,8 @@ struct PlaceSearchView: View {
     }
     
     // 선택된 일차의 날짜를 반환하는 함수
-    func selectedDate(from day: Int) -> Date {
-        let date = self.datesInRange(from: startDate, to: endDate)
+    private func selectedDate(from day: Int) -> Date {
+        let date = dateStore.datesInRange(from: startDate, to: endDate)
         return date[day]
-    }
-    
-    // 주어진 날짜 범위의 날짜 배열을 반환하는 함수
-    func datesInRange(from start: Date, to end: Date) -> [Date] {
-        var dates: [Date] = []
-        var currentDate = start
-        
-        while currentDate <= end {
-            dates.append(currentDate)
-            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
-        }
-        
-        return dates
     }
 }
