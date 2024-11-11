@@ -34,12 +34,12 @@ class ChatStore {
         }
     }
     
-    private func setAllComponents() async throws {
+    func setAllComponents(_ isRefresh: Bool = false) async throws {
         Task {
             try await fetchChatRooms()
             
             for chatRoom in chatRooms {
-                let chatLogs = try await fetchChatLogs(chatRoom)
+                let chatLogs = try await fetchChatLogs(chatRoom, isRefresh: isRefresh)
                 let otherUser = try await getOtherUser(chatRoom)
                 let forChatComponent: (ChatRoom, [ChatLog], User) = (chatRoom, chatLogs, otherUser)
 
@@ -58,6 +58,7 @@ class ChatStore {
                 .from("CHAT_ROOM")
                 .select()
                 .or("user1.eq.\(userStore.user.id), user2.eq.\(userStore.user.id)")
+                .order("created_at", ascending: false) // 내림차순으로 정렬
                 .execute()
                 .value
         } catch {
@@ -65,14 +66,32 @@ class ChatStore {
         }
     }
     
-    private func fetchChatLogs(_ chatRoom: ChatRoom) async throws -> [ChatLog] {
+    private func fetchChatLogs(_ chatRoom: ChatRoom, isRefresh: Bool = false) async throws -> [ChatLog] {
         do {
-            return try await db
+            let component = forChatComponents.filter {
+                $0.chatRoom.id == chatRoom.id
+            }.first
+            
+            var preLogs: [ChatLog] = []
+            
+            if isRefresh {
+                preLogs = component != nil ? component!.chatLogs : preLogs
+            }
+            
+            var newLogs: [ChatLog] = try await db
                 .from("CHAT_LOG")
                 .select()
                 .eq("chat_room", value: chatRoom.id)
+                .order("created_at", ascending: false) // 내림차순으로 정렬
+                .limit(30)
+                .range(from: preLogs.count, to: preLogs.count + 30)
                 .execute()
                 .value
+            
+            newLogs = preLogs.count != 0 ? preLogs + newLogs : newLogs
+            newLogs.sort(by: { $0.createdAt < $1.createdAt })
+            
+            return newLogs
         } catch {
             print("Fail to fetch chat rooms: \(error)")
             throw error

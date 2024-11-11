@@ -109,6 +109,11 @@ struct ChattingRoomView: View {
                     }
                 }
             }
+            .refreshable {
+                Task {
+                    try await chatStore.setAllComponents(true)
+                }
+            }
             .padding(.bottom, 15)
             .defaultScrollAnchor(.bottom)
             .scrollIndicators(.hidden)
