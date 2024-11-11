@@ -11,8 +11,10 @@ import MapKit
 struct RouteDetailView: View {
     @Environment(\.dismiss) var dismiss
     
-    var locationManager = LocationManager.shared
-    var dateStore = DateStore.shared
+    var locationManager: LocationManager = LocationManager.shared
+    var dateStore: DateStore = DateStore.shared
+//    var placeStore: PlaceStore = PlaceStore()
+    
     @State var startDate: Date = .now
     @State var endDate: Date = .now
     var tripRoute: TripRoute
@@ -59,9 +61,9 @@ struct RouteDetailView: View {
             Spacer()
             
             Button {
-                // TODO: 작성한 TripRoute db에 저장하는 로직
+                // TODO: 보고있는 루트 편집화면으로 이동하는 로직
             } label: {
-                Text("완료")
+                Text("편집")
                     .padding(8)
             }
             .padding(.horizontal, 5)
@@ -99,14 +101,14 @@ struct RouteDetailView: View {
             if places.count > 0 {
                 if !places[focusedDayIndex].isEmpty {
                     ForEach(Array(places[focusedDayIndex].enumerated()), id: \.offset) { index, place in
-                        Annotation("", coordinate: PlaceStore.shared.getCoordinate(for: place)) {
+                        Annotation("", coordinate: PlaceStore.getCoordinate(for: place)) {
                             Image(systemName: "\(index + 1).circle.fill")
                                 .foregroundStyle(.tint)
                                 .font(.title)
                                 .background(Circle().fill(.white))
                         }
                     }
-                    MapPolyline(coordinates: PlaceStore.shared.getCoordinates(for: places[focusedDayIndex]))
+                    MapPolyline(coordinates: PlaceStore.getCoordinates(for: places[focusedDayIndex]))
                         .stroke(.blue, style: StrokeStyle(lineWidth: 1, dash: [5, 2], dashPhase: 0))
                 }
             }
@@ -145,7 +147,7 @@ struct RouteDetailView: View {
     }
     
     // 주어진 날짜 범위의 날짜 배열을 반환하는 함수
-    func datesInRange(from start: Date, to end: Date) -> [Date] {
+    private func datesInRange(from start: Date, to end: Date) -> [Date] {
         var dates: [Date] = []
         var currentDate = start
         
@@ -157,7 +159,7 @@ struct RouteDetailView: View {
         return dates
     }
     
-    func dateToString(_ date: String) -> Date? {
+    private func dateToString(_ date: String) -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy MM dd"
         dateFormatter.locale = Locale(identifier: "ko_KR") // 로케일 설정 (옵션)
@@ -166,7 +168,7 @@ struct RouteDetailView: View {
         return dateFormatter.date(from: date)
     }
     
-    func convertPlacesToPlacePosts(_ places: [Place]) -> [[PlacePost]] {
+    private func convertPlacesToPlacePosts(_ places: [Place]) -> [[PlacePost]] {
         // 날짜별로 Place 배열을 그룹화하고, ordered 순으로 정렬
         let groupedByDate = Dictionary(grouping: places) { $0.tripDate }
         
@@ -181,7 +183,8 @@ struct RouteDetailView: View {
                         tripRoute: place.tripRoute,
                         tripDate: dateStore.convertStringToDate(place.tripDate),
                         ordered: place.ordered,
-                        coordinates: place.coordinates, categoryCode: ""
+                        coordinates: place.coordinates,
+                        categoryCode: place.category
                     )
                 }
                 return placePosts
@@ -209,7 +212,7 @@ struct RouteDetailView: View {
     private func updateMapForDay(_ dayIndex: Int) {
         guard dayIndex < places.count, !places[dayIndex].isEmpty else { return }
         
-        let coordinates = PlaceStore.shared.getCoordinates(for: places[dayIndex])
+        let coordinates = PlaceStore.getCoordinates(for: places[dayIndex])
         if let centerCoordinate = coordinates.first {
             mapRegion = MapCameraPosition.region(
                 MKCoordinateRegion(
@@ -243,31 +246,36 @@ class SampleTripRoute {
                   tripRoute: 0,
                   tripDate: "2024 11 11",
                   ordered: 1,
-                  coordinates: [37.5301, 127.1144], category: ""),
+                  coordinates: [37.5301, 127.1144],
+                  category: "MT1"),
             Place(id: 1,
                   name: "테스트2",
                   tripRoute: 0,
                   tripDate: "2024 11 11",
                   ordered: 2,
-                  coordinates: [37.5513, 127.0816], category: ""),
+                  coordinates: [37.5513, 127.0816],
+                  category: "CT1"),
             Place(id: 2,
                   name: "테스트3",
                   tripRoute: 0,
                   tripDate: "2024 11 11",
                   ordered: 3,
-                  coordinates: [37.5577, 127.0544], category: ""),
+                  coordinates: [37.5577, 127.0544],
+                  category: "HP8"),
             Place(id: 3,
                   name: "테스트4",
                   tripRoute: 0,
                   tripDate: "2024 11 12",
                   ordered: 1,
-                  coordinates: [37.5513, 126.9881], category: ""),
+                  coordinates: [37.5513, 126.9881],
+                  category: "FD6"),
             Place(id: 4,
                   name: "테스트5",
                   tripRoute: 0,
                   tripDate: "2024 11 12",
                   ordered: 2,
-                  coordinates: [37.6513, 126.7881], category: "")
+                  coordinates: [37.6513, 126.7881],
+                  category: "PS3")
         ],
         startDate: "2024 11 11",
         endDate: "2024 11 12",

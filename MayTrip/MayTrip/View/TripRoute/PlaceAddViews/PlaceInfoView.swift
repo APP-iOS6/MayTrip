@@ -44,7 +44,7 @@ struct PlaceInfoView: View {
                                         .font(.system(size: 16))
                                         .bold()
                                     
-                                    Text("관광명소 | 예약가능")
+                                    Text("\(PlaceStore.getCategory(place.categoryCode))")
                                         .font(.system(size: 12))
                                         .foregroundStyle(.gray)
                                 }
