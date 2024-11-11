@@ -8,33 +8,37 @@
 import Foundation
 import MapKit
 
-class PlaceStore {
-    static let shared = PlaceStore()
+final class PlaceStore {
+//    static let shared = PlaceStore()
+    
+    init() {
+        print("hello placeStore!!")
+    }
     
     // placePost의 위도,경도값 가져오기
-    func getCoordinate(for place: PlacePost) -> CLLocationCoordinate2D {
+    static func getCoordinate(for place: PlacePost) -> CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: place.coordinates[0], longitude: place.coordinates[1])
     }
     
     // [plcePost]의 위도,경도값들 가져오기
-    func getCoordinates(for place: [PlacePost]) -> [CLLocationCoordinate2D] {
+    static func getCoordinates(for place: [PlacePost]) -> [CLLocationCoordinate2D] {
         place.map{ CLLocationCoordinate2D(latitude: $0.coordinates[0], longitude: $0.coordinates[1]) }
     }
     
     // 장소 전체에서 해당 날짜의 [placePost] 필터링하기
-    func getPlace(for date: Date, places: [PlacePost]) -> [PlacePost]? {
+    static func getPlace(for date: Date, places: [PlacePost]) -> [PlacePost]? {
         places.filter{ $0.tripDate == date }
     }
     
     
-    func isEmpty(for places: [[PlacePost]]) -> Bool {
+    static func isEmpty(for places: [[PlacePost]]) -> Bool {
         // 값이 하나라도 있는지 검사.
         let result = places.flatMap{ $0 }.isEmpty
         return result
     }
     
     // index에 맞게 ordered값 재정의
-    func indexingPlace(_ places: [[PlacePost]]) -> [[PlacePost]] {
+    static func indexingPlace(_ places: [[PlacePost]]) -> [[PlacePost]] {
         var places = places
         
         for i in 0..<places.count {
@@ -47,7 +51,7 @@ class PlaceStore {
     }
     
     // categoryCode -> categoryName으로 변환
-    func getCategory(_ category: String) -> String {
+    static func getCategory(_ category: String) -> String {
         switch category {
         case "MT1":
             return "대형마트"

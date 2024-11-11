@@ -11,8 +11,10 @@ import MapKit
 struct RouteDetailView: View {
     @Environment(\.dismiss) var dismiss
     
-    var locationManager = LocationManager.shared
-    var dateStore = DateStore.shared
+    var locationManager: LocationManager = LocationManager.shared
+    var dateStore: DateStore = DateStore.shared
+//    var placeStore: PlaceStore = PlaceStore()
+    
     @State var startDate: Date = .now
     @State var endDate: Date = .now
     var tripRoute: TripRoute
@@ -99,14 +101,14 @@ struct RouteDetailView: View {
             if places.count > 0 {
                 if !places[focusedDayIndex].isEmpty {
                     ForEach(Array(places[focusedDayIndex].enumerated()), id: \.offset) { index, place in
-                        Annotation("", coordinate: PlaceStore.shared.getCoordinate(for: place)) {
+                        Annotation("", coordinate: PlaceStore.getCoordinate(for: place)) {
                             Image(systemName: "\(index + 1).circle.fill")
                                 .foregroundStyle(.tint)
                                 .font(.title)
                                 .background(Circle().fill(.white))
                         }
                     }
-                    MapPolyline(coordinates: PlaceStore.shared.getCoordinates(for: places[focusedDayIndex]))
+                    MapPolyline(coordinates: PlaceStore.getCoordinates(for: places[focusedDayIndex]))
                         .stroke(.blue, style: StrokeStyle(lineWidth: 1, dash: [5, 2], dashPhase: 0))
                 }
             }
@@ -210,7 +212,7 @@ struct RouteDetailView: View {
     private func updateMapForDay(_ dayIndex: Int) {
         guard dayIndex < places.count, !places[dayIndex].isEmpty else { return }
         
-        let coordinates = PlaceStore.shared.getCoordinates(for: places[dayIndex])
+        let coordinates = PlaceStore.getCoordinates(for: places[dayIndex])
         if let centerCoordinate = coordinates.first {
             mapRegion = MapCameraPosition.region(
                 MKCoordinateRegion(

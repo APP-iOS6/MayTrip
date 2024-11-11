@@ -14,10 +14,13 @@ import MapKit
 struct PlaceAddingView: View {
     @Environment(\.dismiss) var dismiss
     
-    var userStore: UserStore = UserStore.shared
-    var tripStore: TripRouteStore
-    var dateStore = DateStore.shared
-    var locationManager = LocationManager.shared
+    let userStore: UserStore = UserStore.shared
+    @StateObject var tripStore: TripRouteStore = TripRouteStore()
+    let dateStore: DateStore = DateStore.shared
+    let locationManager: LocationManager = LocationManager.shared
+    
+    var title: String
+    var tags: [String]
     var startDate: Date
     var endDate: Date
     @State private var focusedDayIndex: Int = 0  // 현재 포커스된 일차
@@ -25,7 +28,6 @@ struct PlaceAddingView: View {
     @State var selectedDay: Int = 0         // 장소 추가시에 몇일차에 장소 추가하는지
     @State var cities: [String] = []        // 추가된 도시
     @State var places: [[PlacePost]] = []       // 추가된 장소 (배열당 한 일차 장소배열)
-    @State private var markers: [[MarkerItem]] = []
     @State private var mapRegion = MapCameraPosition.region(
         MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194), // 초기 위치
@@ -43,7 +45,6 @@ struct PlaceAddingView: View {
         .padding(.top)
         .onAppear {
             setupInitialData()
-            updateMapForDay(focusedDayIndex)
         }
         .sheet(isPresented: $isShowSheet) {
             PlaceSearchView(
@@ -73,11 +74,14 @@ struct PlaceAddingView: View {
             
             Button {
                 //작성한 TripRoute db에 저장하는 로직
-                let orderedPlaces = PlaceStore().indexingPlace(places)
-                tripStore.inputDatas(places: orderedPlaces.flatMap{ $0 },
-                                     cities: cities,
-                                     startDate: dateStore.convertDateToSimpleString(startDate),
-                                     endDate: dateStore.convertDateToSimpleString(endDate))
+                let orderedPlaces = PlaceStore.indexingPlace(places)
+                tripStore.inputDatas(
+                    title: title,
+                    tags: tags,
+                    places: orderedPlaces.flatMap{ $0 },
+                    cities: cities,
+                    startDate: dateStore.convertDateToSimpleString(startDate),
+                    endDate: dateStore.convertDateToSimpleString(endDate))
                 Task {
                     try await tripStore.addTripRoute(userId: userStore.user.id)
                     tripStore.resetDatas()
@@ -86,11 +90,11 @@ struct PlaceAddingView: View {
                 Text("완료")
                     .padding(8)
             }
-            .disabled(PlaceStore().isEmpty(for: places))
+            .disabled(PlaceStore.isEmpty(for: places))
             .padding(.horizontal, 5)
             .background {
                 RoundedRectangle(cornerRadius: 20)
-                    .foregroundStyle(!PlaceStore().isEmpty(for: places) ? Color(UIColor.tintColor) : Color(UIColor.systemGray5))
+                    .foregroundStyle(!PlaceStore.isEmpty(for: places) ? Color(UIColor.tintColor) : Color(UIColor.systemGray5))
             }
             .foregroundStyle(.white)
         }
@@ -121,14 +125,14 @@ struct PlaceAddingView: View {
             if places.count > 0 {
                 if !places[focusedDayIndex].isEmpty {
                     ForEach(Array(places[focusedDayIndex].enumerated()), id: \.offset) { index, place in
-                        Annotation("", coordinate: PlaceStore.shared.getCoordinate(for: place)) {
+                        Annotation("", coordinate: PlaceStore.getCoordinate(for: place)) {
                             Image(systemName: "\(index + 1).circle.fill")
                                 .foregroundStyle(.tint)
                                 .font(.title)
                                 .background(Circle().fill(.white))
                         }
                     }
-                    MapPolyline(coordinates: PlaceStore.shared.getCoordinates(for: places[focusedDayIndex]))
+                    MapPolyline(coordinates: PlaceStore.getCoordinates(for: places[focusedDayIndex]))
                         .stroke(.blue, style: StrokeStyle(lineWidth: 1, dash: [5, 2], dashPhase: 0))
                 }
             }
@@ -169,7 +173,6 @@ struct PlaceAddingView: View {
     private func setupInitialData() {
         let count = dateStore.datesInRange().count
         places = Array(repeating: [], count: count)
-        markers = Array(repeating: [], count: count)
         
         locationManager.checkLocationAuthorization()
         self.mapRegion = MapCameraPosition.region(
@@ -183,7 +186,7 @@ struct PlaceAddingView: View {
     private func updateMapForDay(_ dayIndex: Int) {
         guard dayIndex < places.count, !places[dayIndex].isEmpty else { return }
         
-        let coordinates = PlaceStore.shared.getCoordinates(for: places[dayIndex])
+        let coordinates = PlaceStore.getCoordinates(for: places[dayIndex])
         if let centerCoordinate = coordinates.first {
             mapRegion = MapCameraPosition.region(
                 MKCoordinateRegion(
@@ -200,5 +203,10 @@ struct PlaceAddingView: View {
     let startDate = DateComponents(year: 2024, month: 11, day: 24)
     let endDate = DateComponents(year: 2024, month: 11, day: 29)
     let calendar = Calendar.current
-    PlaceAddingView(tripStore: TripRouteStore(), startDate: calendar.date(from: startDate)!, endDate: calendar.date(from: endDate)!)
+    PlaceAddingView(
+        title: "title",
+        tags: ["tag1", "tag2"],
+        startDate: calendar.date(from: startDate)!,
+        endDate: calendar.date(from: endDate)!
+    )
 }

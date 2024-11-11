@@ -10,7 +10,6 @@ struct EnterBasicInformationView: View {
     @Environment(\.dismiss) var dismiss
     
     private var dateStore = DateStore.shared
-    private var tripRouteStore = TripRouteStore()
     @State var title: String = ""
     @State var isCalendarShow: Bool = false
     @State var tag: String = ""
@@ -65,11 +64,13 @@ struct EnterBasicInformationView: View {
                         Spacer()
                         
                         NavigationLink(
-                            destination:PlaceAddingView(
-                                tripStore: tripRouteStore,
-                                startDate: dateStore.startDate ?? .now,
-                                endDate: dateStore.endDate ?? .now
-                            )) {
+                            destination:
+                                PlaceAddingView(
+                                    title: title,
+                                    tags: tags,
+                                    startDate: dateStore.startDate ?? .now,
+                                    endDate: dateStore.endDate ?? .now)
+                            ) {
                                 Text("다음")
                                     .padding(8)
                             }
@@ -131,11 +132,6 @@ struct EnterBasicInformationView: View {
         .navigationBarBackButtonHidden()
         .onChange(of: isEditedDateSetting) { oldValue, newValue in
             isCalendarShow = isEditedDateSetting
-        }
-        .onDisappear {
-            tripRouteStore.title = self.title
-            tripRouteStore.tag = self.tags
-            print("tags: \(self.tags)")
         }
     }
 }
