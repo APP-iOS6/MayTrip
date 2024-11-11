@@ -16,7 +16,7 @@ struct CommunityBodyView: View {
     
     var body: some View {
         ScrollView {
-            HStack(spacing: 0) {
+            HStack {
                 Spacer()
                 
                 Button {
@@ -38,7 +38,7 @@ struct CommunityBodyView: View {
                     }
                 }
             }
-            .padding(.horizontal, width * 0.03)
+            .padding(.horizontal, width * 0.06)
         }
     }
 }
