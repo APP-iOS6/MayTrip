@@ -19,35 +19,35 @@ struct MainView:  View {
             TabView(selection: $selection) {
                 TripRouteView()
                     .tabItem {
-                        Image(selection == 0 ? "homeClick" : "homeUnClick")
-                        Text("홈")
+                        Image(systemName: "map")
+                        Text("여행")
                     }
                     .tag(0)
                 
                 CommunityView()
                     .tabItem {
-                        Image(selection == 1 ? "communityClick" : "communityUnClick")
+                        Image(systemName: "person.2")
                         Text("커뮤니티")
                     }
                     .tag(1)
                 
                 ChatView()
                     .tabItem {
-                        Image(selection == 2 ? "chatClick" : "chatUnClick")
+                        Image(systemName: "message")
                         Text("채팅")
                     }
                     .tag(2)
                 
                 StorageView()
                     .tabItem {
-                        Image(selection == 3 ? "storageClick" : "storageUnClick")
+                       Image(systemName: "bookmark")
                         Text("보관함")
                     }
                     .tag(3)
                 
                 MyPageView()
                     .tabItem {
-                        Image(selection == 4 ? "mypageClick" : "mypageUnClick")
+                        Image(systemName: "person")
                         Text("마이페이지")
                     }
                     .tag(4)
