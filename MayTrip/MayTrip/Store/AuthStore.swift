@@ -67,15 +67,15 @@ class AuthStore {
             print(error)
         }
     }
-            
+    
     func checkAutoLogin() async {
         Task {
-//            try await DB.auth.signOut()
-            await checkEmailLogin()
+            //            try await DB.auth.signOut()
+            try await checkSupabaseLogin()
         }
     }
     
-    func checkEmailLogin() async {
+    func checkSupabaseLogin() async { // 이메일, 애플
         do {
             let user = try await DB.auth.user()
             let provider = user.appMetadata["provider"]!
