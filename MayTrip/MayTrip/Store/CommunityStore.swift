@@ -16,4 +16,17 @@ class CommunityStore {
         Post(id: 4, title: "가제", text: "본문", author: User(id: 1, nickname: "가명", profileImage: nil, email: "test@test.com", exp: 0, provider: "email"), images: [], category: "여행후기", tripRoute: nil, createAt: Date(), reply: 0, store: 0),
         Post(id: 5, title: "가제", text: "본문", author: User(id: 1, nickname: "가명", profileImage: nil, email: "test@test.com", exp: 0, provider: "email"), images: [], category: "여행후기", tripRoute: nil, createAt: Date(), reply: 0, store: 0),
     ]
+    
+    init() {
+        updatePostOrder()
+    }
+    
+    func addPost(title: String, text: String, author: User, category: String) {
+        let newPost = Post(id: posts.count + 1, title: title, text: text, author: author, images: [], category: category, tripRoute: nil, createAt: Date(), reply: 0, store: 0)
+        posts = [newPost] + posts
+    }
+    
+    func updatePostOrder() {
+        posts = posts.sorted { $0.createAt > $1.createAt }
+    }
 }

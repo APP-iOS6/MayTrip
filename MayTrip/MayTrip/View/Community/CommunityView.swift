@@ -21,14 +21,16 @@ struct CommunityView: View {
     @State var isShowingOrderCategory: Bool = false
     
     var body: some View {
-        GeometryReader { proxy in
-            VStack(spacing: proxy.size.height * 0.03) {
-                CommunityHeaderView(selectedPostCategory: $selectedPostCategory, width: proxy.size.width, height: proxy.size.height)
-                
-                CommunityBodyView(isShowingOrderCategory: $isShowingOrderCategory, selectedOrderCategory: $selectedOrderCategory, width: proxy.size.width, height: proxy.size.height)
-            }
-            .onTapGesture {
-                isShowingOrderCategory = false
+        NavigationStack {
+            GeometryReader { proxy in
+                VStack(spacing: proxy.size.height * 0.03) {
+                    CommunityHeaderView(selectedPostCategory: $selectedPostCategory, width: proxy.size.width, height: proxy.size.height)
+                    
+                    CommunityBodyView(isShowingOrderCategory: $isShowingOrderCategory, selectedOrderCategory: $selectedOrderCategory, width: proxy.size.width, height: proxy.size.height)
+                }
+                .onTapGesture {
+                    isShowingOrderCategory = false
+                }
             }
         }
     }

@@ -25,8 +25,8 @@ struct CommunityHeaderView: View {
                         .foregroundStyle(.black)
                 }
                 
-                Button { // 게시글 작성
-                    
+                NavigationLink { // 게시글 작성
+                    CommunityPostAddView()
                 } label: {
                     Image(systemName: "plus")
                         .font(.system(size: 24))

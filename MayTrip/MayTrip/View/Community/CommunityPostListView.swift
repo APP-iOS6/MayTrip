@@ -44,7 +44,7 @@ struct CommunityPostListView: View {
                                 .font(.system(size: 14))
                                 .foregroundStyle(.gray)
                         }
-                        .frame(width: width * 0.83 - 20, height: width * 0.07)
+                        .frame(width: width * 0.82, height: width * 0.07)
                     }
                     
                     Text(post.text)

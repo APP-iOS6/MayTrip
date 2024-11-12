@@ -72,6 +72,7 @@
 		FB8AC02D2CE1966B0001AB05 /* CommunityBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC02C2CE1966B0001AB05 /* CommunityBodyView.swift */; };
 		FB8AC02F2CE19D010001AB05 /* CommunityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC02E2CE19CFA0001AB05 /* CommunityStore.swift */; };
 		FB8AC0312CE1E8BC0001AB05 /* CommunityPostListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC0302CE1E8BC0001AB05 /* CommunityPostListView.swift */; };
+		FB8AC0372CE1F3470001AB05 /* CommunityPostAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC0362CE1F3470001AB05 /* CommunityPostAddView.swift */; };
 		FBC09BA22CD9DBAA00B059FB /* SocialLoginButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09BA12CD9DBA400B059FB /* SocialLoginButtons.swift */; };
 		FBC09C382CDA72A800B059FB /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C372CDA72A800B059FB /* ChatRoom.swift */; };
 		FBC09C392CDA72A800B059FB /* ChatLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C362CDA72A800B059FB /* ChatLog.swift */; };
@@ -147,6 +148,7 @@
 		FB8AC02C2CE1966B0001AB05 /* CommunityBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityBodyView.swift; sourceTree = "<group>"; };
 		FB8AC02E2CE19CFA0001AB05 /* CommunityStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityStore.swift; sourceTree = "<group>"; };
 		FB8AC0302CE1E8BC0001AB05 /* CommunityPostListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostListView.swift; sourceTree = "<group>"; };
+		FB8AC0362CE1F3470001AB05 /* CommunityPostAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostAddView.swift; sourceTree = "<group>"; };
 		FBC09B952CD8721900B059FB /* MayTrip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MayTrip.entitlements; sourceTree = "<group>"; };
 		FBC09B9A2CD9D68D00B059FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FBC09BA12CD9DBA400B059FB /* SocialLoginButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtons.swift; sourceTree = "<group>"; };
@@ -420,6 +422,7 @@
 				FB8AC02A2CE195490001AB05 /* CommunityHeaderView.swift */,
 				FB8AC02C2CE1966B0001AB05 /* CommunityBodyView.swift */,
 				FB8AC0302CE1E8BC0001AB05 /* CommunityPostListView.swift */,
+				FB8AC0362CE1F3470001AB05 /* CommunityPostAddView.swift */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -567,6 +570,7 @@
 				FB36F5EF2CD472F600E356FA /* ContentView.swift in Sources */,
 				FB36F6032CD4740900E356FA /* CommunityView.swift in Sources */,
 				FB36F6082CD4742A00E356FA /* StorageView.swift in Sources */,
+				FB8AC0372CE1F3470001AB05 /* CommunityPostAddView.swift in Sources */,
 				6E690E732CD8B54F0096DB7C /* CalendarView.swift in Sources */,
 				6E690E742CD8B54F0096DB7C /* DateGridView.swift in Sources */,
 				6E690E752CD8B54F0096DB7C /* EnterBasicInformationView.swift in Sources */,
