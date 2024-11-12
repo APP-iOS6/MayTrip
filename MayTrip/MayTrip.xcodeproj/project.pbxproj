@@ -32,6 +32,8 @@
 		42F2F9D82CE2494E0013F147 /* PlaceMapListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2F9D72CE2494E0013F147 /* PlaceMapListView.swift */; };
 		42F2F9DA2CE249CF0013F147 /* PlaceDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2F9D92CE249CF0013F147 /* PlaceDatePickerView.swift */; };
 		42F2F9DC2CE25CF00013F147 /* RouteDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2F9DB2CE25CF00013F147 /* RouteDetailHeaderView.swift */; };
+		42F2F9E32CE32F9F0013F147 /* Destination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2F9E22CE32F9F0013F147 /* Destination.swift */; };
+		42F2F9E52CE32FE50013F147 /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2F9E42CE32FE50013F147 /* NavigationManager.swift */; };
 		6E690E732CD8B54F0096DB7C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E6C2CD8B54F0096DB7C /* CalendarView.swift */; };
 		6E690E742CD8B54F0096DB7C /* DateGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E6E2CD8B54F0096DB7C /* DateGridView.swift */; };
 		6E690E752CD8B54F0096DB7C /* EnterBasicInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E722CD8B54F0096DB7C /* EnterBasicInformationView.swift */; };
@@ -114,6 +116,8 @@
 		42F2F9D72CE2494E0013F147 /* PlaceMapListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceMapListView.swift; sourceTree = "<group>"; };
 		42F2F9D92CE249CF0013F147 /* PlaceDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDatePickerView.swift; sourceTree = "<group>"; };
 		42F2F9DB2CE25CF00013F147 /* RouteDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDetailHeaderView.swift; sourceTree = "<group>"; };
+		42F2F9E22CE32F9F0013F147 /* Destination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Destination.swift; sourceTree = "<group>"; };
+		42F2F9E42CE32FE50013F147 /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
 		6E690E6C2CD8B54F0096DB7C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		6E690E6D2CD8B54F0096DB7C /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		6E690E6E2CD8B54F0096DB7C /* DateGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateGridView.swift; sourceTree = "<group>"; };
@@ -263,6 +267,14 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
+		42F2F9DF2CE32F420013F147 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				42F2F9E22CE32F9F0013F147 /* Destination.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
 		6E690E712CD8B54F0096DB7C /* CalendarViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -364,6 +376,7 @@
 				42F2F9D32CE187F60013F147 /* PlaceStore.swift */,
 				259AAB882CDA06CD00512CE6 /* LocationManager.swift */,
 				259AAB892CDA06CD00512CE6 /* SearchAddressStore.swift */,
+				42F2F9E42CE32FE50013F147 /* NavigationManager.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -444,6 +457,7 @@
 		FB36F6372CD498F900E356FA /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				42F2F9DF2CE32F420013F147 /* Navigation */,
 				FB36F6382CD4990000E356FA /* Modifier */,
 			);
 			path = Common;
@@ -584,6 +598,7 @@
 				6E690E852CD8B9540096DB7C /* TopContentsView.swift in Sources */,
 				6E690E862CD8B9540096DB7C /* SearchView.swift in Sources */,
 				259AABA42CDA07F500512CE6 /* TripRouteStore.swift in Sources */,
+				42F2F9E32CE32F9F0013F147 /* Destination.swift in Sources */,
 				6E690E912CD8EE280096DB7C /* ChattingRoomView.swift in Sources */,
 				6E690E872CD8B9540096DB7C /* MyTripCardView.swift in Sources */,
 				6E690E8F2CD8E2F10096DB7C /* ChatStore.swift in Sources */,
@@ -603,6 +618,7 @@
 				259AABC72CDA0AD900512CE6 /* PlaceInfoView.swift in Sources */,
 				259AABC82CDA0AD900512CE6 /* PlaceAddingView.swift in Sources */,
 				42702D512CDA7BF70093F9E3 /* SignInView.swift in Sources */,
+				42F2F9E52CE32FE50013F147 /* NavigationManager.swift in Sources */,
 				FB36F5F02CD472F600E356FA /* MayTripApp.swift in Sources */,
 				FB36F63A2CD4991600E356FA /* LoginViewCommon.swift in Sources */,
 				FBC09BA22CD9DBAA00B059FB /* SocialLoginButtons.swift in Sources */,

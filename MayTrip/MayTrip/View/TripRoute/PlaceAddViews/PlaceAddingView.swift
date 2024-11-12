@@ -12,6 +12,7 @@ import MapKit
  여행 시작날짜와 끝날짜를 Date 인자로 필요로 합니다.
  */
 struct PlaceAddingView: View {
+    @EnvironmentObject var navigationManager: NavigationManager
     var title: String
     var tags: [String]
     

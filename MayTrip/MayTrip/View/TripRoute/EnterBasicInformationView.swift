@@ -8,6 +8,7 @@ import SwiftUI
 
 struct EnterBasicInformationView: View {
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var navigationManager: NavigationManager
     
     private var dateStore = DateStore.shared
     @State var title: String = ""
@@ -64,20 +65,19 @@ struct EnterBasicInformationView: View {
                         
                         Spacer()
                         
-                        NavigationLink(
-                            destination:
-                                PlaceAddingView(title: title, tags: tags)
-                            ) {
-                                Text("다음")
-                                    .padding(8)
-                            }
-                            .padding(.horizontal, 5)
-                            .background {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .foregroundStyle(dateStore.endDate == nil || !isCompleteDateSetting || title.count == 0 ? Color.gray : Color("accentColor"))
-                            }
-                            .foregroundStyle(.white)
-                            .disabled(dateStore.endDate == nil || !isCompleteDateSetting || title.count == 0)
+                        Button {
+                            navigationManager.push(Destination.placeAdd(title, tags))
+                        } label: {
+                            Text("다음")
+                                .padding(8)
+                        }
+                        .padding(.horizontal, 5)
+                        .background {
+                            RoundedRectangle(cornerRadius: 20)
+                                .foregroundStyle(dateStore.endDate == nil || !isCompleteDateSetting || title.count == 0 ? Color.gray : Color("accentColor"))
+                        }
+                        .foregroundStyle(.white)
+                        .disabled(dateStore.endDate == nil || !isCompleteDateSetting || title.count == 0)
                     }
                     .frame(height: 20)
                     .padding(.bottom, 10)

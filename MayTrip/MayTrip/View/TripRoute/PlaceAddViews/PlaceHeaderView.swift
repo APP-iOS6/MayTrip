@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlaceHeaderView: View {
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var navigationManager: NavigationManager
     @StateObject var tripRouteStore = TripRouteStore()
     
     @Binding var cities: [String]
@@ -56,6 +57,7 @@ struct PlaceHeaderView: View {
                     try await tripRouteStore.addTripRoute(userId: userStore.user.id)
                     tripRouteStore.resetDatas()
                     dateStore.initDate()
+                    navigationManager.popToRoot()
                 }
             } label: {
                 Text("완료")
