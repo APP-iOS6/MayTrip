@@ -11,6 +11,7 @@ import Auth
 import KakaoSDKCommon
 import KakaoSDKUser
 import Alamofire
+import Supabase
 
 @Observable
 class AuthStore {
@@ -62,6 +63,27 @@ class AuthStore {
                 print("email, apple logout success")
                 self.isLogin = false
             }
+        } catch {
+            print(error)
+        }
+    }
+            
+    func checkAutoLogin() async {
+        Task {
+//            try await DB.auth.signOut()
+            await checkEmailLogin()
+        }
+    }
+    
+    func checkEmailLogin() async {
+        do {
+            let user = try await DB.auth.user()
+            let provider = user.appMetadata["provider"]!
+            guard let providerJSON = try? JSONEncoder().encode(provider), let providerString = String(data: providerJSON, encoding: .utf8) else {
+                return
+            }
+            await successLogin(email: user.email!, provider: providerString)
+            print(user.email!, providerString)
         } catch {
             print(error)
         }
