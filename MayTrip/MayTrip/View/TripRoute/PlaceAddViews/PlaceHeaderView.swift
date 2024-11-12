@@ -15,8 +15,6 @@ struct PlaceHeaderView: View {
     var places: [[PlacePost]]
     var title: String
     var tags: [String]
-    var startDate: Date
-    var endDate: Date
     
     let dateStore: DateStore = DateStore.shared
     let userStore: UserStore = UserStore.shared
@@ -43,16 +41,21 @@ struct PlaceHeaderView: View {
             Button {
                 //작성한 TripRoute db에 저장하는 로직
                 let orderedPlaces = PlaceStore.indexingPlace(places)
+                let startDate = dateStore.convertDateToSimpleString(dateStore.startDate!)
+                let endDate = dateStore.convertDateToSimpleString(dateStore.endDate!)
+                
                 tripRouteStore.inputDatas(
                     title: title,
                     tags: tags,
                     places: orderedPlaces.flatMap{ $0 },
                     cities: cities,
-                    startDate: dateStore.convertDateToSimpleString(startDate),
-                    endDate: dateStore.convertDateToSimpleString(endDate))
+                    startDate: startDate,
+                    endDate: endDate
+                )
                 Task {
                     try await tripRouteStore.addTripRoute(userId: userStore.user.id)
                     tripRouteStore.resetDatas()
+                    dateStore.initDate()
                 }
             } label: {
                 Text("완료")

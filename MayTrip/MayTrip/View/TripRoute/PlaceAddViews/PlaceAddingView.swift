@@ -14,8 +14,6 @@ import MapKit
 struct PlaceAddingView: View {
     var title: String
     var tags: [String]
-    var startDate: Date
-    var endDate: Date
     
     @State var isShowSheet: Bool = false            // 장소 추가시트 띄우기
     @State var selectedDay: Int = 0                 // 장소 추가시에 몇일차에 장소 추가하는지
@@ -29,9 +27,7 @@ struct PlaceAddingView: View {
                 cities: $cities,
                 places: places,
                 title: title,
-                tags: tags,
-                startDate: startDate,
-                endDate: endDate
+                tags: tags
             )
             
             // 맵뷰, 일차별 장소 리스트 뷰
@@ -39,8 +35,6 @@ struct PlaceAddingView: View {
                 isShowSheet: $isShowSheet,
                 selectedDay: $selectedDay,
                 places: $places,
-                startDate: startDate,
-                endDate: endDate,
                 isEditing: true
             )
         }

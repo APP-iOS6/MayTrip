@@ -11,8 +11,6 @@ import MapKit
 struct RouteDetailView: View {
     @Environment(\.dismiss) var dismiss
     
-    @State var startDate: Date = .now
-    @State var endDate: Date = .now
     @State var isShowSheet: Bool = false    // 장소 추가시트 띄우기
     @State var selectedDay: Int = 0         // 장소 추가시에 몇일차에 장소 추가하는지
     @State var places: [[PlacePost]] = []       // 추가된 장소 (배열당 한 일차 장소배열)
@@ -30,16 +28,15 @@ struct RouteDetailView: View {
                 isShowSheet: $isShowSheet,
                 selectedDay: $selectedDay,
                 places: $places,
-                startDate: startDate,
-                endDate: endDate,
                 isEditing: false
             )
         }
         .padding(.top)
         .onAppear {
             places = convertPlacesToPlacePosts(tripRoute.place)
-            startDate = dateStore.convertStringToDate(tripRoute.startDate)
-            endDate = dateStore.convertStringToDate(tripRoute.endDate ?? tripRoute.startDate)
+            let startDate = dateStore.convertStringToDate(tripRoute.startDate)
+            let endDate = dateStore.convertStringToDate(tripRoute.endDate ?? tripRoute.startDate)
+            dateStore.setTripDates(from: startDate, to: endDate)
         }
         .toolbar(.hidden)
     }

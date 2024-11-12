@@ -10,9 +10,7 @@ import SwiftUI
 struct PlaceDatePickerView: View {
     @Binding var focusedDayIndex: Int
     @Binding var isShowDatePicker: Bool
-    
-    var startDate: Date
-    var endDate: Date
+
     var scrollingIndex: Int
     
     let dateStore: DateStore = DateStore.shared
@@ -24,7 +22,7 @@ struct PlaceDatePickerView: View {
                 .padding([.top, .horizontal], 36)
             
             List {
-                ForEach(Array(dateStore.datesInRange(from: startDate, to: endDate).enumerated()), id: \.element) { index, date in
+                ForEach(Array(dateStore.datesInRange().enumerated()), id: \.element) { index, date in
                     Button {
                         focusedDayIndex = index
                         isShowDatePicker = false

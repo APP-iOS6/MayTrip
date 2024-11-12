@@ -113,6 +113,16 @@ class DateStore {
         }
     }
     
+    func setTripDates(from startDate: Date, to endDate: Date) {
+        self.startDate = startDate
+        self.endDate = endDate
+    }
+    
+    func initDate() {
+        self.startDate = nil
+        self.endDate = nil
+    }
+    
     func forwardMonth() {
         let newYear: Int = currentMonth == 1 ? currentYear - 1 : currentYear
         let newMonth: Int = currentMonth == 1 ? 12 : currentMonth - 1
