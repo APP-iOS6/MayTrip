@@ -17,8 +17,7 @@ struct PlaceMapListView: View {
     @State var focusedDayIndex: Int = 0
     @State var mapRegion: MapCameraPosition = .automatic
     @State var isShowDatePicker: Bool = false
-    var startDate: Date
-    var endDate: Date
+
     var isEditing: Bool
     
     let dateStore: DateStore = DateStore.shared
@@ -56,7 +55,7 @@ struct PlaceMapListView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(pinnedViews: [.sectionHeaders]) {
-                    ForEach(Array(dateStore.datesInRange(from: startDate, to: endDate).enumerated()), id: \.element) { dateIndex, date in
+                    ForEach(Array(dateStore.datesInRange().enumerated()), id: \.element) { dateIndex, date in
                         PlaceInfoView(
                             dateIndex: dateIndex,
                             date: date,
@@ -112,8 +111,6 @@ struct PlaceMapListView: View {
             PlaceDatePickerView(
                 focusedDayIndex: $focusedDayIndex,
                 isShowDatePicker: $isShowDatePicker,
-                startDate: startDate,
-                endDate: endDate,
                 scrollingIndex: scrollingIndex)
         }
     }
@@ -137,7 +134,7 @@ struct PlaceMapListView: View {
     }
     
     private func setupInitialData() {
-        let count = dateStore.datesInRange(from: startDate, to: endDate).count
+        let count = dateStore.datesInRange().count
         if places.isEmpty {
             places = Array(repeating: [], count: count)
         }

@@ -10,6 +10,7 @@ import SwiftUI
 struct RouteDetailHeaderView: View {
     @Environment(\.dismiss) var dismiss
     var tripRoute: TripRoute
+    let dateStore: DateStore = DateStore.shared
     
     var body: some View {
         headerView
@@ -19,6 +20,7 @@ struct RouteDetailHeaderView: View {
     var headerView: some View {
         HStack {
             Button {
+                dateStore.initDate()
                 dismiss()
             } label: {
                 Image(systemName: "xmark")
