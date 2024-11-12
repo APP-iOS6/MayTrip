@@ -48,7 +48,6 @@ struct RouteDetailHeaderView: View {
         .padding(.bottom, 10)
         .padding(.horizontal)
     }
-    
 
     var cityTagsView: some View {
         HStack {
