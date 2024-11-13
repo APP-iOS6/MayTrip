@@ -56,6 +56,7 @@ struct TripRouteSimple: Identifiable ,Codable{
     var title: String
     var tag: [String]?
     var city: [String]
+    let writeUser: TripRouteUser
     var start_date: String
     var end_date: String
 }
