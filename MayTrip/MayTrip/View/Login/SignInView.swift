@@ -140,10 +140,6 @@ struct SignInView : View {
             email = ""
             password = ""
             errorMessage = ""
-            
-            Task {
-                try await authStore.checkAutoLogin()
-            }
         }
     }
 }

@@ -39,7 +39,7 @@ class AuthStore {
             print("Failed to fetch user info: \(error)")
         }
     }
-    
+
     func signOut() async throws {
         let provider = userStore.user.provider
         
@@ -71,13 +71,16 @@ class AuthStore {
         }
     }
     
-    func checkAutoLogin() async {
+    func checkAutoLogin() async { // 토큰 확인 후 유효하면 자동 로그인
         Task {
-            if await checkSupabaseLogin() { // 수파베이스(이메일, 애플) 토큰 확인 후 로그인
+            if await checkSupabaseLogin() { // 수파베이스(이메일, 애플)
                 return
-            } else if checkKaKaoLogin() {
+            } else if checkGoogleLogin() { // 구글
                 return
+            } else {
+                checkKakaoLogin() // 카카오
             }
+            
         }
     }
     
@@ -94,26 +97,5 @@ class AuthStore {
             print(error)
             return false
         }
-    }
-    
-    func checkKaKaoLogin() -> Bool {
-        var isSuccess: Bool = false
-        UserApi.shared.accessTokenInfo { (accessTokenInfo, error) in
-            if let error = error {
-                if let sdkError = error as? SdkError, sdkError.isInvalidTokenError() == true  { // 추후 추가예정
-                    //로그인 필요
-                }
-                else {
-                    //기타 에러
-                }
-            }
-            else {
-                Task {
-                    await self.successLogin(email: String((accessTokenInfo?.id!)!), provider: "kakao")
-                }
-                isSuccess = true
-            }
-        }
-        return isSuccess
     }
 }

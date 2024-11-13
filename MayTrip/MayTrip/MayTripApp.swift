@@ -29,6 +29,11 @@ struct MayTripApp: App {
                         authStore.DB.auth.handle(url)
                     }
                 }
+                .onAppear {
+                    Task {
+                        await authStore.checkAutoLogin()
+                    }
+                }
         }
     }
 }
