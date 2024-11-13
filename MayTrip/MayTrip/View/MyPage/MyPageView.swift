@@ -28,7 +28,6 @@ struct MyPageView: View {
                                                 .foregroundStyle(Color.accent.opacity(0.6))
                                         }
                                 }
-                                
                             } else {
                                 ZStack { // 나중에 유저 이미지 추가되면 수정
                                     
@@ -52,7 +51,6 @@ struct MyPageView: View {
                             } label: {
                                 manageButtonLabel(image:"board", text:"게시글 관리", width: proxy.size.width)
                             }
-                            
                         }
                         
                         Rectangle()
@@ -74,15 +72,18 @@ struct MyPageView: View {
     @ViewBuilder
     private func listView() -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            listButtonLabel(image: "", text: "고객센터")
+            Text("고객센터")
+                .padding(.vertical, 5)
             
             Divider()
             
-            listButtonLabel(image: "", text: "알림")
+            Text("알림")
+                .padding(.vertical, 5)
             
             Divider()
             
-            listButtonLabel(image: "", text: "설정")
+            Text("설정")
+                .padding(.vertical, 5)
             
             Divider()
             
@@ -91,7 +92,8 @@ struct MyPageView: View {
                     try await authStore.signOut()
                 }
             } label :{
-                listButtonLabel(image: "", text: "로그아웃")
+                Text("로그아웃")
+                    .padding(.vertical, 5)
                     .foregroundStyle(.black)
             }
             
@@ -100,7 +102,8 @@ struct MyPageView: View {
             Button {
                 
             } label :{
-                listButtonLabel(image: "", text: "회원탈퇴")
+                Text("회원탈퇴")
+                    .padding(.vertical, 5)
                     .foregroundStyle(.red.opacity(1))
             }
         }
