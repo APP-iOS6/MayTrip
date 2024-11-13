@@ -23,7 +23,6 @@ struct YearAndMonthView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 15, height: 15)
                 }
-                .frame(width: 60, height: 40)
             }
             
             Text("\(String(dateStore.currentYear))년 \(dateStore.currentMonth)월")
@@ -38,7 +37,6 @@ struct YearAndMonthView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 15, height: 15)
                 }
-                .frame(width: 60, height: 40)
             }
             
             Spacer()
@@ -49,11 +47,13 @@ struct YearAndMonthView: View {
             } label: {
                 Text("닫기")
                     .padding(10)
+                    .font(.system(size: 15))
             }
             .foregroundStyle(.gray)
         }
         .foregroundStyle(.black)
-        .padding(.vertical)
+        .padding(.vertical, 5)
+        .frame(maxWidth: 280)
     }
 }
 

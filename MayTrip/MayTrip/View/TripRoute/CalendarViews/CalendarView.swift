@@ -19,6 +19,7 @@ struct CalendarView: View {
             DateGridView()
         }
         .padding()
+        .padding(.horizontal)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
                 .stroke(Color(uiColor: .lightGray).opacity(0.3), lineWidth: 2)
@@ -27,6 +28,6 @@ struct CalendarView: View {
     }
 }
 
-//#Preview {
-//    CalendarView()
-//}
+#Preview {
+    CalendarView(isShowing: .constant(true))
+}
