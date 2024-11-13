@@ -11,6 +11,9 @@ struct CommunityPostListView: View {
     @Environment(CommunityStore.self) var communityStore: CommunityStore
     let width: CGFloat
     let height: CGFloat
+    @State var isPresented: Bool = false
+    @State var selectedPostOwner: Int = 0
+    @State var selectedPostId: Int = 0
     
     var body: some View {
         VStack(spacing: 0) {
@@ -34,7 +37,9 @@ struct CommunityPostListView: View {
                                 Spacer()
                                 
                                 Button {
-                                    
+                                    isPresented = true
+                                    selectedPostOwner = post.author.id
+                                    selectedPostId = post.id
                                 } label: {
                                     Image(systemName: "ellipsis")
                                         .foregroundStyle(.gray)
@@ -44,12 +49,14 @@ struct CommunityPostListView: View {
                                 .font(.system(size: 14))
                                 .foregroundStyle(.gray)
                         }
-                        .frame(width: width * 0.82, height: width * 0.07)
+                        .frame(width: width * 0.77, height: width * 0.07)
                     }
+                    .frame(width: width * 0.9)
                     
                     Text(post.text)
                         .lineLimit(3)
                         .font(.system(size: 16))
+                    
                     
                     if post.images.count > 0 {
                         imagesView(image: post.images, width: width, height: height)
@@ -68,7 +75,6 @@ struct CommunityPostListView: View {
                             Text("\(post.store)")
                                 .foregroundStyle(.gray)
                         }
-                        
                     }
                 }
                 .frame(width: width * 0.9)
@@ -76,6 +82,14 @@ struct CommunityPostListView: View {
                 .padding(.horizontal, width * 0.05)
                 .border(Color(uiColor:.systemGray3), width: 0.2)
             }
+        }
+        .onTapGesture {
+            isPresented = false
+        }
+        .sheet(isPresented: $isPresented) {
+            CommunityMenuSheetView(isPresented: $isPresented, selectedPostOwner: $selectedPostOwner, selectedPostId: $selectedPostId)
+                .presentationDetents([.height(170)])
+                .presentationDragIndicator(.visible)
         }
     }
 }
@@ -130,7 +144,6 @@ extension CommunityPostListView {
             }
         }
     }
-    
     
     private func getRatio(image: String) -> Bool {
         guard let uiImage = UIImage(named: image) else { return false }
