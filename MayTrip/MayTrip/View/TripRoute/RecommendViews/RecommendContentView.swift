@@ -7,10 +7,11 @@
 
 
 import SwiftUI
+import UIKit
 
 struct RecommendContentView: View {
-    var routeStore: DummyRouteStore = .shared
-    let route: DummyTripRoute
+    let dateStore: DateStore = .shared
+    let route: TripRouteSimple
     
     var body: some View {
         NavigationLink {
@@ -42,12 +43,13 @@ struct RecommendContentView: View {
                         }
                         
                         VStack(alignment: .leading, spacing: 10) {
-                            Text("\(routeStore.convertPeriodToString(route.start_date, end: route.end_date)) 일정")
+                            Text("\(dateStore.convertPeriodToString(route.start_date, end: route.end_date)) 여행")
+                                .lineLimit(1)
                             
                             HStack {
                                 ForEach(0..<3) { index in
-                                    if index < route.cities.count {
-                                        Text("\(index == 0 ? route.cities[index] : "·  \(route.cities[index])")")
+                                    if index < route.city.count {
+                                        Text("\(index == 0 ? route.city[index] : "·  \(route.city[index])")")
                                             .fontWeight(.semibold)
                                             .lineLimit(1)
                                     }
@@ -58,11 +60,13 @@ struct RecommendContentView: View {
                         .foregroundStyle(Color(uiColor: .darkGray))
                         
                         HStack {
-                            ForEach(0..<3) { index in
-                                if index < route.tags.count {
-                                    Text("#\(route.tags[index]) ")
-                                        .font(.system(size: 13))
-                                        .lineLimit(1)
+                            if let tags: [String] = route.tag {
+                                ForEach(0..<3) { index in
+                                    if index < tags.count {
+                                        Text("#\(tags[index]) ")
+                                            .font(.system(size: 13))
+                                            .lineLimit(1)
+                                    }
                                 }
                             }
                         }
@@ -71,13 +75,8 @@ struct RecommendContentView: View {
                     }
                     .padding()
                 )
-                .frame(width: 240, height: 200)
+                .frame(width: UIScreen.main.bounds.size.width / 2, height: UIScreen.main.bounds.size.height / 5)
         }
     }
 }
 
-#Preview {
-    NavigationStack {
-        RecommendContentView(route: tripRoutes[2])
-    }
-}
