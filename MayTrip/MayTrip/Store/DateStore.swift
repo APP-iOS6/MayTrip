@@ -176,13 +176,6 @@ final class DateStore {
         return dateString
     }
     
-    func dateToString(with format: String, date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "\(format)"
-        formatter.locale = Locale(identifier:"ko_KR")
-        return formatter.string(from: date)
-    }
-    
     // 시작 날짜 부터 끝날짜 범위의 날짜 배열을 반환하는 함수
     func datesInRange(from startDate: Date, to endDate: Date) -> [Date] {
         var dates: [Date] = []
