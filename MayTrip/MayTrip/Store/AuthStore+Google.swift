@@ -22,4 +22,20 @@ extension AuthStore {
             }
         }
     }
+    
+    func checkGoogleLogin() -> Bool {
+        var isSuccess: Bool = false
+        GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+            guard let userInfo = user else {
+                return
+            }
+            
+            Task {
+                await self.successLogin(email: userInfo.profile!.email, provider: "google")
+                isSuccess = true
+            }
+        }
+        
+        return isSuccess
+    }
 }

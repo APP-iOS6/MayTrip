@@ -11,161 +11,34 @@ import MapKit
 struct RouteDetailView: View {
     @Environment(\.dismiss) var dismiss
     
-    var locationManager: LocationManager = LocationManager.shared
-    var dateStore: DateStore = DateStore.shared
-//    var placeStore: PlaceStore = PlaceStore()
-    
-    @State var startDate: Date = .now
-    @State var endDate: Date = .now
-    var tripRoute: TripRoute
-    
-    @State private var focusedDayIndex: Int = 0  // 현재 포커스된 일차
     @State var isShowSheet: Bool = false    // 장소 추가시트 띄우기
     @State var selectedDay: Int = 0         // 장소 추가시에 몇일차에 장소 추가하는지
-    @State var cities: [String] = []        // 추가된 도시
     @State var places: [[PlacePost]] = []       // 추가된 장소 (배열당 한 일차 장소배열)
-    @State private var markers: [[MarkerItem]] = []
-    @State private var mapRegion = MapCameraPosition.region(
-        MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194), // 초기 위치
-            span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-        )
-    )
+    
+    var tripRoute: TripRoute
+    let dateStore: DateStore = DateStore.shared
     
     var body: some View {
         VStack {
-            headerView
-            cityTagsView
-            mapView
-            placesListView
+            // 상단 헤더 뷰
+            RouteDetailHeaderView(tripRoute: tripRoute)
+            
+            // 맵뷰, 일차별 장소 리스트 뷰
+            PlaceMapListView(
+                isShowSheet: $isShowSheet,
+                selectedDay: $selectedDay,
+                places: $places,
+                isEditing: false
+            )
         }
         .padding(.top)
         .onAppear {
-            setupInitialData()
-            updateMapForDay(focusedDayIndex)
+            places = convertPlacesToPlacePosts(tripRoute.place)
+            let startDate = dateStore.convertStringToDate(tripRoute.startDate)
+            let endDate = dateStore.convertStringToDate(tripRoute.endDate ?? tripRoute.startDate)
+            dateStore.setTripDates(from: startDate, to: endDate)
         }
         .toolbar(.hidden)
-    }
-        
-    var headerView: some View {
-        HStack {
-            Button {
-                dismiss()
-            } label: {
-                Image(systemName: "xmark")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            }
-            .foregroundStyle(.black)
-            
-            Spacer()
-            
-            Button {
-                // TODO: 보고있는 루트 편집화면으로 이동하는 로직
-            } label: {
-                Text("편집")
-                    .padding(8)
-            }
-            .padding(.horizontal, 5)
-            .background {
-                RoundedRectangle(cornerRadius: 20)
-                    .foregroundStyle(Color("accentColor"))
-            }
-            .foregroundStyle(.white)
-        }
-        .frame(height: 20)
-        .padding(.bottom, 10)
-        .padding(.horizontal)
-    }
-    
-
-    var cityTagsView: some View {
-        HStack {
-            VStack {
-                CityTagFlowLayout(spacing: 10) {
-                    ForEach(tripRoute.city, id: \.self) { city in
-                        Text("# \(city)")
-                            .font(.system(size: 14))
-                            .bold()
-                            .foregroundStyle(Color(UIColor.darkGray))
-                    }
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding([.horizontal, .top])
-        }
-    }
-        
-    var mapView: some View {
-        Map(position: $mapRegion) {
-            if places.count > 0 {
-                if !places[focusedDayIndex].isEmpty {
-                    ForEach(Array(places[focusedDayIndex].enumerated()), id: \.offset) { index, place in
-                        Annotation("", coordinate: PlaceStore.getCoordinate(for: place)) {
-                            Image(systemName: "\(index + 1).circle.fill")
-                                .foregroundStyle(.tint)
-                                .font(.title)
-                                .background(Circle().fill(.white))
-                        }
-                    }
-                    MapPolyline(coordinates: PlaceStore.getCoordinates(for: places[focusedDayIndex]))
-                        .stroke(.blue, style: StrokeStyle(lineWidth: 1, dash: [5, 2], dashPhase: 0))
-                }
-            }
-        }
-        .frame(height: 200)
-    }
-    
-    var placesListView: some View {
-        ScrollView(.vertical) {
-            LazyVStack(pinnedViews: [.sectionHeaders]) {
-                ForEach(Array(datesInRange(from: startDate, to: endDate).enumerated()), id: \.element) { dateIndex, date in
-                    Section {
-                        PlaceInfoView(
-                            dateIndex: dateIndex,
-                            date: date,
-                            isEditing: false,
-                            places: $places,
-                            isShowSheet: $isShowSheet,
-                            selectedDay: $selectedDay
-                        )
-                        .background(
-                            GeometryReader { geo in
-                                Color.clear.onChange(of: geo.frame(in: .global).minY) { minY, _ in
-                                    if minY < 300 && minY > 250, dateIndex < places.count, focusedDayIndex != dateIndex {
-                                        focusedDayIndex = dateIndex
-                                        updateMapForDay(focusedDayIndex)
-                                    }
-                                }
-                            }
-                        )
-                    }
-                }
-            }
-            .padding(.bottom, 350)
-        }
-    }
-    
-    // 주어진 날짜 범위의 날짜 배열을 반환하는 함수
-    private func datesInRange(from start: Date, to end: Date) -> [Date] {
-        var dates: [Date] = []
-        var currentDate = start
-        
-        while currentDate <= end {
-            dates.append(currentDate)
-            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
-        }
-        
-        return dates
-    }
-    
-    private func dateToString(_ date: String) -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy MM dd"
-        dateFormatter.locale = Locale(identifier: "ko_KR") // 로케일 설정 (옵션)
-        dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul") // 시간대 설정 (옵션)
-        
-        return dateFormatter.date(from: date)
     }
     
     private func convertPlacesToPlacePosts(_ places: [Place]) -> [[PlacePost]] {
@@ -193,34 +66,6 @@ struct RouteDetailView: View {
         }
         
         return sortedGroupedByDate
-    }
-    
-    private func setupInitialData() {
-        places = convertPlacesToPlacePosts(tripRoute.place)
-        startDate = dateStore.convertStringToDate(tripRoute.startDate)
-        endDate = dateStore.convertStringToDate(tripRoute.endDate ?? tripRoute.startDate)
-        
-        locationManager.checkLocationAuthorization()
-        self.mapRegion = MapCameraPosition.region(
-            MKCoordinateRegion(
-                center: locationManager.lastKnownLocation ?? CLLocationCoordinate2D(latitude: 36.6337, longitude: 128.0179), // 초기 위치
-                span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-            )
-        )
-    }
-    
-    private func updateMapForDay(_ dayIndex: Int) {
-        guard dayIndex < places.count, !places[dayIndex].isEmpty else { return }
-        
-        let coordinates = PlaceStore.getCoordinates(for: places[dayIndex])
-        if let centerCoordinate = coordinates.first {
-            mapRegion = MapCameraPosition.region(
-                MKCoordinateRegion(
-                    center: centerCoordinate,
-                    span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-                )
-            )
-        }
     }
 }
 

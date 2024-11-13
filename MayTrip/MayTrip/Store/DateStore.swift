@@ -10,7 +10,7 @@ import SwiftUI
 import Observation
 
 @Observable
-class DateStore {
+final class DateStore {
     static let shared: DateStore = DateStore()
     // TODO: 여행 날짜 수정하는 경우엔 원래 있던 데이터를 가져오도록 수정해야함
     private(set) var date: Date = .init()
@@ -113,6 +113,16 @@ class DateStore {
         }
     }
     
+    func setTripDates(from startDate: Date, to endDate: Date) {
+        self.startDate = startDate
+        self.endDate = endDate
+    }
+    
+    func initDate() {
+        self.startDate = nil
+        self.endDate = nil
+    }
+    
     func forwardMonth() {
         let newYear: Int = currentMonth == 1 ? currentYear - 1 : currentYear
         let newMonth: Int = currentMonth == 1 ? 12 : currentMonth - 1
@@ -142,13 +152,33 @@ class DateStore {
         formatter.string(from: date)
     }
     
+    func dateToString(with format: String, date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "\(format)"
+        formatter.locale = Locale(identifier:"ko_KR")
+        return formatter.string(from: date)
+    }
+    
     // 시작 날짜 부터 끝날짜 범위의 날짜 배열을 반환하는 함수
+    func datesInRange(from startDate: Date, to endDate: Date) -> [Date] {
+        var dates: [Date] = []
+        var currentDate = startDate
+        let lastDate = endDate
+        
+        while currentDate <= lastDate {
+            dates.append(currentDate)
+            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
+        }
+        
+        return dates
+    }
+    
     func datesInRange() -> [Date] {
         var dates: [Date] = []
         var currentDate = startDate ?? .now
-        let lastDate = endDate ?? startDate
+        let lastDate = endDate ?? .now
         
-        while currentDate <= lastDate! {
+        while currentDate <= lastDate {
             dates.append(currentDate)
             currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
         }

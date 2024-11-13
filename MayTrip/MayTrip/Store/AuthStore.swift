@@ -11,6 +11,7 @@ import Auth
 import KakaoSDKCommon
 import KakaoSDKUser
 import Alamofire
+import Supabase
 
 @Observable
 class AuthStore {
@@ -33,8 +34,68 @@ class AuthStore {
                 isFirstLogin = false
             }
             self.isLogin = true
+            print(userStore.user.email, userStore.user.provider)
         } catch {
             print("Failed to fetch user info: \(error)")
+        }
+    }
+
+    func signOut() async throws {
+        let provider = userStore.user.provider
+        
+        do {
+            switch provider {
+            case "google":
+                GIDSignIn.sharedInstance.signOut()
+                print("google logout success")
+                self.isLogin = false
+            case "kakao":
+                UserApi.shared.logout {(error) in
+                    if let error = error {
+                        print(error)
+                    }
+                    else {
+                        print("kakao logout success.")
+                        self.isLogin = false
+                    }
+                }
+            case "email", "apple": // 이메일, 애플 로그인 경우 Supabase
+                try await DB.auth.signOut()
+                print("email, apple logout success")
+                self.isLogin = false
+            default :
+                print("not logined")
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func checkAutoLogin() async { // 토큰 확인 후 유효하면 자동 로그인
+        Task {
+            if await checkSupabaseLogin() { // 수파베이스(이메일, 애플)
+                return
+            } else if checkGoogleLogin() { // 구글
+                return
+            } else {
+                checkKakaoLogin() // 카카오
+            }
+            
+        }
+    }
+    
+    func checkSupabaseLogin() async -> Bool { // 이메일, 애플
+        do {
+            let user = try await DB.auth.user()
+            let provider = user.appMetadata["provider"]!
+            guard let providerJSON = try? JSONEncoder().encode(provider), let providerString = String(data: providerJSON, encoding: .utf8) else {
+                return false
+            }
+            await successLogin(email: user.email!, provider: providerString)
+            return true
+        } catch {
+            print(error)
+            return false
         }
     }
 }
