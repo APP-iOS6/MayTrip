@@ -74,6 +74,12 @@
 		FB8AC01A2CDCAE8A0001AB05 /* AuthStore+Kakao.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC0192CDCAE7C0001AB05 /* AuthStore+Kakao.swift */; };
 		FB8AC01C2CDCAEC30001AB05 /* AuthStore+Google.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC01B2CDCAEBE0001AB05 /* AuthStore+Google.swift */; };
 		FB8AC01E2CDD93CC0001AB05 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC01D2CDD93C80001AB05 /* UserStore.swift */; };
+		FB8AC02B2CE195490001AB05 /* CommunityHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC02A2CE195490001AB05 /* CommunityHeaderView.swift */; };
+		FB8AC02D2CE1966B0001AB05 /* CommunityBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC02C2CE1966B0001AB05 /* CommunityBodyView.swift */; };
+		FB8AC02F2CE19D010001AB05 /* CommunityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC02E2CE19CFA0001AB05 /* CommunityStore.swift */; };
+		FB8AC0312CE1E8BC0001AB05 /* CommunityPostListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC0302CE1E8BC0001AB05 /* CommunityPostListView.swift */; };
+		FB8AC0372CE1F3470001AB05 /* CommunityPostAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC0362CE1F3470001AB05 /* CommunityPostAddView.swift */; };
+		FB8AC0212CDDE2BE0001AB05 /* MyPageViewCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC0202CDDE2B80001AB05 /* MyPageViewCommon.swift */; };
 		FBC09BA22CD9DBAA00B059FB /* SocialLoginButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09BA12CD9DBA400B059FB /* SocialLoginButtons.swift */; };
 		FBC09C382CDA72A800B059FB /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C372CDA72A800B059FB /* ChatRoom.swift */; };
 		FBC09C392CDA72A800B059FB /* ChatLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C362CDA72A800B059FB /* ChatLog.swift */; };
@@ -151,6 +157,12 @@
 		FB8AC0192CDCAE7C0001AB05 /* AuthStore+Kakao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthStore+Kakao.swift"; sourceTree = "<group>"; };
 		FB8AC01B2CDCAEBE0001AB05 /* AuthStore+Google.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthStore+Google.swift"; sourceTree = "<group>"; };
 		FB8AC01D2CDD93C80001AB05 /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
+		FB8AC02A2CE195490001AB05 /* CommunityHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHeaderView.swift; sourceTree = "<group>"; };
+		FB8AC02C2CE1966B0001AB05 /* CommunityBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityBodyView.swift; sourceTree = "<group>"; };
+		FB8AC02E2CE19CFA0001AB05 /* CommunityStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityStore.swift; sourceTree = "<group>"; };
+		FB8AC0302CE1E8BC0001AB05 /* CommunityPostListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostListView.swift; sourceTree = "<group>"; };
+		FB8AC0362CE1F3470001AB05 /* CommunityPostAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostAddView.swift; sourceTree = "<group>"; };
+		FB8AC0202CDDE2B80001AB05 /* MyPageViewCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewCommon.swift; sourceTree = "<group>"; };
 		FBC09B952CD8721900B059FB /* MayTrip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MayTrip.entitlements; sourceTree = "<group>"; };
 		FBC09B9A2CD9D68D00B059FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FBC09BA12CD9DBA400B059FB /* SocialLoginButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtons.swift; sourceTree = "<group>"; };
@@ -377,6 +389,7 @@
 				259AAB882CDA06CD00512CE6 /* LocationManager.swift */,
 				259AAB892CDA06CD00512CE6 /* SearchAddressStore.swift */,
 				42F2F9E42CE32FE50013F147 /* NavigationManager.swift */,
+				FB8AC02E2CE19CFA0001AB05 /* CommunityStore.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -433,6 +446,10 @@
 			isa = PBXGroup;
 			children = (
 				FB36F6022CD4740600E356FA /* CommunityView.swift */,
+				FB8AC02A2CE195490001AB05 /* CommunityHeaderView.swift */,
+				FB8AC02C2CE1966B0001AB05 /* CommunityBodyView.swift */,
+				FB8AC0302CE1E8BC0001AB05 /* CommunityPostListView.swift */,
+				FB8AC0362CE1F3470001AB05 /* CommunityPostAddView.swift */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -467,6 +484,7 @@
 			isa = PBXGroup;
 			children = (
 				FB36F63D2CD528F600E356FA /* LoginView */,
+				FB8AC01F2CDDE29E0001AB05 /* MyPageView */,
 			);
 			path = Modifier;
 			sourceTree = "<group>";
@@ -477,6 +495,14 @@
 				FB36F6392CD4990900E356FA /* LoginViewCommon.swift */,
 			);
 			path = LoginView;
+			sourceTree = "<group>";
+		};
+		FB8AC01F2CDDE29E0001AB05 /* MyPageView */ = {
+			isa = PBXGroup;
+			children = (
+				FB8AC0202CDDE2B80001AB05 /* MyPageViewCommon.swift */,
+			);
+			path = MyPageView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -574,14 +600,17 @@
 				FB36F6052CD4740F00E356FA /* MyPageView.swift in Sources */,
 				42F2F9DC2CE25CF00013F147 /* RouteDetailHeaderView.swift in Sources */,
 				FB8AC01A2CDCAE8A0001AB05 /* AuthStore+Kakao.swift in Sources */,
+				FB8AC0212CDDE2BE0001AB05 /* MyPageViewCommon.swift in Sources */,
 				2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */,
 				42F2F9D42CE187F60013F147 /* PlaceStore.swift in Sources */,
+				FB8AC02D2CE1966B0001AB05 /* CommunityBodyView.swift in Sources */,
 				42F2F9D62CE2493D0013F147 /* PlaceHeaderView.swift in Sources */,
 				FB36F5FD2CD473EA00E356FA /* LoginView.swift in Sources */,
 				FB8AC01C2CDCAEC30001AB05 /* AuthStore+Google.swift in Sources */,
 				FB36F5EF2CD472F600E356FA /* ContentView.swift in Sources */,
 				FB36F6032CD4740900E356FA /* CommunityView.swift in Sources */,
 				FB36F6082CD4742A00E356FA /* StorageView.swift in Sources */,
+				FB8AC0372CE1F3470001AB05 /* CommunityPostAddView.swift in Sources */,
 				6E690E732CD8B54F0096DB7C /* CalendarView.swift in Sources */,
 				6E690E742CD8B54F0096DB7C /* DateGridView.swift in Sources */,
 				6E690E752CD8B54F0096DB7C /* EnterBasicInformationView.swift in Sources */,
@@ -603,10 +632,12 @@
 				6E690E872CD8B9540096DB7C /* MyTripCardView.swift in Sources */,
 				6E690E8F2CD8E2F10096DB7C /* ChatStore.swift in Sources */,
 				259AABB32CDA0AB200512CE6 /* Place.swift in Sources */,
+				FB8AC02B2CE195490001AB05 /* CommunityHeaderView.swift in Sources */,
 				FB8AC01E2CDD93CC0001AB05 /* UserStore.swift in Sources */,
 				259AABB42CDA0AB200512CE6 /* MarkerItem.swift in Sources */,
 				259AABB52CDA0AB200512CE6 /* TripRoute.swift in Sources */,
 				259AABC02CDA0AC800512CE6 /* User.swift in Sources */,
+				FB8AC02F2CE19D010001AB05 /* CommunityStore.swift in Sources */,
 				42F2F9D82CE2494E0013F147 /* PlaceMapListView.swift in Sources */,
 				259AABB62CDA0AB200512CE6 /* City.swift in Sources */,
 				6E690E8B2CD8B97E0096DB7C /* TripRouteView.swift in Sources */,
@@ -619,6 +650,7 @@
 				259AABC82CDA0AD900512CE6 /* PlaceAddingView.swift in Sources */,
 				42702D512CDA7BF70093F9E3 /* SignInView.swift in Sources */,
 				42F2F9E52CE32FE50013F147 /* NavigationManager.swift in Sources */,
+				FB8AC0312CE1E8BC0001AB05 /* CommunityPostListView.swift in Sources */,
 				FB36F5F02CD472F600E356FA /* MayTripApp.swift in Sources */,
 				FB36F63A2CD4991600E356FA /* LoginViewCommon.swift in Sources */,
 				FBC09BA22CD9DBAA00B059FB /* SocialLoginButtons.swift in Sources */,

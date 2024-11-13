@@ -62,7 +62,6 @@ struct SignInView : View {
                     .font(.system(size: 14))
                     .frame(width: screenWidth * 0.9)
                     
-                    
                     VStack(spacing : 10) {
                         Button { // 로그인 버튼
                             if email.isEmpty {

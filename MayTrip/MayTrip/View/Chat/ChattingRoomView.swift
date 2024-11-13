@@ -10,14 +10,16 @@ import UIKit
 
 struct ChattingRoomView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(ChatStore.self) private var chatStore: ChatStore
+    let routeStore = DummyRouteStore.shared
+    let userStore = UserStore.shared
     @State var message: String = ""
+    @State var route: Int?
+    @State var image: String?
     @FocusState var focused: Bool
-    var chatStore = DummyChatStore.shared
-    var routeStore = DummyRouteStore.shared
-    let chatRoom: DummyChatRoom
-    var chatLogs: [DummyChatLog] {
-        chatStore.getChatLogs(chatRoom.id)
-    }
+    let chatRoom: ChatRoom
+    var chatLogs: [ChatLog]
+    let otherUser: User
     @State var isScrollTop: Bool = true
     @State var isSend: Bool = false
     
@@ -36,7 +38,7 @@ struct ChattingRoomView: View {
                 Spacer()
                 
                 // 채팅 상대 이름
-                Text("\(chatStore.getOtherUser(chatRoom).nickname)")
+                Text("\(otherUser.nickname)")
                 
                 Spacer()
             }
@@ -55,15 +57,15 @@ struct ChattingRoomView: View {
                         //                                .padding()
                         
                         ForEach(chatLogs) { log in
-                            // TODO: 상대가 보낸 메세지인지 분기 로직 추가
-                            if log.write_user == signedUser.id {
+                            
+                            if log.writeUser == userStore.user.id {
                                 // 내가 보낸 메세지
                                 HStack(alignment: .bottom, spacing: 0) {
                                     Spacer()
                                     
                                     VStack(alignment: .trailing) {
                                         //                                            Text("읽음")
-                                        Text("\(chatStore.convertDateToTimeString(log.created_at))")
+                                        Text("\(chatStore.convertDateToTimeString(log.createdAt))")
                                     }
                                     .font(.footnote)
                                     .foregroundStyle(.gray)
@@ -94,7 +96,7 @@ struct ChattingRoomView: View {
                                     
                                     VStack(alignment: .leading) {
                                         //                                            Text("읽음")
-                                        Text("\(chatStore.convertDateToTimeString(log.created_at))")
+                                        Text("\(chatStore.convertDateToTimeString(log.createdAt))")
                                     }
                                     .font(.footnote)
                                     .foregroundStyle(.gray)
@@ -105,6 +107,11 @@ struct ChattingRoomView: View {
                             }
                         }
                     }
+                }
+            }
+            .refreshable {
+                Task {
+                    try await chatStore.setAllComponents(true)
                 }
             }
             .padding(.bottom, 15)
@@ -123,17 +130,27 @@ struct ChattingRoomView: View {
                     .keyboardType(.default)
                     .focused($focused)
                     .onSubmit {
-                        chatStore.saveChatLog(chatRoom.id, message: message)
-                        message = ""
-                        focused = true
-                        isSend = true
+                        Task {
+                            guard message != "" else { return }
+                            
+                            try await chatStore.saveChatLog(chatRoom.id, message: message, route: route, image: image)
+                            
+                            message = ""
+                            focused = true
+                            isSend = true
+                        }
                     }
                 
                 Button {
-                    chatStore.saveChatLog(chatRoom.id, message: message)
-                    message = ""
-                    focused = false
-                    isSend = true
+                    Task {
+                        guard message != "" else { return }
+                        
+                        try await chatStore.saveChatLog(chatRoom.id, message: message, route: route, image: image)
+                        
+                        message = ""
+                        focused = false
+                        isSend = true
+                    }
                 } label: {
                     VStack {
                         Image(systemName: "paperplane")
@@ -214,6 +231,3 @@ struct RecruitmentNoticeView: View {
     }
 }
 
-#Preview {
-    ChattingRoomView(chatRoom: DummyChatStore.shared.chatRooms[0])
-}

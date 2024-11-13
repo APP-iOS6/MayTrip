@@ -13,19 +13,28 @@ import GoogleSignIn
 @main
 struct MayTripApp: App {
     @StateObject var navigationManager = NavigationManager()
-    var authStore = AuthStore()
+    @State var authStore = AuthStore()
+    @State private var chatStore: ChatStore = .init()
+    var communityStore = CommunityStore()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(navigationManager)
                 .environment(authStore)
+                .environment(communityStore)
+                .environment(chatStore)
                 .onOpenURL { url in
                     if (AuthApi.isKakaoTalkLoginUrl(url)) {
                         _ = AuthController.handleOpenUrl(url: url)
                     } else {
                         GIDSignIn.sharedInstance.handle(url)
                         authStore.DB.auth.handle(url)
+                    }
+                }
+                .onAppear {
+                    Task {
+                        await authStore.checkAutoLogin()
                     }
                 }
         }
