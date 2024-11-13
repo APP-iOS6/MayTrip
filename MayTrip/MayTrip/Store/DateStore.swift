@@ -10,7 +10,7 @@ import SwiftUI
 import Observation
 
 @Observable
-class DateStore {
+final class DateStore {
     static let shared: DateStore = DateStore()
     // TODO: 여행 날짜 수정하는 경우엔 원래 있던 데이터를 가져오도록 수정해야함
     private(set) var date: Date = .init()
