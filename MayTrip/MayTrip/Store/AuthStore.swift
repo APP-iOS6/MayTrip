@@ -34,6 +34,7 @@ class AuthStore {
                 isFirstLogin = false
             }
             self.isLogin = true
+            print(userStore.user.email, userStore.user.provider)
         } catch {
             print("Failed to fetch user info: \(error)")
         }
@@ -58,10 +59,12 @@ class AuthStore {
                         self.isLogin = false
                     }
                 }
-            default: // 이메일, 애플 로그인 경우 Supabase
+            case "email", "apple": // 이메일, 애플 로그인 경우 Supabase
                 try await DB.auth.signOut()
                 print("email, apple logout success")
                 self.isLogin = false
+            default :
+                print("not logined")
             }
         } catch {
             print(error)
@@ -70,22 +73,47 @@ class AuthStore {
     
     func checkAutoLogin() async {
         Task {
-            //            try await DB.auth.signOut()
-            try await checkSupabaseLogin()
+            if await checkSupabaseLogin() { // 수파베이스(이메일, 애플) 토큰 확인 후 로그인
+                return
+            } else if checkKaKaoLogin() {
+                return
+            }
         }
     }
     
-    func checkSupabaseLogin() async { // 이메일, 애플
+    func checkSupabaseLogin() async -> Bool { // 이메일, 애플
         do {
             let user = try await DB.auth.user()
             let provider = user.appMetadata["provider"]!
             guard let providerJSON = try? JSONEncoder().encode(provider), let providerString = String(data: providerJSON, encoding: .utf8) else {
-                return
+                return false
             }
             await successLogin(email: user.email!, provider: providerString)
-            print(user.email!, providerString)
+            return true
         } catch {
             print(error)
+            return false
         }
+    }
+    
+    func checkKaKaoLogin() -> Bool {
+        var isSuccess: Bool = false
+        UserApi.shared.accessTokenInfo { (accessTokenInfo, error) in
+            if let error = error {
+                if let sdkError = error as? SdkError, sdkError.isInvalidTokenError() == true  { // 추후 추가예정
+                    //로그인 필요
+                }
+                else {
+                    //기타 에러
+                }
+            }
+            else {
+                Task {
+                    await self.successLogin(email: String((accessTokenInfo?.id!)!), provider: "kakao")
+                }
+                isSuccess = true
+            }
+        }
+        return isSuccess
     }
 }
