@@ -15,6 +15,7 @@ struct PlaceAddingView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     var title: String
     var tags: [String]
+    var tripRoute: TripRoute?
     
     @State var isShowSheet: Bool = false            // 장소 추가시트 띄우기
     @State var selectedDay: Int = 0                 // 장소 추가시에 몇일차에 장소 추가하는지
@@ -25,7 +26,7 @@ struct PlaceAddingView: View {
         VStack {
             // 상단 버튼, 도시태그 뷰
             PlaceHeaderView(
-                cities: $cities,
+                cities: cities,
                 places: places,
                 title: title,
                 tags: tags
@@ -38,6 +39,12 @@ struct PlaceAddingView: View {
                 places: $places,
                 isEditing: true
             )
+        }
+        .onAppear {
+            if let tripRoute = tripRoute {
+                self.places = PlaceStore.convertPlacesToPlacePosts(tripRoute.place)
+                self.cities = tripRoute.city
+            }
         }
         .padding(.top)
         .sheet(isPresented: $isShowSheet) {

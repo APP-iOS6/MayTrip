@@ -9,11 +9,6 @@ import Foundation
 import MapKit
 
 final class PlaceStore {
-//    static let shared = PlaceStore()
-    
-    init() {
-        print("hello placeStore!!")
-    }
     
     // placePost의 위도,경도값 가져오기
     static func getCoordinate(for place: PlacePost) -> CLLocationCoordinate2D {
@@ -48,6 +43,34 @@ final class PlaceStore {
         }
         
         return places
+    }
+    
+    // [place] -> [[placePost]] 로 변경
+    static func convertPlacesToPlacePosts(_ places: [Place]) -> [[PlacePost]] {
+        // 날짜별로 Place 배열을 그룹화하고, ordered 순으로 정렬
+        let groupedByDate = Dictionary(grouping: places) { $0.tripDate }
+        
+        // 날짜별로 정렬된 배열로 변환, ordered 순서에 맞춰 정렬
+        let sortedGroupedByDate = groupedByDate.keys.sorted().compactMap { date -> [PlacePost]? in
+            if let placeGroup = groupedByDate[date] {
+                let sortedPlaceGroup = placeGroup.sorted(by: { $0.ordered < $1.ordered }) // ordered 순으로 정렬
+                
+                let placePosts = sortedPlaceGroup.map { place in
+                    PlacePost(
+                        name: place.name,
+                        tripRoute: place.tripRoute,
+                        tripDate: DateStore().convertStringToDate(place.tripDate),
+                        ordered: place.ordered,
+                        coordinates: place.coordinates,
+                        categoryCode: place.category
+                    )
+                }
+                return placePosts
+            }
+            return nil
+        }
+        
+        return sortedGroupedByDate
     }
     
     // categoryCode -> categoryName으로 변환

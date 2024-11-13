@@ -10,11 +10,12 @@ struct EnterBasicInformationView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var navigationManager: NavigationManager
     
-    private var dateStore = DateStore.shared
+    private let dateStore = DateStore.shared
     @State var title: String = ""
     @State var isCalendarShow: Bool = false
     @State var tag: String = ""
     @FocusState var focused: Bool
+    var tripRoute: TripRoute?
     
     private var tags: [String] {
         var tags = tag.components(separatedBy: "#").filter{ $0 != "" }
@@ -66,7 +67,7 @@ struct EnterBasicInformationView: View {
                         Spacer()
                         
                         Button {
-                            navigationManager.push(Destination.placeAdd(title, tags))
+                            navigationManager.push(.placeAdd(title, tags, tripRoute))
                         } label: {
                             Text("다음")
                                 .padding(8)
@@ -129,6 +130,12 @@ struct EnterBasicInformationView: View {
         .navigationBarBackButtonHidden()
         .onChange(of: isEditedDateSetting) { oldValue, newValue in
             isCalendarShow = isEditedDateSetting
+        }
+        .onAppear {
+            if let tripRoute = tripRoute {
+                self.title = tripRoute.title
+                self.tag = tripRoute.tag.map{ "# \($0)" }.joined(separator: " ")
+            }
         }
     }
 }

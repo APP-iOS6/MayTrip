@@ -7,6 +7,7 @@
 import SwiftUI
 
 struct MyTripCardView: View {
+    @EnvironmentObject var navigationManager: NavigationManager
     var dateStore: DateStore = .shared
     var routeStore: DummyRouteStore = .shared
     let name: String = signedUser.nickname
@@ -18,9 +19,10 @@ struct MyTripCardView: View {
                 ForEach(0..<routeStore.createdRoutes.count, id: \.self) { index in
                     let route = routeStore.createdRoutes[index]
                     
-                    NavigationLink {
+                    Button {
                         // TODO: 디테일 뷰 이동
-                        RouteDetailView(tripRoute: SampleTripRoute.sampleRoute)
+//                        RouteDetailView(tripRoute: SampleTripRoute.sampleRoute)
+                        navigationManager.push(.routeDetail(SampleTripRoute.sampleRoute))
                     } label: {
                         RoundedRectangle(cornerRadius: 10)
                             .foregroundStyle(routeStore.isOnATrip(route.start_date, end: route.end_date) ? Color("accentColor") : Color(uiColor: .systemGray6))

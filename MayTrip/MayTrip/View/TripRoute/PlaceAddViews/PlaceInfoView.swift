@@ -38,7 +38,7 @@ struct PlaceInfoView: View {
             
             // 중앙 장소 정보
                 
-                if places.count > 0 {
+                if places.count > 0 && dateIndex < places.count {
                     List {
                         ForEach(Array(places[dateIndex].enumerated()), id: \.element.coordinates) { placeIndex, place in
                             HStack {

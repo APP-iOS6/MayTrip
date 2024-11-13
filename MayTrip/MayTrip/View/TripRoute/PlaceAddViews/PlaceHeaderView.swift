@@ -12,7 +12,7 @@ struct PlaceHeaderView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @StateObject var tripRouteStore = TripRouteStore()
     
-    @Binding var cities: [String]
+    var cities: [String]
     var places: [[PlacePost]]
     var title: String
     var tags: [String]
@@ -90,7 +90,7 @@ struct PlaceHeaderView: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding([.horizontal, .top])
+            .padding(.horizontal)
         }
     }
 }

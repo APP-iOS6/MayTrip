@@ -9,13 +9,14 @@
 import SwiftUI
 
 struct RecommendContentView: View {
+    @EnvironmentObject var navigationManager: NavigationManager
     var routeStore: DummyRouteStore = .shared
     let route: DummyTripRoute
     
     var body: some View {
-        NavigationLink {
+        Button {
             // 디테일 뷰 이동
-            RouteDetailView(tripRoute: SampleTripRoute.sampleRoute)
+            navigationManager.push(.routeDetail(SampleTripRoute.sampleRoute))
         } label: {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(Color(uiColor: .systemGray6))

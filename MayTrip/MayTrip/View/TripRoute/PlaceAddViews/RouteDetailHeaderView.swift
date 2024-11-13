@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct RouteDetailHeaderView: View {
+    @EnvironmentObject var navigationManager: NavigationManager
     @Environment(\.dismiss) var dismiss
     var tripRoute: TripRoute
     let dateStore: DateStore = DateStore.shared
     
     var body: some View {
         headerView
+        titleView
         cityTagsView
     }
     
@@ -32,7 +34,8 @@ struct RouteDetailHeaderView: View {
             Spacer()
             
             Button {
-                // TODO: 보고있는 루트 편집화면으로 이동하는 로직
+                // 보고있는 루트 편집화면으로 이동하는 로직
+                navigationManager.push(.enterBasicInfo(tripRoute: tripRoute))
             } label: {
                 Text("편집")
                     .padding(8)
@@ -48,6 +51,29 @@ struct RouteDetailHeaderView: View {
         .padding(.bottom, 10)
         .padding(.horizontal)
     }
+    
+    var titleView: some View {
+        HStack(alignment: .bottom) {
+            Text("\(tripRoute.title)")
+//                .font()
+                .bold()
+        
+            Spacer()
+//            Text("작성자: \(tripRoute.writeUser.nickname)")
+//                .font(.footnote)
+            Button {
+                
+            } label: {
+                Image(systemName: "bookmark")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 20, height: 20)
+                    .foregroundStyle(Color("accentColor"))
+            }
+        }
+        .padding(.horizontal)
+        .padding(.bottom)
+    }
 
     var cityTagsView: some View {
         HStack {
@@ -62,7 +88,7 @@ struct RouteDetailHeaderView: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding([.horizontal, .top])
+            .padding(.horizontal)
         }
     }
 }

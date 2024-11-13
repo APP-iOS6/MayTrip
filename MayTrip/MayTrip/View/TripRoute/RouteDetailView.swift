@@ -33,39 +33,12 @@ struct RouteDetailView: View {
         }
         .padding(.top)
         .onAppear {
-            places = convertPlacesToPlacePosts(tripRoute.place)
+            places = PlaceStore.convertPlacesToPlacePosts(tripRoute.place)
             let startDate = dateStore.convertStringToDate(tripRoute.startDate)
             let endDate = dateStore.convertStringToDate(tripRoute.endDate ?? tripRoute.startDate)
             dateStore.setTripDates(from: startDate, to: endDate)
         }
         .toolbar(.hidden)
-    }
-    
-    private func convertPlacesToPlacePosts(_ places: [Place]) -> [[PlacePost]] {
-        // 날짜별로 Place 배열을 그룹화하고, ordered 순으로 정렬
-        let groupedByDate = Dictionary(grouping: places) { $0.tripDate }
-        
-        // 날짜별로 정렬된 배열로 변환, ordered 순서에 맞춰 정렬
-        let sortedGroupedByDate = groupedByDate.keys.sorted().compactMap { date -> [PlacePost]? in
-            if let placeGroup = groupedByDate[date] {
-                let sortedPlaceGroup = placeGroup.sorted(by: { $0.ordered < $1.ordered }) // ordered 순으로 정렬
-                
-                let placePosts = sortedPlaceGroup.map { place in
-                    PlacePost(
-                        name: place.name,
-                        tripRoute: place.tripRoute,
-                        tripDate: dateStore.convertStringToDate(place.tripDate),
-                        ordered: place.ordered,
-                        coordinates: place.coordinates,
-                        categoryCode: place.category
-                    )
-                }
-                return placePosts
-            }
-            return nil
-        }
-        
-        return sortedGroupedByDate
     }
 }
 

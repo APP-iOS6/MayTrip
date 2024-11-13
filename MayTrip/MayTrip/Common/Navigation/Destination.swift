@@ -8,6 +8,7 @@
 import Foundation
 
 enum Destination: Hashable {
-    case enterBasicInfo
-    case placeAdd(String, [String])
+    case enterBasicInfo(tripRoute: TripRoute?)
+    case placeAdd(String, [String], TripRoute?)
+    case routeDetail(TripRoute)
 }

@@ -46,7 +46,7 @@ struct TripRouteView: View {
                     }
                     
                     Button {
-                        navigationManager.path.append(Destination.enterBasicInfo)
+                        navigationManager.push(.enterBasicInfo(tripRoute: nil))
                     } label: {
                         Image(systemName: "plus")
                             .frame(width: 15, height:  15)
@@ -54,10 +54,12 @@ struct TripRouteView: View {
                     }
                     .navigationDestination(for: Destination.self) { destination in
                         switch destination {
-                        case .enterBasicInfo:
-                            EnterBasicInformationView()
-                        case .placeAdd(let title, let tags):
-                            PlaceAddingView(title: title, tags: tags)
+                        case .enterBasicInfo(let tripRoute):
+                            EnterBasicInformationView(tripRoute: tripRoute)
+                        case .placeAdd(let title, let tags, let tripRoute):
+                            PlaceAddingView(title: title, tags: tags, tripRoute: tripRoute)
+                        case .routeDetail(let tripRoute):
+                            RouteDetailView(tripRoute: tripRoute)
                         }
                     }
                 }
