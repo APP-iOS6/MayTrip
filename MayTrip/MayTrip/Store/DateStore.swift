@@ -113,6 +113,7 @@ final class DateStore {
         }
     }
     
+    // 다음달로 달력 넘김
     func forwardMonth() {
         let newYear: Int = currentMonth == 1 ? currentYear - 1 : currentYear
         let newMonth: Int = currentMonth == 1 ? 12 : currentMonth - 1
@@ -120,17 +121,22 @@ final class DateStore {
         date = formatter.date(from: "\(newYear) \(newMonth) 1") ?? .init()
     }
     
+    // 이전달로 달력 넘김
     func backwardMonth() {
         let newYear: Int = currentMonth == 12 ? currentYear + 1 : currentYear
         let newMonth: Int = currentMonth == 12 ? 1 : currentMonth + 1
         
         date = formatter.date(from: "\(newYear) \(newMonth) 1") ?? .init()
     }
-    
+
+    // 스트링 날짜를 데이트로 반환
     func convertStringToDate(_ date: String) -> Date {
-        formatter.date(from: date) ?? .init()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.date(from: date) ?? .init()
     }
     
+    // 데이트를 스트링 날짜로 반환
     func convertDateToString(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yy.MM.dd(EEEEE)"
@@ -138,8 +144,31 @@ final class DateStore {
         return formatter.string(from: date)
     }
     
+    // 날짜를 스트링으로 반환
     func convertDateToSimpleString(_ date: Date) -> String {
         formatter.string(from: date)
+    }
+    
+    // 여행기간에 따라 여행일정을 스트링으로 반환 (당일치기, n박 n+1일, 장기) 여행
+    func convertPeriodToString(_ start: String, end: String) -> String {
+        let start = convertStringToDate(start)
+        let end = convertStringToDate(end)
+        
+        let dateDiff = Calendar.current.dateComponents([.year, .month, .day], from: start, to: end)
+        
+        var dateString = "당일치기"
+        
+        if case let (year?, month?, day?) = (dateDiff.year, dateDiff.month, dateDiff.day) {
+            if day != 0 {
+                dateString = "\(day)박 \(day + 1)일"
+            }
+            
+            if year != 0 || month != 0 {
+                dateString = "장기"
+            }
+        }
+        
+        return dateString
     }
     
     // 시작 날짜 부터 끝날짜 범위의 날짜 배열을 반환하는 함수
@@ -154,5 +183,35 @@ final class DateStore {
         }
         
         return dates
+    }
+    
+    // 현재 여행중인지를 반환
+    func isOnATrip(_ start: String, end: String) -> Bool {
+        let start = convertStringToDate(start)
+        let end = convertStringToDate(end)
+        
+        let date = Date()
+        
+        let today = Calendar.current.dateComponents([.year, .month, .day], from: date)
+        let startDay = Calendar.current.dateComponents([.year, .month, .day], from: start)
+        let endDay = Calendar.current.dateComponents([.year, .month, .day], from: end)
+        
+        return today == startDay || today == endDay || (date > start && date < end)
+    }
+    
+    // 날짜별 계절을 스트링으로 반환
+    func convertMonthToSeason(_ start: Date) -> String {
+        let month = Calendar.current.component(.month, from: start)
+        var season: String = ""
+        
+        switch month {
+        case 1, 2, 3, 12: season = "겨울"
+        case 4, 5, 6: season = "봄"
+        case 7, 8, 9: season = "여름"
+        case 10, 11: season = "가을"
+        default: break
+        }
+        
+        return season
     }
 }
