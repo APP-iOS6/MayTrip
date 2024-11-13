@@ -33,6 +33,8 @@ class ChatStore {
         }
     }
     
+    // 채팅에 필요한 컴포넌트들 세팅
+    @MainActor
     func setAllComponents(_ isRefresh: Bool = false) async throws {
         Task {
             try await fetchChatRooms()
@@ -43,14 +45,15 @@ class ChatStore {
                 let forChatComponent: (ChatRoom, [ChatLog], User) = (chatRoom, chatLogs, otherUser)
 
                 // 화면 관련 부분은 메인에서 작업
-                DispatchQueue.main.asyncAndWait {
+//                DispatchQueue.main.asyncAndWait {
                     forChatComponents.removeAll(where: { $0.chatRoom.id == chatRoom.id })
                     forChatComponents.append(forChatComponent)
-                }
+//                }
             }
         }
     }
     
+    // 유저가 포함된 대화방만 불러옴
     private func fetchChatRooms() async throws {
         do {
             chatRooms = try await db
@@ -65,6 +68,7 @@ class ChatStore {
         }
     }
     
+    // 대화방 대화내용 불러오기
     private func fetchChatLogs(_ chatRoom: ChatRoom, isRefresh: Bool = false) async throws -> [ChatLog] {
         do {
             let component = forChatComponents.filter {
@@ -97,6 +101,7 @@ class ChatStore {
         }
     }
     
+    // 채팅룸 저장
     func saveChatRoom(_ user: Int) async throws {
         do {
             let chatRoom: ChatRoomPost = ChatRoomPost(user1: userStore.user.id, user2: user)
@@ -107,6 +112,7 @@ class ChatStore {
         }
     }
     
+    // 대화내용 저장
     func saveChatLog(_ chatRoom: Int, message: String, route: Int?, image: String?) async throws {
         do {
             let chatLog: ChatLogPost = ChatLogPost(writeUser: userStore.user.id, chatRoom: chatRoom, message: message, route: route, image: image)
@@ -117,6 +123,7 @@ class ChatStore {
         }
     }
     
+    // 채팅방 삭제
     func deleteChatRoom(_ chatRoom: Int) async throws {
         do {
             try await db.from("CHAT_ROOM").delete().eq("id", value: chatRoom).execute()
@@ -125,6 +132,7 @@ class ChatStore {
         }
     }
     
+    // 채팅 상대 유저를 반환
     private func getOtherUser(_ chatRoom: ChatRoom) async throws -> User {
         do {
             let userId = chatRoom.user1 == userStore.user.id ? chatRoom.user2 : chatRoom.user1
@@ -169,9 +177,10 @@ class ChatStore {
         return dateString
     }
     
+    // 전송된 날짜를 입력받아서 시간 스트링으로 반환
     func convertDateToTimeString(_ date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "a HH:mm"
+        formatter.dateFormat = "a hh:mm"
         formatter.locale = Locale(identifier:"ko_KR")
         return formatter.string(from: date)
     }

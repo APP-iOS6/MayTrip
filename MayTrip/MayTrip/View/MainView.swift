@@ -20,21 +20,24 @@ struct MainView:  View {
             TabView(selection: $selection) {
                 TripRouteView()
                     .tabItem {
-                        Image(selection == 0 ? "homeClick" : "homeUnClick")
-                        Text("홈")
+                        Image(systemName: selection == 0 ? "map.fill" : "map")
+                            .environment(\.symbolVariants, .none)
+                        Text("여행")
                     }
                     .tag(0)
                 
                 CommunityView()
                     .tabItem {
-                        Image(selection == 1 ? "communityClick" : "communityUnClick")
+                        Image(systemName: selection == 1 ? "person.2.fill" : "person.2")
+                            .environment(\.symbolVariants, .none)
                         Text("커뮤니티")
                     }
                     .tag(1)
                 
                 ChatView()
                     .tabItem {
-                        Image(selection == 2 ? "chatClick" : "chatUnClick")
+                        Image(systemName: selection == 2 ? "message.fill" : "message")
+                            .environment(\.symbolVariants, .none)
                         Text("채팅")
                     }
                     .tag(2)
@@ -46,14 +49,16 @@ struct MainView:  View {
                 
                 StorageView()
                     .tabItem {
-                        Image(selection == 3 ? "storageClick" : "storageUnClick")
+                       Image(systemName: selection == 3 ? "bookmark.fill" : "bookmark")
+                            .environment(\.symbolVariants, .none)
                         Text("보관함")
                     }
                     .tag(3)
                 
                 MyPageView()
                     .tabItem {
-                        Image(selection == 4 ? "mypageClick" : "mypageUnClick")
+                        Image(systemName: selection == 4 ? "person.fill" : "person")
+                            .environment(\.symbolVariants, .none)
                         Text("마이페이지")
                     }
                     .tag(4)

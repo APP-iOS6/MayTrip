@@ -8,24 +8,33 @@
 import SwiftUI
 
 struct PlaceInfoView: View {
+    let dateStore: DateStore = DateStore()
     var dateIndex: Int
     var date: Date
     var isEditing: Bool
     @Binding var places: [[PlacePost]]      // 추가된 장소 (배열당 한 일차 장소배열)
     @Binding var isShowSheet: Bool      // 장소 추가시트 띄우기
+    @Binding var isShowDatePicker: Bool
     @Binding var selectedDay: Int       // 장소 추가시에 몇일차에 장소 추가하는지
 
     var body: some View {
         VStack(alignment: .leading) {
             // 상단 날짜 정보
-            HStack {
-                Text("DAY\(dateIndex + 1)")
-                    .bold()
-                Text(dateString(from: date))
-                    .foregroundStyle(.gray)
+            Button {
+                isShowDatePicker.toggle()
+            } label: {
+                HStack {
+                    Text("DAY\(dateIndex + 1)")
+                        .foregroundStyle(Color.primary)
+                        .bold()
+                    Text(dateStore.dateToString(with: "MM.dd(E)", date: date))
+                        .foregroundStyle(.gray)
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(Color.primary)
+                }
+                .font(.system(size: 14))
+                .padding([.horizontal, .top])
             }
-            .font(.system(size: 14))
-            .padding([.horizontal, .top])
             
             // 중앙 장소 정보
                 
@@ -77,7 +86,7 @@ struct PlaceInfoView: View {
             if isEditing {
                 Button {
                     isShowSheet.toggle()
-                    self.selectedDay = dateIndex + 1
+                    self.selectedDay = dateIndex
                 } label: {
                     Text("장소 추가")
                         .foregroundStyle(Color.primary)
@@ -94,13 +103,5 @@ struct PlaceInfoView: View {
                 .padding(.bottom, 15)
             }
         }
-    }
-    
-    // 날짜를 원하는 형식으로 변환하는 함수
-    func dateString(from date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM.dd(E)" // 10.26(월) 형식
-        dateFormatter.locale = Locale(identifier: "ko_KR") // 한국어 로케일 설정
-        return dateFormatter.string(from: date)
     }
 }

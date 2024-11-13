@@ -52,6 +52,7 @@ struct EnterBasicInformationView: View {
                     // header
                     HStack {
                         Button {
+                            dateStore.initDate()
                             dismiss()
                         } label: {
                             Image(systemName: "xmark")
@@ -65,11 +66,7 @@ struct EnterBasicInformationView: View {
                         
                         NavigationLink(
                             destination:
-                                PlaceAddingView(
-                                    title: title,
-                                    tags: tags,
-                                    startDate: dateStore.startDate ?? .now,
-                                    endDate: dateStore.endDate ?? .now)
+                                PlaceAddingView(title: title, tags: tags)
                             ) {
                                 Text("다음")
                                     .padding(8)

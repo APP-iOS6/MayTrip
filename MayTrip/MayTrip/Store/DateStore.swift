@@ -113,6 +113,16 @@ final class DateStore {
         }
     }
     
+    func setTripDates(from startDate: Date, to endDate: Date) {
+        self.startDate = startDate
+        self.endDate = endDate
+    }
+    
+    func initDate() {
+        self.startDate = nil
+        self.endDate = nil
+    }
+    
     // 다음달로 달력 넘김
     func forwardMonth() {
         let newYear: Int = currentMonth == 1 ? currentYear - 1 : currentYear
@@ -137,16 +147,11 @@ final class DateStore {
     }
     
     // 데이트를 스트링 날짜로 반환
-    func convertDateToString(_ date: Date) -> String {
+    func convertDateToString(_ date: Date, format: String = "yyyy MM d") -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yy.MM.dd(EEEEE)"
+        formatter.dateFormat = format
         formatter.locale = Locale(identifier:"ko_KR")
         return formatter.string(from: date)
-    }
-    
-    // 날짜를 스트링으로 반환
-    func convertDateToSimpleString(_ date: Date) -> String {
-        formatter.string(from: date)
     }
     
     // 여행기간에 따라 여행일정을 스트링으로 반환 (당일치기, n박 n+1일, 장기) 여행
@@ -171,13 +176,33 @@ final class DateStore {
         return dateString
     }
     
+    func dateToString(with format: String, date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "\(format)"
+        formatter.locale = Locale(identifier:"ko_KR")
+        return formatter.string(from: date)
+    }
+    
     // 시작 날짜 부터 끝날짜 범위의 날짜 배열을 반환하는 함수
+    func datesInRange(from startDate: Date, to endDate: Date) -> [Date] {
+        var dates: [Date] = []
+        var currentDate = startDate
+        let lastDate = endDate
+        
+        while currentDate <= lastDate {
+            dates.append(currentDate)
+            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
+        }
+        
+        return dates
+    }
+    
     func datesInRange() -> [Date] {
         var dates: [Date] = []
         var currentDate = startDate ?? .now
-        let lastDate = endDate ?? startDate
+        let lastDate = endDate ?? .now
         
-        while currentDate <= lastDate! {
+        while currentDate <= lastDate {
             dates.append(currentDate)
             currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
         }
