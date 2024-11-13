@@ -38,7 +38,16 @@ class TripRouteStore: ObservableObject {
         do{
             list = try await db
                 .from("TRIP_ROUTE")
-                .select("id, title, tag, city, start_date, end_date")
+                .select(
+                        """
+                        id, title, tag, city, writeUser:write_user(
+                        id,
+                        nickname,
+                        profile_image
+                        )
+                        ,start_date, end_date
+                        """
+                )
                 .execute()
                 .value
         }catch{
@@ -79,7 +88,16 @@ class TripRouteStore: ObservableObject {
         do {
             myTripRoutes = try await db
                 .from("TRIP_ROUTE")
-                .select("id, title, tag, city, start_date, end_date")
+                .select(
+                        """
+                        id, title, tag, city, writeUser:write_user(
+                        id,
+                        nickname,
+                        profile_image
+                        )
+                        ,start_date, end_date
+                        """
+                )
                 .eq("write_user", value: userStore.user.id)
                 .order("start_date", ascending: false) // 내림차순으로 정렬
                 .execute()
