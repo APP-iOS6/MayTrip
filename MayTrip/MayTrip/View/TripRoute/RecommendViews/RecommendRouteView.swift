@@ -20,7 +20,7 @@ struct RecommendRouteView: View {
         ForEach(Standard.allCases, id: \.self) { standard in
             VStack {
                 NavigationLink {
-                    // TODO: 루트 리스트 뷰 이동
+                    RouteListView(title: standard.rawValue, tripRoutes: categorizedRoute(standard))
                 } label: {
                     HStack(alignment: .center) {
                         Text("\(standard.rawValue)")
