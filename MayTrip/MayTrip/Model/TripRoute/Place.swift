@@ -26,7 +26,7 @@ struct Place: Codable, Identifiable {
     }
 }
 
-struct PlacePost: Codable{
+struct PlacePost: Codable, Equatable {
     let name: String
     var tripRoute: Int = 0
     let tripDate: Date

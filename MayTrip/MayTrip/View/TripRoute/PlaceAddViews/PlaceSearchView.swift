@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct PlaceSearchView: View {
+    let dateStore: DateStore = DateStore.shared
     var searchAddressStore = SearchAddressStore.shared
     var locationManager = LocationManager.shared
-    var startDate: Date
-    var endDate: Date
+
     @State var keyword: String = ""         // 검색 키워드
     @State var documents: [Document] = []   // 검색 결과 장소 배열
     @Binding var selectedDay: Int             // 장소 추가시에 몇일차에 장소 추가하는지
@@ -53,7 +53,7 @@ struct PlaceSearchView: View {
                                           coordinates: [Double(document.y)!, Double(document.x)!],
                                           categoryCode: category)
                     
-                    self.places[selectedDay - 1].append(place)
+                    self.places[selectedDay].append(place)
                     
                     let city = document.addressName.components(separatedBy: " ").first ?? ""    // 결과의 도시부분 추출
                     
@@ -79,21 +79,8 @@ struct PlaceSearchView: View {
     }
     
     // 선택된 일차의 날짜를 반환하는 함수
-    func selectedDate(from day: Int) -> Date {
-        let date = self.datesInRange(from: startDate, to: endDate)
-        return date[day - 1]
-    }
-    
-    // 주어진 날짜 범위의 날짜 배열을 반환하는 함수
-    func datesInRange(from start: Date, to end: Date) -> [Date] {
-        var dates: [Date] = []
-        var currentDate = start
-        
-        while currentDate <= end {
-            dates.append(currentDate)
-            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
-        }
-        
-        return dates
+    private func selectedDate(from day: Int) -> Date {
+        let date = dateStore.datesInRange()
+        return date[day]
     }
 }
