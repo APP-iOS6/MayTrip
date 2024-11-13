@@ -141,7 +141,7 @@ struct CommunityPostAddView: View {
                             
                             Spacer()
                         }
-                        .frame( height : proxy.size.width * 0.25)
+                        .frame(height : proxy.size.width * 0.25)
                     }
                 }
                 .padding(.horizontal, proxy.size.width * 0.05)

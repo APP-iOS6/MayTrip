@@ -82,7 +82,7 @@ struct CommunityPostListView: View {
 
 extension CommunityPostListView {
     @ViewBuilder
-    func imagesView(image: [String], width: CGFloat, height: CGFloat) -> some View {
+    func imagesView(image: [String], width: CGFloat, height: CGFloat) -> some View { // 이미지 갯수에 따른 배치 수정
         let count = image.count
         
         switch count {

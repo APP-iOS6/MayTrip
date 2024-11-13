@@ -46,7 +46,7 @@ struct CommunityHeaderView: View {
                             .background {
                                 if $selectedPostCategory.wrappedValue == tag {
                                     RoundedRectangle(cornerRadius: 8)
-                                        .foregroundStyle( Color.accent)
+                                        .foregroundStyle(Color.accent)
                                 } else {
                                     RoundedRectangle(cornerRadius: 8)
                                         .stroke(.gray)
