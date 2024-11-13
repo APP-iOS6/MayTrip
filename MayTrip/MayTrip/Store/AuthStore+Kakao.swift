@@ -65,4 +65,25 @@ extension AuthStore {
             }
         }
     }
+    
+    func checkKakaoLogin() -> Bool {
+        var isSuccess: Bool = false
+        UserApi.shared.accessTokenInfo { (accessTokenInfo, error) in
+            if let error = error {
+                if let sdkError = error as? SdkError, sdkError.isInvalidTokenError() == true  { // 추후 추가예정
+                    //로그인 필요
+                }
+                else {
+                    //기타 에러
+                }
+            }
+            else {
+                Task {
+                    await self.successLogin(email: String((accessTokenInfo?.id!)!), provider: "kakao")
+                }
+                isSuccess = true
+            }
+        }
+        return isSuccess
+    }
 }

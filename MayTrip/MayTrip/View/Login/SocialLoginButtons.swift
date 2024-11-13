@@ -82,7 +82,8 @@ extension SignInView {
                             )
                             
                             Task {
-                                await authStore.successLogin(email: credential.user, provider: "apple")
+                                let user = try await authStore.DB.auth.user()
+                                await authStore.successLogin(email: user.email!, provider: "apple")
                             }
                         } catch {
                             dump(error)
