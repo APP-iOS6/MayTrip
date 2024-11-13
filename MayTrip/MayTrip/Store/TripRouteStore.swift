@@ -10,15 +10,18 @@ import Observation
 
 class TripRouteStore: ObservableObject {
     let db = DBConnection.shared
+    let userStore = UserStore.shared
+    
     @Published var list: [TripRouteSimple] = []
     @Published var tripRoute: [TripRoute] = []
+    @Published var myTripRoutes: [TripRouteSimple] = []
     
     //트립 루트 저장용
     @Published var title: String = ""
     @Published var tag: [String] = []
     @Published var city: [String] = []
     @Published var startDate: String = ""
-    @Published var endDate: String? = nil
+    @Published var endDate: String = ""
     
     //장소 저장 테스트용
 //    var places: [PlacePost] = [
@@ -30,6 +33,7 @@ class TripRouteStore: ObservableObject {
     @Published var places: [PlacePost] = []
     
     //여행 루트 리스트 가져오는 함수
+    @MainActor
     func getTripRouteList() async throws-> Void{
         do{
             list = try await db
@@ -43,6 +47,7 @@ class TripRouteStore: ObservableObject {
     }
     
     //여행 루트 상세 정보 가져오는 함수
+    @MainActor
     func getTripRoute(id: Int) async throws -> Void{
         do{
             tripRoute = try await db
@@ -64,6 +69,22 @@ class TripRouteStore: ObservableObject {
                 .execute()
                 .value
         }catch{
+            print(error)
+        }
+    }
+    
+    // 유저가 생성한 루트만 가져오는 함수
+    @MainActor
+    func getCreatedByUserRoutes() async throws {
+        do {
+            myTripRoutes = try await db
+                .from("TRIP_ROUTE")
+                .select("id, title, tag, city, start_date, end_date")
+                .eq("write_user", value: userStore.user.id)
+                .order("start_date", ascending: false) // 내림차순으로 정렬
+                .execute()
+                .value
+        } catch {
             print(error)
         }
     }
@@ -126,7 +147,7 @@ class TripRouteStore: ObservableObject {
         tag = []
         city = []
         startDate = ""
-        endDate = nil
+        endDate = ""
         places = []
     }
 }
