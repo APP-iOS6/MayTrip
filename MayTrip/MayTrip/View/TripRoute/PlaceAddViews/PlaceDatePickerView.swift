@@ -28,7 +28,7 @@ struct PlaceDatePickerView: View {
                         isShowDatePicker = false
                     } label: {
                         HStack {
-                            Text("Day\(index+1) \(dateStore.dateToString(with: "MM.dd(E)", date: date))")
+                            Text("Day\(index+1) \(dateStore.convertDateToString(date, format:  "MM.dd(E)"))")
                                 .foregroundStyle(.primary)
                             if index == focusedDayIndex {
                                 Spacer()

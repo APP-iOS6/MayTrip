@@ -34,18 +34,18 @@ struct MyTripCardView: View {
                                         .foregroundStyle(dateStore.isOnATrip(route.start_date, end: route.end_date) ? .white : .black)
                                         
                                         HStack(spacing: 0) {
-                                            Text("\(dateStore.convertDateToString(dateStore.convertStringToDate(route.start_date)))")
+                                            Text("\(dateStore.convertDateToString(dateStore.convertStringToDate(route.start_date), format: "yy.MM.dd(EEEEE)"))")
                                             
                                             if route.end_date != route.start_date {
-                                                Text(" - \(dateStore.convertDateToString(dateStore.convertStringToDate(route.end_date)))")
+                                                Text(" - \(dateStore.convertDateToString(dateStore.convertStringToDate(route.end_date), format: "yy.MM.dd(EEEEE)"))")
                                             }
                                         }
                                         .font(.system(size: 15))
                                         .lineLimit(1)
                                         
                                         HStack {
-                                            // 도시는 최대 세개까지만 보여준다
-                                            ForEach(0..<3) { index in
+                                            // 도시는 최대 두개까지만 보여준다
+                                            ForEach(0..<2) { index in
                                                 if index < route.city.count {
                                                     Text("\(index == 0 ? route.city[index] : "·  \(route.city[index])")")
                                                         .lineLimit(1)
