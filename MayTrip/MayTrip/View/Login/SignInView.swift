@@ -16,6 +16,7 @@ struct SignInView : View {
     }
     
     @Environment(AuthStore.self) var authStore: AuthStore
+    let appleLoginManager = AppleLoginManager()
     let userStore = UserStore.shared
     
     @State private var email: String = ""

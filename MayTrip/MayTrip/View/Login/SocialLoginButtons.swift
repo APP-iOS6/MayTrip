@@ -31,13 +31,11 @@ extension SignInView {
         Button {
             authStore.googleLogin()
         } label : {
-            ZStack {
-                Image("googleLogo")
-                    .resizable()
-                    .scaledToFit()
-            }
-            .clipShape(.circle)
-            .frame(width: screenWidth * 0.15)
+            Image("googleLogo")
+                .resizable()
+                .scaledToFill()
+                .clipShape(.circle)
+                .frame(width: screenWidth * 0.15, height: screenWidth * 0.15)
         }
     }
     
@@ -45,52 +43,27 @@ extension SignInView {
     func appleLoginButton() -> some View {
         HStack(spacing : screenWidth * 0.08) {
             Button {
-                
-            } label : {
-                ZStack {
-                    Circle()
-                        .stroke(.black, lineWidth: 1)
-                    Image("appleLogo")
-                        .resizable()
-                        .scaledToFit()
-                }
-                .clipShape(.circle)
-                .frame(width: screenWidth * 0.15)
-                
-            }
-            .overlay {
-                SignInWithAppleButton { request in
-                    request.requestedScopes = [.email, .fullName]
-                } onCompletion: { result in
+                appleLoginManager.startSignInWithAppleFlow { result in
                     Task {
-                        do {
-                            guard let credential = try result.get().credential as? ASAuthorizationAppleIDCredential
-                            else {
-                                return
-                            }
-                            
-                            guard let idToken = credential.identityToken
-                                .flatMap({ String(data: $0, encoding: .utf8) })
-                            else {
-                                return
-                            }
-                            try await authStore.DB.auth.signInWithIdToken(
-                                credentials: .init(
-                                    provider: .apple,
-                                    idToken: idToken
-                                )
-                            )
-                            
-                            Task {
-                                let user = try await authStore.DB.auth.user()
-                                await authStore.successLogin(email: user.email!, provider: "apple")
-                            }
-                        } catch {
-                            dump(error)
+                        switch result {
+                        case .success(let appleResult):
+                            try await authStore.appleLogin(idToken: appleResult.idToken, nonce: appleResult.nonce)
+                        case .failure(_):
+                            print("error")
                         }
                     }
                 }
-                .blendMode(.overlay)
+            } label : {
+                Image("appleLogo")
+                    .resizable()
+                    .scaledToFill()
+                    .clipShape(.circle)
+                    .frame(width: screenWidth * 0.15)
+                    .overlay {
+                        Circle()
+                            .stroke(Color(uiColor: .systemGray5), lineWidth: 1)
+                    }
+                
             }
         }
     }
