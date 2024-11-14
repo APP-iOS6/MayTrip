@@ -23,6 +23,7 @@ struct SignInView : View {
     @State private var checkMaintainLogin: Bool = false
     @FocusState private var focusField: Field?
     @State var errorMessage: String = ""
+    @State var isHidePassword: Bool = true
     
     let screenWidth: CGFloat = UIScreen.main.bounds.width
     let screenHeight: CGFloat = UIScreen.main.bounds.height
@@ -51,8 +52,22 @@ struct SignInView : View {
                         .focused($focusField, equals: .email)
                     
                     // 비밀번호 입력
-                    CreateLoginViewTextField(text: $password, symbolName: "lock", placeholder: "비밀번호 입력", width: screenWidth * 0.9, height: screenHeight * 0.07, isSecure: true, isFocused: focusField == .password)
-                        .focused($focusField, equals: .password)
+                    ZStack {
+                        CreateLoginViewTextField(text: $password, symbolName: "lock", placeholder: "비밀번호 입력", width: screenWidth * 0.9, height: screenHeight * 0.07, isSecure: isHidePassword, isFocused: focusField == .password)
+                            .focused($focusField, equals: .password)
+                        
+                        HStack {
+                            Spacer()
+                            Button {
+                                isHidePassword.toggle()
+                            } label: {
+                                Image(systemName: isHidePassword ? "eye.slash" : "eye")
+                                    .foregroundStyle(Color(uiColor: .systemGray2))
+                                    .padding(.trailing, screenWidth * 0.02)
+                            }
+                        }
+                        .frame(width: screenWidth * 0.9, height: screenHeight * 0.07)
+                    }
                     
                     HStack {
                         Text(errorMessage)
