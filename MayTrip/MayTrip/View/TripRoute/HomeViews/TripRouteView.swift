@@ -10,6 +10,7 @@ import SwiftUI
 struct TripRouteView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     var routeStore: DummyRouteStore = .shared
+    let dateStore = DateStore.shared
     let tripRouteStore = TripRouteStore()
     
     var body: some View {
@@ -46,6 +47,7 @@ struct TripRouteView: View {
                     }
                     
                     Button {
+                        dateStore.initDate()
                         navigationManager.push(.enterBasicInfo(tripRoute: nil))
                     } label: {
                         Image(systemName: "plus")

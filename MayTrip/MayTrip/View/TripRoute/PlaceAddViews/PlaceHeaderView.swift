@@ -42,8 +42,8 @@ struct PlaceHeaderView: View {
             Button {
                 //작성한 TripRoute db에 저장하는 로직
                 let orderedPlaces = PlaceStore.indexingPlace(places)
-                let startDate = dateStore.convertDateToSimpleString(dateStore.startDate!)
-                let endDate = dateStore.convertDateToSimpleString(dateStore.endDate!)
+                let startDate = dateStore.convertDateToSimpleString(dateStore.startDate ?? .now)
+                let endDate = dateStore.convertDateToSimpleString(dateStore.endDate ?? .now)
                 
                 tripRouteStore.inputDatas(
                     title: title,
