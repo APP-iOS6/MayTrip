@@ -49,6 +49,7 @@ struct TripRouteView: View {
                         Image(systemName: "plus")
                             .frame(width: 15, height:  15)
                             .foregroundStyle(Color("accentColor"))
+                            .padding(.trailing, UIScreen.main.bounds.width * 0.01)
                     }
                 }
             }
