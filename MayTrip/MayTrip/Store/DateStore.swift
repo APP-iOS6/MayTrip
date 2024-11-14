@@ -166,14 +166,22 @@ final class DateStore {
         if case let (year?, month?, day?) = (dateDiff.year, dateDiff.month, dateDiff.day) {
             if day != 0 {
                 dateString = "\(day)박 \(day + 1)일"
-            }
-            
-            if year != 0 || month != 0 {
+            } else if year != 0 || month != 0 {
                 dateString = "장기"
             }
         }
         
         return dateString
+    }
+    
+    // 오늘날짜부터 디데이 계산
+    func calcDDay(_ start: String) -> String {
+        let start = Calendar.current.startOfDay(for: convertStringToDate(start))
+        let date = Calendar.current.startOfDay(for: Date())
+        
+        let day = Calendar.current.dateComponents([.day], from: date, to: start).day
+        
+        return day ==  nil ? "" : "D-\(day!)"
     }
     
     // 시작 날짜 부터 끝날짜 범위의 날짜 배열을 반환하는 함수
@@ -215,21 +223,5 @@ final class DateStore {
         let endDay = Calendar.current.dateComponents([.year, .month, .day], from: end)
         
         return today == startDay || today == endDay || (date > start && date < end)
-    }
-    
-    // 날짜별 계절을 스트링으로 반환
-    func convertMonthToSeason(_ start: Date) -> String {
-        let month = Calendar.current.component(.month, from: start)
-        var season: String = ""
-        
-        switch month {
-        case 1, 2, 3, 12: season = "겨울"
-        case 4, 5, 6: season = "봄"
-        case 7, 8, 9: season = "여름"
-        case 10, 11: season = "가을"
-        default: break
-        }
-        
-        return season
     }
 }
