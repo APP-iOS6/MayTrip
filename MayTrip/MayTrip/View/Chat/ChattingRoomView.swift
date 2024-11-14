@@ -71,6 +71,7 @@ struct ChattingRoomView: View {
                                     .foregroundStyle(.gray)
                                     
                                     Text("\(log.message)")
+                                        .font(.callout)
                                         .foregroundStyle(.white)
                                         .padding()
                                         .background {
@@ -85,6 +86,7 @@ struct ChattingRoomView: View {
                                 // 상대가 보낸 메세지
                                 HStack(alignment: .bottom, spacing: 0) {
                                     Text("\(log.message)")
+                                        .font(.callout)
                                         .foregroundStyle(.black)
                                         .padding()
                                         .background {
