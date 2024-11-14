@@ -9,71 +9,62 @@ import SwiftUI
 
 struct RecommendRouteView: View {
     @StateObject var tripRouteStore: TripRouteStore = TripRouteStore()
+    @State var isRecently: Bool = true
     
-    let dateStore: DateStore = .shared
-    
-    var season: String {
-        dateStore.convertMonthToSeason(Date())
-    }
+    private let gridItems: [GridItem] = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
     
     var body: some View {
-        ForEach(Standard.allCases, id: \.self) { standard in
-            VStack {
-                NavigationLink {
-                    RouteListView(title: standard.rawValue, tripRoutes: categorizedRoute(standard))
-                } label: {
-                    HStack(alignment: .center) {
-                        Text("\(standard.rawValue)")
-                            .font(.title3)
-                            .foregroundStyle(.black)
-                        
-                        Spacer()
-                        
-                        Text("더보기")
+        LazyVGrid(columns: gridItems, alignment: .leading, spacing: 10, pinnedViews: [.sectionHeaders]) {
+            Section(header:
+                        VStack(alignment: .leading) {
+                HStack {
+                    Text("여행 둘러보기")
+                        .font(.title3)
+                        .bold()
+                    
+                    Spacer()
+                    
+                    Button {
+                        // TODO: 리스트 최신순으로 변경
+                        isRecently = true
+                    } label: {
+                        Text("최신순")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(isRecently ? Color("accentColor") : .gray)
                     }
-                    .fontWeight(.semibold)
-                    .foregroundStyle(Color("accentColor"))
-                }
-                .padding(.trailing)
-                
-                ScrollView(.horizontal) {
-                    HStack {
-                        ForEach(0..<5) { index in
-                            if index < categorizedRoute(standard).count {
-                                RecommendContentView(route: categorizedRoute(standard)[index])
-                                    .padding(2)
-                            }
-                        }
+                    
+                    Divider()
+                    
+                    Button {
+                        // TODO: 리스트 보관많은순으로 변경
+                        isRecently = false
+                    } label: {
+                        Text("보관많은순")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(!isRecently ? Color("accentColor") : .gray)
                     }
-                    .padding(.trailing)
                 }
             }
-            .padding([.leading, .vertical])
-        }
-        .onAppear {
-            Task {
-                try await tripRouteStore.getTripRouteList()
+                .padding(.bottom, 10)
+                .background(Rectangle().foregroundColor(.white))
+            ) {
+                ForEach(tripRouteStore.list) { route in
+                    RecommendContentView(route: route)
+                }
+            }
+            .onAppear {
+                Task {
+                    try await tripRouteStore.getTripRouteList()
+                }
             }
         }
+        .padding()
     }
-    
-    private func categorizedRoute(_ standard: Standard) -> [TripRouteSimple] {
-        return switch standard {
-        case .bestSeason:
-            tripRouteStore.list.filter {
-                // TODO: 찜을 가장 많이 받은 여행 중에서 계절별로 필터링 하는 로직 추가하기
-                dateStore.convertMonthToSeason(dateStore.convertStringToDate($0.start_date)) == season
-            }
-        case .savedAlot:
-            // TODO: 찜을 가장 많이 받은 여행 필터링하는 로직 추가하기
-            tripRouteStore.list
-        }
-    }
-}
-
-enum Standard: String, CaseIterable {
-    case savedAlot = "찜을 가장 많이 받은 여행"
-    case bestSeason = "지금 계절에 가기 좋은 여행"
 }
 
 #Preview {
