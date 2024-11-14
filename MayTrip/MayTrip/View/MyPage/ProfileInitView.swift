@@ -25,127 +25,137 @@ struct ProfileInitView: View {
     let height = UIScreen.main.bounds.height
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .center, spacing: height * 0.05) {
-                HStack {
-                    Button {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .center, spacing: height * 0.05) {
+                    PhotosPicker(selection: $selectedPhotos, maxSelectionCount: 1, matching: .images) {
+                        if let image = profileImage {
+                            ZStack {
+                                Rectangle()
+                                    .frame(width: width * 0.4, height: width * 0.4)
+                                    .foregroundStyle(.clear)
+                                
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .frame(width: width * 0.4, height: width * 0.4)
+                                    .clipShape(.circle)
+                            }
+                        } else {
+                            ZStack {
+                                Image(systemName: "person.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .foregroundStyle(Color.accent.opacity(0.6))
+                                    .frame(width: width * 0.3, height: width * 0.3)
+                                    .padding(50)
+                                    .background {
+                                        Rectangle()
+                                            .foregroundStyle(Color.accent.opacity(0.3))
+                                    }
+                                    .clipShape(.circle)
+                                
+                                Image(systemName: "plus.circle.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .foregroundStyle(Color(uiColor: .systemGray))
+                                    .frame(width: width * 0.15)
+                                    .offset(x:width * 0.18, y: width * 0.18)
+                            }
+                            .frame(width: width * 0.4, height: width * 0.4)
+                        }
+                    }
+                    .onChange(of: selectedPhotos) { _ in
+                        loadSelectedPhotos()
+                    }
+                    .padding(.top, height * 0.15)
+                    .padding(.bottom, height * 0.1)
+                    
+                    HStack(spacing: 20) {
+                        CreateLoginViewTextField(text: $nickname, symbolName: "", placeholder: "닉네임을 입력해주세요", width: width * 0.6, height: height * 0.08, isSecure: false, isFocused: false)
+                            .focused($focusField, equals: .nickname)
+                            .onChange(of: nickname) {
+                                isValid = false
+                                errorMessage = ""
+                            }
                         
-                    } label : {
-                        ZStack {
-                            Rectangle()
-                                .frame(width: width * 0.1, height: 1)
-                                .foregroundStyle(.clear)
-                        }
-                    }
-                    
-                    Spacer()
-                    
-                    Text("프로필")
-                        .font(.system(size: 24))
-                    
-                    Spacer()
-                    
-                    Button {
-                        if(nickname.isEmpty) {
-                            errorMessage = "닉네임을 입력해주세요"
-                        } else if !isValid {
-                            errorMessage = "닉네임 중복확인을 해주세요"
-                        } else {
-                            Task {
-                                try await userStore.setUserInfo(nickname: nickname, image: profileImage)
-                                if !userStore.user.nickname.isEmpty {
-                                    authStore.isFirstLogin = false
-                                }
+                        Button {
+                            if !nickname.isEmpty {
+                                isValid = true // 추후에 검사 함수 추가하기
+                                errorMessage = "사용 가능한 닉네임입니다"
+                            } else {
+                                errorMessage = "닉네임을 입력해주세요"
                             }
-                        }
-                    } label : {
-                        Text("적용")
-                            .font(.system(size: 18))
-                            .frame(width: width * 0.1)
-                    }
-                }
-                .frame(width: width * 0.9)
-//                .padding(.top, height * 0.08)
-                .padding(.bottom, height * 0.15)
-                
-                PhotosPicker(selection: $selectedPhotos, maxSelectionCount: 1, matching: .images) {
-                    if let image = profileImage {
-                        ZStack {
-                            Rectangle()
-                                .frame(width: width * 0.4, height: width * 0.4)
-                                .foregroundStyle(.clear)
-                            
-                            Image(uiImage: image)
-                                .resizable()
-                                .frame(width: width * 0.4, height: width * 0.4)
-                                .clipShape(.circle)
-                        }
-                    } else {
-                        ZStack {
-                            Image(systemName: "person.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .foregroundStyle(Color.accent.opacity(0.6))
-                                .frame(width: width * 0.3, height: width * 0.3)
-                                .padding(50)
+                        } label: {
+                            Text("중복확인")
+                                .foregroundStyle(.white)
                                 .background {
-                                    Rectangle()
-                                        .foregroundStyle(Color.accent.opacity(0.3))
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .foregroundStyle(Color.accent)
+                                        .frame(width: width * 0.2, height: height * 0.08)
                                 }
-                                .clipShape(.circle)
-                            
-                            Image(systemName: "plus.circle.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .foregroundStyle(Color(uiColor: .systemGray))
-                                .frame(width: width * 0.15)
-                                .offset(x:width * 0.18, y: width * 0.18)
                         }
-                        .frame(width: width * 0.4, height: width * 0.4)
                     }
-                }
-                .onChange(of: selectedPhotos) { _ in
-                    loadSelectedPhotos()
-                }
-                .padding(.bottom, height * 0.1)
-                
-                HStack(spacing: 20) {
-                    CreateLoginViewTextField(text: $nickname, symbolName: "", placeholder: "닉네임을 입력해주세요", width: width * 0.6, height: height * 0.08, isSecure: false, isFocused: false)
-                        .focused($focusField, equals: .nickname)
+                    HStack {
+                        if !errorMessage.isEmpty {
+                            Text(errorMessage)
+                                .foregroundStyle(errorMessage == "닉네임을 입력해주세요" ? .red : .blue)
+                        }
+                        Spacer()
+                    }
+                    .frame(width: width * 0.7 + 25)
+                    .offset(y:-height * 0.04)
                     
-                    Button {
-                        if !nickname.isEmpty {
-                            errorMessage = ""
-                            isValid = true // 추후에 검사 함수 추가하기
-                        } else {
-                            errorMessage = "닉네임을 입력해주세요"
-                        }
-                    } label: {
-                        Text("중복확인")
-                            .foregroundStyle(.white)
-                            .background {
-                                RoundedRectangle(cornerRadius: 5)
-                                    .foregroundStyle(Color.accent)
-                                    .frame(width: width * 0.2, height: height * 0.08)
-                            }
-                    }
-                }
-                HStack {
-                    if !errorMessage.isEmpty {
-                        Text(errorMessage)
-                            .foregroundStyle(.red.opacity(0.7))
-                    }
                     Spacer()
                 }
-                .frame(width: width * 0.7 + 25)
-                .offset(y:-height * 0.04)
-                
-                Spacer()
+                .frame(width: width, height: height * 0.95)
             }
-            .frame(width: width, height: height)
+            .ignoresSafeArea(.keyboard)
+            .scrollDisabled(focusField == nil)
+            .toolbar {
+                toolbarView
+            }
         }
-        .ignoresSafeArea(.keyboard)
-        .scrollDisabled(focusField == nil)
+    }
+    
+    private var toolbarView: some View {
+        HStack {
+            Button {
+                
+            } label : {
+                ZStack {
+                    Rectangle()
+                        .frame(width: width * 0.1, height: 1)
+                        .foregroundStyle(.clear)
+                }
+            }
+            
+            Spacer()
+            
+            Text("프로필")
+                .font(.system(size: 24))
+            
+            Spacer()
+            
+            Button {
+                if(nickname.isEmpty) {
+                    errorMessage = "닉네임을 입력해주세요"
+                } else if !isValid {
+                    errorMessage = "닉네임 중복확인을 해주세요"
+                } else {
+                    Task {
+                        try await userStore.setUserInfo(nickname: nickname, image: profileImage)
+                        if !userStore.user.nickname.isEmpty {
+                            authStore.isFirstLogin = false
+                        }
+                    }
+                }
+            } label : {
+                Text("적용")
+                    .font(.system(size: 18))
+                    .frame(width: width * 0.1)
+            }
+        }
+        .frame(width: width * 0.9)
     }
     
     private func loadSelectedPhotos() {
