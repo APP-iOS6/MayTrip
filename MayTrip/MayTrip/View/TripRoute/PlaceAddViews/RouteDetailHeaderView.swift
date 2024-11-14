@@ -55,12 +55,12 @@ struct RouteDetailHeaderView: View {
     var titleView: some View {
         HStack(alignment: .bottom) {
             Text("\(tripRoute.title)")
-//                .font()
+                .font(.title2)
                 .bold()
         
             Spacer()
-//            Text("작성자: \(tripRoute.writeUser.nickname)")
-//                .font(.footnote)
+            Text("작성자: \(tripRoute.writeUser.nickname)")
+                .font(.footnote)
             Button {
                 
             } label: {

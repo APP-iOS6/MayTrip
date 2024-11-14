@@ -23,9 +23,31 @@ struct PlaceMapListView: View {
     let dateStore: DateStore = DateStore.shared
     let locationManager: LocationManager = LocationManager.shared
     
+    @State var heightValue = 300.0
+    @State var downHeight = 0.0
+    @GestureState var isDragging = false
+    let minHeight = 100.0
+    let maxHeight = 450.0
+    
     var body: some View {
         mapView
-        placesListView
+            .frame(height: heightValue)
+        
+        ZStack {
+            placesListView
+            
+            VStack {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(width: 60, height: 6)
+                        .foregroundStyle(.gray)
+                }
+                .frame(height: 24)
+                .background(Color(UIColor.systemBackground))
+                .gesture(dragHandle)
+                Spacer()
+            }
+        }
     }
     
     var mapView: some View {
@@ -48,7 +70,6 @@ struct PlaceMapListView: View {
         .onAppear {
             setupInitialData()
         }
-        .frame(height: 200)
     }
     
     var placesListView: some View {
@@ -113,6 +134,20 @@ struct PlaceMapListView: View {
                 isShowDatePicker: $isShowDatePicker,
                 scrollingIndex: scrollingIndex)
         }
+    }
+    
+    var dragHandle : some Gesture {
+        DragGesture(minimumDistance: 0, coordinateSpace: .global)
+            .onChanged { gesture in
+                if isDragging {
+                    heightValue = min(maxHeight, max(downHeight + gesture.translation.height, minHeight))
+                } else {
+                    downHeight = heightValue
+                }
+            }
+            .updating($isDragging) { oldState, newState, transaction in
+                newState = true
+            }
     }
     
     private func updateMapForDay(_ dayIndex: Int) {
