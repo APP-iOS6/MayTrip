@@ -18,48 +18,61 @@ struct MyTripCardView: View {
                 ForEach(tripRouteStore.myTripRoutes.sorted(by: { $0.start_date < $1.start_date })) { route in
                     if dateStore.convertStringToDate(route.end_date) >= Date() {
                         NavigationLink {
-                            // TODO: 디테일 뷰 이동
                             RouteDetailView(tripRoute: SampleTripRoute.sampleRoute)
                         } label: {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(dateStore.isOnATrip(route.start_date, end: route.end_date) ? Color("accentColor") : Color(uiColor: .systemGray6))
+                            RoundedRectangle(cornerRadius: 5)
+                                .stroke((dateStore.isOnATrip(route.start_date, end: route.end_date) ? Color("accentColor") : Color(uiColor: .systemGray4)), lineWidth: 0.5)
                                 .overlay {
-                                    VStack(alignment: .leading, spacing: 8) {
-                                        HStack {
-                                            Text("\(route.title)")
-                                                .font(.system(size: 18, weight: .bold))
-                                            
-                                            Spacer()
-                                        }
-                                        .foregroundStyle(dateStore.isOnATrip(route.start_date, end: route.end_date) ? .white : .black)
-                                        
-                                        HStack(spacing: 0) {
-                                            Text("\(dateStore.convertDateToString(dateStore.convertStringToDate(route.start_date), format: "yy.MM.dd(EEEEE)"))")
-                                            
-                                            if route.end_date != route.start_date {
-                                                Text(" - \(dateStore.convertDateToString(dateStore.convertStringToDate(route.end_date), format: "yy.MM.dd(EEEEE)"))")
+                                    HStack(spacing: 0) {
+                                        VStack(alignment: .leading, spacing: 8) {
+                                            HStack {
+                                                Text("\(route.title)")
+                                                    .font(.callout)
+                                                    .fontWeight(.bold)
+                                                
+                                                Spacer()
                                             }
-                                        }
-                                        .font(.system(size: 15))
-                                        .lineLimit(1)
-                                        
-                                        HStack {
-                                            // 도시는 최대 두개까지만 보여준다
-                                            ForEach(0..<2) { index in
-                                                if index < route.city.count {
-                                                    Text("\(index == 0 ? route.city[index] : "·  \(route.city[index])")")
-                                                        .lineLimit(1)
+                                            .foregroundStyle(.black)
+                                            
+                                            HStack {
+                                                // 도시는 최대 두개까지만 보여준다
+                                                ForEach(0..<2) { index in
+                                                    if index < route.city.count {
+                                                        Text("\(index == 0 ? route.city[index] : "·  \(route.city[index])")")
+                                                            .lineLimit(1)
+                                                    }
                                                 }
                                             }
+                                            .font(.footnote)
+                                            .fontWeight(.semibold)
+                                            
+                                            HStack(spacing: 0) {
+                                                Text("\(dateStore.convertDateToString(dateStore.convertStringToDate(route.start_date), format: "yy.MM.dd"))")
+                                                
+                                                if route.end_date != route.start_date {
+                                                    Text(" - \(dateStore.convertDateToString(dateStore.convertStringToDate(route.end_date), format: "yy.MM.dd"))")
+                                                }
+                                            }
+                                            .font(.footnote)
+                                            .fontWeight(.semibold)
+                                            .lineLimit(1)
                                         }
-                                        .fontWeight(.semibold)
+                                        .foregroundStyle(Color(uiColor: .darkGray))
+                                        .padding()
+                                        .padding(.vertical)
+                                        
+                                        Divider()
+                                            .background(.white)
+                                            .padding(.vertical)
+                                        
+                                        Text(dateStore.isOnATrip(route.start_date, end: route.end_date) ? "여행중" : dateStore.calcDDay(route.start_date))
+                                            .foregroundStyle(Color("accentColor"))
+                                            .padding(.horizontal)
+                                            .font(.footnote)
+                                            .fontWeight(.semibold)
                                     }
-                                    .font(.system(size: 15))
-                                    .foregroundStyle(dateStore.isOnATrip(route.start_date, end: route.end_date) ? .white : Color(uiColor: .darkGray))
-                                    .padding()
-                                    .padding(.vertical)
                                 }
-                                .frame(width: UIScreen.main.bounds.size.width / 8 * 7, height: UIScreen.main.bounds.size.height / 8)
+                                .frame(width: UIScreen.main.bounds.size.width / 4 * 3, height: UIScreen.main.bounds.size.height / 9)
                         }
                         .padding(2)
                     }
