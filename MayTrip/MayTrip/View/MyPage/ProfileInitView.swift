@@ -9,24 +9,31 @@ import SwiftUI
 import PhotosUI
 
 struct ProfileInitView: View {
+    private enum Field : Hashable{
+        case nickname
+    }
+    
     @Environment(AuthStore.self) var authStore: AuthStore
     @State private var selectedPhotos: [PhotosPickerItem] = []
     @State var nickname:String = ""
     @State private var profileImage: UIImage?
     @State var isValid: Bool = false
     @State var errorMessage: String = ""
+    @FocusState private var focusField: Field?
     let userStore = UserStore.shared
+    let width = UIScreen.main.bounds.width
+    let height = UIScreen.main.bounds.height
     
     var body: some View {
-        GeometryReader { proxy in
-            VStack(alignment: .center, spacing: proxy.size.height * 0.05) {
+        ScrollView {
+            VStack(alignment: .center, spacing: height * 0.05) {
                 HStack {
                     Button {
                         
                     } label : {
                         ZStack {
                             Rectangle()
-                                .frame(width: proxy.size.width * 0.1, height: 1)
+                                .frame(width: width * 0.1, height: 1)
                                 .foregroundStyle(.clear)
                         }
                     }
@@ -54,23 +61,23 @@ struct ProfileInitView: View {
                     } label : {
                         Text("적용")
                             .font(.system(size: 18))
-                            .frame(width: proxy.size.width * 0.1)
+                            .frame(width: width * 0.1)
                     }
                 }
-                .frame(width: proxy.size.width * 0.9)
-                .padding(.top, proxy.size.height * 0.08)
-                .padding(.bottom, proxy.size.height * 0.15)
+                .frame(width: width * 0.9)
+//                .padding(.top, height * 0.08)
+                .padding(.bottom, height * 0.15)
                 
                 PhotosPicker(selection: $selectedPhotos, maxSelectionCount: 1, matching: .images) {
                     if let image = profileImage {
                         ZStack {
                             Rectangle()
-                                .frame(width: proxy.size.width * 0.4, height: proxy.size.width * 0.4)
+                                .frame(width: width * 0.4, height: width * 0.4)
                                 .foregroundStyle(.clear)
                             
                             Image(uiImage: image)
                                 .resizable()
-                                .frame(width: proxy.size.width * 0.4, height: proxy.size.width * 0.4)
+                                .frame(width: width * 0.4, height: width * 0.4)
                                 .clipShape(.circle)
                         }
                     } else {
@@ -79,7 +86,7 @@ struct ProfileInitView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .foregroundStyle(Color.accent.opacity(0.6))
-                                .frame(width: proxy.size.width * 0.3, height: proxy.size.width * 0.3)
+                                .frame(width: width * 0.3, height: width * 0.3)
                                 .padding(50)
                                 .background {
                                     Rectangle()
@@ -91,19 +98,20 @@ struct ProfileInitView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .foregroundStyle(Color(uiColor: .systemGray))
-                                .frame(width: proxy.size.width * 0.15)
-                                .offset(x:proxy.size.width * 0.18, y: proxy.size.width * 0.18)
+                                .frame(width: width * 0.15)
+                                .offset(x:width * 0.18, y: width * 0.18)
                         }
-                        .frame(width: proxy.size.width * 0.4, height: proxy.size.width * 0.4)
+                        .frame(width: width * 0.4, height: width * 0.4)
                     }
                 }
                 .onChange(of: selectedPhotos) { _ in
                     loadSelectedPhotos()
                 }
-                .padding(.bottom, proxy.size.height * 0.1)
+                .padding(.bottom, height * 0.1)
                 
                 HStack(spacing: 20) {
-                    CreateLoginViewTextField(text: $nickname, symbolName: "", placeholder: "닉네임을 입력해주세요", width: proxy.size.width * 0.6, height: proxy.size.height * 0.08, isSecure: false, isFocused: false)
+                    CreateLoginViewTextField(text: $nickname, symbolName: "", placeholder: "닉네임을 입력해주세요", width: width * 0.6, height: height * 0.08, isSecure: false, isFocused: false)
+                        .focused($focusField, equals: .nickname)
                     
                     Button {
                         if !nickname.isEmpty {
@@ -118,7 +126,7 @@ struct ProfileInitView: View {
                             .background {
                                 RoundedRectangle(cornerRadius: 5)
                                     .foregroundStyle(Color.accent)
-                                    .frame(width: proxy.size.width * 0.2, height: proxy.size.height * 0.08)
+                                    .frame(width: width * 0.2, height: height * 0.08)
                             }
                     }
                 }
@@ -129,13 +137,15 @@ struct ProfileInitView: View {
                     }
                     Spacer()
                 }
-                .frame(width: proxy.size.width * 0.7 + 25)
-                .offset(y:-proxy.size.height * 0.04)
+                .frame(width: width * 0.7 + 25)
+                .offset(y:-height * 0.04)
+                
                 Spacer()
             }
-            .frame(width: proxy.size.width, height: proxy.size.height)
-            .ignoresSafeArea()
+            .frame(width: width, height: height)
         }
+        .ignoresSafeArea(.keyboard)
+        .scrollDisabled(focusField == nil)
     }
     
     private func loadSelectedPhotos() {

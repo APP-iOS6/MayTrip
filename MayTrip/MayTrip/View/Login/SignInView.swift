@@ -10,7 +10,7 @@ import AuthenticationServices
 import Supabase
 
 struct SignInView : View {
-    enum Field : Hashable{
+    private enum Field : Hashable{
         case email
         case password
     }
@@ -134,6 +134,7 @@ struct SignInView : View {
                 kakaoLoginButton()
             }
         }
+        .ignoresSafeArea(.keyboard)
         .scrollDisabled(focusField == nil)
         .onAppear {
             email = ""
