@@ -33,20 +33,14 @@ struct PlaceMapListView: View {
         mapView
             .frame(height: heightValue)
         
-        ZStack {
-            placesListView
-            
-            VStack {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(width: 60, height: 6)
-                        .foregroundStyle(.gray)
-                }
-                .frame(height: 24)
-                .background(Color(UIColor.systemBackground))
+        VStack {
+            RoundedRectangle(cornerRadius: 30)
+                .frame(width: 60, height: 6)
+                .foregroundStyle(.gray)
+                .padding(.top)
                 .gesture(dragHandle)
-                Spacer()
-            }
+            
+            placesListView
         }
     }
     
@@ -89,8 +83,8 @@ struct PlaceMapListView: View {
                         .id(dateIndex)
                         .background(
                             GeometryReader { geo in
-                                Color.clear.onChange(of: geo.frame(in: .global).minY) { minY, _ in
-                                    if minY < 380 && minY > 340, dateIndex < places.count, scrollingIndex != dateIndex {
+                                Color.clear.onChange(of: geo.frame(in: .named("scrollView")).minY) { minY, _ in
+                                    if minY < 10 && minY > -30, dateIndex < places.count, scrollingIndex != dateIndex {
                                         scrollingIndex = dateIndex
                                         updateMapForDay(dateIndex)
                                     }
@@ -101,6 +95,7 @@ struct PlaceMapListView: View {
                 }
                 .padding(.bottom, 350)
             }
+            .coordinateSpace(name: "scrollView")
             .onChange(of: focusedDayIndex) { index, oldvalue in
                 withAnimation {
                     scrollingIndex = oldvalue
