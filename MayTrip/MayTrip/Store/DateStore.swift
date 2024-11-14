@@ -116,6 +116,8 @@ final class DateStore {
     func setTripDates(from startDate: Date, to endDate: Date) {
         self.startDate = startDate
         self.endDate = endDate
+        
+        self.date = startDate
     }
     
     func initDate() {
