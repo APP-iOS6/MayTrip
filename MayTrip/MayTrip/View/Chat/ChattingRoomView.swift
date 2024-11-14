@@ -217,7 +217,6 @@ struct RecruitmentNoticeView: View {
                         .padding(.vertical)
                     }
             }
-        
             .padding([.horizontal, .top])
             .background {
                 Rectangle()
