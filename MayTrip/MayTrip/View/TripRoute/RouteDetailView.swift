@@ -14,6 +14,7 @@ struct RouteDetailView: View {
     @State var isShowSheet: Bool = false    // 장소 추가시트 띄우기
     @State var selectedDay: Int = 0         // 장소 추가시에 몇일차에 장소 추가하는지
     @State var places: [[PlacePost]] = []       // 추가된 장소 (배열당 한 일차 장소배열)
+    @State var focusedDayIndex: Int = 0
     
     var tripRoute: TripRoute
     let dateStore: DateStore = DateStore.shared
@@ -28,14 +29,16 @@ struct RouteDetailView: View {
                 isShowSheet: $isShowSheet,
                 selectedDay: $selectedDay,
                 places: $places,
-                isEditing: false
+                focusedDayIndex: $focusedDayIndex,
+                isEditing: false,
+                tripRoute: tripRoute
             )
         }
         .padding(.top)
         .onAppear {
             places = PlaceStore.convertPlacesToPlacePosts(tripRoute.place)
             let startDate = dateStore.convertStringToDate(tripRoute.startDate)
-            let endDate = dateStore.convertStringToDate(tripRoute.endDate ?? tripRoute.startDate)
+            let endDate = dateStore.convertStringToDate(tripRoute.endDate)
             dateStore.setTripDates(from: startDate, to: endDate)
         }
         .toolbar(.hidden)

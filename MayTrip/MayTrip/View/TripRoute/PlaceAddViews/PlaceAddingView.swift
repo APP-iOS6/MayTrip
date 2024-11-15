@@ -21,6 +21,7 @@ struct PlaceAddingView: View {
     @State var selectedDay: Int = 0                 // 장소 추가시에 몇일차에 장소 추가하는지
     @State var cities: [String] = []                // 추가된 도시
     @State var places: [[PlacePost]] = []           // 추가된 장소 (배열당 한 일차 장소배열)
+    @State var focusedDayIndex: Int = 0
     
     var body: some View {
         VStack {
@@ -37,6 +38,7 @@ struct PlaceAddingView: View {
                 isShowSheet: $isShowSheet,
                 selectedDay: $selectedDay,
                 places: $places,
+                focusedDayIndex: $focusedDayIndex,
                 isEditing: true
             )
         }
@@ -52,7 +54,8 @@ struct PlaceAddingView: View {
                 selectedDay: $selectedDay,
                 isShowSheet: $isShowSheet,
                 places: $places,
-                cities: $cities
+                cities: $cities,
+                focusedDayIndex: $focusedDayIndex
             )
         }
         .toolbar(.hidden)

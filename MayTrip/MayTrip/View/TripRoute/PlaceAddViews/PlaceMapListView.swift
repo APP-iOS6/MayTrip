@@ -9,16 +9,20 @@ import SwiftUI
 import MapKit
 
 struct PlaceMapListView: View {
+    @EnvironmentObject var navigationManager: NavigationManager
+    @Environment(\.dismiss) var dismiss
+    
     @Binding var isShowSheet: Bool
     @Binding var selectedDay: Int
     @Binding var places: [[PlacePost]]
+    @Binding var focusedDayIndex: Int
     
     @State var scrollingIndex: Int = 0
-    @State var focusedDayIndex: Int = 0
     @State var mapRegion: MapCameraPosition = .automatic
     @State var isShowDatePicker: Bool = false
 
     var isEditing: Bool
+    var tripRoute: TripRoute?
     
     let dateStore: DateStore = DateStore.shared
     let locationManager: LocationManager = LocationManager.shared
@@ -28,6 +32,14 @@ struct PlaceMapListView: View {
     @GestureState var isDragging = false
     let minHeight = 100.0
     let maxHeight = 450.0
+    
+    var isWriter: Bool {
+        if let tripRoute = tripRoute {
+            return tripRoute.writeUser.id == UserStore.shared.user.id
+        }
+        
+        return false
+    }
     
     var body: some View {
         mapView
@@ -92,6 +104,26 @@ struct PlaceMapListView: View {
                             }
                         )
                     }
+                    
+                    if !isEditing, !isWriter {
+                        Button {
+                            navigationManager.push(.enterBasicInfo(tripRoute: tripRoute))
+                        } label: {
+                            HStack {
+                                Image(systemName: "square.and.arrow.down")
+                                Text("내 일정으로 담기")
+                            }
+                            .bold()
+                            .frame(maxWidth: .infinity)
+                            .foregroundStyle(.white)
+                            .padding()
+                            .background {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color.accent)
+                            }
+                            .padding()
+                        }
+                    }
                 }
                 .padding(.bottom, 350)
             }
@@ -101,26 +133,6 @@ struct PlaceMapListView: View {
                     scrollingIndex = oldvalue
                     proxy.scrollTo(oldvalue, anchor: .top)
                 }
-            }
-            .onChange(of: places) { newValue, oldValue in
-                
-                proxy.scrollTo(selectedDay, anchor: .top)
-                
-                if oldValue[selectedDay].count == 1 {
-                    let coordinates: [Double] = places[selectedDay].first?.coordinates ?? [0,0]
-                    self.mapRegion = MapCameraPosition.region(
-                        MKCoordinateRegion(
-                            center: CLLocationCoordinate2D(
-                                latitude: coordinates[0],
-                                longitude: coordinates[1]), // 초기 위치
-                            span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-                        ))
-                } else {
-                    mapRegion = .automatic
-                }
-                
-                focusedDayIndex = selectedDay
-                scrollingIndex = selectedDay
             }
         }
         .sheet(isPresented: $isShowDatePicker) {
