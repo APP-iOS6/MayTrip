@@ -95,10 +95,11 @@ struct PlaceMapListView: View {
                         .id(dateIndex)
                         .background(
                             GeometryReader { geo in
-                                Color.clear.onChange(of: geo.frame(in: .named("scrollView")).minY) { minY, _ in
+                                Color.red.onChange(of: geo.frame(in: .named("scrollView")).minY) { minY, _ in
                                     if minY < 10 && minY > -30, dateIndex < places.count, scrollingIndex != dateIndex {
                                         scrollingIndex = dateIndex
                                         updateMapForDay(dateIndex)
+                                        print("minY: \(minY)")
                                     }
                                 }
                             }
@@ -182,11 +183,21 @@ struct PlaceMapListView: View {
         }
         
         locationManager.checkLocationAuthorization()
-        self.mapRegion = MapCameraPosition.region(
-            MKCoordinateRegion(
-                center: locationManager.lastKnownLocation ?? CLLocationCoordinate2D(latitude: 36.6337, longitude: 128.0179), // 초기 위치
-                span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+        if isEditing {
+            self.mapRegion = MapCameraPosition.region(
+                MKCoordinateRegion(
+                    center: locationManager.lastKnownLocation ?? CLLocationCoordinate2D(latitude: 36.6337, longitude: 128.0179), // 초기 위치
+                    span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+                )
             )
-        )
+        } else {
+            let cor = tripRoute?.place.first?.coordinates ?? [36.6337, 128.0179]
+            self.mapRegion = MapCameraPosition.region(
+                MKCoordinateRegion(
+                    center: CLLocationCoordinate2D(latitude: cor[0], longitude: cor[1]),
+                    span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+                )
+            )
+        }
     }
 }

@@ -11,6 +11,7 @@ import UIKit
 
 struct RecommendContentView: View {
     @EnvironmentObject var navigationManager: NavigationManager
+    @StateObject var tripRouteStore: TripRouteStore = TripRouteStore()
     let dateStore: DateStore = .shared
     let route: TripRouteSimple
     
@@ -19,7 +20,12 @@ struct RecommendContentView: View {
     var body: some View {
         Button {
             // 디테일 뷰 이동
-            navigationManager.push(.routeDetail(SampleTripRoute.sampleRoute))
+            Task {
+                try await tripRouteStore.getTripRoute(id: route.id)
+                DispatchQueue.main.async {
+                    navigationManager.push(.routeDetail(tripRouteStore.tripRoute.first ?? SampleTripRoute.sampleRoute))
+                }
+            }
         } label: {
             RoundedRectangle(cornerRadius: 5)
                 .stroke(Color(uiColor: .systemGray4), lineWidth: 0.5)

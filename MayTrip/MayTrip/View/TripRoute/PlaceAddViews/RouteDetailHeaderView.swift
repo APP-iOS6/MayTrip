@@ -31,9 +31,10 @@ struct RouteDetailHeaderView: View {
                 dateStore.initDate()
                 dismiss()
             } label: {
-                Image(systemName: "xmark")
+                Image(systemName: "chevron.left")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
+                    .frame(width: 15, height: 15)
             }
             .foregroundStyle(.primary)
             

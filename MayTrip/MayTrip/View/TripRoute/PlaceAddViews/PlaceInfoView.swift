@@ -32,6 +32,7 @@ struct PlaceInfoView: View {
                     Image(systemName: "chevron.right")
                         .foregroundStyle(Color.primary)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.system(size: 14))
                 .padding([.horizontal, .top])
             }
