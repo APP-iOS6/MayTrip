@@ -36,10 +36,12 @@ struct RouteDetailView: View {
         }
         .padding(.top)
         .onAppear {
-            places = PlaceStore.convertPlacesToPlacePosts(tripRoute.place)
             let startDate = dateStore.convertStringToDate(tripRoute.startDate)
             let endDate = dateStore.convertStringToDate(tripRoute.endDate)
             dateStore.setTripDates(from: startDate, to: endDate)
+            
+            let dateRange = dateStore.datesInRange()
+            places = PlaceStore.convertPlacesToPlacePosts(tripRoute.place, dateRange: dateRange)
         }
         .toolbar(.hidden)
     }

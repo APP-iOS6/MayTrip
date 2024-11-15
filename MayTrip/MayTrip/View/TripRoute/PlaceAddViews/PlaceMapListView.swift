@@ -95,7 +95,7 @@ struct PlaceMapListView: View {
                         .id(dateIndex)
                         .background(
                             GeometryReader { geo in
-                                Color.red.onChange(of: geo.frame(in: .named("scrollView")).minY) { minY, _ in
+                                Color.clear.onChange(of: geo.frame(in: .named("scrollView")).minY) { minY, _ in
                                     if minY < 10 && minY > -30, dateIndex < places.count, scrollingIndex != dateIndex {
                                         scrollingIndex = dateIndex
                                         updateMapForDay(dateIndex)

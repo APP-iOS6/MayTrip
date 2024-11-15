@@ -10,7 +10,10 @@ import SwiftUI
 struct RouteDetailHeaderView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @Environment(\.dismiss) var dismiss
+    @StateObject var tripRouteStore: TripRouteStore = TripRouteStore()
     @State var isScraped: Bool = false
+    @State var showingDeleteAlert: Bool = false
+    
     var tripRoute: TripRoute
     let dateStore: DateStore = DateStore.shared
     let userStore: UserStore = UserStore.shared
@@ -47,7 +50,7 @@ struct RouteDetailHeaderView: View {
                     }
                     
                     Button("삭제하기", role: .destructive) {
-                        // TODO: 해당 루트 db에서 삭제 로직
+                        showingDeleteAlert = true
                     }
                     
                 } else {    // 조회하는 사람일때 메뉴버튼
@@ -72,6 +75,22 @@ struct RouteDetailHeaderView: View {
         .frame(height: 20)
         .padding(.bottom, 10)
         .padding(.horizontal)
+        .alert("루트 삭제", isPresented: $showingDeleteAlert) {
+            Button("취소", role: .cancel) {
+                
+            }
+            Button("삭제", role: .destructive) {
+                // 해당 루트 db에서 삭제 로직
+                Task {
+                    try await tripRouteStore.deleteTripRoute(routeId: tripRoute.id)
+                    DispatchQueue.main.async {
+                        navigationManager.popToRoot()
+                    }
+                }
+            }
+        } message: {
+            Text("해당 루트를 삭제하시겠습니까?")
+        }
     }
     
     var titleView: some View {
@@ -82,10 +101,10 @@ struct RouteDetailHeaderView: View {
         
             Spacer()
             
-            if !isWriter {
-                Text("작성자: \(tripRoute.writeUser.nickname)")
+            Text("작성자: \(tripRoute.writeUser.nickname)")
                     .font(.footnote)
-                
+            
+            if !isWriter {
                 Button {
                     isScraped.toggle()
                 } label: {
