@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CommunityPostListView: View {
     @Environment(CommunityStore.self) var communityStore: CommunityStore
+    let userStore = UserStore.shared
     let width: CGFloat
     let height: CGFloat
     
@@ -54,24 +55,17 @@ struct CommunityPostListView: View {
                         .lineLimit(3)
                         .font(.system(size: 16))
                     
-                    if post.images.count > 0 {
-                        imagesView(image: post.images, width: width, height: height)
-                    }
+//                    if post.images.count > 0 {
+//                        imagesView(image: post.images, width: width, height: height)
+//                    }
                     
                     HStack {
                         Spacer()
                         HStack {
                             Image("chatUnClick")
-                            Text("\(post.reply)")
+                            Text("0")
                                 .foregroundStyle(.gray)
                         }
-                        
-                        HStack {
-                            Image("storageUnClick")
-                            Text("\(post.store)")
-                                .foregroundStyle(.gray)
-                        }
-                        
                     }
                 }
                 .frame(width: width * 0.89)
