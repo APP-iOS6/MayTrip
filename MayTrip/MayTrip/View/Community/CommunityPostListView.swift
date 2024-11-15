@@ -37,9 +37,11 @@ struct CommunityPostListView: View {
                                 Spacer()
                                 
                                 Button {
-                                    isPresented = true
                                     selectedPostOwner = post.author.id
                                     selectedPostId = post.id
+                                    isPresented = true
+                                    print("-------")
+                                    print(selectedPostOwner, selectedPostId)
                                 } label: {
                                     Image(systemName: "ellipsis")
                                         .foregroundStyle(.gray)

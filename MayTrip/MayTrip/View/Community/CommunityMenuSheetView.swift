@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CommunityMenuSheetView: View {
+    @EnvironmentObject var navigationManager: NavigationManager
+    @Environment(ChatStore.self) private var chatStore: ChatStore
     @Binding var isPresented: Bool
     @Binding var selectedPostOwner: Int
     @Binding var selectedPostId: Int
@@ -43,8 +45,17 @@ struct CommunityMenuSheetView: View {
             .background(Color(uiColor: .systemGray6))
         } else {
             List {
-                Button {
-                    // 게시글 편집
+                Button { // 대화걸기
+                    Task {
+                        try await chatStore.saveChatRoom(selectedPostOwner)
+                        let user = try await userStore.getUserInfo(id: selectedPostOwner)
+                        let chatComponent = chatStore.forChatComponents.filter {
+                            $0.otherUser == user
+                        }
+                        if let chatComponent = chatComponent.first {
+                            navigationManager.push(.chatRoom(chatComponent.chatRoom, [], user))
+                        }
+                    }
                 } label: {
                     HStack {
                         Image(systemName: "message")

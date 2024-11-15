@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct ChatRoom: Codable, Identifiable {
+struct ChatRoom: Codable, Identifiable, Hashable {
     var id: Int
     var user1: Int
     var user2: Int

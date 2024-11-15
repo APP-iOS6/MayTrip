@@ -79,6 +79,8 @@
 		FB8AC0312CE1E8BC0001AB05 /* CommunityPostListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC0302CE1E8BC0001AB05 /* CommunityPostListView.swift */; };
 		FB8AC0372CE1F3470001AB05 /* CommunityPostAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC0362CE1F3470001AB05 /* CommunityPostAddView.swift */; };
 		FB8AC03D2CE48B5F0001AB05 /* CommunityMenuSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC03C2CE48B5A0001AB05 /* CommunityMenuSheetView.swift */; };
+		FB8AC0432CE4D99F0001AB05 /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC0422CE4D9960001AB05 /* NavigationManager.swift */; };
+		FB8AC0492CE4DDD70001AB05 /* Destination.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC0482CE4DDD30001AB05 /* Destination.swift */; };
 		FBC09BA22CD9DBAA00B059FB /* SocialLoginButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09BA12CD9DBA400B059FB /* SocialLoginButtons.swift */; };
 		FBC09C382CDA72A800B059FB /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C372CDA72A800B059FB /* ChatRoom.swift */; };
 		FBC09C392CDA72A800B059FB /* ChatLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C362CDA72A800B059FB /* ChatLog.swift */; };
@@ -161,6 +163,8 @@
 		FB8AC0302CE1E8BC0001AB05 /* CommunityPostListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostListView.swift; sourceTree = "<group>"; };
 		FB8AC0362CE1F3470001AB05 /* CommunityPostAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostAddView.swift; sourceTree = "<group>"; };
 		FB8AC03C2CE48B5A0001AB05 /* CommunityMenuSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityMenuSheetView.swift; sourceTree = "<group>"; };
+		FB8AC0422CE4D9960001AB05 /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
+		FB8AC0482CE4DDD30001AB05 /* Destination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Destination.swift; sourceTree = "<group>"; };
 		FBC09B952CD8721900B059FB /* MayTrip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MayTrip.entitlements; sourceTree = "<group>"; };
 		FBC09B9A2CD9D68D00B059FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FBC09BA12CD9DBA400B059FB /* SocialLoginButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtons.swift; sourceTree = "<group>"; };
@@ -379,6 +383,7 @@
 				259AAB882CDA06CD00512CE6 /* LocationManager.swift */,
 				259AAB892CDA06CD00512CE6 /* SearchAddressStore.swift */,
 				FB8AC02E2CE19CFA0001AB05 /* CommunityStore.swift */,
+				FB8AC0422CE4D9960001AB05 /* NavigationManager.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -464,6 +469,7 @@
 		FB36F6372CD498F900E356FA /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				FB8AC0472CE4DDC70001AB05 /* Navigation */,
 				FB36F6382CD4990000E356FA /* Modifier */,
 			);
 			path = Common;
@@ -492,6 +498,14 @@
 				FB8AC0202CDDE2B80001AB05 /* MyPageViewCommon.swift */,
 			);
 			path = MyPageView;
+			sourceTree = "<group>";
+		};
+		FB8AC0472CE4DDC70001AB05 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				FB8AC0482CE4DDD30001AB05 /* Destination.swift */,
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -607,6 +621,7 @@
 				6E690E772CD8B54F0096DB7C /* YearAndMonthView.swift in Sources */,
 				6E690E782CD8B54F0096DB7C /* CellView.swift in Sources */,
 				6E690E842CD8B9540096DB7C /* RecentlySearchListView.swift in Sources */,
+				FB8AC0432CE4D99F0001AB05 /* NavigationManager.swift in Sources */,
 				259AAB8A2CDA06CD00512CE6 /* SearchAddressStore.swift in Sources */,
 				FB8AC00C2CDBBF5C0001AB05 /* ProfileInitView.swift in Sources */,
 				259AABB92CDA0ABA00512CE6 /* Category.swift in Sources */,
@@ -614,6 +629,7 @@
 				259AAB8B2CDA06CD00512CE6 /* LocationManager.swift in Sources */,
 				FBC09C3D2CDA7A5600B059FB /* MainView.swift in Sources */,
 				6E690E852CD8B9540096DB7C /* TopContentsView.swift in Sources */,
+				FB8AC0492CE4DDD70001AB05 /* Destination.swift in Sources */,
 				6E690E862CD8B9540096DB7C /* SearchView.swift in Sources */,
 				259AABA42CDA07F500512CE6 /* TripRouteStore.swift in Sources */,
 				6E690E912CD8EE280096DB7C /* ChattingRoomView.swift in Sources */,

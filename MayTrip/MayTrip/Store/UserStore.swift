@@ -35,6 +35,31 @@ final class UserStore {
         }
     }
     
+    func getUserInfo(id: Int) async throws -> User {
+        var user: User = User(id: id, nickname: "", profileImage: nil, email: "", exp: 0, provider: "")
+        do {
+            let result: [User] = try await DB.from("USER").select(
+                """
+                id,
+                nickname,
+                profile_image,
+                email,
+                exp,
+                provider
+                """
+            ).eq("id", value:id).execute().value
+            if result.isEmpty {
+                print("No data found for id \(id)")
+                return user
+            }
+            user = result[0]
+        } catch {
+            print(error)
+        }
+        
+        return user
+    }
+    
     func setUserInfo(nickname: String, image: UIImage?) async throws -> Void { // 나중에 프로필 이미지 수정해야함
         let userPost = UserPost(nickname: nickname, profileImage: "", email: self.user.email, provider: self.user.provider)
         
