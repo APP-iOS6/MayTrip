@@ -7,7 +7,7 @@
 import Foundation
 
 
-struct TripRoute: Codable, Hashable {
+struct TripRoute: Identifiable ,Codable, Hashable {
     let id : Int
     let title: String
     let tag: [String]
@@ -15,7 +15,7 @@ struct TripRoute: Codable, Hashable {
     let writeUser: TripRouteUser
     let place: [Place]
     let startDate: String
-    let endDate: String?
+    let endDate: String
     let created_at: Date
     let updated_at: Date
     
@@ -31,7 +31,6 @@ struct TripRoute: Codable, Hashable {
         case created_at
         case updated_at
     }
-
 }
 
 struct TripRoutePost: Codable{
@@ -40,7 +39,7 @@ struct TripRoutePost: Codable{
     var city: [String]
     var writeUser: Int
     var startDate: String
-    var endDate: String?
+    var endDate: String
     
     enum CodingKeys: String,CodingKey {
         case title
@@ -52,13 +51,14 @@ struct TripRoutePost: Codable{
     }
 }
 
-struct TripRouteSimple: Codable{
+struct TripRouteSimple: Identifiable ,Codable{
     var id: Int
     var title: String
     var tag: [String]?
     var city: [String]
+    let writeUser: TripRouteUser
     var start_date: String
-    var end_date: String?
+    var end_date: String
 }
 
 struct TripRouteUser: Codable, Hashable {

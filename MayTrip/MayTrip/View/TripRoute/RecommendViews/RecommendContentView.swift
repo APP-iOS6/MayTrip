@@ -7,78 +7,80 @@
 
 
 import SwiftUI
+import UIKit
 
 struct RecommendContentView: View {
     @EnvironmentObject var navigationManager: NavigationManager
-    var routeStore: DummyRouteStore = .shared
-    let route: DummyTripRoute
+    let dateStore: DateStore = .shared
+    let route: TripRouteSimple
+    
+    @State var isScraped = false
     
     var body: some View {
         Button {
             // 디테일 뷰 이동
             navigationManager.push(.routeDetail(SampleTripRoute.sampleRoute))
         } label: {
-            RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(Color(uiColor: .systemGray6))
+            RoundedRectangle(cornerRadius: 5)
+                .stroke(Color(uiColor: .systemGray4), lineWidth: 0.5)
                 .overlay(
-                    VStack(alignment: .leading) {
-                        HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack(spacing: 3) {
                             Text("\(route.title)")
+                                .lineLimit(1)
                                 .bold()
-                                .font(.title3)
+                                .font(.callout)
                                 .multilineTextAlignment(.leading)
                                 .foregroundStyle(.black)
                             
                             Spacer()
                             
                             Button {
-                                
+                                isScraped.toggle()
                             } label: {
-                                Image(systemName: "bookmark")
+                                Image(systemName: isScraped ? "bookmark.fill" : "bookmark")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 20, height: 20)
-                                    .foregroundStyle(Color("accentColor"))
+                                    .frame(width: 15, height: 15)
+                                    .foregroundStyle(.orange)
                             }
                         }
                         
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("\(routeStore.convertPeriodToString(route.start_date, end: route.end_date)) 일정")
-                            
-                            HStack {
+                        Text("\(dateStore.convertPeriodToString(route.start_date, end: route.end_date)) 여행")
+                            .fontWeight(.semibold)
+                            .font(.footnote)
+                            .lineLimit(1)
+                            .foregroundStyle(Color(uiColor: .darkGray))
+                        
+                        HStack {
+                            ForEach(0..<3) { index in
+                                if index < route.city.count {
+                                    Text("\(index == 0 ? route.city[index] : "·  \(route.city[index])")")
+                                        .fontWeight(.semibold)
+                                        .font(.footnote)
+                                        .lineLimit(1)
+                                        .foregroundStyle(Color(uiColor: .darkGray))
+                                }
+                            }
+                        }
+                        
+                        HStack {
+                            if let tags: [String] = route.tag {
                                 ForEach(0..<3) { index in
-                                    if index < route.cities.count {
-                                        Text("\(index == 0 ? route.cities[index] : "·  \(route.cities[index])")")
-                                            .fontWeight(.semibold)
+                                    if index < tags.count {
+                                        Text("#\(tags[index]) ")
+                                            .font(.caption)
                                             .lineLimit(1)
+                                            .foregroundStyle(Color("accentColor"))
                                     }
                                 }
                             }
                         }
-                        .padding(.vertical, 10)
-                        .foregroundStyle(Color(uiColor: .darkGray))
-                        
-                        HStack {
-                            ForEach(0..<3) { index in
-                                if index < route.tags.count {
-                                    Text("#\(route.tags[index]) ")
-                                        .font(.system(size: 13))
-                                        .lineLimit(1)
-                                }
-                            }
-                        }
-                        .font(.footnote)
-                        .foregroundStyle(Color(uiColor: .darkGray))
                     }
                     .padding()
                 )
-                .frame(width: 240, height: 200)
         }
+        .frame(height: UIScreen.main.bounds.size.height / 6)
     }
 }
 
-#Preview {
-    NavigationStack {
-        RecommendContentView(route: tripRoutes[2])
-    }
-}

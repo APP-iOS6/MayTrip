@@ -11,7 +11,6 @@ import UIKit
 struct ChattingRoomView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(ChatStore.self) private var chatStore: ChatStore
-    let routeStore = DummyRouteStore.shared
     let userStore = UserStore.shared
     @State var message: String = ""
     @State var route: Int?
@@ -23,7 +22,6 @@ struct ChattingRoomView: View {
     @State var isScrollTop: Bool = true
     @State var isSend: Bool = false
     
-    // TODO: 루트 공유
     var body: some View {
         VStack {
             HStack {
@@ -39,18 +37,20 @@ struct ChattingRoomView: View {
                 
                 // 채팅 상대 이름
                 Text("\(otherUser.nickname)")
+                    .bold()
                 
                 Spacer()
             }
             .foregroundStyle(.black)
-            .font(.title3)
             .padding(.horizontal)
+            .padding(.vertical, 5)
             
             Divider()
             
             ScrollView {
                 LazyVStack(alignment: .leading) {
                     VStack(alignment: .center) {
+                        // TODO: 날짜별로 표시해주는 디바이더 추가
                         //                            Text("2024년 11월 04일")
                         //                                .font(.footnote)
                         //                                .foregroundStyle(.gray)
@@ -71,6 +71,7 @@ struct ChattingRoomView: View {
                                     .foregroundStyle(.gray)
                                     
                                     Text("\(log.message)")
+                                        .font(.callout)
                                         .foregroundStyle(.white)
                                         .padding()
                                         .background {
@@ -85,6 +86,7 @@ struct ChattingRoomView: View {
                                 // 상대가 보낸 메세지
                                 HStack(alignment: .bottom, spacing: 0) {
                                     Text("\(log.message)")
+                                        .font(.callout)
                                         .foregroundStyle(.black)
                                         .padding()
                                         .background {
@@ -174,60 +176,56 @@ struct ChattingRoomView: View {
     }
 }
 
+// TODO: 루트 공유 만들기
 struct RecruitmentNoticeView: View {
-    var routeStore = DummyRouteStore.shared
-    let route: DummyTripRoute?
+    let dateStore: DateStore = .shared
+    let route: TripRouteSimple
     
     var body: some View {
-        if let route {
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(.gray, lineWidth: 1)
-                .overlay {
-                    // storke 쓰면 배경색이 안먹혀서 사각형 한번 더 그려줌
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(Color(uiColor: .systemGray6))
-                        .overlay {
-                            HStack {
-                                VStack(alignment: .leading, spacing: 8) {
-                                    Text("\(route.title)")
-                                        .lineLimit(1)
-                                        .bold()
-                                    
-                                    HStack(spacing: 10) {
-                                        // 여행지
-                                        ForEach(0..<3) { index in
-                                            if index < route.cities.count {
-                                                Text("\(index == 0 ? route.cities[index] : "·  \(route.cities[index])")")
-                                                    .lineLimit(1)
-                                            }
-                                        }
-                                        // 여행 날짜, 기간
-                                        Text("\(routeStore.convertPeriodToString(route.start_date, end: route.end_date))여행")
-                                    }
-                                    .font(.system(size: 15))
-                                    .foregroundStyle(.gray)
-                                }
+        RoundedRectangle(cornerRadius: 10)
+            .stroke(.gray, lineWidth: 1)
+            .overlay {
+                // storke 쓰면 배경색이 안먹혀서 사각형 한번 더 그려줌
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundStyle(Color(uiColor: .systemGray6))
+                    .overlay {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("\(route.title)")
+                                    .lineLimit(1)
+                                    .bold()
                                 
-                                Spacer()
+                                HStack(spacing: 10) {
+                                    // 여행지
+                                    ForEach(0..<3) { index in
+                                        if index < route.city.count {
+                                            Text("\(index == 0 ? route.city[index] : "·  \(route.city[index])")")
+                                                .lineLimit(1)
+                                        }
+                                    }
+                                    // 여행 날짜, 기간
+                                    Text("\(dateStore.convertPeriodToString(route.start_date, end: route.end_date))여행")
+                                }
+                                .font(.system(size: 15))
+                                .foregroundStyle(.gray)
                             }
-                            // 현재 여행 중인 카드만 진한 컬러로
-                            .foregroundStyle(.black)
-                            //                            .foregroundStyle(.white)
-                            .padding()
-                            .padding(.vertical)
+                            
+                            Spacer()
                         }
-                }
-            
-                .padding([.horizontal, .top])
-                .background {
-                    Rectangle()
-                        .foregroundColor(.white)
-                }
-                .padding(.bottom)
-                .frame(width: .infinity, height: 130)
-        } else {
-            EmptyView()
-        }
+                        // 현재 여행 중인 카드만 진한 컬러로
+                        .foregroundStyle(.black)
+                        //                            .foregroundStyle(.white)
+                        .padding()
+                        .padding(.vertical)
+                    }
+            }
+            .padding([.horizontal, .top])
+            .background {
+                Rectangle()
+                    .foregroundColor(.white)
+            }
+            .padding(.bottom)
+            .frame(width: .infinity, height: 130)
     }
 }
 

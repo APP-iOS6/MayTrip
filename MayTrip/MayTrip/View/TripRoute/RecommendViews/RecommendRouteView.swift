@@ -8,44 +8,64 @@
 import SwiftUI
 
 struct RecommendRouteView: View {
-    var routeStore: DummyRouteStore = .shared
+    @StateObject var tripRouteStore: TripRouteStore = TripRouteStore()
+    @State var isRecently: Bool = true
+    
+    private let gridItems: [GridItem] = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
     
     var body: some View {
-        ForEach(Standard.allCases, id: \.self) { standard in
-            VStack {
-                NavigationLink {
-                    // TODO: 루트 리스트 뷰 이동
-                } label: {
-                    HStack(alignment: .center) {
-                        Text("\(standard.rawValue)")
-                            .font(.title3)
-                            .foregroundStyle(.black)
-                        
-                        Spacer()
-                        
-                        Text("더보기")
+        LazyVGrid(columns: gridItems, alignment: .leading, spacing: 10, pinnedViews: [.sectionHeaders]) {
+            Section(header:
+                        VStack(alignment: .leading) {
+                HStack {
+                    Text("여행 둘러보기")
+                        .font(.title3)
+                        .bold()
+                    
+                    Spacer()
+                    
+                    Button {
+                        // TODO: 리스트 최신순으로 변경
+                        isRecently = true
+                    } label: {
+                        Text("최신순")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(isRecently ? Color("accentColor") : .gray)
                     }
-                    .fontWeight(.semibold)
-                    .foregroundStyle(Color("accentColor"))
-                }
-                .padding(.trailing)
-                
-                ScrollView(.horizontal) {
-                    HStack {
-                        ForEach(routeStore.categorizeRoute(standard)) { route in
-                            RecommendContentView(route: route)
-                                .padding(2)
-                        }
+                    
+                    Divider()
+                    
+                    Button {
+                        // TODO: 리스트 보관많은순으로 변경
+                        isRecently = false
+                    } label: {
+                        Text("보관많은순")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(!isRecently ? Color("accentColor") : .gray)
                     }
-                    .padding(.trailing)
                 }
             }
-            .padding([.leading, .vertical])
+                .padding(.bottom, 10)
+                .background(Rectangle().foregroundColor(.white))
+            ) {
+                ForEach(tripRouteStore.list) { route in
+                    RecommendContentView(route: route)
+                }
+            }
+            .onAppear {
+                Task {
+                    try await tripRouteStore.getTripRouteList()
+                }
+            }
         }
+        .padding()
     }
 }
-
-
 
 #Preview {
     RecommendRouteView()

@@ -27,7 +27,7 @@ struct PlaceInfoView: View {
                     Text("DAY\(dateIndex + 1)")
                         .foregroundStyle(Color.primary)
                         .bold()
-                    Text(dateStore.dateToString(with: "MM.dd(E)", date: date))
+                    Text(dateStore.convertDateToString(date, format:  "MM.dd(E)"))
                         .foregroundStyle(.gray)
                     Image(systemName: "chevron.right")
                         .foregroundStyle(Color.primary)

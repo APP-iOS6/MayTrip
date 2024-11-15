@@ -36,10 +36,12 @@ struct ChatView: View {
                                 
                                 VStack(alignment: .leading, spacing: 10) {
                                     Text("\(chatStore.forChatComponents[index].otherUser.nickname)")
+                                        .font(.callout)
+                                        .fontWeight(.semibold)
                                     
                                     Text("\(log.message)")
+                                        .font(.callout)
                                         .lineLimit(1)
-                                        .foregroundStyle(.gray)
                                 }
                                 .padding(.leading, 5)
                                 

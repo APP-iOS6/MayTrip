@@ -35,6 +35,7 @@ struct MayTripApp: App {
                 .onAppear {
                     Task {
                         await authStore.checkAutoLogin()
+//                        try await authStore.signOut()
                     }
                 }
         }

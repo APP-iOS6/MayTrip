@@ -21,6 +21,8 @@ struct SignUpView: View {
     @State private var confirmPassword: String = ""
     @State private var errorMessage: String = ""
     @FocusState private var focusField: Field?
+    @State private var isHidePassword: Bool = true
+    @State private var isHideConfirmPassword: Bool = true
     
     let screenWidth: CGFloat = UIScreen.main.bounds.width
     let screenHeight: CGFloat = UIScreen.main.bounds.height
@@ -41,26 +43,54 @@ struct SignUpView: View {
                 .padding(.top, screenHeight * 0.05)
                 
                 // 비밀번호 입력
-                HStack(spacing:5) {
-                    Text("비밀번호")
-                        .font(.system(size: 16))
-                        .foregroundStyle(Color(uiColor: .systemGray))
-                        .frame(width: screenWidth * 0.15, height: screenHeight * 0.06, alignment: .leading)
+                ZStack {
+                    HStack(spacing:5) {
+                        Text("비밀번호")
+                            .font(.system(size: 16))
+                            .foregroundStyle(Color(uiColor: .systemGray))
+                            .frame(width: screenWidth * 0.15, height: screenHeight * 0.06, alignment: .leading)
+                        
+                        CreateLoginViewTextField(text: $password, symbolName: "", placeholder: "비밀번호(6자 이상 영문자+숫자)", width: screenWidth * 0.75, height: screenHeight * 0.06, isSecure: isHidePassword, isFocused: focusField == .password)
+                            .focused($focusField, equals: .password)
+                    }
                     
-                    CreateLoginViewTextField(text: $password, symbolName: "", placeholder: "비밀번호(6자 이상 영문자+숫자)", width: screenWidth * 0.75, height: screenHeight * 0.06, isSecure: true, isFocused: focusField == .password)
-                        .focused($focusField, equals: .password)
+                    HStack {
+                        Spacer()
+                        Button {
+                            isHidePassword.toggle()
+                        } label: {
+                            Image(systemName: isHidePassword ? "eye.slash" : "eye")
+                                .foregroundStyle(Color(uiColor: .systemGray2))
+                                .padding(.trailing, screenWidth * 0.02)
+                        }
+                    }
+                    .frame(width: screenWidth * 0.9, height: screenHeight * 0.06)
                 }
                 
-                HStack(spacing:5) {
-                    Text("")
-                        .font(.system(size: 16))
-                        .foregroundStyle(Color(uiColor: .systemGray))
-                        .frame(width: screenWidth * 0.15, height: screenHeight * 0.06, alignment: .leading)
-                    // 비밀번호 확인
-                    CreateLoginViewTextField(text: $confirmPassword, symbolName: "", placeholder: "비밀번호를 다시 한 번 입력해주세요", width: screenWidth * 0.75, height: screenHeight * 0.06, isSecure: true, isFocused: focusField == .confirmPassword)
-                        .focused($focusField, equals: .confirmPassword)
+                ZStack {
+                    HStack(spacing:5) {
+                        Text("")
+                            .font(.system(size: 16))
+                            .foregroundStyle(Color(uiColor: .systemGray))
+                            .frame(width: screenWidth * 0.15, height: screenHeight * 0.06, alignment: .leading)
+                        // 비밀번호 확인
+                        CreateLoginViewTextField(text: $confirmPassword, symbolName: "", placeholder: "비밀번호를 다시 한 번 입력해주세요", width: screenWidth * 0.75, height: screenHeight * 0.06, isSecure: isHideConfirmPassword, isFocused: focusField == .confirmPassword)
+                            .focused($focusField, equals: .confirmPassword)
+                    }
+                    HStack {
+                        Spacer()
+                        Button {
+                            isHideConfirmPassword.toggle()
+                        } label: {
+                            Image(systemName: isHideConfirmPassword ? "eye.slash" : "eye")
+                                .foregroundStyle(Color(uiColor: .systemGray2))
+                                .padding(.trailing, screenWidth * 0.02)
+                        }
+                    }
+                    .frame(width: screenWidth * 0.9, height: screenHeight * 0.06)
                 }
                 .padding(.bottom, -25)
+                    
                 
                 if !errorMessage.isEmpty {
                     HStack(spacing:5) {

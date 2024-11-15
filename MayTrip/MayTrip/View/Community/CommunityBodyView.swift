@@ -15,38 +15,18 @@ struct CommunityBodyView: View {
     let height: CGFloat
     
     var body: some View {
-        ScrollView {
-            HStack { // 정렬 필터
-                Spacer()
-                
-                Button {
-                    isShowingOrderCategory.toggle()
-                } label: {
-                    HStack(spacing: 5) {
-                        Text("\($selectedOrderCategory.wrappedValue.rawValue)")
-                            .font(.system(size:16))
-                            .foregroundStyle(.black)
-                        Image(systemName: isShowingOrderCategory ? "chevron.up" :"chevron.down")
-                            .font(.system(size: 12))
-                            .foregroundStyle(.black)
-                    }
-                }
-            }
-            .padding(.horizontal, width * 0.06)
-            
-            ZStack {
+        ZStack {
+            ScrollView {
                 CommunityPostListView(width: width, height: height)
-                
-                if isShowingOrderCategory {
-                    VStack {
-                        HStack(alignment: .top) {
-                            Spacer()
-                            orderCategoryListView(width: width, height: height)
-                            
-                                .padding(.horizontal, width * 0.05)
-                        }
+            }
+            if isShowingOrderCategory {
+                VStack {
+                    HStack(alignment: .top) {
                         Spacer()
+                        orderCategoryListView(width: width, height: height)
+                            .padding(.horizontal, width * 0.05)
                     }
+                    Spacer()
                 }
             }
         }
