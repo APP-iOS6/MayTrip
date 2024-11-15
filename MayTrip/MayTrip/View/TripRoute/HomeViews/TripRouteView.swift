@@ -15,16 +15,16 @@ struct TripRouteView: View {
             ScrollView {
                 LazyVStack(alignment: .leading) {
                     TopContentsView()
-                        .padding(.bottom, 8)
+                        .padding(.bottom)
                     
                     MyTripCardView()
-                        .padding(.bottom, 15)
+                        .padding(.bottom)
                     
                     RecommendRouteView()
+                        .padding(.bottom)
                 }
-                .padding(.vertical)
             }
-            .padding(.vertical)
+            .padding(.top, 10)
             .scrollIndicators(.hidden)
             .toolbar {
                 HStack(spacing: 20) {
@@ -40,17 +40,17 @@ struct TripRouteView: View {
                     } label: {
                         Image(systemName: "magnifyingglass")
                             .frame(width: 15, height:  15)
-                            .foregroundStyle(Color("accentColor"))
+                            
                     }
                     
                     NavigationLink {
                         EnterBasicInformationView()
                     } label: {
-                        Image(systemName: "plus")
+                        Image(systemName: "calendar.badge.plus")
                             .frame(width: 15, height:  15)
-                            .foregroundStyle(Color("accentColor"))
                     }
                 }
+                .foregroundStyle(Color("accentColor"))
             }
         }
     }
