@@ -9,6 +9,8 @@ import SwiftUI
 
 struct MyPageView: View {
     @Environment(AuthStore.self) var authStore: AuthStore
+    @State var isShowingLogoutAlert: Bool = false
+    @State var isShowingSignOutAlert: Bool = false
     let userStore = UserStore.shared
     var body: some View {
         NavigationStack {
@@ -88,23 +90,47 @@ struct MyPageView: View {
             Divider()
             
             Button {
-                Task {
-                    try await authStore.signOut()
-                }
+                isShowingLogoutAlert = true
+                
             } label :{
-                Text("로그아웃")
-                    .padding(.vertical, 5)
-                    .foregroundStyle(.black)
+                HStack {
+                    Text("로그아웃")
+                        .padding(.vertical, 5)
+                        .foregroundStyle(.black)
+                    Spacer()
+                }
+            }
+            .alert("정말 로그아웃 하시겠습니까?", isPresented: $isShowingLogoutAlert) {
+                Button("취소", role: .cancel) {
+                    isShowingLogoutAlert = false
+                }
+                Button("로그아웃", role: .destructive) {
+                    isShowingLogoutAlert = false
+                    Task {
+                        try await authStore.signOut()
+                    }
+                }
             }
             
             Divider()
             
             Button {
-                
+                isShowingSignOutAlert = true
             } label :{
-                Text("회원탈퇴")
-                    .padding(.vertical, 5)
-                    .foregroundStyle(.red.opacity(1))
+                HStack {
+                    Text("회원탈퇴")
+                        .padding(.vertical, 5)
+                        .foregroundStyle(.red.opacity(1))
+                    Spacer()
+                }
+            }
+            .alert("정말 회원탈퇴 하시겠습니까?", isPresented: $isShowingSignOutAlert) {
+                Button("취소", role: .cancel) {
+                    isShowingSignOutAlert = false
+                }
+                Button("회원탈퇴", role: .destructive) {
+                    isShowingSignOutAlert = false
+                }
             }
         }
         .padding(.horizontal, 20)

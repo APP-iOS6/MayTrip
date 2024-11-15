@@ -32,6 +32,8 @@ class AuthStore {
             try await self.userStore.getUserInfo(email: email, provider: provider)
             if !self.userStore.user.nickname.isEmpty {
                 isFirstLogin = false
+            } else {
+                isFirstLogin = true
             }
             self.isLogin = true
             print(userStore.user.email, userStore.user.provider)
@@ -90,8 +92,8 @@ class AuthStore {
             let provider = user.appMetadata["provider"]!
             guard let providerJSON = try? JSONEncoder().encode(provider), let providerString = String(data: providerJSON, encoding: .utf8) else {
                 return false
-            }
-            await successLogin(email: user.email!, provider: providerString)
+            } // jsonString이 provider가 아닌 "provider"로 반환되서 삼항연산자를 통해 처리
+            await successLogin(email: user.email!, provider: providerString == "\"email\"" ? "email" : "apple")
             return true
         } catch {
             print(error)
