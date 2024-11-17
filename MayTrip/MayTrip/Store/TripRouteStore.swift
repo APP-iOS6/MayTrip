@@ -56,6 +56,7 @@ class TripRouteStore: ObservableObject {
     }
     
     //키워드로 트립루트 검색 - 제목, 태그, 시티, 장소 이름 - 희철
+    @MainActor
     func getTripRouteListWithKeyword(keyword: String) async{
         do{
             let tripRouteList: [TripRouteSimple] = try await db
@@ -114,7 +115,8 @@ class TripRouteStore: ObservableObject {
         }
     }
     //트립 루트 상세 정보 가져오기 - 희철
-    func getTripRoute(tripId: Int) async{
+    @MainActor
+    func getTripRoute(tripId: Int) async -> TripRoute?{
         do{
             let tripRoute: TripRoute = try await db
                 .from("trip_route_detail")
@@ -127,38 +129,100 @@ class TripRouteStore: ObservableObject {
                 .single()
                 .execute()
                 .value
+            return tripRoute
             print(tripRoute)
         }catch{
             print(error)
+            return nil
+        }
+    }
+    
+//    //보관 버튼 눌렀을 때 함수 - DB에 있으면 삭제하고 없으면 생성
+//    func toggleStorageMark(routeId: Int) async -> Bool{
+//        let userId: Int = UserStore.shared.user.id
+//        
+//        do{
+//            let status: Int = try await db
+//                .from("ROUTE_STORAGE")
+//                .select("user_id")
+//                .eq("route_id", value: routeId)
+//                .eq("user_id", value: userId)
+//                .execute()
+//                .status
+//            
+//            if status != 200{
+//                await insertStorage(routeId: routeId)
+//            }else{
+//                await deleteStorage(routeId: routeId)
+//            }
+//            
+//            return true
+//        }catch{
+//            print(error)
+//            return false
+//        }
+//    }
+    
+    //ROUTE_STORAGE에 데이터 생성
+    func insertByRouteId(routeId: Int) async -> Bool{
+        let userId: Int = UserStore.shared.user.id
+        let storage = ["user_id": userId, "route_id": routeId]
+        do{
+            try await db
+                .from("ROUTE_STORAGE")
+                .insert(storage)
+                .execute()
+                
+            return true
+        }catch{
+            print(error)
+            return false
+        }
+    }
+    
+    //ROUTE_STORAGE에 데이터 제거
+    func deleteByRouteId(routeId: Int) async -> Bool{
+        let userId: Int = UserStore.shared.user.id
+        do{
+            try await db
+                .from("ROUTE_STORAGE")
+                .delete()
+                .eq("user_id", value: userId)
+                .eq("route_id", value: routeId)
+                .execute()
+            return true
+        }catch{
+            print(error)
+            return false
         }
     }
     
     //여행 루트 상세 정보 가져오는 함수
-    @MainActor
-    func getTripRoute(id: Int) async throws -> Void{
-        do{
-            tripRoute = try await db
-                .from("TRIP_ROUTE")
-                .select(
-                    """
-                    *,
-                    writeUser:write_user(
-                     id,
-                     nickname,
-                     profile_image
-                    ),
-                    place:PLACE(
-                    *
-                    )
-                    """
-                )
-                .eq("id", value: id)
-                .execute()
-                .value
-        }catch{
-            print(error)
-        }
-    }
+//    @MainActor
+//    func getTripRoute(id: Int) async throws -> Void{
+//        do{
+//            tripRoute = try await db
+//                .from("TRIP_ROUTE")
+//                .select(
+//                    """
+//                    *,
+//                    writeUser:write_user(
+//                     id,
+//                     nickname,
+//                     profile_image
+//                    ),
+//                    place:PLACE(
+//                    *
+//                    )
+//                    """
+//                )
+//                .eq("id", value: id)
+//                .execute()
+//                .value
+//        }catch{
+//            print(error)
+//        }
+//    }
     
     // 유저가 생성한 루트만 가져오는 함수
     @MainActor

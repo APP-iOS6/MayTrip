@@ -54,7 +54,7 @@ struct RecommendRouteView: View {
                 .background(Rectangle().foregroundColor(.white))
             ) {
                 ForEach(tripRouteStore.list) { route in
-                    RecommendContentView(route: route)
+                    RecommendContentView(route: route, tripRouteStore: tripRouteStore)
                 }
             }
             .onAppear {

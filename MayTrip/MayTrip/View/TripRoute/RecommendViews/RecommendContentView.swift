@@ -8,11 +8,13 @@
 
 import SwiftUI
 import UIKit
+import Combine
 
 struct RecommendContentView: View {
     let dateStore: DateStore = .shared
     let route: TripRouteSimple
     
+    @ObservedObject var tripRouteStore: TripRouteStore
     @State var isScraped = false
     
     var body: some View {
@@ -34,7 +36,16 @@ struct RecommendContentView: View {
                             Spacer()
                             
                             Button {
-                                isScraped.toggle()
+                                Task{
+                                    var success: Bool = isScraped
+                                        ? await tripRouteStore.deleteByRouteId(routeId: route.id)
+                                        : await tripRouteStore.insertByRouteId(routeId: route.id)
+                                    if success{
+                                        isScraped.toggle()
+                                    }else{
+                                        print("북마크 실패")
+                                    }
+                                }
                             } label: {
                                 Image(systemName: isScraped ? "bookmark.fill" : "bookmark")
                                     .resizable()
