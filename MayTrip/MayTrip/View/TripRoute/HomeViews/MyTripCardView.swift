@@ -9,7 +9,7 @@ import UIKit
 
 struct MyTripCardView: View {
     @EnvironmentObject var navigationManager: NavigationManager
-    @StateObject var tripRouteStore: TripRouteStore = TripRouteStore()
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     var dateStore: DateStore = .shared
     let user: User = UserStore.shared.user
     

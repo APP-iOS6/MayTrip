@@ -10,7 +10,7 @@ import SwiftUI
 struct PlaceHeaderView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var navigationManager: NavigationManager
-    @StateObject var tripRouteStore = TripRouteStore()
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     
     var cities: [String]
     var places: [[PlacePost]]

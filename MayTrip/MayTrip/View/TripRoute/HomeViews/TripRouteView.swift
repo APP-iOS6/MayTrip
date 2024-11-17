@@ -10,7 +10,7 @@ import SwiftUI
 struct TripRouteView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     let dateStore = DateStore.shared
-    @StateObject var tripRouteStore: TripRouteStore = TripRouteStore()
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     
     var body: some View {
         NavigationStack(path: $navigationManager.path) {

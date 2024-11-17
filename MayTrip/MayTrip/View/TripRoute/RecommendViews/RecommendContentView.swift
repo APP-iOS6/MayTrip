@@ -11,7 +11,7 @@ import UIKit
 
 struct RecommendContentView: View {
     @EnvironmentObject var navigationManager: NavigationManager
-    @StateObject var tripRouteStore: TripRouteStore = TripRouteStore()
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     let dateStore: DateStore = .shared
     let route: TripRouteSimple
     

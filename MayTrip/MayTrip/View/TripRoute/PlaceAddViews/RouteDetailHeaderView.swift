@@ -10,7 +10,7 @@ import SwiftUI
 struct RouteDetailHeaderView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @Environment(\.dismiss) var dismiss
-    @StateObject var tripRouteStore: TripRouteStore = TripRouteStore()
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     @State var isScraped: Bool = false
     @State var showingDeleteAlert: Bool = false
     
@@ -95,7 +95,7 @@ struct RouteDetailHeaderView: View {
     
     var titleView: some View {
         HStack(alignment: .bottom) {
-            Text("\(tripRoute.title)")
+            Text(tripRoute.title)
                 .font(.title2)
                 .bold()
         
@@ -116,8 +116,7 @@ struct RouteDetailHeaderView: View {
                 }
             }
         }
-        .padding(.horizontal)
-        .padding(.bottom)
+        .padding([.horizontal, .bottom])
     }
 
     var cityTagsView: some View {
