@@ -16,6 +16,7 @@ enum orderCategory : String, CaseIterable {
 }
 
 struct CommunityView: View {
+    @Environment(CommunityStore.self) var communityStore: CommunityStore
     @State var selectedPostCategory: postCategory = .all
     @State var selectedOrderCategory: orderCategory = .new
     @State var isShowingOrderCategory: Bool = false
@@ -58,6 +59,11 @@ struct CommunityView: View {
                 }
             }
             
+        }
+        .onAppear {
+            Task {
+                try await communityStore.updatePost()
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct CommunityBodyView: View {
     @Binding var isShowingOrderCategory: Bool
     @Binding var selectedOrderCategory: orderCategory
+    @Environment(CommunityStore.self) var communityStore: CommunityStore
     
     let width: CGFloat
     let height: CGFloat
@@ -18,6 +19,11 @@ struct CommunityBodyView: View {
         ZStack {
             ScrollView {
                 CommunityPostListView(width: width, height: height)
+            }
+            .refreshable {
+                Task {
+                    try await communityStore.updatePost()
+                }
             }
             if isShowingOrderCategory {
                 VStack {
