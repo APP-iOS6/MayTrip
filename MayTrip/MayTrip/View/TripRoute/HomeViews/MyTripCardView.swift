@@ -15,13 +15,13 @@ struct MyTripCardView: View {
     var body: some View {
         ScrollView(.horizontal) {
             HStack {
-                ForEach(tripRouteStore.myTripRoutes.sorted(by: { $0.start_date < $1.start_date })) { route in
-                    if dateStore.convertStringToDate(route.end_date) >= Date() {
+                ForEach(tripRouteStore.myTripRoutes.sorted(by: { $0.startDate < $1.startDate })) { route in
+                    if dateStore.convertStringToDate(route.endDate) >= Date() {
                         NavigationLink {
                             RouteDetailView(tripRoute: SampleTripRoute.sampleRoute)
                         } label: {
                             RoundedRectangle(cornerRadius: 5)
-                                .stroke((dateStore.isOnATrip(route.start_date, end: route.end_date) ? Color("accentColor") : Color(uiColor: .systemGray4)), lineWidth: 0.5)
+                                .stroke((dateStore.isOnATrip(route.startDate, end: route.endDate) ? Color("accentColor") : Color(uiColor: .systemGray4)), lineWidth: 0.5)
                                 .overlay {
                                     HStack(spacing: 0) {
                                         VStack(alignment: .leading, spacing: 8) {
@@ -47,10 +47,10 @@ struct MyTripCardView: View {
                                             .fontWeight(.semibold)
                                             
                                             HStack(spacing: 0) {
-                                                Text("\(dateStore.convertDateToString(dateStore.convertStringToDate(route.start_date), format: "yy.MM.dd"))")
+                                                Text("\(dateStore.convertDateToString(dateStore.convertStringToDate(route.startDate), format: "yy.MM.dd"))")
                                                 
-                                                if route.end_date != route.start_date {
-                                                    Text(" - \(dateStore.convertDateToString(dateStore.convertStringToDate(route.end_date), format: "yy.MM.dd"))")
+                                                if route.endDate != route.startDate {
+                                                    Text(" - \(dateStore.convertDateToString(dateStore.convertStringToDate(route.endDate), format: "yy.MM.dd"))")
                                                 }
                                             }
                                             .font(.footnote)
@@ -65,7 +65,7 @@ struct MyTripCardView: View {
                                             .background(.white)
                                             .padding(.vertical)
                                         
-                                        Text(dateStore.isOnATrip(route.start_date, end: route.end_date) ? "여행중" : dateStore.calcDDay(route.start_date))
+                                        Text(dateStore.isOnATrip(route.startDate, end: route.endDate) ? "여행중" : dateStore.calcDDay(route.startDate))
                                             .foregroundStyle(Color("accentColor"))
                                             .padding(.horizontal)
                                             .font(.footnote)

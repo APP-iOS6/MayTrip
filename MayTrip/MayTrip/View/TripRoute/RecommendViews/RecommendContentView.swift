@@ -44,7 +44,7 @@ struct RecommendContentView: View {
                             }
                         }
                         
-                        Text("\(dateStore.convertPeriodToString(route.start_date, end: route.end_date)) 여행")
+                        Text("\(dateStore.convertPeriodToString(route.startDate, end: route.endDate)) 여행")
                             .fontWeight(.semibold)
                             .font(.footnote)
                             .lineLimit(1)

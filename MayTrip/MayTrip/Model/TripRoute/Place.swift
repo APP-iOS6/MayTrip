@@ -6,25 +6,25 @@
 //
 import Foundation
 
-struct Place: Codable, Identifiable {
-    let id: Int
-    let name: String
-    let tripRoute: Int
-    let tripDate: String
-    let ordered: Int
-    let coordinates: [Double]
-    let category: String
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case tripRoute = "trip_route"
-        case tripDate = "trip_date"
-        case ordered
-        case coordinates
-        case category
-    }
-}
+//struct Place: Codable, Identifiable {
+//    let id: Int
+//    let name: String
+//    let tripRoute: Int
+//    let tripDate: String
+//    let ordered: Int
+//    let coordinates: [Double]
+//    let category: String
+//    
+//    enum CodingKeys: String, CodingKey {
+//        case id
+//        case name
+//        case tripRoute = "trip_route"
+//        case tripDate = "trip_date"
+//        case ordered
+//        case coordinates
+//        case category
+//    }
+//}
 
 struct PlacePost: Codable, Equatable {
     let name: String
@@ -41,5 +41,28 @@ struct PlacePost: Codable, Equatable {
         case ordered
         case coordinates
         case categoryCode = "category"
+    }
+}
+
+//새로운 Place 모델 - 희철
+struct Place: Codable{
+    let id: Int
+    let name: String
+    let tripDate: String
+    let ordered: Int
+    let coordinates: [Double]
+    let category: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case tripDate = "trip_date"
+        case ordered
+        case coordinates
+        case category
+    }
+    
+    struct Category: Codable{
+        let name: String
     }
 }

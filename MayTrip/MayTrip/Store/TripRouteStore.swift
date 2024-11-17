@@ -55,6 +55,84 @@ class TripRouteStore: ObservableObject {
         }
     }
     
+    //키워드로 트립루트 검색 - 제목, 태그, 시티, 장소 이름 - 희철
+    func getTripRouteListWithKeyword(keyword: String) async{
+        do{
+            let tripRouteList: [TripRouteSimple] = try await db
+                .from("trip_route_storage_count")
+                .select("*")
+                .or("title.like.%\(keyword)%, tag.cs.{\(keyword)}, city.cs.{\(keyword)}, place_name.like.%\(keyword)%")
+                .execute()
+                .value
+            
+            list = tripRouteList
+            
+            print("----------------------------------")
+            tripRouteList.forEach { TripRouteSimple in
+                print(TripRouteSimple)
+            }
+        }catch{
+            print(error)
+        }
+    }
+    
+    //유저 필터링 트립 루트 리스트 보관함: 내가 만든 여행을 가져오기 위한 함수 - 희철
+    func getTripRouteListWithUser(userId: Int) async{
+        do{
+            let tripRouteList: [TripRouteSimple] = try await db
+                .from("trip_route_storage_count")
+                .select("*")
+                .eq("write_user", value: userId)
+                .execute()
+                .value
+            
+            print("----------------------------------")
+            tripRouteList.forEach{tripRouteSimple in
+                print(tripRouteSimple)
+            }
+        }catch{
+            print(error)
+        }
+    }
+    
+    //유저가 보관함에 넣은 트립 루트 리스트 - 희철
+    func getStorageTripRouteList(userId: Int) async{
+        do{
+            let tripRouteList: [StorageTripRoute] = try await db
+                .from("trip_route_storage")
+                .select("id, title, write_user, tag, city")
+                .eq("user_id", value: userId)
+                .execute()
+                .value
+            
+            print("----------------------------------")
+            tripRouteList.forEach{tripRouteSimple in
+                print(tripRouteSimple)
+            }
+        }catch{
+            print(error)
+        }
+    }
+    //트립 루트 상세 정보 가져오기 - 희철
+    func getTripRoute(tripId: Int) async{
+        do{
+            let tripRoute: TripRoute = try await db
+                .from("trip_route_detail")
+                .select("""
+                        id, title, tag, city, start_date, end_date, storage_count,
+                        write_user:USER!write_user(id, nickname, profile_image, exp),
+                        places:placegetter(*)
+                        """)
+                .eq("id", value: tripId)
+                .single()
+                .execute()
+                .value
+            print(tripRoute)
+        }catch{
+            print(error)
+        }
+    }
+    
     //여행 루트 상세 정보 가져오는 함수
     @MainActor
     func getTripRoute(id: Int) async throws -> Void{

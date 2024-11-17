@@ -204,7 +204,7 @@ struct RecruitmentNoticeView: View {
                                         }
                                     }
                                     // 여행 날짜, 기간
-                                    Text("\(dateStore.convertPeriodToString(route.start_date, end: route.end_date))여행")
+                                    Text("\(dateStore.convertPeriodToString(route.startDate, end: route.endDate))여행")
                                 }
                                 .font(.system(size: 15))
                                 .foregroundStyle(.gray)
