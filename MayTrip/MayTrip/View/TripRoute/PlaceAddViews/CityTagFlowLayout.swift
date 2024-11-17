@@ -89,7 +89,7 @@ struct CityTagFlowLayout: Layout {
             
             subviews[index].place(
                 at: position,
-                anchor: .leading,
+                anchor: .topLeading,
                 proposal: ProposedViewSize(cache.sizes[index])
             )
         }

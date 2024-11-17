@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct TripRouteView: View {
-    @StateObject var tripRouteStore: TripRouteStore = TripRouteStore()
+    @EnvironmentObject var navigationManager: NavigationManager
+    let dateStore = DateStore.shared
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationManager.path) {
             ScrollView {
                 LazyVStack(alignment: .leading) {
                     TopContentsView()
@@ -43,13 +45,24 @@ struct TripRouteView: View {
                             .foregroundStyle(Color("accentColor"))
                     }
                     
-                    NavigationLink {
-                        EnterBasicInformationView()
+                    Button {
+                        dateStore.initDate()
+                        navigationManager.push(.enterBasicInfo(tripRoute: nil))
                     } label: {
                         Image(systemName: "plus")
                             .frame(width: 15, height:  15)
                             .foregroundStyle(Color("accentColor"))
                             .padding(.trailing, UIScreen.main.bounds.width * 0.01)
+                    }
+                    .navigationDestination(for: Destination.self) { destination in
+                        switch destination {
+                        case .enterBasicInfo(let tripRoute):
+                            EnterBasicInformationView(tripRoute: tripRoute)
+                        case .placeAdd(let title, let tags, let tripRoute):
+                            PlaceAddingView(title: title, tags: tags, tripRoute: tripRoute)
+                        case .routeDetail(let tripRoute):
+                            RouteDetailView(tripRoute: tripRoute)
+                        }
                     }
                 }
             }

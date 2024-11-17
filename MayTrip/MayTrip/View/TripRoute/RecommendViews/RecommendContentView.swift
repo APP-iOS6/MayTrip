@@ -10,14 +10,22 @@ import SwiftUI
 import UIKit
 
 struct RecommendContentView: View {
+    @EnvironmentObject var navigationManager: NavigationManager
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     let dateStore: DateStore = .shared
     let route: TripRouteSimple
     
     @State var isScraped = false
     
     var body: some View {
-        NavigationLink {
-            RouteDetailView(tripRoute: SampleTripRoute.sampleRoute)
+        Button {
+            // 디테일 뷰 이동
+            Task {
+                try await tripRouteStore.getTripRoute(id: route.id)
+                DispatchQueue.main.async {
+                    navigationManager.push(.routeDetail(tripRouteStore.tripRoute.first ?? SampleTripRoute.sampleRoute))
+                }
+            }
         } label: {
             RoundedRectangle(cornerRadius: 5)
                 .stroke(Color(uiColor: .systemGray4), lineWidth: 0.5)
