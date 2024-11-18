@@ -8,7 +8,7 @@ import SwiftUI
 import UIKit
 
 struct MyTripCardView: View {
-    @StateObject var tripRouteStore: TripRouteStore = TripRouteStore()
+    var tripRouteStore: TripRouteStore
     var dateStore: DateStore = .shared
     let user: User = UserStore.shared.user
     
@@ -27,7 +27,7 @@ struct MyTripCardView: View {
                                         VStack(alignment: .leading, spacing: 8) {
                                             HStack {
                                                 Text("\(route.title)")
-                                                    .font(.callout)
+                                                    .font(.title3)
                                                     .fontWeight(.bold)
                                                 
                                                 Spacer()
@@ -35,15 +35,14 @@ struct MyTripCardView: View {
                                             .foregroundStyle(.black)
                                             
                                             HStack {
-                                                // 도시는 최대 두개까지만 보여준다
-                                                ForEach(0..<2) { index in
+                                                // 도시는 최대 세개까지만 보여준다
+                                                ForEach(0..<3) { index in
                                                     if index < route.city.count {
                                                         Text("\(index == 0 ? route.city[index] : "·  \(route.city[index])")")
                                                             .lineLimit(1)
                                                     }
                                                 }
                                             }
-                                            .font(.footnote)
                                             .fontWeight(.semibold)
                                             
                                             HStack(spacing: 0) {
@@ -53,7 +52,6 @@ struct MyTripCardView: View {
                                                     Text(" - \(dateStore.convertDateToString(dateStore.convertStringToDate(route.end_date), format: "yy.MM.dd"))")
                                                 }
                                             }
-                                            .font(.footnote)
                                             .fontWeight(.semibold)
                                             .lineLimit(1)
                                         }
@@ -68,11 +66,10 @@ struct MyTripCardView: View {
                                         Text(dateStore.isOnATrip(route.start_date, end: route.end_date) ? "여행중" : dateStore.calcDDay(route.start_date))
                                             .foregroundStyle(Color("accentColor"))
                                             .padding(.horizontal)
-                                            .font(.footnote)
                                             .fontWeight(.semibold)
                                     }
                                 }
-                                .frame(width: UIScreen.main.bounds.size.width / 4 * 3, height: UIScreen.main.bounds.size.height / 9)
+                                .frame(width: UIScreen.main.bounds.size.width / 4 * 3, height: UIScreen.main.bounds.size.height / 8)
                         }
                         .padding(2)
                     }
@@ -81,15 +78,5 @@ struct MyTripCardView: View {
             .padding(.trailing)
         }
         .padding(.leading)
-        .onAppear {
-            Task {
-                try await tripRouteStore.getCreatedByUserRoutes()
-            }
-        }
     }
-}
-
-
-#Preview {
-    MyTripCardView()
 }
