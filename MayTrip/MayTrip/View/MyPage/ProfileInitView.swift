@@ -72,7 +72,7 @@ struct ProfileInitView: View {
                     .padding(.bottom, height * 0.1)
                     
                     HStack(spacing: 20) {
-                        CreateLoginViewTextField(text: $nickname, symbolName: "", placeholder: "닉네임을 입력해주세요", width: width * 0.6, height: height * 0.06, isSecure: false, isFocused: false)
+                        CreateLoginViewTextField(text: $nickname, symbolName: "", placeholder: "닉네임을 입력해주세요", width: width * 0.6, height: height * 0.06, isSecure: false, isFocused: false, isEmail: false)
                             .focused($focusField, equals: .nickname)
                             .onChange(of: nickname) {
                                 isCheckNickanme = false

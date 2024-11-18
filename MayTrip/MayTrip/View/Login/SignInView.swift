@@ -49,12 +49,12 @@ struct SignInView : View {
                 VStack(spacing: screenHeight * 0.02) {
                     
                     // 이메일 입력
-                    CreateLoginViewTextField(text: $email, symbolName: "person", placeholder: "이메일 입력", width: screenWidth * 0.9, height: screenHeight * 0.07, isSecure: false, isFocused: focusField == .email)
+                    CreateLoginViewTextField(text: $email, symbolName: "person", placeholder: "이메일 입력", width: screenWidth * 0.9, height: screenHeight * 0.07, isSecure: false, isFocused: focusField == .email, isEmail: true)
                         .focused($focusField, equals: .email)
                     
                     // 비밀번호 입력
                     ZStack {
-                        CreateLoginViewTextField(text: $password, symbolName: "lock", placeholder: "비밀번호 입력", width: screenWidth * 0.9, height: screenHeight * 0.07, isSecure: isHidePassword, isFocused: focusField == .password)
+                        CreateLoginViewTextField(text: $password, symbolName: "lock", placeholder: "비밀번호 입력", width: screenWidth * 0.9, height: screenHeight * 0.07, isSecure: isHidePassword, isFocused: focusField == .password, isEmail: false)
                             .focused($focusField, equals: .password)
                         
                         HStack {

@@ -38,7 +38,7 @@ struct SignUpView: View {
                         .foregroundStyle(Color(uiColor: .systemGray))
                         .frame(width: screenWidth * 0.15, height: screenHeight * 0.06, alignment: .leading)
                     
-                    CreateLoginViewTextField(text: $email, symbolName: "", placeholder: "이메일을 입력해주세요", width: screenWidth * 0.75, height: screenHeight * 0.06, isSecure: false, isFocused: focusField == .email)
+                    CreateLoginViewTextField(text: $email, symbolName: "", placeholder: "이메일을 입력해주세요", width: screenWidth * 0.75, height: screenHeight * 0.06, isSecure: false, isFocused: focusField == .email, isEmail: true)
                         .focused($focusField, equals: .email)
                 }
                 .padding(.top, screenHeight * 0.05)
@@ -51,7 +51,7 @@ struct SignUpView: View {
                             .foregroundStyle(Color(uiColor: .systemGray))
                             .frame(width: screenWidth * 0.15, height: screenHeight * 0.06, alignment: .leading)
                         
-                        CreateLoginViewTextField(text: $password, symbolName: "", placeholder: "비밀번호(6자 이상 영문자+숫자)", width: screenWidth * 0.75, height: screenHeight * 0.06, isSecure: isHidePassword, isFocused: focusField == .password)
+                        CreateLoginViewTextField(text: $password, symbolName: "", placeholder: "비밀번호(6자 이상 영문자+숫자)", width: screenWidth * 0.75, height: screenHeight * 0.06, isSecure: isHidePassword, isFocused: focusField == .password, isEmail: false)
                             .focused($focusField, equals: .password)
                     }
                     
@@ -75,7 +75,7 @@ struct SignUpView: View {
                             .foregroundStyle(Color(uiColor: .systemGray))
                             .frame(width: screenWidth * 0.15, height: screenHeight * 0.06, alignment: .leading)
                         // 비밀번호 확인
-                        CreateLoginViewTextField(text: $confirmPassword, symbolName: "", placeholder: "비밀번호를 다시 한 번 입력해주세요", width: screenWidth * 0.75, height: screenHeight * 0.06, isSecure: isHideConfirmPassword, isFocused: focusField == .confirmPassword)
+                        CreateLoginViewTextField(text: $confirmPassword, symbolName: "", placeholder: "비밀번호를 다시 한 번 입력해주세요", width: screenWidth * 0.75, height: screenHeight * 0.06, isSecure: isHideConfirmPassword, isFocused: focusField == .confirmPassword, isEmail: false)
                             .focused($focusField, equals: .confirmPassword)
                     }
                     HStack {
@@ -116,7 +116,7 @@ struct SignUpView: View {
                 
                 Button { // 회원가입
                     Task {
-                        if try await checkValid() {
+                        if checkValid() {
                             Task {
                                 do {
                                     try await DB.auth.signUp(
@@ -142,7 +142,7 @@ struct SignUpView: View {
                 } label : {
                     ZStack {
                         RoundedRectangle(cornerRadius: 5)
-                            .foregroundStyle((email.isEmpty || password.isEmpty) ? .gray : .accent)
+                            .foregroundStyle((email.isEmpty || password.isEmpty || confirmPassword.isEmpty) ? .gray : .accent)
                         Text("회원가입")
                             .foregroundStyle(.white)
                     }
@@ -180,12 +180,30 @@ struct SignUpView: View {
 }
 
 extension SignUpView {
-    func checkValid() async throws -> Bool {
-        if confirmPassword != password {
-            errorMessage = "비밀번호를 다시 확인해주세요"
+    func checkValid() -> Bool {
+        if password.count < 6 {
+            errorMessage = "6글자 이상의 비밀번호를 입력해주세요"
+            return false
+        } else if confirmPassword != password {
+            errorMessage = "비밀번호를 확인해주세요"
+            return false
+        } else if !checkContainSpecailCharacter(){
+            errorMessage = "사용 불가능한 문자가 포함되어 있습니다"
             return false
         }
         
         return true
     }
+
+    func checkContainSpecailCharacter() -> Bool {
+        do {
+            let pattern = "^[a-zA-Z0-9]"
+            let regex = try NSRegularExpression(pattern: pattern)
+            let range = NSRange(location: 0, length: password.count)
+            return regex.firstMatch(in: password, options: [], range: range) != nil
+        } catch {
+            return false
+        }
+    }
 }
+
