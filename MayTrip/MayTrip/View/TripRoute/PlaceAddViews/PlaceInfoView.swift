@@ -100,8 +100,7 @@ struct PlaceInfoView: View {
                         }
                 }
                 .frame(maxWidth: .infinity)
-                .padding()
-                .padding(.bottom, 15)
+                .padding([.horizontal, .bottom])
             }
         }
     }

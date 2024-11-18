@@ -99,7 +99,6 @@ struct PlaceMapListView: View {
                                     if minY < 10 && minY > -30, dateIndex < places.count, scrollingIndex != dateIndex {
                                         scrollingIndex = dateIndex
                                         updateMapForDay(dateIndex)
-                                        print("minY: \(minY)")
                                     }
                                 }
                             }
@@ -122,7 +121,7 @@ struct PlaceMapListView: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .fill(Color.accent)
                             }
-                            .padding()
+                            .padding([.horizontal, .bottom])
                         }
                     }
                 }

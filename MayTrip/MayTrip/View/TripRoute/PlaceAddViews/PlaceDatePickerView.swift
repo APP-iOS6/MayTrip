@@ -18,10 +18,10 @@ struct PlaceDatePickerView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text("날짜 선택")
-                .font(.headline)
-                .padding([.top, .horizontal], 36)
+                .font(.title2)
+                .padding([.top, .horizontal], 32)
             
-            List {
+            ScrollView {
                 ForEach(Array(dateStore.datesInRange().enumerated()), id: \.element) { index, date in
                     Button {
                         focusedDayIndex = index
@@ -29,19 +29,20 @@ struct PlaceDatePickerView: View {
                     } label: {
                         HStack {
                             Text("Day\(index+1) \(dateStore.convertDateToString(date, format:  "MM.dd(E)"))")
-                                .foregroundStyle(.primary)
-                            if index == focusedDayIndex {
-                                Spacer()
-                                Image(systemName: "checkmark")
-                            }
+                                .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.gray)
+                                )
+                                .padding(.horizontal)
                         }
-                        .foregroundStyle(index == focusedDayIndex ? .accent : Color.primary)
-                        .padding(.horizontal)
+                        .foregroundStyle(Color.primary)
                     }
-                    .listRowSeparator(.hidden)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top)
                 }
             }
-            .listStyle(.plain)
+            .padding([.horizontal, .bottom])
             .presentationDetents([.medium])
         }
         .onAppear {
