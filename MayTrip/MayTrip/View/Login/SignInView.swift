@@ -104,12 +104,13 @@ struct SignInView : View {
                         } label : {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 5)
-                                    .foregroundStyle(.accent)
-                                Text("LOGIN")
+                                    .foregroundStyle((email.isEmpty || password.isEmpty) ? .gray : .accent)
+                                Text("로그인")
                                     .foregroundStyle(.white)
                             }
                         }
                         .frame(width: screenWidth * 0.9, height: screenHeight * 0.07)
+                        .disabled(email.isEmpty || password.isEmpty)
                         
                         Button { // 게스트 로그인
                             

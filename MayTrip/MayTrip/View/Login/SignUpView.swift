@@ -124,7 +124,7 @@ struct SignUpView: View {
                                 )
                                 dismiss()
                             } catch {
-                                errorMessage = "이미 가입되 이메일입니다"
+                                errorMessage = "이미 가입된 이메일입니다"
                                 print(error)
                             }
                         }
@@ -132,12 +132,13 @@ struct SignUpView: View {
                 } label : {
                     ZStack {
                         RoundedRectangle(cornerRadius: 5)
-                            .foregroundStyle(.accent)
+                            .foregroundStyle((email.isEmpty || password.isEmpty) ? .gray : .accent)
                         Text("회원가입")
                             .foregroundStyle(.white)
                     }
                     .frame(width: screenWidth * 0.9, height: screenHeight * 0.06)
                 }
+                .disabled(email.isEmpty || password.isEmpty || confirmPassword.isEmpty)
                 .padding(.top, screenHeight * 0.32)
                 .padding(.bottom, screenHeight * 0.05)
             }
