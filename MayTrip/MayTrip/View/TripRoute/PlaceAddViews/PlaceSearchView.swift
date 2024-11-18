@@ -82,7 +82,10 @@ struct PlaceSearchView: View {
         }
         .onChange(of: keyword) {
             Task {
-                try await searchAddressStore.getAddresses(query: keyword, coordinate: locationManager.lastKnownLocation!)
+                try await searchAddressStore.getAddresses(
+                    query: keyword,
+                    coordinate: locationManager.lastKnownLocation
+                )
                 documents = searchAddressStore.documents
             }
         }
