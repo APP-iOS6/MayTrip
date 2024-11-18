@@ -113,7 +113,7 @@ class TripRouteStore: ObservableObject {
             print("유효성 검사 실패")
             return
         }
-        let tripRoute = TripRoutePost(title: title, city: city, writeUser: userId, startDate: startDate, endDate: endDate)
+        let tripRoute = TripRoutePost(title: title, tag: tag, city: city, writeUser: userId, startDate: startDate, endDate: endDate)
         
         do{
             let routeId: [String:Int] = try await db
@@ -161,6 +161,47 @@ class TripRouteStore: ObservableObject {
                 .execute()
         } catch {
             print("Route Delete Error: \(error)")
+        }
+    }
+    
+    // 해당 루트 업데이트 하는 함수
+    func updateTripRoute(routeId: Int, userId: Int) async throws -> Void{
+        if title.isEmpty || city.isEmpty || startDate.isEmpty || places.isEmpty{
+            print("업데이트: 유효성 검사 실패")
+            return
+        }
+        let tripRoute = TripRoutePost(title: title, tag: tag, city: city, writeUser: userId, startDate: startDate, endDate: endDate)
+        
+        do{
+            try await db
+                .from("TRIP_ROUTE")
+                .update(tripRoute)
+                .eq("id", value: routeId)
+                .execute()
+
+            try await replacePlaces(routeId: routeId)
+        }catch{
+            print("Route Update Error: \(error)")
+        }
+    }
+    
+    // 해당 루트의 장소들 업데이트 하는 함수
+    @MainActor
+    func replacePlaces(routeId: Int) async throws -> Void{
+        for i in 0..<places.count {
+            places[i].tripRoute = routeId
+        }
+        
+        do{
+            try await db
+                .from("PLACE")
+                .delete()
+                .eq("trip_route", value: routeId)
+                .execute()
+            
+            try await addPlace(routeId: routeId)
+        }catch{
+            print("Places Upsert Error: \(error)")
         }
     }
     

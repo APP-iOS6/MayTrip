@@ -47,6 +47,7 @@ struct RouteDetailHeaderView: View {
                 if isWriter {   // 루트 작성자일때 메뉴버튼
                     Button("편집하기") {
                         // TODO: 루트 편집으로 이동, 편집완료시 db에 업데이트 로직
+                        navigationManager.push(.enterBasicInfo(tripRoute: tripRoute))
                     }
                     
                     Button("삭제하기", role: .destructive) {
