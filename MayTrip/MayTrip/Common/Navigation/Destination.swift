@@ -11,6 +11,6 @@ enum Destination: Hashable {
     case enterBasicInfo(tripRoute: TripRoute?)
     case placeAdd(String, [String], TripRoute?)
     case routeDetail(TripRoute)
-    case chatRoom(ChatRoom, [ChatLog], User)
+    case chatRoom(ChatRoom, User)
     case enterBasic
 }

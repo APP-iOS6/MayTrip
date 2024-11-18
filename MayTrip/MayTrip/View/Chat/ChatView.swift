@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ChatView: View {
+    @EnvironmentObject var navigationManager: NavigationManager
     @Environment(ChatStore.self) private var chatStore: ChatStore
     let userStore = UserStore.shared
     
@@ -23,54 +24,58 @@ struct ChatView: View {
                 } else {
                     List {
                         ForEach(components, id: \.chatRoom) { component in
-                            HStack {
-                                if let image = component.otherUser.profileImage, image != "" {
-                                    // TODO: 이미지 띄우기
-                                    Image(systemName: image)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 60, height: 60)
-                                        .clipShape(Circle())
-                                } else {
-                                    Circle()
-                                        .frame(width: 60, height: 60)
-                                        .foregroundStyle(.gray)
-                                }
+                            Button {
+                                chatStore.enteredChatRoom = [component.chatRoom]
+                                chatStore.enteredChatLogs = component.chatLogs
                                 
-                                VStack(alignment: .leading, spacing: 10) {
-                                    Text("\(component.otherUser.nickname)")
-                                    
-                                    Text(component.chatLogs.last == nil ? "" : "\(component.chatLogs.last!.message)")
-                                        .lineLimit(1)
-                                        .foregroundStyle(.gray)
+                                DispatchQueue.main.async {
+                                    navigationManager.push(.chatRoom(component.chatRoom, component.otherUser))
                                 }
-                                .padding(.leading, 5)
-                                
-                                if let log = component.chatLogs.last {
-                                    Spacer()
-                                    
-                                    VStack(alignment: .trailing, spacing: 10) {
-                                        Text("\(chatStore.timeDifference(log.createdAt))")
-                                            .font(.footnote)
-                                            .foregroundStyle(.gray)
-                                        
+                            } label: {
+                                HStack {
+                                    if let image = component.otherUser.profileImage, image != "" {
+                                        // TODO: 이미지 띄우기
+                                        Image(systemName: image)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 60, height: 60)
+                                            .clipShape(Circle())
+                                    } else {
                                         Circle()
-                                            .frame(width: 15, height: 15)
-                                            .overlay {
-                                                // TODO: 안읽은 메세지 카운트
-                                                Text(log.writeUser != userStore.user.id ? "" : "")
-                                                    .font(.footnote)
-                                                    .foregroundStyle(.white)
-                                            }
-                                            .foregroundStyle(log.writeUser != userStore.user.id ? /*.orange*/.clear : .clear)
+                                            .frame(width: 60, height: 60)
+                                            .foregroundStyle(.gray)
+                                    }
+                                    
+                                    VStack(alignment: .leading, spacing: 10) {
+                                        Text(component.otherUser.nickname)
+                                        
+                                        Text(component.chatLogs.last == nil ? "" : "\(component.chatLogs.last!.message)")
+                                            .lineLimit(1)
+                                            .foregroundStyle(.gray)
                                     }
                                     .padding(.leading, 5)
+                                    
+                                    if let log = component.chatLogs.last {
+                                        Spacer()
+                                        
+                                        VStack(alignment: .trailing, spacing: 10) {
+                                            Text("\(chatStore.timeDifference(log.createdAt))")
+                                                .font(.footnote)
+                                                .foregroundStyle(.gray)
+                                            
+                                            Circle()
+                                                .frame(width: 15, height: 15)
+                                                .overlay {
+                                                    // TODO: 안읽은 메세지 카운트
+                                                    Text(log.writeUser != userStore.user.id ? "" : "")
+                                                        .font(.footnote)
+                                                        .foregroundStyle(.white)
+                                                }
+                                                .foregroundStyle(log.writeUser != userStore.user.id ? /*.orange*/.clear : .clear)
+                                        }
+                                        .padding(.leading, 5)
+                                    }
                                 }
-                            }
-                            .background {
-                                NavigationLink(destination: ChattingRoomView(chatRoom: component.chatRoom, chatLogs: component.chatLogs, otherUser: component.otherUser)) {
-                                }
-                                .opacity(0)
                             }
                             .swipeActions {
                                 Button {
@@ -87,14 +92,15 @@ struct ChatView: View {
                     .listStyle(.plain)
                 }
             }
-            .navigationTitle("채팅")
-            .navigationBarTitleDisplayMode(.inline)
-            .onChange(of: chatStore.isNeedUpdate) { oldValue, newValue in
-                components = chatStore.forChatComponents
-            }
+        }
+        .navigationTitle("채팅")
+        .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: chatStore.isNeedUpdate) { oldValue, newValue in
+            components = chatStore.forChatComponents
         }
     }
 }
+
 
 #Preview {
     NavigationStack {

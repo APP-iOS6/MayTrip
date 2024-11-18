@@ -94,7 +94,6 @@ struct MainView:  View {
                 selection = navigationManager.selection
             }
             .onChange(of: selection) { previous, newValue in
-                print(previous, newValue)
                 if previous == newValue {
                     navigationManager.popToRoot()
                 } else {
@@ -113,8 +112,8 @@ struct MainView:  View {
             PlaceAddingView(title: title, tags: tags, tripRoute: tripRoute)
         case .routeDetail(let tripRoute):
             RouteDetailView(tripRoute: tripRoute)
-        case .chatRoom(let chatRoom, let chatLog, let user):
-            ChattingRoomView(chatRoom: chatRoom, chatLogs: chatLog, otherUser: user)
+        case .chatRoom(let chatRoom, let user):
+            ChattingRoomView(chatRoom: chatRoom, otherUser: user)
         case .enterBasic:
             EnterBasicInformationView()
         }

@@ -46,19 +46,22 @@ struct CommunityMenuSheetView: View {
             List {
                 Button { // 대화걸기
                     Task {
-                        let user = try await userStore.getUserInfo(id: selectedPostOwner)
-                        if try await chatStore.findChatRoom(user1: userStore.user.id, user2: selectedPostOwner) {
+                        let user = try await userStore.getUserInfo(id: selectedPostOwner) // 게시글 작성자 정보 찾기
+                        if try await chatStore.findChatRoom(user1: userStore.user.id, user2: selectedPostOwner) { // 이미 채팅방이 있는 경우
+                            
                             navigationManager.selection = 2 // 채팅탭으로 이동
+                            navigationManager.popToRoot()
                             DispatchQueue.main.async {
-                                navigationManager.push(.chatRoom(chatStore.findingChatRoom.first ?? ChatRoom(id: 10, user1: 13, user2: 14, createdAt: .now), chatStore.findingChatLogs, user))
+                                navigationManager.push(.chatRoom(chatStore.enteredChatRoom.first!, user))
                             }
                         } else {
-                            try await chatStore.saveChatRoom(selectedPostOwner)
+                            try await chatStore.saveChatRoom(selectedPostOwner) // 방 생성 후 채팅방 찾아서 이동
                             try await chatStore.findChatRoom(user1: userStore.user.id, user2: selectedPostOwner)
                             
                             navigationManager.selection = 2
+                            navigationManager.popToRoot()
                             DispatchQueue.main.async {
-                                navigationManager.push(.chatRoom(chatStore.findingChatRoom.first ?? ChatRoom(id: 10, user1: 13, user2: 14, createdAt: .now), chatStore.findingChatLogs, user))
+                                navigationManager.push(.chatRoom(chatStore.enteredChatRoom.first!, user))
                             }
                         }
                         isPresented = false

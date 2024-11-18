@@ -16,9 +16,6 @@ class ChatStore {
     private let userStore = UserStore.shared
     
     private var chatRooms: [ChatRoom] = []
-    var findingChatRoom: [ChatRoom] = []
-    var findingChatLogs: [ChatLog] = []
- 
     var enteredChatRoom: [ChatRoom] = []
     var enteredChatLogs: [ChatLog] = []
     
@@ -34,7 +31,7 @@ class ChatStore {
             
             let channel =  db.realtimeV2.channel("observe")
             let changes = channel.postgresChange(AnyAction.self, schema: "public")
-
+            
             await channel.subscribe()
             
             for await change in changes {
@@ -51,14 +48,20 @@ class ChatStore {
                             if table == "CHAT_ROOM" {
                                 try await fetchChatRooms(id)
                                 
-                                if let chatroom = chatRooms.last { // 최신순으로 채팅방 정렬해둠
-                                    let chatLogs = try await fetchChatLogs(chatRoom: chatroom)
-                                    let otherUser = try await getOtherUser(chatroom)
+                                if let chatRoom = chatRooms.last { // 최신순으로 채팅방 정렬해둠
+                                    let chatLogs = try await fetchChatLogs(chatRoom: chatRoom)
+                                    let otherUser = try await getOtherUser(chatRoom)
                                     
-                                    let forChatComponent: (ChatRoom, [ChatLog], User) = (chatroom, chatLogs, otherUser)
+                                    let forChatComponent: (ChatRoom, [ChatLog], User) = (chatRoom, chatLogs, otherUser)
                                     
                                     forChatComponents.insert(forChatComponent, at: 0) // 최신걸 제일 위에
                                     isNeedUpdate.toggle()
+                                    
+                                    if let room = enteredChatRoom.first {
+                                        if chatRoom.id == room.id {
+                                            enteredChatLogs = chatLogs
+                                        }
+                                    }
                                 }
                             } else {
                                 // 새로 생긴 채팅만 로그하고 나머지는 이미 fetch 되어 있는 정보를 사용한다.
@@ -73,9 +76,15 @@ class ChatStore {
                                     
                                     forChatComponents.removeAll(where: { $0.chatRoom.id == component.chatRoom.id })
                                     forChatComponents.insert(forChatComponent, at: 0) // 최신걸 제일 위에
+                                    isNeedUpdate.toggle()
+                                    
+                                    if let room = enteredChatRoom.first {
+                                        if component.chatRoom.id == room.id {
+                                            enteredChatLogs = chatLogs
+                                        }
+                                    }
                                 }
                             }
-                            isNeedUpdate.toggle()
                             print("INSERT")
                         case "UPSERT":
                             print("UPSERT")
@@ -104,7 +113,6 @@ class ChatStore {
     
     // 채팅에 필요한 컴포넌트들 세팅
     func setAllComponents(_ isRefresh: Bool = false) async throws {
-        print("update")
         Task {
             try await fetchChatRooms()
             
@@ -121,13 +129,7 @@ class ChatStore {
                 forChatComponents.removeAll(where: { $0.chatRoom.id == chatRoom.id })
                 forChatComponents.insert(forChatComponent, at: 0)
                 
-                if let room = enteredChatRoom.first {
-                    if chatRoom.id == room.id {
-                        enteredChatLogs = chatLogs
-                    }
-                }
             }
-            
             isNeedUpdate.toggle()
         }
     }
@@ -149,7 +151,7 @@ class ChatStore {
                     .from("CHAT_ROOM")
                     .select()
                     .or("user1.eq.\(userStore.user.id), user2.eq.\(userStore.user.id)")
-                    .order("created_at", ascending: false) // 내림차순으로 정렬
+                    .order("updated_at", ascending: false) // 내림차순으로 정렬
                     .execute()
                     .value
                 
@@ -166,7 +168,7 @@ class ChatStore {
                     }
                 }
             }
-            chatRooms.sort(by: { $0.createdAt < $1.createdAt })
+            chatRooms.sort(by: { $0.updatedAt! < $1.updatedAt! }) // 업데이트를 기준으로 정렬해야 최신께 위로가짐
         } catch {
             print("Fail to fetch chat rooms: \(error)")
         }
@@ -174,15 +176,13 @@ class ChatStore {
     
     // ID를 기반으로 이미 채팅방이 존재하는지 확인
     func findChatRoom(user1: Int, user2: Int) async throws -> Bool {
-        findingChatRoom = []
-        findingChatLogs = []
+        
         // 테이블에는 더 낮은 값의 아이디가 user1로 들어가 있음
         let userID1 = user1 > user2 ? user2 : user1
         let userID2 = userID1 == user1 ? user2 : user1
         
         do {
-//            enteredChatRoom = try await db
-            findingChatRoom = try await db
+            enteredChatRoom = try await db
                 .from("CHAT_ROOM")
                 .select()
                 .eq("user1", value: userID1)
@@ -190,10 +190,9 @@ class ChatStore {
                 .execute()
                 .value
             
-//            if !enteredChatRoom.isEmpty { // 방 존재시 로그도 업로드
-//                enteredChatLogs = try await fetchChatLogs(chatRoom: enteredChatRoom.first!)
-            if !findingChatRoom.isEmpty {
-                findingChatLogs = try await fetchChatLogs(chatRoom: findingChatRoom.first!)
+
+            if !enteredChatRoom.isEmpty { // 방 존재시 로그도 업로드
+                enteredChatLogs = try await fetchChatLogs(chatRoom: enteredChatRoom.first!)
                 return true
             }
             return false
@@ -205,6 +204,7 @@ class ChatStore {
     
     // 대화방 대화내용 불러오기
     private func fetchChatLogs(_ id: Int? = nil, chatRoom: ChatRoom, isRefresh: Bool = false) async throws -> [ChatLog] {
+//    func fetchChatLogs(_ chatRoom: ChatRoom, isRefresh: Bool = false) async throws -> [ChatLog] {
         do {
             let component = forChatComponents.filter {
                 $0.chatRoom.id == chatRoom.id

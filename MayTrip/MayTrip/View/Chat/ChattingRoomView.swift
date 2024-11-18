@@ -13,22 +13,22 @@ struct ChattingRoomView: View {
     @Environment(ChatStore.self) private var chatStore: ChatStore
     @EnvironmentObject var navigationManager: NavigationManager
     let userStore = UserStore.shared
+    @FocusState var focused: Bool
     @State var message: String = ""
     @State var route: Int?
     @State var image: String?
-    @FocusState var focused: Bool
-    let chatRoom: ChatRoom
-    var chatLogs: [ChatLog]
-    let otherUser: User
     @State var isScrollTop: Bool = true
     @State var isSend: Bool = false
+    
+    let chatRoom: ChatRoom
+    let otherUser: User
     
     var body: some View {
         VStack {
             HStack {
                 Button {
                     // 채팅을 하나도 안보내고 나가는 경우엔 채팅방 삭제
-                    if chatLogs.count == 0 {
+                    if chatStore.enteredChatLogs.count == 0 {
                         Task {
                             try await chatStore.deleteChatRoom(chatRoom)
                         }
@@ -66,11 +66,12 @@ struct ChattingRoomView: View {
                     //                                .foregroundStyle(.gray)
                     //                                .padding()
                     
-                    ForEach(chatLogs) { log in
+                    ForEach(chatStore.enteredChatLogs) { log in
                         if log.writeUser == userStore.user.id {
                             // 내가 보낸 메세지
                             HStack(alignment: .bottom, spacing: 0) {
                                 Spacer()
+                                
                                 
                                 VStack(alignment: .trailing) {
                                     //                                            Text("읽음")
@@ -182,7 +183,7 @@ struct ChattingRoomView: View {
             focused = false
         }
         .onDisappear {
-            if chatLogs.count == 0 {
+            if chatStore.enteredChatLogs.isEmpty {
                 Task {
                     try await chatStore.deleteChatRoom(chatRoom)
                 }
