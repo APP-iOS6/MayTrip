@@ -12,6 +12,8 @@ import GoogleSignIn
 
 @main
 struct MayTripApp: App {
+    @StateObject var navigationManager = NavigationManager()
+    @StateObject var tripRouteStore = TripRouteStore()
     @State var authStore = AuthStore()
     @State private var chatStore: ChatStore = .init()
     var communityStore = CommunityStore()
@@ -19,6 +21,8 @@ struct MayTripApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(navigationManager)
+                .environmentObject(tripRouteStore)
                 .environment(authStore)
                 .environment(communityStore)
                 .environment(chatStore)

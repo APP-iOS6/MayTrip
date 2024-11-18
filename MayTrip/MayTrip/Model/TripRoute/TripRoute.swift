@@ -7,7 +7,7 @@
 import Foundation
 
 
-struct TripRoute: Identifiable ,Codable {
+struct TripRoute: Identifiable ,Codable, Hashable {
     let id : Int
     let title: String
     let tag: [String]
@@ -61,7 +61,7 @@ struct TripRouteSimple: Identifiable ,Codable{
     var end_date: String
 }
 
-struct TripRouteUser: Codable{
+struct TripRouteUser: Codable, Hashable {
     let id: Int
     let nickname: String
     let profileImage: String?

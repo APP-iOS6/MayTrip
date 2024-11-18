@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct Place: Codable, Identifiable {
+struct Place: Codable, Identifiable, Hashable {
     let id: Int
     let name: String
     let tripRoute: Int

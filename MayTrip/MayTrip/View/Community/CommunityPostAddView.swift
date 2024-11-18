@@ -190,8 +190,10 @@ struct CommunityPostAddView: View {
             
             ToolbarItem(placement: .confirmationAction) {
                 Button {
-                    communityStore.addPost(title: title, text: text, author: userStore.user, category: postCategory.rawValue)
-                    dismiss()
+                    Task {
+                        try await communityStore.addPost(title: title, text: text, author: userStore.user, category: postCategory.rawValue)
+                        dismiss()
+                    }
                 } label: {
                     Text("작성")
                 }

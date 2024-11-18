@@ -16,21 +16,53 @@ enum orderCategory : String, CaseIterable {
 }
 
 struct CommunityView: View {
+    @Environment(CommunityStore.self) var communityStore: CommunityStore
     @State var selectedPostCategory: postCategory = .all
     @State var selectedOrderCategory: orderCategory = .new
     @State var isShowingOrderCategory: Bool = false
+    let screenWidth = UIScreen.main.bounds.width
+    let screenHeight = UIScreen.main.bounds.height
     
     var body: some View {
         NavigationStack {
             GeometryReader { proxy in
-                VStack(spacing: proxy.size.height * 0.03) {
-                    CommunityHeaderView(selectedPostCategory: $selectedPostCategory, width: proxy.size.width, height: proxy.size.height)
+                VStack(spacing: proxy.size.height * 0.015) {
+                    CommunityHeaderView(isShowingOrderCategory: $isShowingOrderCategory, selectedPostCategory: $selectedPostCategory, selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
                     
-                    CommunityBodyView(isShowingOrderCategory: $isShowingOrderCategory, selectedOrderCategory: $selectedOrderCategory, width: proxy.size.width, height: proxy.size.height)
+                    CommunityBodyView(isShowingOrderCategory: $isShowingOrderCategory, selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
                 }
                 .onTapGesture {
                     isShowingOrderCategory = false
                 }
+                .toolbar {
+                    HStack(spacing: 20) {
+                        Spacer()
+                        
+                        Button { // 검색 버튼 로직 추가하기
+                            
+                        } label: {
+                            Image(systemName: "magnifyingglass")
+                                .frame(width: 15, height:  15)
+                                .foregroundStyle(Color.accent)
+                        }
+                        
+                        NavigationLink { // 게시글 작성
+                            CommunityPostAddView()
+                        } label: {
+                            Image(systemName: "plus")
+                                .frame(width: 15, height:  15)
+                                .foregroundStyle(Color.accent)
+                                .padding(.trailing, screenWidth * 0.01)
+                        }
+                    }
+                    
+                }
+            }
+            
+        }
+        .onAppear {
+            Task {
+                try await communityStore.updatePost()
             }
         }
     }

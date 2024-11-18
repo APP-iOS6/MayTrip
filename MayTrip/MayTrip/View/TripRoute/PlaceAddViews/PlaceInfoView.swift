@@ -32,13 +32,14 @@ struct PlaceInfoView: View {
                     Image(systemName: "chevron.right")
                         .foregroundStyle(Color.primary)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.system(size: 14))
                 .padding([.horizontal, .top])
             }
             
             // 중앙 장소 정보
                 
-                if places.count > 0 {
+                if places.count > 0 && dateIndex < places.count {
                     List {
                         ForEach(Array(places[dateIndex].enumerated()), id: \.element.coordinates) { placeIndex, place in
                             HStack {

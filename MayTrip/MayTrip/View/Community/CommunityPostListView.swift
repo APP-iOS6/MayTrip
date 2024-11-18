@@ -9,12 +9,15 @@ import SwiftUI
 
 struct CommunityPostListView: View {
     @Environment(CommunityStore.self) var communityStore: CommunityStore
+    let userStore = UserStore.shared
     let width: CGFloat
     let height: CGFloat
     
     var body: some View {
         VStack(spacing: 0) {
             ForEach(communityStore.posts, id:\.id) { post in
+                Divider()
+                
                 VStack(alignment: .leading, spacing: 20) {
                     HStack(spacing: 10) {
                         Image(systemName: "person.fill")
@@ -31,6 +34,7 @@ struct CommunityPostListView: View {
                         VStack(alignment: .leading) {
                             HStack {
                                 Text(post.author.nickname)
+                                
                                 Spacer()
                                 
                                 Button {
@@ -44,37 +48,29 @@ struct CommunityPostListView: View {
                                 .font(.system(size: 14))
                                 .foregroundStyle(.gray)
                         }
-                        .frame(width: width * 0.82, height: width * 0.07)
+                        .frame(width: width * 0.77, height: width * 0.07)
                     }
                     
                     Text(post.text)
                         .lineLimit(3)
                         .font(.system(size: 16))
                     
-                    if post.images.count > 0 {
-                        imagesView(image: post.images, width: width, height: height)
-                    }
+//                    if post.images.count > 0 {
+//                        imagesView(image: post.images, width: width, height: height)
+//                    }
                     
                     HStack {
                         Spacer()
                         HStack {
                             Image("chatUnClick")
-                            Text("\(post.reply)")
+                            Text("0")
                                 .foregroundStyle(.gray)
                         }
-                        
-                        HStack {
-                            Image("storageUnClick")
-                            Text("\(post.store)")
-                                .foregroundStyle(.gray)
-                        }
-                        
                     }
                 }
-                .frame(width: width * 0.9)
+                .frame(width: width * 0.89)
                 .padding(.vertical, height * 0.02)
-                .padding(.horizontal, width * 0.05)
-                .border(Color(uiColor:.systemGray3), width: 0.2)
+                .padding(.horizontal, width * 0.02)
             }
         }
     }
@@ -96,31 +92,31 @@ extension CommunityPostListView {
                 Image(image[0])
                     .resizable()
                     .aspectRatio(contentMode: getRatio(image: image[0]) ? .fit : .fill)
-                    .frame(width: width * 0.45, height: height*0.3)
+                    .frame(width: width * 0.449, height: height*0.3)
                 Image(image[1])
                     .resizable()
                     .aspectRatio(contentMode: getRatio(image: image[0]) ? .fit : .fill)
-                    .frame(width: width * 0.45, height: height*0.3)
+                    .frame(width: width * 0.449, height: height*0.3)
             }
         default:
             HStack(spacing: 5) {
                 Image(image[0])
                     .resizable()
                     .aspectRatio(contentMode: getRatio(image: image[0]) ? .fit : .fill)
-                    .frame(width: width * 0.45, height: height*0.3)
+                    .frame(width: width * 0.449, height: height*0.3)
                 VStack(spacing: 5) {
                     Image(image[1])
                         .resizable()
                         .aspectRatio(contentMode: getRatio(image: image[1]) ? .fit : .fill)
-                        .frame(width: width * 0.45, height: height*0.15)
+                        .frame(width: width * 0.449, height: height*0.15)
                     ZStack {
                         Image(image[2])
                             .resizable()
                             .aspectRatio(contentMode: getRatio(image: image[2]) ? .fit : .fill)
-                            .frame(width: width * 0.45, height: height*0.15)
+                            .frame(width: width * 0.449, height: height*0.15)
                         if count>3 {
                             Rectangle()
-                                .frame(width: width * 0.45, height: height*0.15)
+                                .frame(width: width * 0.449, height: height*0.15)
                                 .foregroundStyle(.black.opacity(0.5))
                             Text("+\(count-3)")
                                 .foregroundStyle(.white)
