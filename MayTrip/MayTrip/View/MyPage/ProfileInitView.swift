@@ -18,6 +18,7 @@ struct ProfileInitView: View {
     @State var nickname:String = ""
     @State private var profileImage: UIImage?
     @State var isValid: Bool = false
+    @State var isCheckNickanme: Bool = false
     @State var errorMessage: String = ""
     @FocusState private var focusField: Field?
     let userStore = UserStore.shared
@@ -71,34 +72,29 @@ struct ProfileInitView: View {
                     .padding(.bottom, height * 0.1)
                     
                     HStack(spacing: 20) {
-                        CreateLoginViewTextField(text: $nickname, symbolName: "", placeholder: "닉네임을 입력해주세요", width: width * 0.6, height: height * 0.08, isSecure: false, isFocused: false)
+                        CreateLoginViewTextField(text: $nickname, symbolName: "", placeholder: "닉네임을 입력해주세요", width: width * 0.6, height: height * 0.06, isSecure: false, isFocused: false)
                             .focused($focusField, equals: .nickname)
                             .onChange(of: nickname) {
-                                isValid = false
+                                isCheckNickanme = false
                                 errorMessage = ""
                             }
                         
                         Button {
-                            if !nickname.isEmpty {
-                                isValid = true // 추후에 검사 함수 추가하기
-                                errorMessage = "사용 가능한 닉네임입니다"
-                            } else {
-                                errorMessage = "닉네임을 입력해주세요"
-                            }
+                            checkNicknameValid()
                         } label: {
                             Text("중복확인")
                                 .foregroundStyle(.white)
                                 .background {
                                     RoundedRectangle(cornerRadius: 5)
                                         .foregroundStyle(Color.accent)
-                                        .frame(width: width * 0.2, height: height * 0.08)
+                                        .frame(width: width * 0.2, height: height * 0.06)
                                 }
                         }
                     }
                     HStack {
                         if !errorMessage.isEmpty {
                             Text(errorMessage)
-                                .foregroundStyle(errorMessage == "닉네임을 입력해주세요" ? .red : .blue)
+                                .foregroundStyle(errorMessage == "사용 가능한 닉네임입니다" ? .blue : .red)
                         }
                         Spacer()
                     }
@@ -137,18 +133,7 @@ struct ProfileInitView: View {
             Spacer()
             
             Button {
-                if(nickname.isEmpty) {
-                    errorMessage = "닉네임을 입력해주세요"
-                } else if !isValid {
-                    errorMessage = "닉네임 중복확인을 해주세요"
-                } else {
-                    Task {
-                        try await userStore.setUserInfo(nickname: nickname, image: profileImage)
-                        if !userStore.user.nickname.isEmpty {
-                            authStore.isFirstLogin = false
-                        }
-                    }
-                }
+                clickApplyButton()
             } label : {
                 Text("적용")
                     .font(.system(size: 18))
@@ -156,6 +141,38 @@ struct ProfileInitView: View {
             }
         }
         .frame(width: width * 0.9)
+    }
+    
+    private func checkNicknameValid() {
+        Task {
+            isCheckNickanme = true
+            if nickname.isEmpty {
+                errorMessage = "닉네임을 입력해주세요"
+            }
+            else if try await authStore.checkNickname(nickname: nickname) {
+                isValid = true
+                errorMessage = "사용 가능한 닉네임입니다"
+            } else {
+                isValid = false
+                errorMessage = "이미 사용중인 닉네임입니다"
+            }
+        }
+    }
+    
+    private func clickApplyButton() {
+        if !isCheckNickanme {
+            errorMessage = "닉네임 중복검사를 해주세요"
+        } else if isValid && isCheckNickanme{
+            Task {
+                try await userStore.setUserInfo(
+                    nickname: nickname,
+                    image: profileImage
+                )
+                if !userStore.user.nickname.isEmpty {
+                    authStore.isFirstLogin = false
+                }
+            }
+        }
     }
     
     private func loadSelectedPhotos() {

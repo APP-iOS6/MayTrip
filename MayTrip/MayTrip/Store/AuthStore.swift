@@ -41,7 +41,7 @@ class AuthStore {
             print("Failed to fetch user info: \(error)")
         }
     }
-
+    
     func signOut() async throws {
         let provider = userStore.user.provider
         
@@ -83,6 +83,29 @@ class AuthStore {
                 checkKakaoLogin() // 카카오
             }
             
+        }
+    }
+    
+    func checkNickname(nickname: String) async throws -> Bool {
+        do {
+            let result: [User] = try await DB.from("USER").select(
+                    """
+                    id,
+                    nickname,
+                    profile_image,
+                    email,
+                    exp,
+                    provider
+                    """
+            ).eq("nickname", value:nickname).execute().value
+            
+            if result.isEmpty {
+                return true
+            }
+            return false
+        } catch {
+            print(error)
+            return false
         }
     }
     
