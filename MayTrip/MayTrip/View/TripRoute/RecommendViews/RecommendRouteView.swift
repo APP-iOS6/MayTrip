@@ -13,7 +13,7 @@ struct RecommendRouteView: View {
     
     private let gridItems: [GridItem] = [
         GridItem(.flexible()),
-        GridItem(.flexible())
+//        GridItem(.flexible())
     ]
     
     var body: some View {
@@ -22,7 +22,7 @@ struct RecommendRouteView: View {
                         VStack(alignment: .leading) {
                 HStack {
                     Text("여행 둘러보기")
-                        .font(.title3)
+                        .font(.title)
                         .bold()
                     
                     Spacer()
@@ -32,7 +32,7 @@ struct RecommendRouteView: View {
                         isRecently = true
                     } label: {
                         Text("최신순")
-                            .font(.caption)
+                            .font(.callout)
                             .fontWeight(.semibold)
                             .foregroundStyle(isRecently ? Color("accentColor") : .gray)
                     }
@@ -44,7 +44,7 @@ struct RecommendRouteView: View {
                         isRecently = false
                     } label: {
                         Text("보관많은순")
-                            .font(.caption)
+                            .font(.callout)
                             .fontWeight(.semibold)
                             .foregroundStyle(!isRecently ? Color("accentColor") : .gray)
                     }
@@ -55,6 +55,8 @@ struct RecommendRouteView: View {
             ) {
                 ForEach(tripRouteStore.list) { route in
                     RecommendContentView(route: route)
+                        .padding(.vertical, 5)
+                    Divider()
                 }
             }
             .onAppear {
@@ -63,7 +65,7 @@ struct RecommendRouteView: View {
                 }
             }
         }
-        .padding()
+        .padding(.horizontal)
     }
 }
 

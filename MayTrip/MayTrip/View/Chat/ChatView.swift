@@ -36,11 +36,9 @@ struct ChatView: View {
                                 
                                 VStack(alignment: .leading, spacing: 10) {
                                     Text("\(chatStore.forChatComponents[index].otherUser.nickname)")
-                                        .font(.callout)
                                         .fontWeight(.semibold)
                                     
                                     Text("\(log.message)")
-                                        .font(.callout)
                                         .lineLimit(1)
                                 }
                                 .padding(.leading, 5)
@@ -49,7 +47,6 @@ struct ChatView: View {
                                 
                                 VStack(alignment: .trailing, spacing: 10) {
                                     Text("\(chatStore.timeDifference(log.createdAt))")
-                                        .font(.footnote)
                                         .foregroundStyle(.gray)
                                     
                                     Circle()
@@ -57,7 +54,6 @@ struct ChatView: View {
                                         .overlay {
                                             // TODO: 안읽은 메세지 카운트
                                             Text(log.writeUser != userStore.user.id ? "" : "")
-                                                .font(.footnote)
                                                 .foregroundStyle(.white)
                                         }
                                         .foregroundStyle(log.writeUser != userStore.user.id ? /*.orange*/.clear : .clear)
