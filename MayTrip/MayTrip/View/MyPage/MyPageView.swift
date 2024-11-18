@@ -37,7 +37,7 @@ struct MyPageView: View {
                             }
                             
                             Text("\(userStore.user.nickname)")
-                                .font(.system(size: 24))
+                                .font(.title)
                         }
                         .padding(.top, proxy.size.height * 0.05)
                         
@@ -45,13 +45,13 @@ struct MyPageView: View {
                             Button {
                                 
                             } label: {
-                                manageButtonLabel(image:"route", text:"루트 관리", width: proxy.size.width)
+                                manageButtonLabel(image:"mappin.and.ellipse", text:"루트 관리", width: proxy.size.width)
                             }
                             
                             Button {
                                 
                             } label: {
-                                manageButtonLabel(image:"board", text:"게시글 관리", width: proxy.size.width)
+                                manageButtonLabel(image:"pencil.and.list.clipboard", text:"게시글 관리", width: proxy.size.width)
                             }
                         }
                         
