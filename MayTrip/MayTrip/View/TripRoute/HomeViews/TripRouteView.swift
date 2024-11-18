@@ -9,8 +9,8 @@ import SwiftUI
 
 struct TripRouteView: View {
     @EnvironmentObject var navigationManager: NavigationManager
-    let dateStore = DateStore.shared
     @EnvironmentObject var tripRouteStore: TripRouteStore
+    let dateStore = DateStore.shared
     
     var isExist: Bool {
         tripRouteStore.myTripRoutes.count > 0
