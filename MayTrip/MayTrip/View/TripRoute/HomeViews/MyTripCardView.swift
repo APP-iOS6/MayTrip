@@ -5,7 +5,6 @@
 //  Created by 이소영 on 11/4/24.
 //
 import SwiftUI
-import UIKit
 
 struct MyTripCardView: View {
     var tripRouteStore: TripRouteStore
