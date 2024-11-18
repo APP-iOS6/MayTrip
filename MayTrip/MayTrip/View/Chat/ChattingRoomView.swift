@@ -129,52 +129,55 @@ struct ChattingRoomView: View {
             
             Spacer()
             
-            Divider()
-            
-            HStack {
-                TextField("메세지를 입력하세요", text: $message)
-                    .onChange(of: message) { oldValue, newValue in
-                        
-                    }
-                    .keyboardType(.default)
-                    .focused($focused)
-                    .onSubmit {
+            VStack {
+                Divider()
+                
+                HStack {
+                    TextField("메세지를 입력하세요", text: $message)
+                        .onChange(of: message) { oldValue, newValue in
+                            
+                        }
+                        .keyboardType(.default)
+                        .focused($focused)
+                        .onSubmit {
+                            Task {
+                                guard message != "" else { return }
+                                
+                                try await chatStore.saveChatLog(chatRoom.id, message: message, route: route, image: image)
+                                
+                                message = ""
+                                focused = true
+                                isSend = true
+                            }
+                        }
+                    
+                    Button {
                         Task {
                             guard message != "" else { return }
                             
                             try await chatStore.saveChatLog(chatRoom.id, message: message, route: route, image: image)
                             
                             message = ""
-                            focused = true
+                            focused = false
                             isSend = true
                         }
+                    } label: {
+                        VStack {
+                            Image(systemName: "paperplane")
+                                .foregroundStyle(Color("accentColor"))
+                        }
+                        .foregroundStyle(Color(uiColor: .gray))
                     }
-                
-                Button {
-                    Task {
-                        guard message != "" else { return }
-                        
-                        try await chatStore.saveChatLog(chatRoom.id, message: message, route: route, image: image)
-                        
-                        message = ""
-                        focused = false
-                        isSend = true
-                    }
-                } label: {
-                    VStack {
-                        Image(systemName: "paperplane")
-                            .foregroundStyle(Color("accentColor"))
-                    }
-                    .foregroundStyle(Color(uiColor: .gray))
+                    .disabled(message.count == 0)
                 }
-                .disabled(message.count == 0)
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color(uiColor: .lightGray).opacity(0.3), lineWidth: 1)
+                )
+                .padding()
             }
-            .padding()
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color(uiColor: .lightGray).opacity(0.3), lineWidth: 1)
-            )
-            .padding()
+            .background(.white)
         }
         .navigationBarBackButtonHidden()
         .onTapGesture {
