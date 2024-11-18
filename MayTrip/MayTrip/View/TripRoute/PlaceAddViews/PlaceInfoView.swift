@@ -38,49 +38,48 @@ struct PlaceInfoView: View {
             }
             
             // 중앙 장소 정보
-                
-                if places.count > 0 && dateIndex < places.count {
-                    List {
-                        ForEach(Array(places[dateIndex].enumerated()), id: \.element.coordinates) { placeIndex, place in
-                            HStack {
-                                // 좌측 번호 영역
-                                VStack {
-                                    Image(systemName: "\(placeIndex + 1).circle.fill")
-                                }
-                                
-                                // 우측 장소 카드 영역
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text("\(place.name)")
-                                        .font(.system(size: 16))
-                                        .bold()
-                                    
-                                    Text("\(PlaceStore.getCategory(place.categoryCode))")
-                                        .font(.system(size: 12))
-                                        .foregroundStyle(.gray)
-                                }
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding()
-                                .background {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color(UIColor.systemGray5), lineWidth: 1)
-                                }
-                                .padding(.leading)
+            if places.count > 0 && dateIndex < places.count {
+                List {
+                    ForEach(Array(places[dateIndex].enumerated()), id: \.element.coordinates) { placeIndex, place in
+                        HStack {
+                            // 좌측 번호 영역
+                            VStack {
+                                Image(systemName: "\(placeIndex + 1).circle.fill")
                             }
-                            .listRowSeparator(.hidden)
+                            
+                            // 우측 장소 카드 영역
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("\(place.name)")
+                                    .font(.system(size: 16))
+                                    .bold()
+                                
+                                Text(PlaceStore.getCategory(place.categoryCode))
+                                    .font(.system(size: 12))
+                                    .foregroundStyle(.gray)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding()
+                            .background {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color(UIColor.systemGray5), lineWidth: 1)
+                            }
+                            .padding(.leading)
                         }
-                        .onDelete { indexSet in
-                            places[dateIndex].remove(atOffsets: indexSet)   // 리스트 내 장소정보 삭제
-                        }
-                        .onMove { (source: IndexSet, destination: Int) -> Void in
-                            self.places[dateIndex].move(fromOffsets: source, toOffset: destination)
-                        }
-                        .deleteDisabled(!isEditing)
-                        .moveDisabled(!isEditing)
+                        .listRowSeparator(.hidden)
                     }
-                    .listStyle(.plain)
-                    .scrollDisabled(true)
-                    .frame(height: CGFloat(places[dateIndex].count) * 90)   // scrollview 내에 list를 넣게되어 리스트뷰 높이를 지정
+                    .onDelete { indexSet in
+                        places[dateIndex].remove(atOffsets: indexSet)   // 리스트 내 장소정보 삭제
+                    }
+                    .onMove { (source: IndexSet, destination: Int) -> Void in
+                        self.places[dateIndex].move(fromOffsets: source, toOffset: destination)
+                    }
+                    .deleteDisabled(!isEditing)
+                    .moveDisabled(!isEditing)
                 }
+                .listStyle(.plain)
+                .scrollDisabled(true)
+                .frame(height: CGFloat(places[dateIndex].count) * 90)   // scrollview 내에 list를 넣게되어 리스트뷰 높이를 지정
+            }
 
             
             // 하단 '장소추가' 버튼
