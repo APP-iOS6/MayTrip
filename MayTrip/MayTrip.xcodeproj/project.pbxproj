@@ -34,6 +34,7 @@
 		42F2F9DC2CE25CF00013F147 /* RouteDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2F9DB2CE25CF00013F147 /* RouteDetailHeaderView.swift */; };
 		6E5D959E2CE5E71E00A9FF95 /* RecommendContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5D959B2CE5E71E00A9FF95 /* RecommendContentView.swift */; };
 		6E5D959F2CE5E71E00A9FF95 /* RecommendRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5D959C2CE5E71E00A9FF95 /* RecommendRouteView.swift */; };
+		6E5D95A72CEB1F9900A9FF95 /* RecruitmentNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5D95A62CEB1F9900A9FF95 /* RecruitmentNoticeView.swift */; };
 		6E690E732CD8B54F0096DB7C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E6C2CD8B54F0096DB7C /* CalendarView.swift */; };
 		6E690E742CD8B54F0096DB7C /* DateGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E6E2CD8B54F0096DB7C /* DateGridView.swift */; };
 		6E690E752CD8B54F0096DB7C /* EnterBasicInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E722CD8B54F0096DB7C /* EnterBasicInformationView.swift */; };
@@ -124,6 +125,7 @@
 		42F2F9DB2CE25CF00013F147 /* RouteDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDetailHeaderView.swift; sourceTree = "<group>"; };
 		6E5D959B2CE5E71E00A9FF95 /* RecommendContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendContentView.swift; sourceTree = "<group>"; };
 		6E5D959C2CE5E71E00A9FF95 /* RecommendRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendRouteView.swift; sourceTree = "<group>"; };
+		6E5D95A62CEB1F9900A9FF95 /* RecruitmentNoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecruitmentNoticeView.swift; sourceTree = "<group>"; };
 		6E690E6C2CD8B54F0096DB7C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		6E690E6D2CD8B54F0096DB7C /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		6E690E6E2CD8B54F0096DB7C /* DateGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateGridView.swift; sourceTree = "<group>"; };
@@ -431,6 +433,7 @@
 			children = (
 				FB36F6002CD473F800E356FA /* ChatView.swift */,
 				6E690E902CD8EE180096DB7C /* ChattingRoomView.swift */,
+				6E5D95A62CEB1F9900A9FF95 /* RecruitmentNoticeView.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -587,6 +590,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				42702D482CDA34510093F9E3 /* DateStore.swift in Sources */,
+				6E5D95A72CEB1F9900A9FF95 /* RecruitmentNoticeView.swift in Sources */,
 				42702D502CDA56AE0093F9E3 /* RouteDetailView.swift in Sources */,
 				6EDBE8AF2CDA468500D9A233 /* DateStore.swift in Sources */,
 				FB36F6052CD4740F00E356FA /* MyPageView.swift in Sources */,
@@ -635,8 +639,6 @@
 				42F2F9D82CE2494E0013F147 /* PlaceMapListView.swift in Sources */,
 				259AABB62CDA0AB200512CE6 /* City.swift in Sources */,
 				6E690E8B2CD8B97E0096DB7C /* TripRouteView.swift in Sources */,
-				6E690E882CD8B9540096DB7C /* RecommendContentView.swift in Sources */,
-				6E690E892CD8B9540096DB7C /* RecommendRouteView.swift in Sources */,
 				FB8AC05F2CE5F0780001AB05 /* AuthStore+Apple.swift in Sources */,
 				FB36F6012CD473FA00E356FA /* ChatView.swift in Sources */,
 				259AABC52CDA0AD900512CE6 /* CityTagFlowLayout.swift in Sources */,
