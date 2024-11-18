@@ -9,9 +9,10 @@ import SwiftUI
 
 struct PlaceHeaderView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject var tripRouteStore = TripRouteStore()
+    @EnvironmentObject var navigationManager: NavigationManager
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     
-    @Binding var cities: [String]
+    var cities: [String]
     var places: [[PlacePost]]
     var title: String
     var tags: [String]
@@ -41,8 +42,8 @@ struct PlaceHeaderView: View {
             Button {
                 //작성한 TripRoute db에 저장하는 로직
                 let orderedPlaces = PlaceStore.indexingPlace(places)
-                let startDate = dateStore.convertDateToString(dateStore.startDate!)
-                let endDate = dateStore.convertDateToString(dateStore.endDate!)
+                let startDate = dateStore.convertDateToString(dateStore.startDate ?? .now)
+                let endDate = dateStore.convertDateToString(dateStore.endDate ?? .now)
                 
                 tripRouteStore.inputDatas(
                     title: title,
@@ -56,6 +57,7 @@ struct PlaceHeaderView: View {
                     try await tripRouteStore.addTripRoute(userId: userStore.user.id)
                     tripRouteStore.resetDatas()
                     dateStore.initDate()
+                    navigationManager.popToRoot()
                 }
             } label: {
                 Text("완료")
@@ -88,7 +90,7 @@ struct PlaceHeaderView: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding([.horizontal, .top])
+            .padding(.horizontal)
         }
     }
 }

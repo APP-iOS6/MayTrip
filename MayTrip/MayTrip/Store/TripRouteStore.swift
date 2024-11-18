@@ -151,6 +151,19 @@ class TripRouteStore: ObservableObject {
         }
     }
     
+    // 해당 루트 삭제하는 함수
+    func deleteTripRoute(routeId: Int) async throws -> Void{
+        do {
+            try await db
+                .from("TRIP_ROUTE")
+                .delete()
+                .eq("id", value: routeId)
+                .execute()
+        } catch {
+            print("Route Delete Error: \(error)")
+        }
+    }
+    
     func inputDatas(title: String, tags: [String], places: [PlacePost], cities: [String], startDate: String, endDate: String) {
         self.title = title
         self.tag = tags

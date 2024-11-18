@@ -8,12 +8,14 @@ import SwiftUI
 
 struct EnterBasicInformationView: View {
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var navigationManager: NavigationManager
     
-    private var dateStore = DateStore.shared
+    private let dateStore = DateStore.shared
     @State var title: String = ""
     @State var isCalendarShow: Bool = false
     @State var tag: String = ""
     @FocusState var focused: Bool
+    var tripRoute: TripRoute?
     
     private var tags: [String] {
         var tags = tag.components(separatedBy: "#").filter{ $0 != "" }
@@ -64,20 +66,19 @@ struct EnterBasicInformationView: View {
                         
                         Spacer()
                         
-                        NavigationLink(
-                            destination:
-                                PlaceAddingView(title: title, tags: tags)
-                            ) {
-                                Text("다음")
-                                    .padding(8)
-                            }
-                            .padding(.horizontal, 5)
-                            .background {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .foregroundStyle(dateStore.endDate == nil || !isCompleteDateSetting || title.count == 0 ? Color.gray : Color("accentColor"))
-                            }
-                            .foregroundStyle(.white)
-                            .disabled(dateStore.endDate == nil || !isCompleteDateSetting || title.count == 0)
+                        Button {
+                            navigationManager.push(.placeAdd(title, tags, tripRoute))
+                        } label: {
+                            Text("다음")
+                                .padding(8)
+                        }
+                        .padding(.horizontal, 5)
+                        .background {
+                            RoundedRectangle(cornerRadius: 20)
+                                .foregroundStyle(dateStore.endDate == nil || !isCompleteDateSetting || title.count == 0 ? Color.gray : Color("accentColor"))
+                        }
+                        .foregroundStyle(.white)
+                        .disabled(dateStore.endDate == nil || !isCompleteDateSetting || title.count == 0)
                     }
                     .frame(height: 20)
                     .padding(.bottom, 10)
@@ -129,6 +130,12 @@ struct EnterBasicInformationView: View {
         .navigationBarBackButtonHidden()
         .onChange(of: isEditedDateSetting) { oldValue, newValue in
             isCalendarShow = isEditedDateSetting
+        }
+        .onAppear {
+            if let tripRoute = tripRoute {
+                self.title = tripRoute.title
+                self.tag = tripRoute.tag.map{ "# \($0)" }.joined(separator: " ")
+            }
         }
     }
 }

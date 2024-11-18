@@ -7,15 +7,51 @@
 
 import SwiftUI
 
-struct Post { // 임시 모델 추후에 바뀔수도 있음
+struct Post: Codable { // 게시물 DB에서 불러오기용
+    let id: Int
+    let title: String
+    let text: String
+    let author: Int
+    let image: String? // 최대 5개?
+    let category: Int // 나중에 이넘으로 제한두기
+    let createAt: Date
+    let updateAt: Date
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case text = "content"
+        case author = "write_user"
+        case image
+        case category
+        case createAt = "created_at"
+        case updateAt = "updated_at"
+    }
+}
+
+struct PostUserVer { // 게시물에 유저의 프로필 이미지, 닉네임들을 보여주기 위해 실제로 사용할 모델
     let id: Int
     let title: String
     let text: String
     let author: User
-    let images: [String] // 최대 5개?
-    let category: String // 나중에 이넘으로 제한두기
-    let tripRoute: TripRoute? // 여행 후기 작성하려면 필요한거 아닌지?
+    let image: String?
+    let category: Int
     let createAt: Date
-    let reply: Int
-    let store: Int
+    let updateAt: Date
+}
+
+struct PostDB: Codable { // 게시물 업로드용
+    let title: String
+    let text: String
+    let author: Int
+    let image: String?
+    let category: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case title
+        case text = "content"
+        case author = "write_user"
+        case image
+        case category
+    }
 }

@@ -9,11 +9,6 @@ import Foundation
 import MapKit
 
 final class PlaceStore {
-//    static let shared = PlaceStore()
-    
-    init() {
-        print("hello placeStore!!")
-    }
     
     // placePost의 위도,경도값 가져오기
     static func getCoordinate(for place: PlacePost) -> CLLocationCoordinate2D {
@@ -48,6 +43,79 @@ final class PlaceStore {
         }
         
         return places
+    }
+    
+    // [place] -> [[placePost]] 로 변경
+    static func convertPlacesToPlacePosts(_ places: [Place], dateRange: [Date]) -> [[PlacePost]] {
+        // 날짜별로 Place 배열을 그룹화하고, ordered 순으로 정렬
+        let groupedByDate = Dictionary(grouping: places) { $0.tripDate }
+        
+        // Place들을 순서대로 정렬
+        let sortedPlaces = places.sorted(by: { $0.ordered < $1.ordered })
+        
+        // 2차원 배열 생성: 날짜 범위에 맞는 배열
+        var result: [[PlacePost]] = Array(repeating: [], count: dateRange.count)
+        
+        // 날짜 범위에 있는 Place 추가
+        var remainingPlaces: [Place] = sortedPlaces
+        
+        for (index, date) in dateRange.enumerated() {
+            let dateString = DateStore().convertDateToString(date, format: "yyyy-MM-dd")
+            
+            if let placeGroup = groupedByDate[dateString] {
+                let sortedPlaceGroup = placeGroup.sorted(by: { $0.ordered < $1.ordered })
+                
+                // Place -> PlacePost 변환 및 추가
+                result[index] = sortedPlaceGroup.map { place in
+                    PlacePost(name: place.name,
+                              tripDate: date,
+                              ordered: place.ordered,
+                              coordinates: place.coordinates,
+                              categoryCode: place.category
+                    )
+                }
+                
+                // 배치된 Place를 remainingPlaces에서 제거
+                remainingPlaces.removeAll(where: { groupedByDate[dateString]?.contains($0) == true })
+            }
+        }
+        
+        // 남은 Place들을 순차적으로 날짜 범위에 맞게 추가
+        for place in remainingPlaces {
+            // 가장 가까운 빈 날짜 또는 마지막 배열에 추가
+            if let closestIndex = findClosestDateIndex(for: place.tripDate, in: dateRange) {
+                let tripDate = dateRange[closestIndex]
+                result[closestIndex].append(
+                    PlacePost(
+                        name: place.name,
+                        tripRoute: place.tripRoute,
+                        tripDate: tripDate,
+                        ordered: place.ordered,
+                        coordinates: place.coordinates,
+                        categoryCode: place.category
+                    )
+                )
+            }
+        }
+        
+        return result
+    }
+    
+    // 날짜 문자열을 가장 가까운 날짜 인덱스로 매핑
+    private static func findClosestDateIndex(for tripDate: String, in dateRange: [Date]) -> Int? {
+        let placeDate = DateStore().convertStringToDate(tripDate)
+        var closestIndex: Int?
+        var smallestDifference: TimeInterval = .greatestFiniteMagnitude
+        
+        for (index, date) in dateRange.enumerated() {
+            let difference = abs(date.timeIntervalSince(placeDate))
+            if difference < smallestDifference {
+                smallestDifference = difference
+                closestIndex = index
+            }
+        }
+        
+        return closestIndex
     }
     
     // categoryCode -> categoryName으로 변환

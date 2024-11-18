@@ -9,6 +9,7 @@ import UIKit
 
 struct MyTripCardView: View {
     var tripRouteStore: TripRouteStore
+    @EnvironmentObject var navigationManager: NavigationManager
     var dateStore: DateStore = .shared
     let user: User = UserStore.shared.user
     
@@ -17,8 +18,13 @@ struct MyTripCardView: View {
             HStack {
                 ForEach(tripRouteStore.myTripRoutes.sorted(by: { $0.start_date < $1.start_date })) { route in
                     if dateStore.convertStringToDate(route.end_date) >= Date() {
-                        NavigationLink {
-                            RouteDetailView(tripRoute: SampleTripRoute.sampleRoute)
+                        Button {
+                            Task {
+                                try await tripRouteStore.getTripRoute(id: route.id)
+                                DispatchQueue.main.async {
+                                    navigationManager.push(.routeDetail(tripRouteStore.tripRoute.first ?? SampleTripRoute.sampleRoute))
+                                }
+                            }
                         } label: {
                             RoundedRectangle(cornerRadius: 5)
                                 .stroke((dateStore.isOnATrip(route.start_date, end: route.end_date) ? Color("accentColor") : Color(uiColor: .systemGray4)), lineWidth: 0.5)
