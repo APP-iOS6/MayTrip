@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecommendRouteView: View {
-    @StateObject var tripRouteStore: TripRouteStore = TripRouteStore()
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     @State var isRecently: Bool = true
     
     private let gridItems: [GridItem] = [
