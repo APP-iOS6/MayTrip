@@ -20,14 +20,18 @@ final class SearchAddressStore {
     
     private init() {}
     
-    func getAddresses(query: String, coordinate: CLLocationCoordinate2D) async throws {
+    func getAddresses(query: String, coordinate: CLLocationCoordinate2D?) async throws {
         let restAPIKey: String = Bundle.main.infoDictionary?["RestKey"] as! String
         let header: String = "KakaoAK \(restAPIKey)"
         let urlString: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
         
         guard var url = URL(string: urlString) else { throw HTTPError.notFound }
         
-        url.append(queryItems: [URLQueryItem(name: "query", value: query), URLQueryItem(name: "x", value: "\(coordinate.longitude)"), URLQueryItem(name: "y", value: "\(coordinate.latitude)")])
+        if let coordinate {
+            url.append(queryItems: [URLQueryItem(name: "query", value: query), URLQueryItem(name: "x", value: "\(coordinate.longitude)"), URLQueryItem(name: "y", value: "\(coordinate.latitude)")])
+        } else {
+            url.append(queryItems: [URLQueryItem(name: "query", value: query)])
+        }
         
         var request: URLRequest = URLRequest(url: url)
         request.addValue(header, forHTTPHeaderField: "Authorization")
@@ -61,7 +65,7 @@ final class SearchAddressStore {
         if distance.count > 3 {
             let km = Double(distance)! / 1000
             result = String(format: "%.1f", km) + "km"
-        } else {
+        } else if distance.count > 0 {
             let m = distance + "m"
             result = m
         }
