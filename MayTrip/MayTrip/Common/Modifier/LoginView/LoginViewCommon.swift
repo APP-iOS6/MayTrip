@@ -12,6 +12,7 @@ func CreateLoginViewTextField(text: Binding<String>, symbolName: String, placeho
         RoundedRectangle(cornerRadius: 5)
             .stroke(isFocused ? .accent : .gray.opacity(0.7), style: .init(lineWidth: 1))
             .frame(width: width, height: height)
+            .padding(.horizontal, 5)
         
         if text.wrappedValue.isEmpty {
             HStack {
