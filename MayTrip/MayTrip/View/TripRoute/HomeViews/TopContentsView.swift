@@ -32,7 +32,7 @@ struct TopContentsView: View {
                         .foregroundStyle(.white)
                         .padding(8)
                         .background {
-                            RoundedRectangle(cornerRadius: 15)
+                            RoundedRectangle(cornerRadius: 5)
                                 .foregroundStyle(Color(uiColor: .darkGray))
                         }
                         .padding()
