@@ -7,6 +7,8 @@
 
 import SwiftUI
 struct CommunityMenuSheetView: View {
+    @EnvironmentObject var navigationManager: NavigationManager
+    @Environment(ChatStore.self) private var chatStore: ChatStore
     @Binding var isPresented: Bool
     @Binding var selectedPostOwner: Int
     @Binding var selectedPostId: Int
@@ -42,8 +44,25 @@ struct CommunityMenuSheetView: View {
             .background(Color(uiColor: .systemGray6))
         } else {
             List {
-                Button {
-                    // 게시글 편집
+                Button { // 대화걸기
+                    Task {
+                        let user = try await userStore.getUserInfo(id: selectedPostOwner)
+                        if try await chatStore.findChatRoom(user1: userStore.user.id, user2: selectedPostOwner) {
+                            navigationManager.selection = 2 // 채팅탭으로 이동
+                            DispatchQueue.main.async {
+                                navigationManager.push(.chatRoom(chatStore.findingChatRoom.first ?? ChatRoom(id: 10, user1: 13, user2: 14, createdAt: .now), chatStore.findingChatLogs, user))
+                            }
+                        } else {
+                            try await chatStore.saveChatRoom(selectedPostOwner)
+                            try await chatStore.findChatRoom(user1: userStore.user.id, user2: selectedPostOwner)
+                            
+                            navigationManager.selection = 2
+                            DispatchQueue.main.async {
+                                navigationManager.push(.chatRoom(chatStore.findingChatRoom.first ?? ChatRoom(id: 10, user1: 13, user2: 14, createdAt: .now), chatStore.findingChatLogs, user))
+                            }
+                        }
+                        isPresented = false
+                    }
                 } label: {
                     HStack {
                         Image(systemName: "message")

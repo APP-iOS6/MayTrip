@@ -11,6 +11,7 @@ import UIKit
 struct ChattingRoomView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(ChatStore.self) private var chatStore: ChatStore
+    @EnvironmentObject var navigationManager: NavigationManager
     let userStore = UserStore.shared
     @State var message: String = ""
     @State var route: Int?
@@ -32,8 +33,11 @@ struct ChattingRoomView: View {
                             try await chatStore.deleteChatRoom(chatRoom)
                         }
                     }
-                    
-                    dismiss()
+                    if navigationManager.chatPath.isEmpty {
+                        dismiss()
+                    } else {
+                        navigationManager.pop()
+                    }
                 } label: {
                     Image(systemName: "chevron.left")
                         .resizable()
@@ -176,6 +180,13 @@ struct ChattingRoomView: View {
         .navigationBarBackButtonHidden()
         .onTapGesture {
             focused = false
+        }
+        .onDisappear {
+            if chatLogs.count == 0 {
+                Task {
+                    try await chatStore.deleteChatRoom(chatRoom)
+                }
+            }
         }
     }
 }

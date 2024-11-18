@@ -73,6 +73,10 @@ struct TripRouteView: View {
                             PlaceAddingView(title: title, tags: tags, tripRoute: tripRoute)
                         case .routeDetail(let tripRoute):
                             RouteDetailView(tripRoute: tripRoute)
+                        case .chatRoom(let chatRoom, let chatLog, let user):
+                            ChattingRoomView(chatRoom: chatRoom, chatLogs: chatLog, otherUser: user)
+                        case .enterBasic:
+                            EnterBasicInformationView()
                         }
                     }
                 }

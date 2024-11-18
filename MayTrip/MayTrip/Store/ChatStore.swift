@@ -16,6 +16,8 @@ class ChatStore {
     private let userStore = UserStore.shared
     
     private var chatRooms: [ChatRoom] = []
+    var findingChatRoom: [ChatRoom] = []
+    var findingChatLogs: [ChatLog] = []
  
     var enteredChatRoom: [ChatRoom] = []
     var enteredChatLogs: [ChatLog] = []
@@ -57,7 +59,6 @@ class ChatStore {
                                     
                                     forChatComponents.insert(forChatComponent, at: 0) // 최신걸 제일 위에
                                     isNeedUpdate.toggle()
-                                    print("뎀")
                                 }
                             } else {
                                 // 새로 생긴 채팅만 로그하고 나머지는 이미 fetch 되어 있는 정보를 사용한다.
@@ -103,6 +104,7 @@ class ChatStore {
     
     // 채팅에 필요한 컴포넌트들 세팅
     func setAllComponents(_ isRefresh: Bool = false) async throws {
+        print("update")
         Task {
             try await fetchChatRooms()
             
@@ -172,13 +174,15 @@ class ChatStore {
     
     // ID를 기반으로 이미 채팅방이 존재하는지 확인
     func findChatRoom(user1: Int, user2: Int) async throws -> Bool {
-        
+        findingChatRoom = []
+        findingChatLogs = []
         // 테이블에는 더 낮은 값의 아이디가 user1로 들어가 있음
         let userID1 = user1 > user2 ? user2 : user1
         let userID2 = userID1 == user1 ? user2 : user1
         
         do {
-            enteredChatRoom = try await db
+//            enteredChatRoom = try await db
+            findingChatRoom = try await db
                 .from("CHAT_ROOM")
                 .select()
                 .eq("user1", value: userID1)
@@ -186,8 +190,10 @@ class ChatStore {
                 .execute()
                 .value
             
-            if !enteredChatRoom.isEmpty { // 방 존재시 로그도 업로드
-                enteredChatLogs = try await fetchChatLogs(chatRoom: enteredChatRoom.first!)
+//            if !enteredChatRoom.isEmpty { // 방 존재시 로그도 업로드
+//                enteredChatLogs = try await fetchChatLogs(chatRoom: enteredChatRoom.first!)
+            if !findingChatRoom.isEmpty {
+                findingChatLogs = try await fetchChatLogs(chatRoom: findingChatRoom.first!)
                 return true
             }
             return false
