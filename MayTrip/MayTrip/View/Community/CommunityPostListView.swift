@@ -62,7 +62,8 @@ struct CommunityPostListView: View {
                     HStack {
                         Spacer()
                         HStack {
-                            Image("chatUnClick")
+                            Image(systemName: "message")
+                                .foregroundStyle(.gray)
                             Text("0")
                                 .foregroundStyle(.gray)
                         }
