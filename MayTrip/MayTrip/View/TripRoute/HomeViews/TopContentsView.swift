@@ -8,17 +8,23 @@
 
 import SwiftUI
 import UIKit
+import WebKit
 
 struct TopContentsView: View {
+    @State var index = 1
     var body: some View {
         ZStack {
             ScrollView(.horizontal) {
                 LazyHStack(spacing: 0) {
                     ForEach(0..<3) { index in
                         // TODO: 프로모션 컨텐츠 뷰 만들어야 함
-                        Rectangle()
-                            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 10 * 2)
-                            .foregroundStyle(.gray)
+//                        AsyncImage(url: URL(string: "")) { image in
+                                Rectangle()
+                                    .fill(.gray)
+                                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 11 * 2)
+//                        } placeholder: {
+//                            ProgressView()
+//                        }
                     }
                 }
             }
@@ -28,11 +34,11 @@ struct TopContentsView: View {
                 
                 VStack {
                     Spacer()
-                    Text("1/3")
+                    Text("\(index)/3")
                         .foregroundStyle(.white)
                         .padding(8)
                         .background {
-                            RoundedRectangle(cornerRadius: 15)
+                            RoundedRectangle(cornerRadius: 5)
                                 .foregroundStyle(Color(uiColor: .darkGray))
                         }
                         .padding()

@@ -10,15 +10,23 @@ import SwiftUI
 struct TripRouteView: View {
     @StateObject var tripRouteStore: TripRouteStore = TripRouteStore()
     
+    var isExist: Bool {
+        tripRouteStore.myTripRoutes.count > 0
+    }
+    
     var body: some View {
         NavigationStack {
             ScrollView {
-                LazyVStack(alignment: .leading) {
+                LazyVStack(alignment: .leading, spacing: 15) {
                     TopContentsView()
-                        .padding(.bottom)
                     
-                    MyTripCardView()
-                        .padding(.bottom)
+                    if isExist {
+                        MyTripCardView(tripRouteStore: tripRouteStore)
+                            .onAppear {
+                                print("\(tripRouteStore.myTripRoutes.count)")
+                            }
+                            .padding(.bottom, 10)
+                    }
                     
                     RecommendRouteView()
                         .padding(.bottom)
@@ -40,7 +48,6 @@ struct TripRouteView: View {
                     } label: {
                         Image(systemName: "magnifyingglass")
                             .frame(width: 15, height:  15)
-                            
                     }
                     
                     NavigationLink {
@@ -51,6 +58,12 @@ struct TripRouteView: View {
                     }
                 }
                 .foregroundStyle(Color("accentColor"))
+                .padding(.trailing, 5)
+            }
+        }
+        .onAppear {
+            Task {
+                try await tripRouteStore.getCreatedByUserRoutes()
             }
         }
     }
