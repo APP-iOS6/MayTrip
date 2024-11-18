@@ -18,7 +18,8 @@ struct PlaceSearchView: View {
     @Binding var isShowSheet: Bool          // 장소 추가시트 띄우기
     @Binding var places: [[PlacePost]]          // 추가된 장소 (배열당 한 일차 장소배열)
     @Binding var cities: [String]
-
+    @Binding var focusedDayIndex: Int
+    
     var body: some View {
         VStack {
             TextField("검색어를 입력하세요.", text: $keyword)
@@ -61,6 +62,7 @@ struct PlaceSearchView: View {
                         self.cities.append(city)
                     }
                     
+                    focusedDayIndex = selectedDay
                     isShowSheet.toggle()
                 }
             }

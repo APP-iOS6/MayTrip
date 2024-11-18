@@ -1,4 +1,4 @@
-//
+/
 //  MyTripCardView.swift
 //  MayTrip
 //
@@ -79,7 +79,3 @@ struct MyTripCardView: View {
         .padding(.leading)
     }
 }
-
-//#Preview {
-//    MyTripCardView()
-//}

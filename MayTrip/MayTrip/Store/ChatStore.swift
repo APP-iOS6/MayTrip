@@ -17,7 +17,8 @@ class ChatStore {
     private var chatRooms: [ChatRoom] = []
  
     private(set) var forChatComponents: [(chatRoom: ChatRoom, chatLogs: [ChatLog], otherUser: User)] = []
-
+    private(set) var isNeedUpdate: Bool = false
+    
     init() {
         Task {
             try await setAllComponents()
@@ -39,17 +40,21 @@ class ChatStore {
         Task {
             try await fetchChatRooms()
             
+            // 삭제된 채팅방 걸러냄
+            forChatComponents = forChatComponents.filter {
+                chatRooms.contains($0.chatRoom)
+            }
+            
             for chatRoom in chatRooms {
                 let chatLogs = try await fetchChatLogs(chatRoom, isRefresh: isRefresh)
                 let otherUser = try await getOtherUser(chatRoom)
                 let forChatComponent: (ChatRoom, [ChatLog], User) = (chatRoom, chatLogs, otherUser)
 
-                // 화면 관련 부분은 메인에서 작업
-//                DispatchQueue.main.asyncAndWait {
-                    forChatComponents.removeAll(where: { $0.chatRoom.id == chatRoom.id })
-                    forChatComponents.append(forChatComponent)
-//                }
+                forChatComponents.removeAll(where: { $0.chatRoom.id == chatRoom.id })
+                forChatComponents.append(forChatComponent)
             }
+            
+            isNeedUpdate.toggle()
         }
     }
     
@@ -123,10 +128,32 @@ class ChatStore {
         }
     }
     
-    // 채팅방 삭제
-    func deleteChatRoom(_ chatRoom: Int) async throws {
+    func leaveChatRoom(_ chatRoom: ChatRoom) async throws {
         do {
-            try await db.from("CHAT_ROOM").delete().eq("id", value: chatRoom).execute()
+            var chatRoom = chatRoom
+            var visible = chatRoom.isVisible
+            
+            Task {
+                switch chatRoom.isVisible {
+                case 0:
+                    visible = chatRoom.user1 == userStore.user.id ? 2 : 1
+                default:
+                    try await deleteChatRoom(chatRoom)
+                    return
+                }
+                
+                chatRoom.isVisible = visible
+                
+                try await db.from("CHAT_ROOM").update(chatRoom).eq("chat_room", value: chatRoom.id).execute()
+            }
+        }
+    }
+    
+    // 채팅방 삭제
+    func deleteChatRoom(_ chatRoom: ChatRoom) async throws {
+        do {
+            try await db.from("CHAT_LOG").delete().eq("chat_room", value: chatRoom.id).execute()
+            try await db.from("CHAT_ROOM").delete().eq("id", value: chatRoom.id).execute()
         } catch {
             print("Fail to delete chat room: \(error)")
         }

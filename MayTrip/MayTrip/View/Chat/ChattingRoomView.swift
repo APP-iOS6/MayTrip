@@ -26,6 +26,13 @@ struct ChattingRoomView: View {
         VStack {
             HStack {
                 Button {
+                    // 채팅을 하나도 안보내고 나가는 경우엔 채팅방 삭제
+                    if chatLogs.count == 0 {
+                        Task {
+                            try await chatStore.deleteChatRoom(chatRoom)
+                        }
+                    }
+                    
                     dismiss()
                 } label: {
                     Image(systemName: "chevron.left")

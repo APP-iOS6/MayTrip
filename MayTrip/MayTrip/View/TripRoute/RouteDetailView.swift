@@ -14,6 +14,7 @@ struct RouteDetailView: View {
     @State var isShowSheet: Bool = false    // 장소 추가시트 띄우기
     @State var selectedDay: Int = 0         // 장소 추가시에 몇일차에 장소 추가하는지
     @State var places: [[PlacePost]] = []       // 추가된 장소 (배열당 한 일차 장소배열)
+    @State var focusedDayIndex: Int = 0
     
     var tripRoute: TripRoute
     let dateStore: DateStore = DateStore.shared
@@ -28,44 +29,21 @@ struct RouteDetailView: View {
                 isShowSheet: $isShowSheet,
                 selectedDay: $selectedDay,
                 places: $places,
-                isEditing: false
+                focusedDayIndex: $focusedDayIndex,
+                isEditing: false,
+                tripRoute: tripRoute
             )
         }
         .padding(.top)
         .onAppear {
-            places = convertPlacesToPlacePosts(tripRoute.place)
             let startDate = dateStore.convertStringToDate(tripRoute.startDate)
-            let endDate = dateStore.convertStringToDate(tripRoute.endDate ?? tripRoute.startDate)
+            let endDate = dateStore.convertStringToDate(tripRoute.endDate)
             dateStore.setTripDates(from: startDate, to: endDate)
+            
+            let dateRange = dateStore.datesInRange()
+            places = PlaceStore.convertPlacesToPlacePosts(tripRoute.place, dateRange: dateRange)
         }
         .toolbar(.hidden)
-    }
-    
-    private func convertPlacesToPlacePosts(_ places: [Place]) -> [[PlacePost]] {
-        // 날짜별로 Place 배열을 그룹화하고, ordered 순으로 정렬
-        let groupedByDate = Dictionary(grouping: places) { $0.tripDate }
-        
-        // 날짜별로 정렬된 배열로 변환, ordered 순서에 맞춰 정렬
-        let sortedGroupedByDate = groupedByDate.keys.sorted().compactMap { date -> [PlacePost]? in
-            if let placeGroup = groupedByDate[date] {
-                let sortedPlaceGroup = placeGroup.sorted(by: { $0.ordered < $1.ordered }) // ordered 순으로 정렬
-                
-                let placePosts = sortedPlaceGroup.map { place in
-                    PlacePost(
-                        name: place.name,
-                        tripRoute: place.tripRoute,
-                        tripDate: dateStore.convertStringToDate(place.tripDate),
-                        ordered: place.ordered,
-                        coordinates: place.coordinates,
-                        categoryCode: place.category
-                    )
-                }
-                return placePosts
-            }
-            return nil
-        }
-        
-        return sortedGroupedByDate
     }
 }
 

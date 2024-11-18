@@ -10,43 +10,29 @@ import SwiftUI
 struct CommunityBodyView: View {
     @Binding var isShowingOrderCategory: Bool
     @Binding var selectedOrderCategory: orderCategory
+    @Environment(CommunityStore.self) var communityStore: CommunityStore
     
     let width: CGFloat
     let height: CGFloat
     
     var body: some View {
-        ScrollView {
-            HStack { // 정렬 필터
-                Spacer()
-                
-                Button {
-                    isShowingOrderCategory.toggle()
-                } label: {
-                    HStack(spacing: 5) {
-                        Text("\($selectedOrderCategory.wrappedValue.rawValue)")
-                            .font(.system(size:16))
-                            .foregroundStyle(.black)
-                        Image(systemName: isShowingOrderCategory ? "chevron.up" :"chevron.down")
-                            .font(.system(size: 12))
-                            .foregroundStyle(.black)
-                    }
+        ZStack {
+            ScrollView {
+                CommunityPostListView(width: width, height: height)
+            }
+            .refreshable {
+                Task {
+                    try await communityStore.updatePost()
                 }
             }
-            .padding(.horizontal, width * 0.06)
-            
-            ZStack {
-                CommunityPostListView(width: width, height: height)
-                
-                if isShowingOrderCategory {
-                    VStack {
-                        HStack(alignment: .top) {
-                            Spacer()
-                            orderCategoryListView(width: width, height: height)
-                            
-                                .padding(.horizontal, width * 0.05)
-                        }
+            if isShowingOrderCategory {
+                VStack {
+                    HStack(alignment: .top) {
                         Spacer()
+                        orderCategoryListView(width: width, height: height)
+                            .padding(.horizontal, width * 0.05)
                     }
+                    Spacer()
                 }
             }
         }

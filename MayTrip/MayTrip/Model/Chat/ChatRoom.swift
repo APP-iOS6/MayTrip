@@ -6,12 +6,13 @@
 //
 import Foundation
 
-struct ChatRoom: Codable, Identifiable {
+struct ChatRoom: Codable, Identifiable, Hashable {
     var id: Int
     var user1: Int
     var user2: Int
     var createdAt: Date
     var updatedAt: Date?
+    var isVisible: Int
     
     enum CodingKeys: String,CodingKey {
         case id
@@ -19,15 +20,18 @@ struct ChatRoom: Codable, Identifiable {
         case user2
         case createdAt = "created_at"
         case updatedAt = "updated_at"
+        case isVisible = "is_visible"
     }
 }
 
 struct ChatRoomPost: Codable {
     var user1: Int
     var user2: Int
+    var isVisible: Int = 0
     
     enum CodingKeys: String,CodingKey {
         case user1
         case user2
+        case isVisible = "is_visible"
     }
 }

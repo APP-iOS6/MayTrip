@@ -22,7 +22,15 @@ struct CellView: View {
     }
     
     var textColor: Color {
-        if date == dateStore.startDate || date == dateStore.endDate {
+        guard let startDate = dateStore.startDate, let endDate = dateStore.endDate else {
+            return Color(isSunday ? .red : .black).opacity(isCurrentMonthDay ? 1 : 0.3)
+        }
+        
+        let start = Calendar.current.startOfDay(for: startDate)
+        let end = Calendar.current.startOfDay(for: endDate)
+        let date = Calendar.current.startOfDay(for: date)
+        
+        if date == start || date == end {
             return Color(.white)
         }
         
@@ -33,26 +41,37 @@ struct CellView: View {
         guard let startDate = dateStore.startDate, let endDate = dateStore.endDate else {
             return 0.0
         }
-        if date == startDate || date == endDate || (date > startDate && date < endDate) {
+        
+        let start = Calendar.current.startOfDay(for: startDate)
+        let end = Calendar.current.startOfDay(for: endDate)
+        let date = Calendar.current.startOfDay(for: date)
+
+        if date == start || date == end || (date > start && date < end) {
             return 0.3
         }
         return 0.0
     }
     
     var isLeftCircle: Bool {
-        guard dateStore.startDate != nil else {
+        guard let startDate = dateStore.startDate else {
             return false
         }
         
-        return date == dateStore.startDate!
+        let start = Calendar.current.startOfDay(for: startDate)
+        let date = Calendar.current.startOfDay(for: date)
+        
+        return date == start
     }
     
     var isRightCircle: Bool {
-        guard dateStore.endDate != nil else {
+        guard let endDate = dateStore.endDate else {
             return false
         }
         
-        return date == dateStore.endDate!
+        let end = Calendar.current.startOfDay(for: endDate)
+        let date = Calendar.current.startOfDay(for: date)
+        
+        return date == end
     }
     
     var body: some View {

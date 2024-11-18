@@ -15,7 +15,6 @@ struct LoginView : View {
         NavigationStack {
             SignInView()
                 .frame(width: screenWidth, height: screenHeight)
-                .ignoresSafeArea(.keyboard)
         }
     }
 }
