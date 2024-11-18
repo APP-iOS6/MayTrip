@@ -87,7 +87,6 @@ struct SignInView : View {
                             } else {
                                 Task {
                                     do {
-                                        try await authStore.DB.auth.signOut()
                                         try await authStore.DB.auth.signIn (
                                             email: email,
                                             password: password

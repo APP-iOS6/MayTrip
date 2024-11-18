@@ -16,6 +16,7 @@ struct SignUpView: View {
     
     private var DB = DBConnection.shared
     @Environment(\.dismiss) var dismiss
+    @Environment(AuthStore.self) var authStore
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
@@ -90,7 +91,6 @@ struct SignUpView: View {
                     .frame(width: screenWidth * 0.9, height: screenHeight * 0.06)
                 }
                 .padding(.bottom, -25)
-                    
                 
                 if !errorMessage.isEmpty {
                     HStack(spacing:5) {
@@ -115,17 +115,27 @@ struct SignUpView: View {
                 }
                 
                 Button { // 회원가입
-                    if checkValid() {
-                        Task {
-                            do {
-                                try await DB.auth.signUp(
-                                    email: email,
-                                    password: password
-                                )
-                                dismiss()
-                            } catch {
-                                errorMessage = "이미 가입된 이메일입니다"
-                                print(error)
+                    Task {
+                        if try await checkValid() {
+                            Task {
+                                do {
+                                    try await DB.auth.signUp(
+                                        email: email,
+                                        password: password
+                                    )
+                                    
+                                    try await DB.auth.signIn(
+                                        email: email,
+                                        password: password
+                                    )
+                                    
+                                    Task {
+                                        await authStore.successLogin(email: email, provider: "email")
+                                    }
+                                } catch {
+                                    errorMessage = "이미 가입된 이메일입니다"
+                                    print(error)
+                                }
                             }
                         }
                     }
@@ -170,14 +180,8 @@ struct SignUpView: View {
 }
 
 extension SignUpView {
-    func checkValid() -> Bool {
-        if email.isEmpty {
-            errorMessage = "이메일을 입력해주세요"
-            return false
-        } else if password.count < 6 {
-            errorMessage = "비밀번호를 6자 이상 작성해주세요"
-            return false
-        } else if confirmPassword != password {
+    func checkValid() async throws -> Bool {
+        if confirmPassword != password {
             errorMessage = "비밀번호를 다시 확인해주세요"
             return false
         }
