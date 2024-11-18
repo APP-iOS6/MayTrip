@@ -9,9 +9,11 @@ import SwiftUI
 struct CommunityMenuSheetView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @Environment(ChatStore.self) private var chatStore: ChatStore
+    @Environment(CommunityStore.self) var communityStore: CommunityStore
     @Binding var isPresented: Bool
     @Binding var selectedPostOwner: Int
     @Binding var selectedPostId: Int
+    @State var isPresentedDeleteAlert: Bool = false
     
     let userStore = UserStore.shared
     
@@ -29,13 +31,25 @@ struct CommunityMenuSheetView: View {
                 }
                 
                 Button {
-                    
+                    isPresentedDeleteAlert = true // 삭제 확인용 알럿
                 } label: {
                     HStack {
                         Image(systemName: "trash")
                         Text("삭제")
                     }
                     .foregroundStyle(.red)
+                }
+                .alert("게시물을 삭제하시겠습니까", isPresented: $isPresentedDeleteAlert) {
+                    Button("취소", role: .cancel) {
+                        isPresentedDeleteAlert = false
+                    }
+                    Button("삭제하기", role: .destructive) {
+                        isPresentedDeleteAlert = false
+                        Task {
+                            try await communityStore.deletePost(postId: selectedPostId)
+                        }
+                        isPresented = false
+                    }
                 }
             }
             .listStyle(.automatic)
