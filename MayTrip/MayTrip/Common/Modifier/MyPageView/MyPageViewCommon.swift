@@ -10,13 +10,15 @@ import SwiftUI
 extension MyPageView{
     func manageButtonLabel(image: String, text: String, width: CGFloat) -> some View {
         VStack {
-            Image(image)
+            Image(systemName: image)
                 .resizable()
                 .scaledToFit()
                 .frame(height:width * 0.1)
+                .foregroundStyle(.black)
             Text(text)
-                .foregroundStyle(Color(uiColor: .systemGray))
+                .foregroundStyle(.black)
         }
+        .opacity(0.7)
     }
     
     func listButtonLabel(image: String, text: String) -> some View {

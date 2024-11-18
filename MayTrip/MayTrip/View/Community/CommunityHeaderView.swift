@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CommunityHeaderView: View {
-    @Binding var isShowingOrderCategory: Bool
     @Binding var selectedPostCategory: postCategory
     @Binding var selectedOrderCategory: orderCategory
     
@@ -44,21 +43,16 @@ struct CommunityHeaderView: View {
             
             HStack { // 정렬 필터
                 Spacer()
-                
-                Button {
-                    isShowingOrderCategory.toggle()
-                } label: {
-                    HStack(spacing: 5) {
-                        Text("\($selectedOrderCategory.wrappedValue.rawValue)")
-                            .font(.system(size:width * 0.039))
-                            .foregroundStyle(.black)
-                        Image(systemName: isShowingOrderCategory ? "chevron.up" :"chevron.down")
-                            .font(.system(size: 12))
-                            .foregroundStyle(.black)
+         
+                Picker("",selection: $selectedOrderCategory) {
+                    ForEach(orderCategory.allCases, id:\.self) {
+                        Text($0.rawValue)
                     }
                 }
+                .accentColor(.black)
+                .foregroundStyle(.black)
             }
-            .padding(.horizontal, width * 0.05)
+            .padding(.horizontal, width * 0.02)
         }
     }
 }
