@@ -19,19 +19,20 @@ struct TripRouteView: View {
     var body: some View {
         NavigationStack(path: $navigationManager.path) {
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: 15) {
-                    TopContentsView()
+                LazyVStack(alignment: .leading, spacing: 10) {
+//                    TopContentsView()
                     
                     if isExist {
                         MyTripCardView(tripRouteStore: tripRouteStore)
                             .padding(.bottom, 10)
                     }
                     
-                    RecommendRouteView()
+                    RecommendRouteView(background: Color(uiColor: .systemGray6))
                         .padding(.bottom)
                 }
             }
             .padding(.top, 10)
+            .background(Color(uiColor: .systemGray6))
             .scrollIndicators(.hidden)
             .toolbar {
                 HStack(spacing: 20) {
