@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct ChatLog: Codable, Identifiable {
+struct ChatLog: Codable, Identifiable, Hashable {
     let id: Int
     let writeUser: Int
     let chatRoom: Int
