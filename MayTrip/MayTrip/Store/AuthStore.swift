@@ -103,18 +103,18 @@ class AuthStore {
     
     func cancelAccount() async throws {
         switch userStore.user.provider {
-        case "apple":
-            return
+        case "email", "apple" : // 수파베이스 인증(이메일, 애플)
+            try await emailAppleCancelAccount()
         case "google" :
             return
         case "kakao" :
             return
-        default: // 이메일
-            try await emailCancelAccount()
+        default :
+            print("not logined")
         }
     }
     
-    func emailCancelAccount() async throws {
+    func emailAppleCancelAccount() async throws {
         Task {
             do {
                 if let userId = self.DB.auth.currentUser?.id, let email = self.DB.auth.currentUser?.email {
