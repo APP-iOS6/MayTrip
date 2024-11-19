@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct MyTripCardView: View {
-    var tripRouteStore: TripRouteStore
+    @StateObject var tripRouteStore: TripRouteStore
     @EnvironmentObject var navigationManager: NavigationManager
     var dateStore: DateStore = .shared
     let user: User = UserStore.shared.user

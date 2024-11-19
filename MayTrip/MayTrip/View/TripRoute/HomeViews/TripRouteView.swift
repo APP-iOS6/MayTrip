@@ -31,6 +31,11 @@ struct TripRouteView: View {
                         .padding(.bottom)
                 }
             }
+            .onAppear {
+                Task {
+                    try await tripRouteStore.getCreatedByUserRoutes()
+                }
+            }
             .padding(.top, 10)
             .background(Color(uiColor: .systemGray6))
             .scrollIndicators(.hidden)
@@ -71,11 +76,6 @@ struct TripRouteView: View {
                         }
                     }
                 }
-            }
-        }
-        .onAppear {
-            Task {
-                try await tripRouteStore.getCreatedByUserRoutes()
             }
         }
     }
