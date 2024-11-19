@@ -22,9 +22,9 @@ struct ChatView: View {
                     Spacer()
                 } else {
                     List {
-                        ForEach(0..<components.count, id: \.self) { index in
+                        ForEach(components, id: \.chatRoom) { component in
                             HStack {
-                                if let image = components[index].otherUser.profileImage, image != "" {
+                                if let image = component.otherUser.profileImage, image != "" {
                                     // TODO: 이미지 띄우기
                                     Image(systemName: image)
                                         .resizable()
@@ -38,15 +38,15 @@ struct ChatView: View {
                                 }
                                 
                                 VStack(alignment: .leading, spacing: 10) {
-                                    Text("\(components[index].otherUser.nickname)")
+                                    Text("\(component.otherUser.nickname)")
                                     
-                                    Text(components[index].chatLogs.last == nil ? "" : "\(components[index].chatLogs.last!.message)")
+                                    Text(component.chatLogs.last == nil ? "" : "\(component.chatLogs.last!.message)")
                                         .lineLimit(1)
                                         .foregroundStyle(.gray)
                                 }
                                 .padding(.leading, 5)
                                 
-                                if let log = components[index].chatLogs.last {
+                                if let log = component.chatLogs.last {
                                     Spacer()
                                     
                                     VStack(alignment: .trailing, spacing: 10) {
@@ -68,14 +68,14 @@ struct ChatView: View {
                                 }
                             }
                             .background {
-                                NavigationLink(destination: ChattingRoomView(chatRoom: components[index].chatRoom, chatLogs: components[index].chatLogs, otherUser: components[index].otherUser)) {
+                                NavigationLink(destination: ChattingRoomView(chatRoom: component.chatRoom, chatLogs: component.chatLogs, otherUser: component.otherUser)) {
                                 }
                                 .opacity(0)
                             }
                             .swipeActions {
                                 Button {
                                     Task {
-                                        try await chatStore.leaveChatRoom(components[index].chatRoom)
+                                        try await chatStore.leaveChatRoom(component.chatRoom)
                                     }
                                 } label: {
                                     Image(systemName: "door.left.hand.open")
