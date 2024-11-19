@@ -106,7 +106,7 @@ class AuthStore {
         case "email", "apple" : // 수파베이스 인증(이메일, 애플)
             try await emailAppleCancelAccount()
         case "google" :
-            return
+            try await googleCancelAccount()
         case "kakao" :
             return
         default :
@@ -119,7 +119,10 @@ class AuthStore {
             do {
                 if let userId = self.DB.auth.currentUser?.id, let email = self.DB.auth.currentUser?.email {
                     try await admin.deleteUser(id: userId.uuidString)
-                    try await DB.from("USER").update(["is_deleted": true]).eq("email", value: email).execute()
+                    try await DB.from("USER").update(["is_deleted": true])
+                        .eq("email", value: email)
+//                        .eq("is_deleted", value: false)
+                        .execute()
                     userStore.resetUser()
                     self.isLogin = false
                     self.isFirstLogin = true

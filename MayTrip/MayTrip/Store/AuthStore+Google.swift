@@ -39,16 +39,34 @@ extension AuthStore {
         return isSuccess
     }
     
-    func googleCancelAccount() {
-        Task {
+    func googleCancelAccount() async throws {
+        // 비동기로 Google 계정 해제
+        let isDeleteSuccess: Bool = try await withCheckedContinuation { continuation in
             GIDSignIn.sharedInstance.disconnect { error in
-                guard error == nil else { return }
-                
-                // 탈퇴했을 때 행위
-                
-                
+                if let error = error {
+                    print("Google disconnect error: \(error.localizedDescription)")
+                    continuation.resume(returning: false)
+                } else {
+                    print("Delete google account success")
+                    continuation.resume(returning: true)
+                }
             }
-            try await self.signOut()
+        }
+        
+        // Google 계정 해제가 성공적으로 완료되었을 경우
+        if isDeleteSuccess {
+            let email = userStore.user.email
+            
+            // 데이터베이스 업데이트 처리
+            try await DB.from("USER")
+                .update(["is_deleted": true])
+                .eq("email", value: email)
+                .execute()
+            
+            // 사용자 정보 초기화
+            userStore.resetUser()
+            self.isLogin = false
+            self.isFirstLogin = true
         }
     }
 }
