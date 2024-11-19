@@ -10,6 +10,7 @@ import SwiftUI
 struct CommunityPostListView: View {
     @Environment(CommunityStore.self) var communityStore: CommunityStore
     let userStore = UserStore.shared
+    let dateStore = DateStore.shared
     let width: CGFloat
     let height: CGFloat
     
@@ -31,6 +32,7 @@ struct CommunityPostListView: View {
                         
                         VStack(alignment: .leading, spacing: 5) {
                             HStack {
+                                // TODO: categoryCode -> category값 변환해서 적용
                                 Text("동행찾기")
                                     .font(.system(size: 12))
                                     .foregroundStyle(Color(uiColor: .systemBackground))
@@ -54,7 +56,6 @@ struct CommunityPostListView: View {
                                 .font(.system(size: 16))
                                 .fontWeight(.semibold)
                         }
-//                        .frame(width: width * 0.57, height: width * 0.07)
                     }
                     Text(post.title)
                         .font(.system(size: 22))
@@ -76,12 +77,11 @@ struct CommunityPostListView: View {
                                 .foregroundStyle(.gray)
                         }
                         Spacer()
-                        Text(timeAgo(from: post.updateAt))
+                        Text(dateStore.timeAgo(from: post.updateAt))
                             .foregroundStyle(.gray)
                             .font(.system(size: 14))
                     }
                 }
-//                .frame(width: width * 0.89)
                 .padding(.vertical, height * 0.02)
                 .padding(.horizontal, width * 0.06)
                 .background {
@@ -163,47 +163,5 @@ extension CommunityPostListView {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy.MM.dd HH:mm"
         return dateFormatter.string(from: date)
-    }
-    
-    // 현재 시각으로 부터 경과된 시간 반환
-    func timeAgo(from date: Date) -> String {
-        let currentDate = Date()
-        let calendar = Calendar.current
-        
-        let components = calendar.dateComponents(
-            [.year, .month, .weekOfYear, .day, .hour, .minute, .second],
-            from: date,
-            to: currentDate
-        )
-        
-        if let years = components.year, years > 0 {
-            return "\(years)년 전"
-        }
-        
-        if let months = components.month, months > 0 {
-            return "\(months)달 전"
-        }
-        
-        if let weeks = components.weekOfYear, weeks > 0 {
-            return "\(weeks)주 전"
-        }
-        
-        if let days = components.day, days > 0 {
-            return "\(days)일 전"
-        }
-        
-        if let hours = components.hour, hours > 0 {
-            return "\(hours)시간 전"
-        }
-        
-        if let minutes = components.minute, minutes > 0 {
-            return "\(minutes)분 전"
-        }
-        
-        if let seconds = components.second, seconds >= 0 {
-            return "방금 전"
-        }
-        
-        return "알 수 없음"
     }
 }

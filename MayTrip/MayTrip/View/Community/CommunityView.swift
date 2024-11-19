@@ -12,7 +12,7 @@ enum postCategory : String, CaseIterable {
 }
 
 enum orderCategory : String, CaseIterable {
-    case new = "최신순", /*store = "저장순",*/ reply = "댓글순"
+    case new = "최신순", reply = "댓글순"
 }
 
 struct CommunityView: View {
@@ -51,12 +51,9 @@ struct CommunityView: View {
                                 .padding(.trailing, screenWidth * 0.01)
                         }
                     }
-                    
                 }
                 .background(Color(uiColor: .systemGray6))
             }
-//            .navigationTitle("커뮤니티")
-//            .navigationBarTitleDisplayMode(.inline)
         }
         .onAppear {
             Task {
