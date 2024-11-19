@@ -16,6 +16,7 @@ import Supabase
 @Observable
 class AuthStore {
     let DB = DBConnection.shared
+    let admin = AdminDBConnection.shared
     let userStore = UserStore.shared
     
     var isLogin: Bool = false
@@ -85,29 +86,6 @@ class AuthStore {
         }
     }
     
-    func checkNickname(nickname: String) async throws -> Bool {
-        do {
-            let result: [User] = try await DB.from("USER").select(
-                    """
-                    id,
-                    nickname,
-                    profile_image,
-                    email,
-                    exp,
-                    provider
-                    """
-            ).eq("nickname", value:nickname).execute().value
-            
-            if result.isEmpty {
-                return true
-            }
-            return false
-        } catch {
-            print(error)
-            return false
-        }
-    }
-    
     func checkSupabaseLogin() async -> Bool { // 이메일, 애플
         do {
             let user = try await DB.auth.user()
@@ -120,6 +98,35 @@ class AuthStore {
         } catch {
             print(error)
             return false
+        }
+    }
+    
+    func cancelAccount() async throws {
+        switch userStore.user.provider {
+        case "apple":
+            return
+        case "google" :
+            return
+        case "kakao" :
+            return
+        default: // 이메일
+            try await emailCancelAccount()
+        }
+    }
+    
+    func emailCancelAccount() async throws {
+        Task {
+            do {
+                if let userId = self.DB.auth.currentUser?.id, let email = self.DB.auth.currentUser?.email {
+                    try await admin.deleteUser(id: userId.uuidString)
+                    try await DB.from("USER").update(["is_deleted": true]).eq("email", value: email).execute()
+                    userStore.resetUser()
+                    self.isLogin = false
+                    self.isFirstLogin = true
+                }
+            } catch {
+                print(error)
+            }
         }
     }
 }

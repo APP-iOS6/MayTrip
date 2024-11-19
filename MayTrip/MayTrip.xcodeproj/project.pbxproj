@@ -89,6 +89,7 @@
 		FBC09C3B2CDA72D200B059FB /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FBC09C3A2CDA72D200B059FB /* Config.xcconfig */; };
 		FBC09C3D2CDA7A5600B059FB /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C3C2CDA7A5000B059FB /* MainView.swift */; };
 		FBEF99372CEB216700C2A609 /* CommunityMenuSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEF99362CEB215E00C2A609 /* CommunityMenuSheetView.swift */; };
+		FBEF99392CEC643200C2A609 /* AdminDBConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEF99382CEC642900C2A609 /* AdminDBConnection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -178,6 +179,7 @@
 		FBC09C3A2CDA72D200B059FB /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		FBC09C3C2CDA7A5000B059FB /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		FBEF99362CEB215E00C2A609 /* CommunityMenuSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityMenuSheetView.swift; sourceTree = "<group>"; };
+		FBEF99382CEC642900C2A609 /* AdminDBConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminDBConnection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				2518F6B72CD4929500A8F951 /* DBConnection.swift */,
+				FBEF99382CEC642900C2A609 /* AdminDBConnection.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -648,6 +651,7 @@
 				6E690E872CD8B9540096DB7C /* MyTripCardView.swift in Sources */,
 				6E690E8F2CD8E2F10096DB7C /* ChatStore.swift in Sources */,
 				259AABB32CDA0AB200512CE6 /* Place.swift in Sources */,
+				FBEF99392CEC643200C2A609 /* AdminDBConnection.swift in Sources */,
 				FB8AC02B2CE195490001AB05 /* CommunityHeaderView.swift in Sources */,
 				FB8AC01E2CDD93CC0001AB05 /* UserStore.swift in Sources */,
 				259AABB42CDA0AB200512CE6 /* MarkerItem.swift in Sources */,

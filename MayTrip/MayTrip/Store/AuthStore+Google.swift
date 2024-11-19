@@ -38,4 +38,17 @@ extension AuthStore {
         
         return isSuccess
     }
+    
+    func googleCancelAccount() {
+        Task {
+            GIDSignIn.sharedInstance.disconnect { error in
+                guard error == nil else { return }
+                
+                // 탈퇴했을 때 행위
+                
+                
+            }
+            try await self.signOut()
+        }
+    }
 }
