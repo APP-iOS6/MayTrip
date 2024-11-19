@@ -11,9 +11,11 @@ struct RecommendRouteView: View {
     @EnvironmentObject var tripRouteStore: TripRouteStore
     @State var isRecently: Bool = true
     
+    var background: Color
+    
     private let gridItems: [GridItem] = [
         GridItem(.flexible()),
-//        GridItem(.flexible())
+        GridItem(.flexible())
     ]
     
     var body: some View {
@@ -50,13 +52,10 @@ struct RecommendRouteView: View {
                     }
                 }
             }
-                .padding(.bottom, 10)
-                .background(Rectangle().foregroundColor(.white))
+                .background(background)
             ) {
                 ForEach(tripRouteStore.list) { route in
                     RecommendContentView(route: route)
-                        .padding(.vertical, 5)
-                        Divider()
                 }
             }
             .onAppear {
@@ -70,5 +69,5 @@ struct RecommendRouteView: View {
 }
 
 #Preview {
-    RecommendRouteView()
+    RecommendRouteView(background: .gray)
 }

@@ -27,63 +27,77 @@ struct RecommendContentView: View {
                 }
             }
         } label: {
-            RoundedRectangle(cornerRadius: 5)
-                .foregroundStyle(.clear)
-                .overlay(
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack(spacing: 3) {
-                            Text("\(route.title)")
-                                .lineLimit(1)
-                                .bold()
-                                .font(.title3)
-                                .multilineTextAlignment(.leading)
+            VStack(alignment: .leading, spacing: 0) {
+                HStack {
+                    // 첫번째 도시만 보여준다
+                    Text(route.city[0])
+                        .font(.caption)
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 8)
+                        .padding(5)
+                        .background {
+                            RoundedRectangle(cornerRadius: 20, style: .circular)
                                 .foregroundStyle(.black)
-                            
-                            Spacer()
-                            
-                            Button {
-                                isScraped.toggle()
-                            } label: {
-                                Image(systemName: isScraped ? "bookmark.fill" : "bookmark")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 25, height: 25)
-                                    .foregroundStyle(isScraped ? .orange : .gray)
-                            }
                         }
-                        
-                        Text("\(dateStore.convertPeriodToString(route.start_date, end: route.end_date)) 여행")
-                            .fontWeight(.semibold)
-                            .lineLimit(1)
-                            .foregroundStyle(Color(uiColor: .darkGray))
-                        
-                        HStack {
-                            ForEach(0..<3) { index in
-                                if index < route.city.count {
-                                    Text("\(index == 0 ? route.city[index] : "·  \(route.city[index])")")
-                                        .fontWeight(.semibold)
-                                        .lineLimit(1)
-                                        .foregroundStyle(Color(uiColor: .darkGray))
-                                }
-                            }
-                        }
-                        
-                        HStack {
-                            if let tags: [String] = route.tag {
-                                ForEach(0..<3) { index in
-                                    if index < tags.count {
-                                        Text("#\(tags[index]) ")
-                                            .lineLimit(1)
-                                            .foregroundStyle(Color("accentColor"))
+                    
+                    Spacer()
+                    
+                    Button {
+                        isScraped.toggle()
+                    } label: {
+                        Image(systemName: "bookmark.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 15, height: 15)
+                            .padding(5)
+                            .foregroundStyle(.white)
+                            .background(isScraped ? .orange : .gray)
+                            .clipShape(Circle())
+                    }
+                }
+                .padding(10)
+                
+                Text(route.title)
+                    .font(.title3)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .bold()
+                    .foregroundStyle(.black)
+                    .padding(.horizontal, 10)
+                    .padding(.top, 8)
+                    .multilineTextAlignment(.leading)
+                
+                Text("\(dateStore.convertPeriodToString(route.start_date, end: route.end_date)) 여행")
+                    .font(.callout)
+                    .foregroundStyle(.gray)
+                    .padding(.horizontal, 10)
+                    .padding(.top, 5)
+                
+                Spacer()
+                
+                HStack {
+                    if let tags: [String] = route.tag {
+                        ForEach(0..<2) { index in
+                            if index < tags.count {
+                                Text("#\(tags[index]) ")
+                                    .font(.caption)
+                                    .foregroundStyle(.orange)
+                                    .padding(.horizontal, 8)
+                                    .padding(5)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 20, style: .circular)
+                                            .foregroundStyle(.orange.opacity(0.15))
                                     }
-                                }
                             }
                         }
                     }
-                    .padding()
-                )
+                }
+                .padding(10)
+            }
+//            .frame(height: UIScreen.main.bounds.size.height / 5)
+            .background(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
         }
-        .frame(minHeight: UIScreen.main.bounds.size.height / 8)
     }
 }
 
