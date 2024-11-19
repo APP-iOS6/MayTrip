@@ -16,43 +16,59 @@ struct CommunityHeaderView: View {
     
     var body: some View {
         VStack(spacing: 15) {
-            HStack {
+            HStack(spacing: 10) {
                 ForEach(postCategory.allCases, id:\.self) { tag in
                     Button {
                         selectedPostCategory = tag
                     } label: {
                         Text(tag.rawValue)
+                            .bold()
                             .font(.system(size: width * 0.0407))
-                            .foregroundStyle($selectedPostCategory.wrappedValue == tag ? .white : .gray)
-                            .padding(10)
+                            .foregroundStyle($selectedPostCategory.wrappedValue == tag ? Color(uiColor: .systemBackground) : .gray)
+                            .padding(.horizontal, width * 0.02)
+                            .padding(.vertical, height * 0.007)
                             .background {
                                 if $selectedPostCategory.wrappedValue == tag {
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .foregroundStyle(Color.accent)
-                                } else {
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(.gray)
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundStyle(Color.primary)
                                 }
                             }
                     }
                 }
             }
-            .frame(width: width * 0.96, alignment: .center)
-            .padding(.horizontal, width * 0.02)
-            .padding(.top, height * 0.005)
-            
-            HStack { // 정렬 필터
-                Spacer()
-         
-                Picker("",selection: $selectedOrderCategory) {
-                    ForEach(orderCategory.allCases, id:\.self) {
-                        Text($0.rawValue)
-                    }
-                }
-                .accentColor(.black)
-                .foregroundStyle(.black)
-            }
-            .padding(.horizontal, width * 0.02)
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.horizontal, width * 0.06)
+            .padding(.bottom, height * 0.01)
         }
+        .background(Color(uiColor: .systemBackground))
+        
+        HStack(spacing: 10) { // 정렬 필터
+            Spacer()
+            Button {
+                selectedOrderCategory = .new
+            } label: {
+                Text("최신순")
+            }
+            .disabled(selectedOrderCategory == .new)
+            .foregroundStyle(selectedOrderCategory == .new ? Color.accent : Color.gray)
+            
+            Divider()
+            
+            Button {
+                selectedOrderCategory = .reply
+            } label: {
+                Text("댓글순")
+            }
+            .disabled(selectedOrderCategory == .reply)
+            .foregroundStyle(selectedOrderCategory == .reply ? Color.accent : Color.gray)
+        }
+        .bold()
+        .frame(height: height * 0.03)
+        .padding(.horizontal, width * 0.06)
     }
+}
+
+#Preview {
+    CommunityView()
+        .environment(CommunityStore())
 }
