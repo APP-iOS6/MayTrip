@@ -108,7 +108,7 @@ class AuthStore {
         case "google" :
             try await googleCancelAccount()
         case "kakao" :
-            return
+            try await kakaoCancelAccount()
         default :
             print("not logined")
         }
@@ -117,19 +117,25 @@ class AuthStore {
     func emailAppleCancelAccount() async throws {
         Task {
             do {
-                if let userId = self.DB.auth.currentUser?.id, let email = self.DB.auth.currentUser?.email {
+                if let userId = self.DB.auth.currentUser?.id{
                     try await admin.deleteUser(id: userId.uuidString)
-                    try await DB.from("USER").update(["is_deleted": true])
-                        .eq("email", value: email)
-//                        .eq("is_deleted", value: false)
-                        .execute()
-                    userStore.resetUser()
-                    self.isLogin = false
-                    self.isFirstLogin = true
+                    try await successCancelAccount()
                 }
             } catch {
                 print(error)
             }
         }
+    }
+    
+    func successCancelAccount() async throws {
+        // DB 유저테이블에서 삭제 표시
+        try await DB.from("USER").update(["is_deleted": true])
+            .eq("email", value: userStore.user.email)
+            .execute()
+        
+        // 유저 정보 초기화
+        userStore.resetUser()
+        self.isLogin = false
+        self.isFirstLogin = true
     }
 }
