@@ -28,14 +28,14 @@ struct RecommendContentView: View {
             }
         } label: {
             RoundedRectangle(cornerRadius: 5)
-                .stroke(Color(uiColor: .systemGray4), lineWidth: 0.5)
+                .foregroundStyle(.clear)
                 .overlay(
                     VStack(alignment: .leading, spacing: 10) {
                         HStack(spacing: 3) {
                             Text("\(route.title)")
                                 .lineLimit(1)
                                 .bold()
-                                .font(.callout)
+                                .font(.title3)
                                 .multilineTextAlignment(.leading)
                                 .foregroundStyle(.black)
                             
@@ -47,14 +47,13 @@ struct RecommendContentView: View {
                                 Image(systemName: isScraped ? "bookmark.fill" : "bookmark")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 15, height: 15)
-                                    .foregroundStyle(.orange)
+                                    .frame(width: 25, height: 25)
+                                    .foregroundStyle(isScraped ? .orange : .gray)
                             }
                         }
                         
                         Text("\(dateStore.convertPeriodToString(route.start_date, end: route.end_date)) 여행")
                             .fontWeight(.semibold)
-                            .font(.footnote)
                             .lineLimit(1)
                             .foregroundStyle(Color(uiColor: .darkGray))
                         
@@ -63,7 +62,6 @@ struct RecommendContentView: View {
                                 if index < route.city.count {
                                     Text("\(index == 0 ? route.city[index] : "·  \(route.city[index])")")
                                         .fontWeight(.semibold)
-                                        .font(.footnote)
                                         .lineLimit(1)
                                         .foregroundStyle(Color(uiColor: .darkGray))
                                 }
@@ -75,7 +73,6 @@ struct RecommendContentView: View {
                                 ForEach(0..<3) { index in
                                     if index < tags.count {
                                         Text("#\(tags[index]) ")
-                                            .font(.caption)
                                             .lineLimit(1)
                                             .foregroundStyle(Color("accentColor"))
                                     }
@@ -86,7 +83,7 @@ struct RecommendContentView: View {
                     .padding()
                 )
         }
-        .frame(height: UIScreen.main.bounds.size.height / 6)
+        .frame(minHeight: UIScreen.main.bounds.size.height / 8)
     }
 }
 

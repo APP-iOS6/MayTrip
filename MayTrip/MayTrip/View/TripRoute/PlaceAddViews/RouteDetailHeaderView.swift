@@ -97,7 +97,7 @@ struct RouteDetailHeaderView: View {
     var titleView: some View {
         HStack(alignment: .bottom) {
             Text(tripRoute.title)
-                .font(.title2)
+                .font(.title)
                 .bold()
         
             Spacer()

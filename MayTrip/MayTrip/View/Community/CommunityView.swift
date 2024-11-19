@@ -19,7 +19,6 @@ struct CommunityView: View {
     @Environment(CommunityStore.self) var communityStore: CommunityStore
     @State var selectedPostCategory: postCategory = .all
     @State var selectedOrderCategory: orderCategory = .new
-    @State var isShowingOrderCategory: Bool = false
     let screenWidth = UIScreen.main.bounds.width
     let screenHeight = UIScreen.main.bounds.height
     
@@ -27,12 +26,9 @@ struct CommunityView: View {
         NavigationStack {
             GeometryReader { proxy in
                 VStack(spacing: proxy.size.height * 0.015) {
-                    CommunityHeaderView(isShowingOrderCategory: $isShowingOrderCategory, selectedPostCategory: $selectedPostCategory, selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
+                    CommunityHeaderView(selectedPostCategory: $selectedPostCategory, selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
                     
-                    CommunityBodyView(isShowingOrderCategory: $isShowingOrderCategory, selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
-                }
-                .onTapGesture {
-                    isShowingOrderCategory = false
+                    CommunityBodyView(selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
                 }
                 .toolbar {
                     HStack(spacing: 20) {
