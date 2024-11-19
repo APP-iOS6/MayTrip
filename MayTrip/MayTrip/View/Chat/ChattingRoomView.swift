@@ -55,64 +55,62 @@ struct ChattingRoomView: View {
             Divider()
             
             ScrollView {
-                LazyVStack(alignment: .leading) {
-                    VStack(alignment: .center) {
-                        // TODO: 날짜별로 표시해주는 디바이더 추가
-                        //                            Text("2024년 11월 04일")
-                        //                                .font(.footnote)
-                        //                                .foregroundStyle(.gray)
-                        //                                .padding()
-                        
-                        ForEach(chatLogs) { log in
-                            if log.writeUser == userStore.user.id {
-                                // 내가 보낸 메세지
-                                HStack(alignment: .bottom, spacing: 0) {
-                                    Spacer()
-                                    
-                                    VStack(alignment: .trailing) {
-                                        //                                            Text("읽음")
-                                        Text("\(chatStore.convertDateToTimeString(log.createdAt))")
-                                    }
-                                    .font(.footnote)
-                                    .foregroundStyle(.gray)
-                                    
-                                    Text("\(log.message)")
-                                        .font(.callout)
-                                        .foregroundStyle(.white)
-                                        .padding()
-                                        .background {
-                                            Rectangle()
-                                                .foregroundStyle(Color("accentColor"))
-                                                .cornerRadius(10, corners: [.topLeft, .bottomLeft, .bottomRight])
-                                        }
-                                        .padding(.horizontal)
-                                }
-                                .padding(.bottom)
-                            } else {
-                                // 상대가 보낸 메세지
-                                HStack(alignment: .bottom, spacing: 0) {
-                                    Text("\(log.message)")
-                                        .font(.callout)
-                                        .foregroundStyle(.black)
-                                        .padding()
-                                        .background {
-                                            Rectangle()
-                                                .foregroundStyle(Color(uiColor: .systemGray6))
-                                                .cornerRadius(10, corners: [.topLeft, .topRight, .bottomRight])
-                                        }
-                                        .padding(.horizontal)
+                VStack(alignment: .center) {
+                    // TODO: 날짜별로 표시해주는 디바이더 추가
+                    //                            Text("2024년 11월 04일")
+                    //                                .font(.footnote)
+                    //                                .foregroundStyle(.gray)
+                    //                                .padding()
+                    
+                    ForEach(chatLogs) { log in
+                        if log.writeUser == userStore.user.id {
+                            // 내가 보낸 메세지
+                            HStack(alignment: .bottom, spacing: 0) {
+                                Spacer()
                                 
-                                    VStack(alignment: .leading) {
-                                        //                                            Text("읽음")
-                                        Text("\(chatStore.convertDateToTimeString(log.createdAt))")
-                                    }
-                                    .font(.footnote)
-                                    .foregroundStyle(.gray)
-                                    
-                                    Spacer()
+                                VStack(alignment: .trailing) {
+                                    //                                            Text("읽음")
+                                    Text("\(chatStore.convertDateToTimeString(log.createdAt))")
                                 }
-                                .padding(.bottom)
+                                .font(.footnote)
+                                .foregroundStyle(.gray)
+                                
+                                Text("\(log.message)")
+                                    .font(.callout)
+                                    .foregroundStyle(.white)
+                                    .padding()
+                                    .background {
+                                        Rectangle()
+                                            .foregroundStyle(Color("accentColor"))
+                                            .cornerRadius(10, corners: [.topLeft, .bottomLeft, .bottomRight])
+                                    }
+                                    .padding(.horizontal)
                             }
+                            .padding(.bottom)
+                        } else {
+                            // 상대가 보낸 메세지
+                            HStack(alignment: .bottom, spacing: 0) {
+                                Text("\(log.message)")
+                                    .font(.callout)
+                                    .foregroundStyle(.black)
+                                    .padding()
+                                    .background {
+                                        Rectangle()
+                                            .foregroundStyle(Color(uiColor: .systemGray6))
+                                            .cornerRadius(10, corners: [.topLeft, .topRight, .bottomRight])
+                                    }
+                                    .padding(.horizontal)
+                                
+                                VStack(alignment: .leading) {
+                                    //                                            Text("읽음")
+                                    Text("\(chatStore.convertDateToTimeString(log.createdAt))")
+                                }
+                                .font(.footnote)
+                                .foregroundStyle(.gray)
+                                
+                                Spacer()
+                            }
+                            .padding(.bottom)
                         }
                     }
                 }
@@ -122,11 +120,8 @@ struct ChattingRoomView: View {
                     try await chatStore.setAllComponents(true)
                 }
             }
-            .padding(.bottom, 15)
             .defaultScrollAnchor(.bottom)
             .scrollIndicators(.hidden)
-            
-            Spacer()
             
             VStack {
                 Divider()
