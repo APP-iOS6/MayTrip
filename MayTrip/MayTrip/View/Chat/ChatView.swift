@@ -49,7 +49,7 @@ struct ChatView: View {
                                     VStack(alignment: .leading, spacing: 10) {
                                         Text(component.otherUser.nickname)
                                         
-                                        Text(component.chatLogs.last == nil ? "" : "\(component.chatLogs.last!.message)")
+                                        Text(component.chatLogs.last == nil ? "" : component.chatLogs.last!.message)
                                             .lineLimit(1)
                                             .foregroundStyle(.gray)
                                     }

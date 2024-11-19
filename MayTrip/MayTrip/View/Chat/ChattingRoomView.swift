@@ -12,13 +12,15 @@ struct ChattingRoomView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(ChatStore.self) private var chatStore: ChatStore
     @EnvironmentObject var navigationManager: NavigationManager
-    let userStore = UserStore.shared
+    
     @FocusState var focused: Bool
     @State var message: String = ""
     @State var route: Int?
     @State var image: String?
     @State var isScrollTop: Bool = true
     @State var isSend: Bool = false
+    
+    let userStore = UserStore.shared
     
     let chatRoom: ChatRoom
     let otherUser: User
@@ -67,15 +69,13 @@ struct ChattingRoomView: View {
                     //                                .padding()
                     
                     ForEach(chatStore.enteredChatLogs) { log in
-                        if log.writeUser == userStore.user.id {
-                            // 내가 보낸 메세지
+                        if log.writeUser == userStore.user.id { // 내가 보낸 메세지
                             HStack(alignment: .bottom, spacing: 0) {
                                 Spacer()
                                 
-                                
                                 VStack(alignment: .trailing) {
                                     //                                            Text("읽음")
-                                    Text("\(chatStore.convertDateToTimeString(log.createdAt))")
+                                    Text(chatStore.convertDateToTimeString(log.createdAt))
                                 }
                                 .font(.footnote)
                                 .foregroundStyle(.gray)
@@ -92,10 +92,9 @@ struct ChattingRoomView: View {
                                     .padding(.horizontal)
                             }
                             .padding(.bottom)
-                        } else {
-                            // 상대가 보낸 메세지
+                        } else { // 상대가 보낸 메세지
                             HStack(alignment: .bottom, spacing: 0) {
-                                Text("\(log.message)")
+                                Text(log.message)
                                     .font(.callout)
                                     .foregroundStyle(.black)
                                     .padding()
@@ -108,7 +107,7 @@ struct ChattingRoomView: View {
                                 
                                 VStack(alignment: .leading) {
                                     //                                            Text("읽음")
-                                    Text("\(chatStore.convertDateToTimeString(log.createdAt))")
+                                    Text(chatStore.convertDateToTimeString(log.createdAt))
                                 }
                                 .font(.footnote)
                                 .foregroundStyle(.gray)

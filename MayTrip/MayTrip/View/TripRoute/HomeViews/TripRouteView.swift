@@ -20,10 +20,8 @@ struct TripRouteView: View {
         NavigationStack(path: $navigationManager.path) {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 10) {
-//                    TopContentsView()
-                    
                     if isExist {
-                        MyTripCardView(tripRouteStore: tripRouteStore)
+                        MyTripCardView()
                             .padding(.bottom, 10)
                     }
                     

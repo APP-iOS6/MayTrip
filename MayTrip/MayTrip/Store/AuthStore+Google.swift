@@ -15,8 +15,8 @@ extension AuthStore {
         
         GIDSignIn.sharedInstance.signIn(withPresenting: presentingViewController) { signInResult, error in
             guard let result = signInResult else { return }
-            
             guard let profile = result.user.profile else { return }
+            
             Task {
                 await self.successLogin(email: profile.email, provider: "google")
             }

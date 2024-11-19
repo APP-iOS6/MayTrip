@@ -14,15 +14,13 @@ import Supabase
 class ChatStore {
     private let db = DBConnection.shared
     private let userStore = UserStore.shared
-    
     private var chatRooms: [ChatRoom] = []
-    var enteredChatRoom: [ChatRoom] = []
-    var enteredChatLogs: [ChatLog] = []
-    
+    private var isLeaveEvent: Bool = false
     private(set) var forChatComponents: [(chatRoom: ChatRoom, chatLogs: [ChatLog], otherUser: User)] = []
     private(set) var isNeedUpdate: Bool = false
     
-    private var isLeaveEvent: Bool = false
+    var enteredChatRoom: [ChatRoom] = []
+    var enteredChatLogs: [ChatLog] = []
     
     @MainActor
     init() {
@@ -51,7 +49,6 @@ class ChatStore {
                                 if let chatRoom = chatRooms.last { // 최신순으로 채팅방 정렬해둠
                                     let chatLogs = try await fetchChatLogs(chatRoom: chatRoom)
                                     let otherUser = try await getOtherUser(chatRoom)
-                                    
                                     let forChatComponent: (ChatRoom, [ChatLog], User) = (chatRoom, chatLogs, otherUser)
                                     
                                     forChatComponents.insert(forChatComponent, at: 0) // 최신걸 제일 위에
@@ -128,7 +125,6 @@ class ChatStore {
                 
                 forChatComponents.removeAll(where: { $0.chatRoom.id == chatRoom.id })
                 forChatComponents.insert(forChatComponent, at: 0)
-                
             }
             isNeedUpdate.toggle()
         }
@@ -151,7 +147,6 @@ class ChatStore {
                     .from("CHAT_ROOM")
                     .select()
                     .or("user1.eq.\(userStore.user.id), user2.eq.\(userStore.user.id)")
-                    .order("updated_at", ascending: false) // 내림차순으로 정렬
                     .execute()
                     .value
                 
@@ -176,7 +171,6 @@ class ChatStore {
     
     // ID를 기반으로 이미 채팅방이 존재하는지 확인
     func findChatRoom(user1: Int, user2: Int) async throws -> Bool {
-        
         // 테이블에는 더 낮은 값의 아이디가 user1로 들어가 있음
         let userID1 = user1 > user2 ? user2 : user1
         let userID2 = userID1 == user1 ? user2 : user1
@@ -190,7 +184,6 @@ class ChatStore {
                 .execute()
                 .value
             
-
             if !enteredChatRoom.isEmpty { // 방 존재시 로그도 업로드
                 enteredChatLogs = try await fetchChatLogs(chatRoom: enteredChatRoom.first!)
                 return true
@@ -204,7 +197,6 @@ class ChatStore {
     
     // 대화방 대화내용 불러오기
     private func fetchChatLogs(_ id: Int? = nil, chatRoom: ChatRoom, isRefresh: Bool = false) async throws -> [ChatLog] {
-//    func fetchChatLogs(_ chatRoom: ChatRoom, isRefresh: Bool = false) async throws -> [ChatLog] {
         do {
             let component = forChatComponents.filter {
                 $0.chatRoom.id == chatRoom.id
@@ -331,7 +323,6 @@ class ChatStore {
     // 날짜를 입력 받아서 현재 시간으로부터 얼마나 차이가 나는지 계산
     func timeDifference(_ date: Date) -> String {
         let current = Calendar.current
-        
         let dateDiff = current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date, to: Date())
         
         let formatter = DateFormatter()
@@ -340,7 +331,6 @@ class ChatStore {
         let dateString = formatter.string(from: date)
         
         if case let (year?, month?, day?, hour?, minute?) = (dateDiff.year, dateDiff.month, dateDiff.day, dateDiff.hour, dateDiff.minute) {
-            
             if year == 0 || month == 0 || day == 0 {
                 if hour != 0 {
                     return "\(hour)시간 전"
