@@ -70,7 +70,6 @@ struct CommunityMenuSheetView: View {
                             }
                         } else {
                             try await chatStore.saveChatRoom(selectedPostOwner) // 방 생성 후 채팅방 찾아서 이동
-                            try await chatStore.findChatRoom(user1: userStore.user.id, user2: selectedPostOwner)
                             
                             navigationManager.selection = 2
                             navigationManager.popToRoot()
