@@ -249,6 +249,14 @@ class ChatStore {
             try await db.from("CHAT_ROOM")
                 .insert(chatRoom)
                 .execute()
+            
+            enteredChatRoom = try await db.from("CHAT_Room")
+                .select()
+                .eq("user1", value: chatRoom.user1)
+                .eq("user2", value: chatRoom.user2)
+                .execute()
+                .value
+                
         } catch {
             print("Fail to save chat room: \(error)")
         }
