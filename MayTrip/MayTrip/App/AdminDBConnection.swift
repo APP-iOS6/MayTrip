@@ -15,17 +15,17 @@ final class AdminDBConnection{
     private var client: SupabaseClient?
     
     private var getDB: SupabaseClient{
-        if let client = client{
+        if let client = client {
             return client
-        }else{
+        } else {
             fatalError("DB Connection Error")
         }
     }
     
     private init() {
-        do{
+        do {
             self.client = try connect()
-        }catch let error{
+        } catch let error {
             print("DB Connection Error: \(error.localizedDescription)")
         }
     }
