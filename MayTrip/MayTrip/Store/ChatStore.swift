@@ -250,7 +250,7 @@ class ChatStore {
                 .insert(chatRoom)
                 .execute()
             
-            enteredChatRoom = try await db.from("CHAT_Room")
+            enteredChatRoom = try await db.from("CHAT_ROOM")
                 .select()
                 .eq("user1", value: chatRoom.user1)
                 .eq("user2", value: chatRoom.user2)
