@@ -34,7 +34,7 @@ struct PostUserVer { // 게시물에 유저의 프로필 이미지, 닉네임들
     let title: String
     let text: String
     let author: User
-    let image: [String]
+    let image: [UIImage]
     let category: Int
     let createAt: Date
     let updateAt: Date

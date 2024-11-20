@@ -89,6 +89,7 @@
 		FBC09C3B2CDA72D200B059FB /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FBC09C3A2CDA72D200B059FB /* Config.xcconfig */; };
 		FBC09C3D2CDA7A5600B059FB /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C3C2CDA7A5000B059FB /* MainView.swift */; };
 		FBEF99372CEB216700C2A609 /* CommunityMenuSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEF99362CEB215E00C2A609 /* CommunityMenuSheetView.swift */; };
+		FBEF993B2CED982B00C2A609 /* StorageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEF993A2CED982400C2A609 /* StorageStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -178,6 +179,7 @@
 		FBC09C3A2CDA72D200B059FB /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		FBC09C3C2CDA7A5000B059FB /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		FBEF99362CEB215E00C2A609 /* CommunityMenuSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityMenuSheetView.swift; sourceTree = "<group>"; };
+		FBEF993A2CED982400C2A609 /* StorageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -399,6 +401,7 @@
 				259AAB882CDA06CD00512CE6 /* LocationManager.swift */,
 				259AAB892CDA06CD00512CE6 /* SearchAddressStore.swift */,
 				FB8AC02E2CE19CFA0001AB05 /* CommunityStore.swift */,
+				FBEF993A2CED982400C2A609 /* StorageStore.swift */,
 				42630CD02CE735960091ED75 /* NavigationManager.swift */,
 			);
 			path = Store;
@@ -637,6 +640,7 @@
 				259AABB92CDA0ABA00512CE6 /* Category.swift in Sources */,
 				259AABBA2CDA0ABA00512CE6 /* Post.swift in Sources */,
 				6E5D959E2CE5E71E00A9FF95 /* RecommendContentView.swift in Sources */,
+				FBEF993B2CED982B00C2A609 /* StorageStore.swift in Sources */,
 				6E5D959F2CE5E71E00A9FF95 /* RecommendRouteView.swift in Sources */,
 				259AAB8B2CDA06CD00512CE6 /* LocationManager.swift in Sources */,
 				42630CCF2CE7357C0091ED75 /* Destination.swift in Sources */,
