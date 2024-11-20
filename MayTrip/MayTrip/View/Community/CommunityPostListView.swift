@@ -9,10 +9,12 @@ import SwiftUI
 
 struct CommunityPostListView: View {
     @Environment(CommunityStore.self) var communityStore: CommunityStore
-    let userStore = UserStore.shared
     let dateStore = DateStore.shared
     let width: CGFloat
     let height: CGFloat
+    @State var isPresented: Bool = false
+    @State var selectedPostOwner: Int = 0
+    @State var selectedPostId: Int = 0
     
     var body: some View {
         VStack(spacing: 20) {
@@ -46,7 +48,9 @@ struct CommunityPostListView: View {
                                 Spacer()
                                 
                                 Button {
-                                    
+                                    isPresented = true
+                                    selectedPostOwner = post.author.id
+                                    selectedPostId = post.id
                                 } label: {
                                     Image(systemName: "ellipsis")
                                         .foregroundStyle(.gray)
@@ -91,7 +95,14 @@ struct CommunityPostListView: View {
             }
         }
         .padding(.horizontal)
-        .scrollIndicators(.hidden)
+        .onTapGesture {
+            isPresented = false
+        }
+        .sheet(isPresented: $isPresented) {
+            CommunityMenuSheetView(isPresented: $isPresented, selectedPostOwner: $selectedPostOwner, selectedPostId: $selectedPostId)
+                .presentationDetents([.height(170)])
+                .presentationDragIndicator(.visible)
+        }
     }
 }
 
@@ -118,31 +129,31 @@ extension CommunityPostListView {
                 Image(image[0])
                     .resizable()
                     .aspectRatio(contentMode: getRatio(image: image[0]) ? .fit : .fill)
-                    .frame(width: width * 0.449, height: height*0.3)
+                    .frame(width: width * 0.45, height: height*0.3)
                 Image(image[1])
                     .resizable()
                     .aspectRatio(contentMode: getRatio(image: image[0]) ? .fit : .fill)
-                    .frame(width: width * 0.449, height: height*0.3)
+                    .frame(width: width * 0.45, height: height*0.3)
             }
         default:
             HStack(spacing: 5) {
                 Image(image[0])
                     .resizable()
                     .aspectRatio(contentMode: getRatio(image: image[0]) ? .fit : .fill)
-                    .frame(width: width * 0.449, height: height*0.3)
+                    .frame(width: width * 0.45, height: height*0.3)
                 VStack(spacing: 5) {
                     Image(image[1])
                         .resizable()
                         .aspectRatio(contentMode: getRatio(image: image[1]) ? .fit : .fill)
-                        .frame(width: width * 0.449, height: height*0.15)
+                        .frame(width: width * 0.45, height: height*0.15)
                     ZStack {
                         Image(image[2])
                             .resizable()
                             .aspectRatio(contentMode: getRatio(image: image[2]) ? .fit : .fill)
-                            .frame(width: width * 0.449, height: height*0.15)
+                            .frame(width: width * 0.45, height: height*0.15)
                         if count>3 {
                             Rectangle()
-                                .frame(width: width * 0.449, height: height*0.15)
+                                .frame(width: width * 0.45, height: height*0.15)
                                 .foregroundStyle(.black.opacity(0.5))
                             Text("+\(count-3)")
                                 .foregroundStyle(.white)
@@ -152,7 +163,6 @@ extension CommunityPostListView {
             }
         }
     }
-    
     
     private func getRatio(image: String) -> Bool {
         guard let uiImage = UIImage(named: image) else { return false }

@@ -14,16 +14,13 @@ import Supabase
 class ChatStore {
     private let db = DBConnection.shared
     private let userStore = UserStore.shared
-    
     private var chatRooms: [ChatRoom] = []
- 
-    var enteredChatRoom: [ChatRoom] = []
-    var enteredChatLogs: [ChatLog] = []
-    
+    private var isLeaveEvent: Bool = false
     private(set) var forChatComponents: [(chatRoom: ChatRoom, chatLogs: [ChatLog], otherUser: User)] = []
     private(set) var isNeedUpdate: Bool = false
     
-    private var isLeaveEvent: Bool = false
+    var enteredChatRoom: [ChatRoom] = []
+    var enteredChatLogs: [ChatLog] = []
     
     @MainActor
     init() {
@@ -32,7 +29,7 @@ class ChatStore {
             
             let channel =  db.realtimeV2.channel("observe")
             let changes = channel.postgresChange(AnyAction.self, schema: "public")
-
+            
             await channel.subscribe()
             
             for await change in changes {
@@ -49,15 +46,19 @@ class ChatStore {
                             if table == "CHAT_ROOM" {
                                 try await fetchChatRooms(id)
                                 
-                                if let chatroom = chatRooms.last { // 최신순으로 채팅방 정렬해둠
-                                    let chatLogs = try await fetchChatLogs(chatRoom: chatroom)
-                                    let otherUser = try await getOtherUser(chatroom)
-                                    
-                                    let forChatComponent: (ChatRoom, [ChatLog], User) = (chatroom, chatLogs, otherUser)
+                                if let chatRoom = chatRooms.last { // 최신순으로 채팅방 정렬해둠
+                                    let chatLogs = try await fetchChatLogs(chatRoom: chatRoom)
+                                    let otherUser = try await getOtherUser(chatRoom)
+                                    let forChatComponent: (ChatRoom, [ChatLog], User) = (chatRoom, chatLogs, otherUser)
                                     
                                     forChatComponents.insert(forChatComponent, at: 0) // 최신걸 제일 위에
                                     isNeedUpdate.toggle()
-                                    print("뎀")
+                                    
+                                    if let room = enteredChatRoom.first {
+                                        if chatRoom.id == room.id {
+                                            enteredChatLogs = chatLogs
+                                        }
+                                    }
                                 }
                             } else {
                                 // 새로 생긴 채팅만 로그하고 나머지는 이미 fetch 되어 있는 정보를 사용한다.
@@ -72,9 +73,15 @@ class ChatStore {
                                     
                                     forChatComponents.removeAll(where: { $0.chatRoom.id == component.chatRoom.id })
                                     forChatComponents.insert(forChatComponent, at: 0) // 최신걸 제일 위에
+                                    isNeedUpdate.toggle()
+                                    
+                                    if let room = enteredChatRoom.first {
+                                        if component.chatRoom.id == room.id {
+                                            enteredChatLogs = chatLogs
+                                        }
+                                    }
                                 }
                             }
-                            isNeedUpdate.toggle()
                             print("INSERT")
                         case "UPSERT":
                             print("UPSERT")
@@ -118,14 +125,7 @@ class ChatStore {
                 
                 forChatComponents.removeAll(where: { $0.chatRoom.id == chatRoom.id })
                 forChatComponents.insert(forChatComponent, at: 0)
-                
-                if let room = enteredChatRoom.first {
-                    if chatRoom.id == room.id {
-                        enteredChatLogs = chatLogs
-                    }
-                }
             }
-            
             isNeedUpdate.toggle()
         }
     }
@@ -147,7 +147,6 @@ class ChatStore {
                     .from("CHAT_ROOM")
                     .select()
                     .or("user1.eq.\(userStore.user.id), user2.eq.\(userStore.user.id)")
-                    .order("created_at", ascending: false) // 내림차순으로 정렬
                     .execute()
                     .value
                 
@@ -164,7 +163,7 @@ class ChatStore {
                     }
                 }
             }
-            chatRooms.sort(by: { $0.createdAt < $1.createdAt })
+            chatRooms.sort(by: { $0.updatedAt! < $1.updatedAt! }) // 업데이트를 기준으로 정렬해야 최신께 위로가짐
         } catch {
             print("Fail to fetch chat rooms: \(error)")
         }
@@ -172,7 +171,6 @@ class ChatStore {
     
     // ID를 기반으로 이미 채팅방이 존재하는지 확인
     func findChatRoom(user1: Int, user2: Int) async throws -> Bool {
-        
         // 테이블에는 더 낮은 값의 아이디가 user1로 들어가 있음
         let userID1 = user1 > user2 ? user2 : user1
         let userID2 = userID1 == user1 ? user2 : user1
@@ -216,6 +214,7 @@ class ChatStore {
                     .from("CHAT_LOG")
                     .select()
                     .eq("id", value: id)
+                    .order("created_at", ascending: false)
                     .execute()
                     .value
             } else {
@@ -251,6 +250,14 @@ class ChatStore {
             try await db.from("CHAT_ROOM")
                 .insert(chatRoom)
                 .execute()
+            
+            enteredChatRoom = try await db.from("CHAT_ROOM")
+                .select()
+                .eq("user1", value: chatRoom.user1)
+                .eq("user2", value: chatRoom.user2)
+                .execute()
+                .value
+                
         } catch {
             print("Fail to save chat room: \(error)")
         }
@@ -325,7 +332,6 @@ class ChatStore {
     // 날짜를 입력 받아서 현재 시간으로부터 얼마나 차이가 나는지 계산
     func timeDifference(_ date: Date) -> String {
         let current = Calendar.current
-        
         let dateDiff = current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date, to: Date())
         
         let formatter = DateFormatter()
@@ -334,7 +340,6 @@ class ChatStore {
         let dateString = formatter.string(from: date)
         
         if case let (year?, month?, day?, hour?, minute?) = (dateDiff.year, dateDiff.month, dateDiff.day, dateDiff.hour, dateDiff.minute) {
-            
             if year == 0 || month == 0 || day == 0 {
                 if hour != 0 {
                     return "\(hour)시간 전"

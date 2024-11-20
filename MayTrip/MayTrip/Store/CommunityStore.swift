@@ -38,6 +38,15 @@ class CommunityStore {
         }
     }
     
+    // 게시글 삭제 함수
+    func deletePost(postId: Int) async throws {
+        try await DB.from("POST").delete().eq("id", value: postId).execute()
+        
+        posts = posts.filter {
+            $0.id != postId
+        }
+    }
+    
     private func getCategoryNumber(category: String) -> Int {
         switch category {
         case "질문" :
