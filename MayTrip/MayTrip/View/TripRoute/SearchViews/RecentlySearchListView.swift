@@ -39,10 +39,10 @@ struct RecentlySearchListView: View {
                         }
                         .padding(10)
                         .padding(.horizontal, 5)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color("accentColor"))
                         .background {
                             RoundedRectangle(cornerRadius: 20, style: .circular)
-                                .foregroundStyle(.black)
+                                .foregroundStyle(Color("accentColor").opacity(0.2))
                         }
                     }
                 }
