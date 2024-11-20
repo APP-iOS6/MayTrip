@@ -76,16 +76,7 @@ final class UserStore {
     
     func checkNickname(nickname: String) async throws -> Bool {
         do {
-            let result: [User] = try await DB.from("USER").select(
-                    """
-                    id,
-                    nickname,
-                    profile_image,
-                    email,
-                    exp,
-                    provider
-                    """
-            )
+            let result: [User] = try await DB.from("USER").select("id")
                 .eq("nickname", value:nickname)
                 .eq("is_deleted", value: false)
                 .execute().value
