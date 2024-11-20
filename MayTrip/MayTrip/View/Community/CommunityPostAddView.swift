@@ -111,21 +111,11 @@ struct CommunityPostAddView: View {
                             
                             if images.count < 5 {
                                 PhotosPicker(selection: $selectedPhotos, maxSelectionCount: 5 - images.count , matching: .images) {
-                                    
-                                    VStack {
-                                        Text("Add Images..")
-                                            .font(.system(size: 12))
-                                            .foregroundStyle(Color(uiColor: .systemGray3))
-                                        Image(systemName: "plus")
-                                            .resizable()
-                                            .foregroundStyle(Color(uiColor: .systemGray3))
-                                            .frame(width: proxy.size.width * 0.05, height: proxy.size.width * 0.05)
-                                    }
-                                    .frame(width: proxy.size.width * 0.2, height: proxy.size.width * 0.2)
-                                    .overlay{
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .stroke(Color(uiColor: .systemGray3), style: .init(dash: [10]))
-                                    }
+                                    Image(systemName: "photo.badge.plus")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .foregroundStyle(Color(uiColor: .systemGray3))
+                                        .frame(width: proxy.size.width * 0.2, height: proxy.size.width * 0.2)
                                 }
                                 .onChange(of: selectedPhotos) { _ in
                                     loadSelectedPhotos()
