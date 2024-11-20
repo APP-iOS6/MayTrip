@@ -15,6 +15,7 @@ class TripRouteStore: ObservableObject {
     @Published var list: [TripRouteSimple] = []
     @Published var tripRoute: [TripRoute] = []
     @Published var myTripRoutes: [TripRouteSimple] = []
+    @Published private(set) var filteredTripRoutes: [TripRouteSimple] = []
     
     //트립 루트 저장용
     @Published var title: String = ""
@@ -195,6 +196,20 @@ class TripRouteStore: ObservableObject {
         } catch {
             print("Places Upsert Error: \(error)")
         }
+    }
+    
+    func searchTripRoute(_ search: String) {
+        filteredTripRoutes = list.filter {
+            if let tags = $0.tag {
+                tags.contains(search) || $0.city.contains(search) || $0.title.contains(search)
+            } else {
+                $0.city.contains(search) || $0.title.contains(search)
+            }
+        }
+    }
+    
+    func resetSearchTripRoute() {
+        filteredTripRoutes = []
     }
     
     func inputDatas(title: String, tags: [String], places: [PlacePost], cities: [String], startDate: String, endDate: String) {
