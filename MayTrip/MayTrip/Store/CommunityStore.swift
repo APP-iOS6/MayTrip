@@ -14,18 +14,22 @@ class CommunityStore {
     
     var posts: [PostUserVer] = []
     var postsForDB: [Post] = []
+    var isUpadting: Bool = true
     
     func addPost(title: String, text: String, author: User, image: [UIImage], category: String) async { // 게시물 작성
+        isUpadting = true
         let categoryNumber = getCategoryNumber(category: category)
         
-        do {
-            let postDB: PostDB = PostDB(title: title, text: text, author: author.id, image: [], category: categoryNumber)
-            
-            storageStore.uploadImage(images: image)
-            try await DB.from("POST").insert(postDB).execute()
-            try await updatePost()
-        } catch {
-            print("Fail to add content: \(error)")
+        Task {
+            do {
+                let images = try await storageStore.uploadImage(images: image)
+                let postDB: PostDB = PostDB(title: title, text: text, author: author.id, image: images, category: categoryNumber)
+                
+                try await DB.from("POST").insert(postDB).execute()
+                //                try await updatePost()
+            } catch {
+                print("Fail to add content: \(error)")
+            }
         }
     }
     
@@ -37,9 +41,12 @@ class CommunityStore {
             posts = []
             for post in postsForDB {
                 let userInfo = try await getUserInfo(userID: post.author)
+                let images = try await storageStore.getImages(pathes: post.image)
                 
-                posts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: post.image, category: post.category, createAt: post.createAt, updateAt: post.updateAt))
+                posts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: images, category: post.category, createAt: post.createAt, updateAt: post.updateAt))
             }
+            
+            isUpadting = false
         } catch {
             print(error)
         }

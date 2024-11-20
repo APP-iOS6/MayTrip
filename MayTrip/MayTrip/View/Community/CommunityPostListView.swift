@@ -69,9 +69,9 @@ struct CommunityPostListView: View {
                         .lineLimit(3)
                         .font(.system(size: 16))
                     
-//                    if post.images.count > 0 {
-//                        imagesView(image: post.images, width: width, height: height)
-//                    }
+                    if post.image.count > 0 {
+                        imagesView(image: post.image, width: width, height: height)
+                    }
                     
                     HStack {
                         HStack {
@@ -115,45 +115,53 @@ struct CommunityPostListView: View {
 
 extension CommunityPostListView {
     @ViewBuilder
-    func imagesView(image: [String], width: CGFloat, height: CGFloat) -> some View { // 이미지 갯수에 따른 배치 수정
+    func imagesView(image: [UIImage], width: CGFloat, height: CGFloat) -> some View { // 이미지 갯수에 따른 배치 수정
         let count = image.count
         
         switch count {
         case 1:
-            Image(image[0])
+            Image(uiImage:image[0])
                 .resizable()
-                .aspectRatio(contentMode: getRatio(image: image[0]) ? .fit : .fill)
-                .frame(width: width * 0.9, height: height*0.3)
+                .aspectRatio(contentMode: getRatio(image: image[0]) >= 8/3 ? .fit : .fill)
+                .scaledToFit()
+                .frame(width: width * 0.8, height: height*0.3)
+                .clipped()
         case 2:
             HStack {
-                Image(image[0])
+                Image(uiImage: image[0])
                     .resizable()
-                    .aspectRatio(contentMode: getRatio(image: image[0]) ? .fit : .fill)
-                    .frame(width: width * 0.45, height: height*0.3)
-                Image(image[1])
+                    .aspectRatio(contentMode: getRatio(image: image[0]) >= 4/3 ? .fit : .fill)
+                    .frame(width: width * 0.4, height: height*0.3)
+                    .clipped()
+                Image(uiImage: image[1])
                     .resizable()
-                    .aspectRatio(contentMode: getRatio(image: image[0]) ? .fit : .fill)
-                    .frame(width: width * 0.45, height: height*0.3)
+                    .aspectRatio(contentMode: getRatio(image: image[1]) >= 8/3 ? .fit : .fill)
+                    .frame(width: width * 0.4, height: height*0.3)
+                    .clipped()
             }
-        default:
-            HStack(spacing: 5) {
-                Image(image[0])
+            .frame(width: width * 0.8, height: height*0.3)
+        default: // 이미지 3개 이상일 때
+            HStack(spacing: 0) {
+                Image(uiImage: image[0])
                     .resizable()
-                    .aspectRatio(contentMode: getRatio(image: image[0]) ? .fit : .fill)
-                    .frame(width: width * 0.45, height: height*0.3)
-                VStack(spacing: 5) {
-                    Image(image[1])
+                    .aspectRatio(contentMode: getRatio(image: image[0]) >= 4/3 ? .fit : .fill)
+                    .frame(width: width * 0.4, height: height*0.3)
+                    .clipped()
+                VStack(spacing: 0) {
+                    Image(uiImage: image[1])
                         .resizable()
-                        .aspectRatio(contentMode: getRatio(image: image[1]) ? .fit : .fill)
-                        .frame(width: width * 0.45, height: height*0.15)
+                        .aspectRatio(contentMode: getRatio(image: image[1]) >= 8/3 ? .fit : .fill)
+                        .frame(width: width * 0.4, height: height*0.15)
+                        .clipped()
                     ZStack {
-                        Image(image[2])
+                        Image(uiImage: image[2])
                             .resizable()
-                            .aspectRatio(contentMode: getRatio(image: image[2]) ? .fit : .fill)
-                            .frame(width: width * 0.45, height: height*0.15)
-                        if count>3 {
+                            .aspectRatio(contentMode: getRatio(image: image[2]) >= 8/3 ? .fit : .fill)
+                            .frame(width: width * 0.4, height: height*0.15)
+                            .clipped()
+                        if count > 3 {
                             Rectangle()
-                                .frame(width: width * 0.45, height: height*0.15)
+                                .frame(width: width * 0.4, height: height*0.15)
                                 .foregroundStyle(.black.opacity(0.5))
                             Text("+\(count-3)")
                                 .foregroundStyle(.white)
@@ -161,12 +169,12 @@ extension CommunityPostListView {
                     }
                 }
             }
+            .frame(width: width * 0.8, height: height*0.3)
         }
     }
     
-    private func getRatio(image: String) -> Bool {
-        guard let uiImage = UIImage(named: image) else { return false }
-        return uiImage.size.width >= uiImage.size.height
+    private func getRatio(image: UIImage) -> Double {
+        return image.size.width / image.size.height
     }
     
     private func dateToString(date: Date) -> String {
