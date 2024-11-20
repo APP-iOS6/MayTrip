@@ -86,7 +86,7 @@ struct EnterBasicInformationView: View {
                     Divider()
                     
                     HStack {
-                        TextField("제목", text: $title)
+                        TextField("제목을 입력해주세요", text: $title)
                             .focused($focused)
                     }
                     .padding(.vertical, 10)
