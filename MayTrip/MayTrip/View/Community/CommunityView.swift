@@ -25,11 +25,19 @@ struct CommunityView: View {
     var body: some View {
         NavigationStack {
             GeometryReader { proxy in
-                VStack(spacing: proxy.size.height * 0.015) {
-                    CommunityHeaderView(selectedPostCategory: $selectedPostCategory, selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
+                ZStack {
+                    VStack(spacing: proxy.size.height * 0.015) {
+                        CommunityHeaderView(selectedPostCategory: $selectedPostCategory, selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
+                        
+                        CommunityBodyView(selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
+                    }
                     
-                    CommunityBodyView(selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
+                    if communityStore.posts.isEmpty {
+                        Text("게시물이 없습니다")
+                    }
                 }
+                .navigationTitle("커뮤니티")
+                .toolbarTitleDisplayMode(.inline)
                 .toolbar {
                     HStack(spacing: 20) {
                         Spacer()
@@ -45,7 +53,7 @@ struct CommunityView: View {
                         NavigationLink { // 게시글 작성
                             CommunityPostAddView()
                         } label: {
-                            Image(systemName: "square.and.pencil")
+                            Image(systemName: "pencil.and.list.clipboard")
                                 .frame(width: 15, height:  15)
                                 .foregroundStyle(Color.accent)
                                 .padding(.trailing, screenWidth * 0.01)
