@@ -82,7 +82,6 @@ class AuthStore {
             } else {
                 checkKakaoLogin() // 카카오
             }
-            
         }
     }
     

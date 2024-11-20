@@ -116,7 +116,6 @@ final class DateStore {
     func setTripDates(from startDate: Date, to endDate: Date) {
         self.startDate = startDate
         self.endDate = endDate
-        
         self.date = startDate
     }
     
@@ -162,7 +161,6 @@ final class DateStore {
         let end = convertStringToDate(end)
         
         let dateDiff = Calendar.current.dateComponents([.year, .month, .day], from: start, to: end)
-        
         var dateString = "당일치기"
         
         if case let (year?, month?, day?) = (dateDiff.year, dateDiff.month, dateDiff.day) {
@@ -180,7 +178,6 @@ final class DateStore {
     func calcDDay(_ start: String) -> String {
         let start = Calendar.current.startOfDay(for: convertStringToDate(start))
         let date = Calendar.current.startOfDay(for: Date())
-        
         let day = Calendar.current.dateComponents([.day], from: date, to: start).day
         
         return day ==  nil ? "" : "D-\(day!)"
@@ -217,7 +214,6 @@ final class DateStore {
     func isOnATrip(_ start: String, end: String) -> Bool {
         let start = convertStringToDate(start)
         let end = convertStringToDate(end)
-        
         let date = Date()
         
         let today = Calendar.current.dateComponents([.year, .month, .day], from: date)

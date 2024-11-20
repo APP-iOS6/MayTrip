@@ -88,6 +88,7 @@
 		FBC09C392CDA72A800B059FB /* ChatLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C362CDA72A800B059FB /* ChatLog.swift */; };
 		FBC09C3B2CDA72D200B059FB /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FBC09C3A2CDA72D200B059FB /* Config.xcconfig */; };
 		FBC09C3D2CDA7A5600B059FB /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C3C2CDA7A5000B059FB /* MainView.swift */; };
+		FBEF99372CEB216700C2A609 /* CommunityMenuSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEF99362CEB215E00C2A609 /* CommunityMenuSheetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -176,6 +177,7 @@
 		FBC09C372CDA72A800B059FB /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		FBC09C3A2CDA72D200B059FB /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		FBC09C3C2CDA7A5000B059FB /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		FBEF99362CEB215E00C2A609 /* CommunityMenuSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityMenuSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -459,6 +461,7 @@
 				FB8AC02C2CE1966B0001AB05 /* CommunityBodyView.swift */,
 				FB8AC0302CE1E8BC0001AB05 /* CommunityPostListView.swift */,
 				FB8AC0362CE1F3470001AB05 /* CommunityPostAddView.swift */,
+				FBEF99362CEB215E00C2A609 /* CommunityMenuSheetView.swift */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -665,6 +668,7 @@
 				FB8AC0312CE1E8BC0001AB05 /* CommunityPostListView.swift in Sources */,
 				FB36F5F02CD472F600E356FA /* MayTripApp.swift in Sources */,
 				FB36F63A2CD4991600E356FA /* LoginViewCommon.swift in Sources */,
+				FBEF99372CEB216700C2A609 /* CommunityMenuSheetView.swift in Sources */,
 				FBC09BA22CD9DBAA00B059FB /* SocialLoginButtons.swift in Sources */,
 				FB36F63C2CD5150800E356FA /* SignUpView.swift in Sources */,
 				42F2F9DA2CE249CF0013F147 /* PlaceDatePickerView.swift in Sources */,
