@@ -36,8 +36,8 @@ struct RouteDetailView: View {
         }
         .padding(.top)
         .onAppear {
-            let startDate = dateStore.convertStringToDate(tripRoute.startDate)
-            let endDate = dateStore.convertStringToDate(tripRoute.endDate)
+            let startDate = dateStore.convertStringToLocalDate(tripRoute.startDate)
+            let endDate = dateStore.convertStringToLocalDate(tripRoute.endDate)
             dateStore.setTripDates(from: startDate, to: endDate)
             
             let dateRange = dateStore.datesInRange()

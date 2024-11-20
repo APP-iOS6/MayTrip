@@ -149,7 +149,7 @@ struct ProfileInitView: View {
             if nickname.isEmpty {
                 errorMessage = "닉네임을 입력해주세요"
             }
-            else if try await authStore.checkNickname(nickname: nickname) {
+            else if try await userStore.checkNickname(nickname: nickname) {
                 isValid = true
                 errorMessage = "사용 가능한 닉네임입니다"
             } else {

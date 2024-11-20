@@ -140,6 +140,15 @@ struct PlaceMapListView: View {
                     proxy.scrollTo(oldvalue, anchor: .top)
                 }
             }
+            .onChange(of: places) { newValue, oldValue in
+                // 장소 추가시 인덱스 업데이트, 리스트 스크롤, 지도 갱신
+                proxy.scrollTo(selectedDay, anchor: .top)
+                
+                focusedDayIndex = selectedDay
+                scrollingIndex = selectedDay
+                
+                updateMapForDay(scrollingIndex)
+            }
         }
         .sheet(isPresented: $isShowDatePicker) {
             PlaceDatePickerView(
@@ -189,18 +198,12 @@ struct PlaceMapListView: View {
         
         locationManager.checkLocationAuthorization()
         if isEditing {
+            let initalSpan = MKCoordinateSpan(latitudeDelta: 4, longitudeDelta: 4)
+            
             self.mapRegion = MapCameraPosition.region(
                 MKCoordinateRegion(
                     center: locationManager.lastKnownLocation ?? CLLocationCoordinate2D(latitude: 36.6337, longitude: 128.0179), // 초기 위치
-                    span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-                )
-            )
-        } else {
-            let cor = tripRoute?.place.first?.coordinates ?? [36.6337, 128.0179]
-            self.mapRegion = MapCameraPosition.region(
-                MKCoordinateRegion(
-                    center: CLLocationCoordinate2D(latitude: cor[0], longitude: cor[1]),
-                    span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+                    span: locationManager.lastKnownLocation != nil ? MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1) : initalSpan
                 )
             )
         }

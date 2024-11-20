@@ -16,6 +16,7 @@ import Supabase
 @Observable
 class AuthStore {
     let DB = DBConnection.shared
+    let admin = AdminDBConnection.shared
     let userStore = UserStore.shared
     
     var isLogin: Bool = false
@@ -85,29 +86,6 @@ class AuthStore {
         }
     }
     
-    func checkNickname(nickname: String) async throws -> Bool {
-        do {
-            let result: [User] = try await DB.from("USER").select(
-                    """
-                    id,
-                    nickname,
-                    profile_image,
-                    email,
-                    exp,
-                    provider
-                    """
-            ).eq("nickname", value:nickname).execute().value
-            
-            if result.isEmpty {
-                return true
-            }
-            return false
-        } catch {
-            print(error)
-            return false
-        }
-    }
-    
     func checkSupabaseLogin() async -> Bool { // 이메일, 애플
         do {
             let user = try await DB.auth.user()
@@ -121,5 +99,43 @@ class AuthStore {
             print(error)
             return false
         }
+    }
+    
+    func cancelAccount() async throws {
+        switch userStore.user.provider {
+        case "email", "apple" : // 수파베이스 인증(이메일, 애플)
+            try await emailAppleCancelAccount()
+        case "google" :
+            try await googleCancelAccount()
+        case "kakao" :
+            try await kakaoCancelAccount()
+        default :
+            print("not logined")
+        }
+    }
+    
+    func emailAppleCancelAccount() async throws {
+        Task {
+            do {
+                if let userId = self.DB.auth.currentUser?.id{
+                    try await admin.deleteUser(id: userId.uuidString)
+                    try await successCancelAccount()
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func successCancelAccount() async throws {
+        // DB 유저테이블에서 삭제 표시
+        try await DB.from("USER").update(["is_deleted": true])
+            .eq("email", value: userStore.user.email)
+            .execute()
+        
+        // 유저 정보 초기화
+        userStore.resetUser()
+        self.isLogin = false
+        self.isFirstLogin = true
     }
 }

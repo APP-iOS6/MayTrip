@@ -9,8 +9,8 @@ import Supabase
 import Foundation
 
 //Supabase DB 연결 - supabaseInfo.plist에 프로젝트url과 api key가 필요함
-final class DBConnection{
-    static let shared = DBConnection().getDB
+final class AdminDBConnection{
+    static let shared = AdminDBConnection().getDB.auth.admin
     
     private var client: SupabaseClient?
     
@@ -35,7 +35,7 @@ final class DBConnection{
         guard let dictionary = NSDictionary(contentsOf: url) else { return nil }
         
         guard let supabaseURL = dictionary["url"] as? String else {return nil}
-        guard let supabaseKey = dictionary["api_key"] as? String else {return nil}
+        guard let supabaseKey = dictionary["service_role_key"] as? String else {return nil}
         guard let url = URL(string: supabaseURL) else{ return nil}
         
         return SupabaseClient(supabaseURL: url, supabaseKey: supabaseKey)
