@@ -57,6 +57,7 @@ struct MyPageView: View {
                             }
                             
                             Text("\(userStore.user.nickname)")
+                                .font(.title3)
                                 .padding(.horizontal, 10)
                         }
                         .padding()
