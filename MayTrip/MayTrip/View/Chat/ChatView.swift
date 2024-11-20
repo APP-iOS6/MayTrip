@@ -88,12 +88,14 @@ struct ChatView: View {
                                 .tint(.red)
                             }
                         }
+                        .listRowSeparator(.hidden)
                     }
                     .listStyle(.plain)
                 }
             }
         }
         .navigationTitle("채팅")
+        .toolbarBackground(.hidden, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: chatStore.isNeedUpdate) { oldValue, newValue in
             components = chatStore.forChatComponents
