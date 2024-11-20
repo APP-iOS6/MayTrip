@@ -155,6 +155,23 @@ final class DateStore {
         return formatter.string(from: date)
     }
     
+    // 스트링 날짜를 로컬 date로 반환
+    func convertStringToLocalDate(_ date: String) -> Date {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = Locale(identifier: "ko_kr")
+        
+        if let date = formatter.date(from: date) {
+            var calendar = Calendar(identifier: .gregorian)
+            calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+            
+            let components = calendar.dateComponents([.year, .month, .day], from: date)
+            return calendar.date(from: components)!
+        }
+        return .now
+    }
+    
     // 여행기간에 따라 여행일정을 스트링으로 반환 (당일치기, n박 n+1일, 장기) 여행
     func convertPeriodToString(_ start: String, end: String) -> String {
         let start = convertStringToDate(start)

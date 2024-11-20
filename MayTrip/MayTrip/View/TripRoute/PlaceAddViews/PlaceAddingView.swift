@@ -30,7 +30,8 @@ struct PlaceAddingView: View {
                 cities: cities,
                 places: places,
                 title: title,
-                tags: tags
+                tags: tags,
+                tripRoute: tripRoute
             )
             
             // 맵뷰, 일차별 장소 리스트 뷰

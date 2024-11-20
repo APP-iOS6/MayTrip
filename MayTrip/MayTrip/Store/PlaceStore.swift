@@ -103,7 +103,7 @@ final class PlaceStore {
     
     // 날짜 문자열을 가장 가까운 날짜 인덱스로 매핑
     private static func findClosestDateIndex(for tripDate: String, in dateRange: [Date]) -> Int? {
-        let placeDate = DateStore().convertStringToDate(tripDate)
+        let placeDate = DateStore().convertStringToLocalDate(tripDate)
         var closestIndex: Int?
         var smallestDifference: TimeInterval = .greatestFiniteMagnitude
         

@@ -16,6 +16,7 @@ struct PlaceHeaderView: View {
     var places: [[PlacePost]]
     var title: String
     var tags: [String]
+    var tripRoute: TripRoute?
     
     let dateStore: DateStore = DateStore.shared
     let userStore: UserStore = UserStore.shared
@@ -54,7 +55,11 @@ struct PlaceHeaderView: View {
                     endDate: endDate
                 )
                 Task {
-                    try await tripRouteStore.addTripRoute(userId: userStore.user.id)
+                    if let tripRoute = tripRoute {
+                        try await tripRouteStore.updateTripRoute(routeId: tripRoute.id, userId: userStore.user.id)
+                    } else {
+                        try await tripRouteStore.addTripRoute(userId: userStore.user.id)
+                    }
                     tripRouteStore.resetDatas()
                     dateStore.initDate()
                     navigationManager.popToRoot()
