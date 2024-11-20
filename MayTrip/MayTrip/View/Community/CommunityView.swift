@@ -54,7 +54,7 @@ struct CommunityView: View {
                         NavigationLink { // 게시글 작성
                             CommunityPostAddView()
                         } label: {
-                            Image(systemName: "pencil.and.list.clipboard")
+                            Image(systemName: "square.and.pencil")
                                 .frame(width: 15, height:  15)
                                 .foregroundStyle(Color.accent)
                                 .padding(.trailing, screenWidth * 0.01)
