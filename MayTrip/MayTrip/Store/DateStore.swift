@@ -222,4 +222,46 @@ final class DateStore {
         
         return today == startDay || today == endDay || (date > start && date < end)
     }
+    
+    // inptu date 시각으로 부터 경과된 시간 반환
+    func timeAgo(from date: Date) -> String {
+        let currentDate = Date()
+        let calendar = Calendar.current
+        
+        let components = calendar.dateComponents(
+            [.year, .month, .weekOfYear, .day, .hour, .minute, .second],
+            from: date,
+            to: currentDate
+        )
+        
+        if let years = components.year, years > 0 {
+            return "\(years)년 전"
+        }
+        
+        if let months = components.month, months > 0 {
+            return "\(months)달 전"
+        }
+        
+        if let weeks = components.weekOfYear, weeks > 0 {
+            return "\(weeks)주 전"
+        }
+        
+        if let days = components.day, days > 0 {
+            return "\(days)일 전"
+        }
+        
+        if let hours = components.hour, hours > 0 {
+            return "\(hours)시간 전"
+        }
+        
+        if let minutes = components.minute, minutes > 0 {
+            return "\(minutes)분 전"
+        }
+        
+        if let seconds = components.second, seconds >= 0 {
+            return "방금 전"
+        }
+        
+        return "알 수 없음"
+    }
 }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CommunityPostListView: View {
     @Environment(CommunityStore.self) var communityStore: CommunityStore
+    let dateStore = DateStore.shared
     let width: CGFloat
     let height: CGFloat
     @State var isPresented: Bool = false
@@ -16,24 +17,34 @@ struct CommunityPostListView: View {
     @State var selectedPostId: Int = 0
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 20) {
             ForEach(communityStore.posts, id:\.id) { post in
-                VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 15) {
                     HStack(spacing: 10) {
                         Image(systemName: "person.fill")
                             .resizable()
                             .scaledToFit()
                             .frame(width: width * 0.07)
                             .foregroundStyle(Color.accent)
-                            .padding(5)
+                            .padding(7)
                             .overlay {
                                 Circle()
                                     .foregroundStyle(Color.accent.opacity(0.5))
                             }
                         
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: 5) {
                             HStack {
-                                Text(post.author.nickname)
+                                // TODO: categoryCode -> category값 변환해서 적용
+                                Text("동행찾기")
+                                    .font(.system(size: 12))
+                                    .foregroundStyle(Color(uiColor: .systemBackground))
+                                    .padding(.vertical, 5)
+                                    .padding(.horizontal, 8)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 15)
+                                            .fill(Color.primary)
+                                    }
+                                
                                 Spacer()
                                 
                                 Button {
@@ -45,13 +56,14 @@ struct CommunityPostListView: View {
                                         .foregroundStyle(.gray)
                                 }
                             }
-                            Text(dateToString(date:post.createAt))
-                                .font(.system(size: 14))
-                                .foregroundStyle(.gray)
+                            Text(post.author.nickname)
+                                .font(.system(size: 16))
+                                .fontWeight(.semibold)
                         }
-                        .frame(width: width * 0.77, height: width * 0.07)
                     }
-                    .frame(width: width * 0.9)
+                    Text(post.title)
+                        .font(.system(size: 22))
+                        .bold()
                     
                     Text(post.text)
                         .lineLimit(3)
@@ -62,21 +74,27 @@ struct CommunityPostListView: View {
 //                    }
                     
                     HStack {
-                        Spacer()
                         HStack {
                             Image(systemName: "message")
                                 .foregroundStyle(.gray)
                             Text("0")
                                 .foregroundStyle(.gray)
                         }
+                        Spacer()
+                        Text(dateStore.timeAgo(from: post.updateAt))
+                            .foregroundStyle(.gray)
+                            .font(.system(size: 14))
                     }
                 }
-                .frame(width: width * 0.9)
                 .padding(.vertical, height * 0.02)
-                .padding(.horizontal, width * 0.05)
-                .border(Color(uiColor:.systemGray3), width: 0.2)
+                .padding(.horizontal, width * 0.06)
+                .background {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color(uiColor: .systemBackground))
+                }
             }
         }
+        .padding(.horizontal)
         .onTapGesture {
             isPresented = false
         }
@@ -86,6 +104,13 @@ struct CommunityPostListView: View {
                 .presentationDragIndicator(.visible)
         }
     }
+}
+
+#Preview {
+    NavigationStack {
+        CommunityView()
+    }
+        .environment(CommunityStore())
 }
 
 extension CommunityPostListView {

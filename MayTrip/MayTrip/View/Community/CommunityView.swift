@@ -12,7 +12,7 @@ enum postCategory : String, CaseIterable {
 }
 
 enum orderCategory : String, CaseIterable {
-    case new = "최신순", store = "저장순", reply = "댓글순"
+    case new = "최신순", reply = "댓글순"
 }
 
 struct CommunityView: View {
@@ -45,16 +45,15 @@ struct CommunityView: View {
                         NavigationLink { // 게시글 작성
                             CommunityPostAddView()
                         } label: {
-                            Image(systemName: "plus")
+                            Image(systemName: "square.and.pencil")
                                 .frame(width: 15, height:  15)
                                 .foregroundStyle(Color.accent)
                                 .padding(.trailing, screenWidth * 0.01)
                         }
                     }
-                    
                 }
+                .background(Color(uiColor: .systemGray6))
             }
-            
         }
         .onAppear {
             Task {
@@ -64,9 +63,9 @@ struct CommunityView: View {
     }
 }
 
-
-
 #Preview {
-    CommunityView()
+    NavigationStack {
+        CommunityView()
+    }
+        .environment(CommunityStore())
 }
-
