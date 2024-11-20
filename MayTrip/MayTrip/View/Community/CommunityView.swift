@@ -24,44 +24,47 @@ struct CommunityView: View {
     
     var body: some View {
         NavigationStack {
-            GeometryReader { proxy in
-                ZStack {
-                    VStack(spacing: proxy.size.height * 0.015) {
-                        CommunityHeaderView(selectedPostCategory: $selectedPostCategory, selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
-                        
-                        CommunityBodyView(selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
+            if communityStore.isUpadting {
+                ProgressView()
+            } else {
+                GeometryReader { proxy in
+                    ZStack {
+                        VStack(spacing: proxy.size.height * 0.015) {
+                            CommunityHeaderView(selectedPostCategory: $selectedPostCategory, selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
+
+                            CommunityBodyView(selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
+                        }
+
+                        if communityStore.posts.isEmpty {
+                            Text("게시물이 없습니다")
+                                .foregroundStyle(.gray)
+                        }
                     }
-                    
-                    if communityStore.posts.isEmpty {
-                        Text("게시물이 없습니다")
-                            .foregroundStyle(.gray)
-                    }
-                }
-                .navigationTitle("커뮤니티")
-                .toolbarTitleDisplayMode(.inline)
-                .toolbar {
-                    HStack(spacing: 20) {
-                        Spacer()
-                        
-                        Button { // 검색 버튼 로직 추가하기
+                    .navigationTitle("커뮤니티")
+                    .toolbarTitleDisplayMode(.inline)
+                    .toolbar {
+                        HStack(spacing: 20) {
+                            Spacer()
+                            Button { // 검색 버튼 로직 추가하기
+                                
+                            } label: {
+                                Image(systemName: "magnifyingglass")
+                                    .frame(width: 15, height:  15)
+                                    .foregroundStyle(Color.accent)
+                            }
                             
-                        } label: {
-                            Image(systemName: "magnifyingglass")
-                                .frame(width: 15, height:  15)
-                                .foregroundStyle(Color.accent)
-                        }
-                        
-                        NavigationLink { // 게시글 작성
-                            CommunityPostAddView()
-                        } label: {
-                            Image(systemName: "square.and.pencil")
-                                .frame(width: 15, height:  15)
-                                .foregroundStyle(Color.accent)
-                                .padding(.trailing, screenWidth * 0.01)
+                            NavigationLink { // 게시글 작성
+                                CommunityPostAddView()
+                            } label: {
+                                Image(systemName: "square.and.pencil")
+                                    .frame(width: 15, height:  15)
+                                    .foregroundStyle(Color.accent)
+                                    .padding(.trailing, screenWidth * 0.01)
+                            }
                         }
                     }
+                    .background(Color(uiColor: .systemGray6))
                 }
-                .background(Color(uiColor: .systemGray6))
             }
         }
         .onAppear {
@@ -76,5 +79,5 @@ struct CommunityView: View {
     NavigationStack {
         CommunityView()
     }
-        .environment(CommunityStore())
+    .environment(CommunityStore())
 }
