@@ -12,14 +12,13 @@ enum postCategory : String, CaseIterable {
 }
 
 enum orderCategory : String, CaseIterable {
-    case new = "최신순", store = "저장순", reply = "댓글순"
+    case new = "최신순", reply = "댓글순"
 }
 
 struct CommunityView: View {
     @Environment(CommunityStore.self) var communityStore: CommunityStore
     @State var selectedPostCategory: postCategory = .all
     @State var selectedOrderCategory: orderCategory = .new
-    @State var isShowingOrderCategory: Bool = false
     let screenWidth = UIScreen.main.bounds.width
     let screenHeight = UIScreen.main.bounds.height
     
@@ -27,12 +26,9 @@ struct CommunityView: View {
         NavigationStack {
             GeometryReader { proxy in
                 VStack(spacing: proxy.size.height * 0.015) {
-                    CommunityHeaderView(isShowingOrderCategory: $isShowingOrderCategory, selectedPostCategory: $selectedPostCategory, selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
+                    CommunityHeaderView(selectedPostCategory: $selectedPostCategory, selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
                     
-                    CommunityBodyView(isShowingOrderCategory: $isShowingOrderCategory, selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
-                }
-                .onTapGesture {
-                    isShowingOrderCategory = false
+                    CommunityBodyView(selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
                 }
                 .toolbar {
                     HStack(spacing: 20) {
@@ -49,16 +45,15 @@ struct CommunityView: View {
                         NavigationLink { // 게시글 작성
                             CommunityPostAddView()
                         } label: {
-                            Image(systemName: "plus")
+                            Image(systemName: "square.and.pencil")
                                 .frame(width: 15, height:  15)
                                 .foregroundStyle(Color.accent)
                                 .padding(.trailing, screenWidth * 0.01)
                         }
                     }
-                    
                 }
+                .background(Color(uiColor: .systemGray6))
             }
-            
         }
         .onAppear {
             Task {
@@ -68,9 +63,9 @@ struct CommunityView: View {
     }
 }
 
-
-
 #Preview {
-    CommunityView()
+    NavigationStack {
+        CommunityView()
+    }
+        .environment(CommunityStore())
 }
-

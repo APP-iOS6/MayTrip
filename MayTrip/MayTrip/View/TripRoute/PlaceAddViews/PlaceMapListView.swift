@@ -99,11 +99,16 @@ struct PlaceMapListView: View {
                                     if minY < 10 && minY > -30, dateIndex < places.count, scrollingIndex != dateIndex {
                                         scrollingIndex = dateIndex
                                         updateMapForDay(dateIndex)
-                                        print("minY: \(minY)")
                                     }
                                 }
                             }
                         )
+                        
+                        if isEditing, dateIndex != places.count - 1 {
+                            Divider()
+                                .foregroundStyle(Color(UIColor.systemGray5))
+                                .padding(.horizontal)
+                        }
                     }
                     
                     if !isEditing, !isWriter {
@@ -122,7 +127,7 @@ struct PlaceMapListView: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .fill(Color.accent)
                             }
-                            .padding()
+                            .padding([.horizontal, .bottom])
                         }
                     }
                 }

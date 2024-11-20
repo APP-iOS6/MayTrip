@@ -18,34 +18,48 @@ struct PlaceDatePickerView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text("날짜 선택")
-                .font(.headline)
-                .padding([.top, .horizontal], 36)
+                .font(.title)
+                .bold()
+                .padding([.top, .horizontal])
             
-            List {
+            ScrollView {
                 ForEach(Array(dateStore.datesInRange().enumerated()), id: \.element) { index, date in
                     Button {
                         focusedDayIndex = index
                         isShowDatePicker = false
                     } label: {
                         HStack {
-                            Text("Day\(index+1) \(dateStore.convertDateToString(date, format:  "MM.dd(E)"))")
-                                .foregroundStyle(.primary)
-                            if index == focusedDayIndex {
-                                Spacer()
-                                Image(systemName: "checkmark")
-                            }
+                            Text("Day \(index+1)")
+                                .font(.headline)
+                                .bold()
+                            
+                            Spacer()
+                            
+                            Text(dateStore.convertDateToString(date, format: "yyyy년 MM월 dd일(E)"))
                         }
-                        .foregroundStyle(index == focusedDayIndex ? .accent : Color.primary)
-                        .padding(.horizontal)
+                        .padding()
+                        .foregroundStyle(getColor(index: index))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background {
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(getColor(index: index))
+                                .opacity(0.1)
+                        }
                     }
-                    .listRowSeparator(.hidden)
+                    .padding(.bottom, 7)
                 }
             }
-            .listStyle(.plain)
+            .padding([.horizontal, .bottom])
             .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
         }
+        .padding(.top)
         .onAppear {
             focusedDayIndex = scrollingIndex
         }
+    }
+    
+    private func getColor(index: Int) -> Color {
+        index == focusedDayIndex ? Color("accentColor") : Color(uiColor: .systemGray)
     }
 }

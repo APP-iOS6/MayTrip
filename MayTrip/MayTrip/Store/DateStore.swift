@@ -116,7 +116,6 @@ final class DateStore {
     func setTripDates(from startDate: Date, to endDate: Date) {
         self.startDate = startDate
         self.endDate = endDate
-        
         self.date = startDate
     }
     
@@ -162,7 +161,6 @@ final class DateStore {
         let end = convertStringToDate(end)
         
         let dateDiff = Calendar.current.dateComponents([.year, .month, .day], from: start, to: end)
-        
         var dateString = "당일치기"
         
         if case let (year?, month?, day?) = (dateDiff.year, dateDiff.month, dateDiff.day) {
@@ -180,7 +178,6 @@ final class DateStore {
     func calcDDay(_ start: String) -> String {
         let start = Calendar.current.startOfDay(for: convertStringToDate(start))
         let date = Calendar.current.startOfDay(for: Date())
-        
         let day = Calendar.current.dateComponents([.day], from: date, to: start).day
         
         return day ==  nil ? "" : "D-\(day!)"
@@ -217,7 +214,6 @@ final class DateStore {
     func isOnATrip(_ start: String, end: String) -> Bool {
         let start = convertStringToDate(start)
         let end = convertStringToDate(end)
-        
         let date = Date()
         
         let today = Calendar.current.dateComponents([.year, .month, .day], from: date)
@@ -225,5 +221,47 @@ final class DateStore {
         let endDay = Calendar.current.dateComponents([.year, .month, .day], from: end)
         
         return today == startDay || today == endDay || (date > start && date < end)
+    }
+    
+    // inptu date 시각으로 부터 경과된 시간 반환
+    func timeAgo(from date: Date) -> String {
+        let currentDate = Date()
+        let calendar = Calendar.current
+        
+        let components = calendar.dateComponents(
+            [.year, .month, .weekOfYear, .day, .hour, .minute, .second],
+            from: date,
+            to: currentDate
+        )
+        
+        if let years = components.year, years > 0 {
+            return "\(years)년 전"
+        }
+        
+        if let months = components.month, months > 0 {
+            return "\(months)달 전"
+        }
+        
+        if let weeks = components.weekOfYear, weeks > 0 {
+            return "\(weeks)주 전"
+        }
+        
+        if let days = components.day, days > 0 {
+            return "\(days)일 전"
+        }
+        
+        if let hours = components.hour, hours > 0 {
+            return "\(hours)시간 전"
+        }
+        
+        if let minutes = components.minute, minutes > 0 {
+            return "\(minutes)분 전"
+        }
+        
+        if let seconds = components.second, seconds >= 0 {
+            return "방금 전"
+        }
+        
+        return "알 수 없음"
     }
 }

@@ -110,6 +110,7 @@ struct EnterBasicInformationView: View {
                     
                     HStack {
                         TextField("#을 이용해 태그를 입력해보세요", text: $tag, axis: .vertical)
+                            .keyboardType(.twitter)
                             .focused($focused)
                     }
                     .padding(.vertical, 10)

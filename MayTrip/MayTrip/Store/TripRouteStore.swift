@@ -22,20 +22,12 @@ class TripRouteStore: ObservableObject {
     @Published var city: [String] = []
     @Published var startDate: String = ""
     @Published var endDate: String = ""
-    
-    //장소 저장 테스트용
-//    var places: [PlacePost] = [
-//        PlacePost(name: "테스트장소1", tripDate: .now, ordered: 1, coordinates: [34.99648581414221, 135.78456033453412]),
-//        PlacePost(name: "테스트장소2", tripDate: .now, ordered: 2, coordinates: [34.99648581414221, 135.78456033453412]),
-//        PlacePost(name: "테스트장소3", tripDate: .now, ordered: 3, coordinates: [34.99648581414221, 135.78456033453412]),
-//        
-//    ]
     @Published var places: [PlacePost] = []
     
     //여행 루트 리스트 가져오는 함수
     @MainActor
     func getTripRouteList() async throws-> Void{
-        do{
+        do {
             list = try await db
                 .from("TRIP_ROUTE")
                 .select(
@@ -50,15 +42,15 @@ class TripRouteStore: ObservableObject {
                 )
                 .execute()
                 .value
-        }catch{
+        } catch {
             print(error)
         }
     }
     
     //여행 루트 상세 정보 가져오는 함수
     @MainActor
-    func getTripRoute(id: Int) async throws -> Void{
-        do{
+    func getTripRoute(id: Int) async throws -> Void {
+        do {
             tripRoute = try await db
                 .from("TRIP_ROUTE")
                 .select(
@@ -77,7 +69,7 @@ class TripRouteStore: ObservableObject {
                 .eq("id", value: id)
                 .execute()
                 .value
-        }catch{
+        } catch {
             print(error)
         }
     }
@@ -115,7 +107,7 @@ class TripRouteStore: ObservableObject {
         }
         let tripRoute = TripRoutePost(title: title, city: city, writeUser: userId, startDate: startDate, endDate: endDate)
         
-        do{
+        do {
             let routeId: [String:Int] = try await db
                 .from("TRIP_ROUTE")
                 .insert(tripRoute)
@@ -125,7 +117,7 @@ class TripRouteStore: ObservableObject {
                 .value
             //print (routeId)
             try await addPlace(routeId: routeId["id"]!)
-        }catch{
+        } catch {
             print(error)
         }
     }
@@ -135,13 +127,12 @@ class TripRouteStore: ObservableObject {
         for i in 0 ..< places.count{
             places[i].tripRoute = routeId
         }
-        print(places)
-        do{
+        do {
             try await db
                 .from("PLACE")
                 .insert(places)
                 .execute()
-        }catch{
+        } catch {
             try await db
                 .from("TRIP_ROUTE")
                 .delete()
