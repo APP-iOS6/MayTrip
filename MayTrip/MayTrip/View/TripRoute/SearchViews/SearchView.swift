@@ -80,6 +80,8 @@ struct SearchView: View {
             SearchRootView(tripRouteStore: tripRouteStore)
         }
         .onAppear {
+            tripRouteStore.resetSearchTripRoute()
+            
             searchList = UserDefaults.standard.array(forKey: "searchList") as? [String] ?? []
         }
         .background(Color(uiColor: .systemGray6))
