@@ -39,3 +39,18 @@ struct UserPost: Codable{
     }
     
 }
+
+//새로운 DB용 모델, 글 작성자 - 희철
+struct WriteUser: Codable, Hashable {
+     let id: Int
+     let nickname: String
+     let profileImage: String?
+     let exp: Int
+
+     enum CodingKeys: String, CodingKey {
+         case id
+         case nickname
+         case profileImage = "profile_image"
+         case exp
+     }
+ }

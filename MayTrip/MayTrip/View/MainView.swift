@@ -15,9 +15,9 @@ struct MainView:  View {
     let userStore = UserStore.shared
     
     var body: some View {
-        if authStore.isFirstLogin {
-            ProfileInitView()
-        } else {
+//        if authStore.isFirstLogin {
+//            ProfileInitView()
+//        } else {
             TabView(selection: $selection) {
                 NavigationStack(path: $navigationManager.path) {
                     TripRouteView()
@@ -100,7 +100,7 @@ struct MainView:  View {
                     navigationManager.selection = selection
                 }
             }
-        }
+//        }
     }
     
     @ViewBuilder

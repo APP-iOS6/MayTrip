@@ -30,7 +30,7 @@ struct TripRouteView: View {
         }
         .onAppear {
             Task {
-                try await tripRouteStore.getCreatedByUserRoutes()
+                try await tripRouteStore.getStorageTripRouteList(userId: UserStore.shared.user.id)
             }
         }
         .padding(.top, 10)

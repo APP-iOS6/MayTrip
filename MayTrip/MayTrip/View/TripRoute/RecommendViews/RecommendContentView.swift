@@ -8,6 +8,7 @@
 
 import SwiftUI
 import UIKit
+import Combine
 
 struct RecommendContentView: View {
     @EnvironmentObject var navigationManager: NavigationManager
@@ -21,7 +22,7 @@ struct RecommendContentView: View {
         Button {
             // 디테일 뷰 이동
             Task {
-                try await tripRouteStore.getTripRoute(id: route.id)
+                try await tripRouteStore.getTripRoute(tripId: route.id)
                 DispatchQueue.main.async {
                     navigationManager.push(.routeDetail(tripRouteStore.tripRoute.first ?? SampleTripRoute.sampleRoute))
                 }
@@ -43,7 +44,16 @@ struct RecommendContentView: View {
                     Spacer()
                     
                     Button {
-                        isScraped.toggle()
+                        Task{
+                            var success: Bool = isScraped
+                            ? await tripRouteStore.deleteByRouteId(routeId: route.id)
+                            : await tripRouteStore.insertByRouteId(routeId: route.id)
+                            if success{
+                                isScraped.toggle()
+                            }else{
+                                print("북마크 실패")
+                            }
+                        }
                     } label: {
                         Image(systemName: "bookmark.fill")
                             .resizable()
@@ -67,7 +77,7 @@ struct RecommendContentView: View {
                     .padding(.top, 8)
                     .multilineTextAlignment(.leading)
                 
-                Text("\(dateStore.convertPeriodToString(route.start_date, end: route.end_date)) 여행")
+                Text("\(dateStore.convertPeriodToString(route.startDate, end: route.endDate)) 여행")
                     .font(.callout)
                     .foregroundStyle(.gray)
                     .padding(.horizontal, 10)

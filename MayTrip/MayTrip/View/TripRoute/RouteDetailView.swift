@@ -41,7 +41,7 @@ struct RouteDetailView: View {
             dateStore.setTripDates(from: startDate, to: endDate)
             
             let dateRange = dateStore.datesInRange()
-            places = PlaceStore.convertPlacesToPlacePosts(tripRoute.place, dateRange: dateRange)
+            places = PlaceStore.convertPlacesToPlacePosts(tripRoute.places, dateRange: dateRange)
         }
         .toolbar(.hidden)
     }
@@ -58,43 +58,39 @@ class SampleTripRoute {
         title: "샘플 루트",
         tag: ["태그1", "태그2"],
         city: ["샘플도시1", "샘플도시2", "샘플도시3", "샘플도시4"],
-        writeUser: TripRouteUser(
+        writeUser: WriteUser(
             id: -1,
             nickname: "테스터",
-            profileImage: nil
+            profileImage: nil,
+            exp: 0
         ),
-        place: [
+        places: [
             Place(id: 0,
                   name: "테스트1",
-                  tripRoute: 0,
                   tripDate: "2024 11 11",
                   ordered: 1,
                   coordinates: [37.5301, 127.1144],
                   category: "MT1"),
             Place(id: 1,
                   name: "테스트2",
-                  tripRoute: 0,
                   tripDate: "2024 11 11",
                   ordered: 2,
                   coordinates: [37.5513, 127.0816],
                   category: "CT1"),
             Place(id: 2,
                   name: "테스트3",
-                  tripRoute: 0,
                   tripDate: "2024 11 11",
                   ordered: 3,
                   coordinates: [37.5577, 127.0544],
                   category: "HP8"),
             Place(id: 3,
                   name: "테스트4",
-                  tripRoute: 0,
                   tripDate: "2024 11 12",
                   ordered: 1,
                   coordinates: [37.5513, 126.9881],
                   category: "FD6"),
             Place(id: 4,
                   name: "테스트5",
-                  tripRoute: 0,
                   tripDate: "2024 11 12",
                   ordered: 2,
                   coordinates: [37.6513, 126.7881],
@@ -102,6 +98,6 @@ class SampleTripRoute {
         ],
         startDate: "2024 11 11",
         endDate: "2024 11 12",
-        created_at: .now,
-        updated_at: .now)
+        storageCount: 0
+    )
 }

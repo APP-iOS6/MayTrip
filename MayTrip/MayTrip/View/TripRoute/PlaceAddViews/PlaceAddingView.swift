@@ -46,7 +46,7 @@ struct PlaceAddingView: View {
         .onAppear {
             if let tripRoute = tripRoute {
                 let dateRange = DateStore.shared.datesInRange()
-                self.places = PlaceStore.convertPlacesToPlacePosts(tripRoute.place, dateRange: dateRange)
+                self.places = PlaceStore.convertPlacesToPlacePosts(tripRoute.places, dateRange: dateRange)
                 self.cities = tripRoute.city
             }
         }

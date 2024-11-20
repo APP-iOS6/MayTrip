@@ -47,30 +47,87 @@ class TripRouteStore: ObservableObject {
         }
     }
     
-    //여행 루트 상세 정보 가져오는 함수
+    //키워드로 트립루트 검색 - 제목, 태그, 시티, 장소 이름 - 희철
     @MainActor
-    func getTripRoute(id: Int) async throws -> Void {
+    func getTripRouteListWithKeyword(keyword: String) async {
         do {
-            tripRoute = try await db
-                .from("TRIP_ROUTE")
-                .select(
-                    """
-                    *,
-                    writeUser:write_user(
-                     id,
-                     nickname,
-                     profile_image
-                    ),
-                    place:PLACE(
-                    *
-                    )
-                    """
-                )
-                .eq("id", value: id)
+            let tripRouteList: [TripRouteSimple] = try await db
+                .from("trip_route_storage_count")
+                .select("*")
+                .or("title.like.%\(keyword)%, tag.cs.{\(keyword)}, city.cs.{\(keyword)}, place_name.like.%\(keyword)%")
                 .execute()
                 .value
+            
+            list = tripRouteList
+            
+            print("----------------------------------")
+            tripRouteList.forEach { TripRouteSimple in
+                print("\ngetTripRouteListWithKeyword\n",TripRouteSimple)
+            }
         } catch {
             print(error)
+        }
+    }
+    
+    //유저 필터링 트립 루트 리스트 보관함: 내가 만든 여행을 가져오기 위한 함수 - 희철
+    func getTripRouteListWithUser(userId: Int) async {
+        do {
+            let tripRouteList: [TripRouteSimple] = try await db
+                .from("trip_route_storage_count")
+                .select("*")
+                .eq("write_user", value: userId)
+                .execute()
+                .value
+            
+            print("----------------------------------")
+            tripRouteList.forEach{tripRouteSimple in
+                print(tripRouteSimple)
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    //유저가 보관함에 넣은 트립 루트 리스트 - 희철
+    @MainActor
+    func getStorageTripRouteList(userId: Int) async {
+        do {
+            myTripRoutes = try await db
+                .from("trip_route_storage")
+                .select("id, title, write_user, tag, city")
+                .eq("user_id", value: userId)
+                .execute()
+                .value
+            
+//            print("----------------------------------")
+//            tripRouteList.forEach{tripRouteSimple in
+//                print("\ngetStorageTripRouteList\n",tripRouteSimple)
+//            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    //트립 루트 상세 정보 가져오기 - 희철
+    @MainActor
+    func getTripRoute(tripId: Int) async -> TripRoute? {
+        do {
+            let tripRoute: TripRoute = try await db
+                .from("trip_route_detail")
+                .select("""
+                         id, title, tag, city, start_date, end_date, storage_count,
+                         write_user:USER!write_user(id, nickname, profile_image, exp),
+                         places:placegetter(*)
+                         """)
+                .eq("id", value: tripId)
+                .single()
+                .execute()
+                .value
+            print("\ngetTripRoute\n",tripRoute)
+            return tripRoute
+        } catch {
+            print(error)
+            return nil
         }
     }
     
@@ -94,8 +151,43 @@ class TripRouteStore: ObservableObject {
                 .order("start_date", ascending: false) // 내림차순으로 정렬
                 .execute()
                 .value
+            print("\ngetCreatedByUserRoutes\n",myTripRoutes)
         } catch {
             print(error)
+        }
+    }
+    
+    //ROUTE_STORAGE에 데이터 생성
+    func insertByRouteId(routeId: Int) async -> Bool{
+        let userId: Int = UserStore.shared.user.id
+        let storage = ["user_id": userId, "route_id": routeId]
+        do {
+            try await db
+                .from("ROUTE_STORAGE")
+                .insert(storage)
+                .execute()
+            
+            return true
+        } catch {
+            print(error)
+            return false
+        }
+    }
+    
+    //ROUTE_STORAGE에 데이터 제거
+    func deleteByRouteId(routeId: Int) async -> Bool{
+        let userId: Int = UserStore.shared.user.id
+        do {
+            try await db
+                .from("ROUTE_STORAGE")
+                .delete()
+                .eq("user_id", value: userId)
+                .eq("route_id", value: routeId)
+                .execute()
+            return true
+        } catch {
+            print(error)
+            return false
         }
     }
     

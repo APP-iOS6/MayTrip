@@ -88,7 +88,6 @@ final class PlaceStore {
                 result[closestIndex].append(
                     PlacePost(
                         name: place.name,
-                        tripRoute: place.tripRoute,
                         tripDate: tripDate,
                         ordered: place.ordered,
                         coordinates: place.coordinates,

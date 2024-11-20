@@ -135,7 +135,7 @@ struct EnterBasicInformationView: View {
         .onAppear {
             if let tripRoute = tripRoute {
                 self.title = tripRoute.title
-                self.tag = tripRoute.tag.map{ "# \($0)" }.joined(separator: " ")
+                self.tag = tripRoute.tag?.map{ "# \($0)" }.joined(separator: " ") ?? ""
             }
         }
     }

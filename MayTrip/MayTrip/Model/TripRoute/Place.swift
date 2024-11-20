@@ -6,10 +6,10 @@
 //
 import Foundation
 
+//새로운 Place 모델 - 희철
 struct Place: Codable, Identifiable, Hashable {
     let id: Int
     let name: String
-    let tripRoute: Int
     let tripDate: String
     let ordered: Int
     let coordinates: [Double]
@@ -18,11 +18,14 @@ struct Place: Codable, Identifiable, Hashable {
     enum CodingKeys: String, CodingKey {
         case id
         case name
-        case tripRoute = "trip_route"
         case tripDate = "trip_date"
         case ordered
         case coordinates
         case category
+    }
+    
+    struct Category: Codable{
+        let name: String
     }
 }
 
