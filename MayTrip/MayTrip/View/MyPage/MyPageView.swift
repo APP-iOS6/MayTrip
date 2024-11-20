@@ -129,6 +129,9 @@ struct MyPageView: View {
                     isShowingSignOutAlert = false
                 }
                 Button("회원탈퇴", role: .destructive) {
+                    Task {
+                        try await authStore.cancelAccount()
+                    }
                     isShowingSignOutAlert = false
                 }
             }

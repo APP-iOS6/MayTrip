@@ -86,4 +86,23 @@ extension AuthStore {
         }
         return isSuccess
     }
+    
+    func kakaoCancelAccount() async throws {
+        let isDeleteSuccess: Bool = await withCheckedContinuation { continuation in
+            UserApi.shared.unlink {(error) in
+                if let error = error {
+                    print(error)
+                    continuation.resume(returning: false)
+                }
+                else {
+                    print("unlink() success.")
+                    continuation.resume(returning: true)
+                }
+            }
+        }
+        
+        if isDeleteSuccess {
+            try await successCancelAccount()
+        }
+    }
 }

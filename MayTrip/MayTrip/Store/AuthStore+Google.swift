@@ -38,4 +38,25 @@ extension AuthStore {
         
         return isSuccess
     }
+    
+    func googleCancelAccount() async throws {
+        // 비동기로 Google 계정 해제
+        let isDeleteSuccess: Bool = await withCheckedContinuation { continuation in
+            GIDSignIn.sharedInstance.disconnect { error in
+                if let error = error {
+                    print("Google disconnect error: \(error.localizedDescription)")
+                    continuation.resume(returning: false)
+                } else {
+                    print("Delete google account success")
+                    continuation.resume(returning: true)
+                }
+            }
+        }
+        
+        // Google 계정 해제가 성공적으로 완료되었을 경우
+        if isDeleteSuccess {
+            let email = userStore.user.email
+            try await successCancelAccount()
+        }
+    }
 }

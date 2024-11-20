@@ -23,7 +23,10 @@ final class UserStore {
                 exp,
                 provider
                 """
-            ).eq("email", value:email).execute().value
+            )
+                .eq("email", value: email)
+                .eq("is_deleted", value: false)
+                .execute().value
             if result.isEmpty {
                 print("No data found for email \(email)")
                 self.user = User(id: 0, nickname: "", profileImage: nil, email: email, exp: 0, provider: provider)
@@ -69,5 +72,26 @@ final class UserStore {
         } catch {
             print(error)
         }
+    }
+    
+    func checkNickname(nickname: String) async throws -> Bool {
+        do {
+            let result: [User] = try await DB.from("USER").select("id")
+                .eq("nickname", value:nickname)
+                .eq("is_deleted", value: false)
+                .execute().value
+            
+            if result.isEmpty {
+                return true
+            }
+            return false
+        } catch {
+            print(error)
+            return false
+        }
+    }
+    
+    func resetUser() {
+        user = User(id: 0, nickname: "", profileImage: nil, email: "", exp: 0, provider: "")
     }
 }
