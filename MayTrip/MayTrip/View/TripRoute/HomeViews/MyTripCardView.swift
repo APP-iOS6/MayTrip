@@ -27,31 +27,32 @@ struct MyTripCardView: View {
                             }
                         } label: {
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color("accentColor"), lineWidth: 1)
+//                                .stroke(Color("accentColor"), lineWidth: 1)
+                                .foregroundStyle(.white)
                                 .overlay {
                                     VStack(alignment: .leading, spacing: 0) {
                                         HStack {
                                             // 첫번째 도시만 보여준다
                                             Text(route.city[0])
-                                                .font(.caption)
-                                                .foregroundStyle(.white)
-                                                .padding(.horizontal, 8)
-                                                .padding(5)
-                                                .background {
-                                                    RoundedRectangle(cornerRadius: 20, style: .circular)
-                                                        .foregroundStyle(.black)
-                                                }
-                                            
-                                            Spacer()
-                                            
-                                            Text(dateStore.isOnATrip(route.start_date, end: route.end_date) ? "여행중" : dateStore.calcDDay(route.start_date))
-                                                .font(.caption)
+                                                .font(.footnote)
                                                 .foregroundStyle(Color("accentColor"))
                                                 .padding(.horizontal, 8)
                                                 .padding(5)
                                                 .background {
                                                     RoundedRectangle(cornerRadius: 20, style: .circular)
-                                                        .foregroundStyle(Color("accentColor").opacity(0.15))
+                                                        .foregroundStyle(Color("accentColor").opacity(0.2))
+                                                }
+                                            
+                                            Spacer()
+                                            
+                                            Text(dateStore.isOnATrip(route.start_date, end: route.end_date) ? "여행중" : dateStore.calcDDay(route.start_date))
+                                                .font(.footnote)
+                                                .foregroundStyle(.black)
+                                                .padding(.horizontal, 8)
+                                                .padding(5)
+                                                .background {
+                                                    RoundedRectangle(cornerRadius: 20, style: .circular)
+                                                        .foregroundStyle(Color(uiColor: .systemGray6))
                                                 }
                                         }
                                         .padding(10)
