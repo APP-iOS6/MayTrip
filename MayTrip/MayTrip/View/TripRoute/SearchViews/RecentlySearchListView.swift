@@ -9,32 +9,47 @@
 import SwiftUI
 
 struct RecentlySearchListView: View {
+    @StateObject var tripRouteStore: TripRouteStore
+    @Binding var searchList: [String]
+    
     var body: some View {
-        Text("최근 검색어")
-            .padding(.top, 25)
-        
-        ScrollView(.horizontal) {
-            HStack {
-                ForEach(0..<8) { index in
-                    Button {
-                        
-                    } label: {
-                        RoundedRectangle(cornerRadius: 17)
-                            .stroke(.gray, lineWidth: 1)
-                            .overlay {
-                                HStack {
-                                    Text("검색 \(index + 1)")
-                                        .lineLimit(1)
-                                        .padding(8)
-                                    Image(systemName: "xmark")
-                                }
-                                .foregroundStyle(.gray)
+        VStack(alignment: .leading, spacing: 10) {
+            Text("최근 검색어")
+                .font(.title)
+                .bold()
+                .padding(.horizontal)
+                .padding(.top, 10)
+            
+            ScrollView(.horizontal) {
+                HStack(spacing: 10) {
+                    ForEach(searchList, id: \.self) { searchText in
+                        HStack(spacing: 15) {
+                            Button {
+                                tripRouteStore.searchTripRoute(searchText)
+                            } label: {
+                                Text(searchText)
                             }
+                            
+                            Button {
+                                searchList.removeAll(where: { $0.contains(searchText) })
+                                UserDefaults.standard.set(searchList, forKey: "searchList")
+                            } label: {
+                                Image(systemName: "xmark")
+                            }
+                        }
+                        .padding(10)
+                        .padding(.horizontal, 8)
+                        .foregroundStyle(.white)
+                        .background {
+                            RoundedRectangle(cornerRadius: 20, style: .circular)
+                                .foregroundStyle(.black)
+                        }
                     }
-                    .frame(width: 100, height: 35)
                 }
             }
+            .padding(.horizontal)
+            .scrollIndicators(.hidden)
         }
-        .scrollIndicators(.hidden)
+        .padding(.top, 10)
     }
 }
