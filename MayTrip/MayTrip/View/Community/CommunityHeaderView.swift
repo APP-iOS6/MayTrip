@@ -22,7 +22,6 @@ struct CommunityHeaderView: View {
                         selectedPostCategory = tag
                     } label: {
                         Text(tag.rawValue)
-                            .bold()
                             .font(.system(size: width * 0.042))
                             .foregroundStyle($selectedPostCategory.wrappedValue == tag ? .black : .gray)
                             .padding(.horizontal, width * 0.02)
@@ -49,7 +48,6 @@ struct CommunityHeaderView: View {
             } label: {
                 Text("최신순")
                     .font(.callout)
-                    .fontWeight(.semibold)
             }
             .disabled(selectedOrderCategory == .new)
             .foregroundStyle(selectedOrderCategory == .new ? Color.accent : Color.gray)
@@ -61,12 +59,10 @@ struct CommunityHeaderView: View {
             } label: {
                 Text("댓글순")
                     .font(.callout)
-                    .fontWeight(.semibold)
             }
             .disabled(selectedOrderCategory == .reply)
             .foregroundStyle(selectedOrderCategory == .reply ? Color.accent : Color.gray)
         }
-        .bold()
         .frame(height: height * 0.03)
         .padding(.horizontal, width * 0.06)
     }
