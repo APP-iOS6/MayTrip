@@ -12,7 +12,7 @@ struct Post: Codable { // 게시물 DB에서 불러오기용
     let title: String
     let text: String
     let author: Int
-    let image: String? // 최대 5개?
+    let image: [String] // 최대 5개?
     let category: Int // 나중에 이넘으로 제한두기
     let createAt: Date
     let updateAt: Date
@@ -34,7 +34,7 @@ struct PostUserVer { // 게시물에 유저의 프로필 이미지, 닉네임들
     let title: String
     let text: String
     let author: User
-    let image: String?
+    let image: [String]
     let category: Int
     let createAt: Date
     let updateAt: Date
@@ -44,7 +44,7 @@ struct PostDB: Codable { // 게시물 업로드용
     let title: String
     let text: String
     let author: Int
-    let image: String?
+    let image: [String]
     let category: Int
     
     enum CodingKeys: String, CodingKey {
