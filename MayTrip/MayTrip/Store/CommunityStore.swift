@@ -26,7 +26,7 @@ class CommunityStore {
                 let postDB: PostDB = PostDB(title: title, text: text, author: author.id, image: images, category: categoryNumber)
                 
                 try await DB.from("POST").insert(postDB).execute()
-                //                try await updatePost()
+                try await updatePost()
             } catch {
                 print("Fail to add content: \(error)")
             }
