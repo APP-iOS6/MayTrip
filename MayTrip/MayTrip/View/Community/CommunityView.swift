@@ -34,6 +34,7 @@ struct CommunityView: View {
                     
                     if communityStore.posts.isEmpty {
                         Text("게시물이 없습니다")
+                            .foregroundStyle(.gray)
                     }
                 }
                 .navigationTitle("커뮤니티")
