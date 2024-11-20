@@ -38,7 +38,7 @@ struct RecentlySearchListView: View {
                             }
                         }
                         .padding(10)
-                        .padding(.horizontal, 8)
+                        .padding(.horizontal, 5)
                         .foregroundStyle(.white)
                         .background {
                             RoundedRectangle(cornerRadius: 20, style: .circular)
