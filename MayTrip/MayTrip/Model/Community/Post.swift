@@ -29,7 +29,7 @@ struct Post: Codable { // 게시물 DB에서 불러오기용
     }
 }
 
-struct PostUserVer { // 게시물에 유저의 프로필 이미지, 닉네임들을 보여주기 위해 실제로 사용할 모델
+struct PostUserVer: Hashable { // 게시물에 유저의 프로필 이미지, 닉네임들을 보여주기 위해 실제로 사용할 모델
     let id: Int
     let title: String
     let text: String
