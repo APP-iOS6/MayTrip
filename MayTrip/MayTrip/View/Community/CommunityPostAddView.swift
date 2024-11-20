@@ -143,13 +143,17 @@ struct CommunityPostAddView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("게시글 작성")
+        .toolbarBackground(.hidden, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button {
                     dismiss()
                 } label: {
-                    Image(systemName: "xmark")
+                    Image(systemName: "chevron.left")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 15, height: 15)
                         .foregroundStyle(.black)
                 }
             }
@@ -161,7 +165,8 @@ struct CommunityPostAddView: View {
                         dismiss()
                     }
                 } label: {
-                    Text("작성")
+                    Text("완료")
+                        .foregroundStyle(title.isEmpty || text.isEmpty ? Color.gray : Color("accentColor"))
                 }
                 .disabled(title.isEmpty || text.isEmpty)
             }
