@@ -123,6 +123,7 @@ class TripRouteStore: ObservableObject {
     }
     
     //여행 루트 장소 등록하는 함수
+    @MainActor
     private func addPlace(routeId: Int) async throws -> Void{
         for i in 0 ..< places.count{
             places[i].tripRoute = routeId
@@ -163,7 +164,7 @@ class TripRouteStore: ObservableObject {
         }
         let tripRoute = TripRoutePost(title: title, tag: tag, city: city, writeUser: userId, startDate: startDate, endDate: endDate)
         
-        do{
+        do {
             try await db
                 .from("TRIP_ROUTE")
                 .update(tripRoute)
@@ -171,7 +172,7 @@ class TripRouteStore: ObservableObject {
                 .execute()
 
             try await replacePlaces(routeId: routeId)
-        }catch{
+        } catch {
             print("Route Update Error: \(error)")
         }
     }
@@ -183,7 +184,7 @@ class TripRouteStore: ObservableObject {
             places[i].tripRoute = routeId
         }
         
-        do{
+        do {
             try await db
                 .from("PLACE")
                 .delete()
@@ -191,7 +192,7 @@ class TripRouteStore: ObservableObject {
                 .execute()
             
             try await addPlace(routeId: routeId)
-        }catch{
+        } catch {
             print("Places Upsert Error: \(error)")
         }
     }
