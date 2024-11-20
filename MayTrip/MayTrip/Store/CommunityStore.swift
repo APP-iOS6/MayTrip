@@ -10,31 +10,45 @@ import SwiftUI
 @Observable
 class CommunityStore {
     let DB = DBConnection.shared
+    let storageStore = StorageStore.shared
     
     var posts: [PostUserVer] = []
     var postsForDB: [Post] = []
+    var isUpadting: Bool = true
     
-    func addPost(title: String, text: String, author: User, category: String) async { // 게시물 작성
+    func addPost(title: String, text: String, author: User, image: [UIImage], category: String) async { // 게시물 작성
+        isUpadting = true
         let categoryNumber = getCategoryNumber(category: category)
         
-        do {
-            let postDB: PostDB = PostDB(title: title, text: text, author: author.id, image: "", category: categoryNumber)
-            try await DB.from("POST").insert(postDB).execute()
-            try await updatePost()
-        } catch {
-            print("Fail to add content: \(error)")
+        Task {
+            do {
+                let images = try await storageStore.uploadImage(images: image)
+                let postDB: PostDB = PostDB(title: title, text: text, author: author.id, image: images, category: categoryNumber)
+                
+                try await DB.from("POST").insert(postDB).execute()
+                try await updatePost()
+            } catch {
+                print("Fail to add content: \(error)")
+            }
         }
     }
     
     func updatePost() async throws { // 업데이트된 DB로부터 게시물 불러오기 현재는 최신순으로 해놨는데 나중에 정렬 기준을 받아서 그에 맞춰서도 가능
-        postsForDB = try await DB.from("POST").select().execute().value
-        postsForDB = postsForDB.sorted { $0.id > $1.id }
-        
-        posts = []
-        for post in postsForDB {
-            let userInfo = try await getUserInfo(userID: post.author)
+        do {
+            postsForDB = try await DB.from("POST").select().execute().value
+            postsForDB = postsForDB.sorted { $0.id > $1.id }
             
-            posts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: post.image, category: post.category, createAt: post.createAt, updateAt: post.updateAt))
+            posts = []
+            for post in postsForDB {
+                let userInfo = try await getUserInfo(userID: post.author)
+                let images = try await storageStore.getImages(pathes: post.image)
+                
+                posts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: images, category: post.category, createAt: post.createAt, updateAt: post.updateAt))
+            }
+            
+            isUpadting = false
+        } catch {
+            print(error)
         }
     }
     

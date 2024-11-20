@@ -24,35 +24,39 @@ struct CommunityView: View {
     
     var body: some View {
         NavigationStack {
-            GeometryReader { proxy in
-                VStack(spacing: proxy.size.height * 0.015) {
-                    CommunityHeaderView(selectedPostCategory: $selectedPostCategory, selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
-                    
-                    CommunityBodyView(selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
-                }
-                .toolbar {
-                    HStack(spacing: 20) {
-                        Spacer()
+            if communityStore.isUpadting {
+                ProgressView()
+            } else {
+                GeometryReader { proxy in
+                    VStack(spacing: proxy.size.height * 0.015) {
+                        CommunityHeaderView(selectedPostCategory: $selectedPostCategory, selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
                         
-                        Button { // 검색 버튼 로직 추가하기
+                        CommunityBodyView(selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
+                    }
+                    .toolbar {
+                        HStack(spacing: 20) {
+                            Spacer()
                             
-                        } label: {
-                            Image(systemName: "magnifyingglass")
-                                .frame(width: 15, height:  15)
-                                .foregroundStyle(Color.accent)
-                        }
-                        
-                        NavigationLink { // 게시글 작성
-                            CommunityPostAddView()
-                        } label: {
-                            Image(systemName: "square.and.pencil")
-                                .frame(width: 15, height:  15)
-                                .foregroundStyle(Color.accent)
-                                .padding(.trailing, screenWidth * 0.01)
+                            Button { // 검색 버튼 로직 추가하기
+                                
+                            } label: {
+                                Image(systemName: "magnifyingglass")
+                                    .frame(width: 15, height:  15)
+                                    .foregroundStyle(Color.accent)
+                            }
+                            
+                            NavigationLink { // 게시글 작성
+                                CommunityPostAddView()
+                            } label: {
+                                Image(systemName: "square.and.pencil")
+                                    .frame(width: 15, height:  15)
+                                    .foregroundStyle(Color.accent)
+                                    .padding(.trailing, screenWidth * 0.01)
+                            }
                         }
                     }
+                    .background(Color(uiColor: .systemGray6))
                 }
-                .background(Color(uiColor: .systemGray6))
             }
         }
         .onAppear {
@@ -67,5 +71,5 @@ struct CommunityView: View {
     NavigationStack {
         CommunityView()
     }
-        .environment(CommunityStore())
+    .environment(CommunityStore())
 }

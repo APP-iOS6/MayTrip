@@ -157,7 +157,7 @@ struct CommunityPostAddView: View {
             ToolbarItem(placement: .confirmationAction) {
                 Button {
                     Task {
-                        try await communityStore.addPost(title: title, text: text, author: userStore.user, category: postCategory.rawValue)
+                        try await communityStore.addPost(title: title, text: text, author: userStore.user, image: images, category: postCategory.rawValue)
                         dismiss()
                     }
                 } label: {
