@@ -11,29 +11,35 @@ import UIKit
 struct ChattingRoomView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(ChatStore.self) private var chatStore: ChatStore
-    let userStore = UserStore.shared
+    @EnvironmentObject var navigationManager: NavigationManager
+    
+    @FocusState var focused: Bool
     @State var message: String = ""
     @State var route: Int?
     @State var image: String?
-    @FocusState var focused: Bool
-    let chatRoom: ChatRoom
-    var chatLogs: [ChatLog]
-    let otherUser: User
     @State var isScrollTop: Bool = true
     @State var isSend: Bool = false
+    
+    let userStore = UserStore.shared
+    
+    let chatRoom: ChatRoom
+    let otherUser: User
     
     var body: some View {
         VStack {
             HStack {
                 Button {
                     // 채팅을 하나도 안보내고 나가는 경우엔 채팅방 삭제
-                    if chatLogs.count == 0 {
+                    if chatStore.enteredChatLogs.count == 0 {
                         Task {
                             try await chatStore.deleteChatRoom(chatRoom)
                         }
                     }
-                    
-                    dismiss()
+                    if navigationManager.chatPath.isEmpty {
+                        dismiss()
+                    } else {
+                        navigationManager.pop()
+                    }
                 } label: {
                     Image(systemName: "chevron.left")
                         .resizable()
@@ -62,15 +68,14 @@ struct ChattingRoomView: View {
                     //                                .foregroundStyle(.gray)
                     //                                .padding()
                     
-                    ForEach(chatLogs) { log in
-                        if log.writeUser == userStore.user.id {
-                            // 내가 보낸 메세지
+                    ForEach(chatStore.enteredChatLogs) { log in
+                        if log.writeUser == userStore.user.id { // 내가 보낸 메세지
                             HStack(alignment: .bottom, spacing: 0) {
                                 Spacer()
                                 
                                 VStack(alignment: .trailing) {
                                     //                                            Text("읽음")
-                                    Text("\(chatStore.convertDateToTimeString(log.createdAt))")
+                                    Text(chatStore.convertDateToTimeString(log.createdAt))
                                 }
                                 .font(.footnote)
                                 .foregroundStyle(.gray)
@@ -87,10 +92,9 @@ struct ChattingRoomView: View {
                                     .padding(.horizontal)
                             }
                             .padding(.bottom)
-                        } else {
-                            // 상대가 보낸 메세지
+                        } else { // 상대가 보낸 메세지
                             HStack(alignment: .bottom, spacing: 0) {
-                                Text("\(log.message)")
+                                Text(log.message)
                                     .font(.callout)
                                     .foregroundStyle(.black)
                                     .padding()
@@ -103,7 +107,7 @@ struct ChattingRoomView: View {
                                 
                                 VStack(alignment: .leading) {
                                     //                                            Text("읽음")
-                                    Text("\(chatStore.convertDateToTimeString(log.createdAt))")
+                                    Text(chatStore.convertDateToTimeString(log.createdAt))
                                 }
                                 .font(.footnote)
                                 .foregroundStyle(.gray)
@@ -176,6 +180,13 @@ struct ChattingRoomView: View {
         .navigationBarBackButtonHidden()
         .onTapGesture {
             focused = false
+        }
+        .onDisappear {
+            if chatStore.enteredChatLogs.isEmpty {
+                Task {
+                    try await chatStore.deleteChatRoom(chatRoom)
+                }
+            }
         }
     }
 }

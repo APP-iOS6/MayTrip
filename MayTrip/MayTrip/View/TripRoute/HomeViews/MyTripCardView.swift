@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct MyTripCardView: View {
-    @StateObject var tripRouteStore: TripRouteStore
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     @EnvironmentObject var navigationManager: NavigationManager
     var dateStore: DateStore = .shared
     let user: User = UserStore.shared.user
@@ -65,7 +65,7 @@ struct MyTripCardView: View {
                                             .multilineTextAlignment(.leading)
                                         
                                         HStack(spacing: 0) {
-                                            Text("\(dateStore.convertDateToString(dateStore.convertStringToDate(route.start_date), format: "yy.MM.dd"))")
+                                            Text(dateStore.convertDateToString(dateStore.convertStringToDate(route.start_date), format: "yy.MM.dd"))
                                             
                                             if route.end_date != route.start_date {
                                                 Text(" - \(dateStore.convertDateToString(dateStore.convertStringToDate(route.end_date), format: "yy.MM.dd"))")

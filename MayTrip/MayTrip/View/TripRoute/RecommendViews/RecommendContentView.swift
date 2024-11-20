@@ -94,7 +94,6 @@ struct RecommendContentView: View {
                 }
                 .padding(10)
             }
-//            .frame(height: UIScreen.main.bounds.size.height / 5)
             .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 10))
         }
