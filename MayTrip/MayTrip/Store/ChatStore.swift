@@ -214,6 +214,7 @@ class ChatStore {
                     .from("CHAT_LOG")
                     .select()
                     .eq("id", value: id)
+                    .order("created_at", ascending: false)
                     .execute()
                     .value
             } else {

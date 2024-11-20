@@ -57,7 +57,6 @@ struct CommunityPostListView: View {
                         .lineLimit(3)
                         .font(.system(size: 16))
                     
-                    
 //                    if post.images.count > 0 {
 //                        imagesView(image: post.images, width: width, height: height)
 //                    }
