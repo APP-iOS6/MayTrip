@@ -76,7 +76,10 @@ struct SearchView: View {
                 }
                 .padding(.horizontal)
                 
-                RecentlySearchListView(tripRouteStore: tripRouteStore, searchList: $searchList)
+                if searchList.count > 0 {
+                    RecentlySearchListView(tripRouteStore: tripRouteStore, searchList: $searchList)
+                    
+                }
                 
                 SearchRootView(tripRouteStore: tripRouteStore)
             }
