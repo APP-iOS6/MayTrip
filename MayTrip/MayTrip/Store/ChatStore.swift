@@ -340,14 +340,16 @@ class ChatStore {
         let dateString = formatter.string(from: date)
         
         if case let (year?, month?, day?, hour?, minute?) = (dateDiff.year, dateDiff.month, dateDiff.day, dateDiff.hour, dateDiff.minute) {
-            if year == 0 || month == 0 || day == 0 {
+            if year != 0 || month != 0 || day != 0 {
+                return dateString
+            } else {
                 if hour != 0 {
                     return "\(hour)시간 전"
-                }
-                if minute != 0 {
+                } else if minute != 0 {
                     return "\(minute)분 전"
+                } else {
+                    return "방금 전"
                 }
-                return "방금 전"
             }
         }
         return dateString
