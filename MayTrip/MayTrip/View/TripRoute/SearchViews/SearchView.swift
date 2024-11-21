@@ -65,8 +65,8 @@ struct SearchView: View {
                             .foregroundStyle(Color(uiColor: .gray))
                         }
                     }
-                    .padding(10)
-                    .padding(.horizontal, 8)
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 18)
                     .background {
                         RoundedRectangle(cornerRadius: 20)
                             .stroke(.gray, lineWidth: 1)
