@@ -33,8 +33,6 @@ struct SearchView: View {
                     
                     HStack {
                         TextField("어디로 떠나시나요?", text: $searchText)
-                            .onChange(of: searchText) { oldValue, newValue in
-                            }
                             .onSubmit {
                                 Task {
                                     guard searchText != "" else { return }
