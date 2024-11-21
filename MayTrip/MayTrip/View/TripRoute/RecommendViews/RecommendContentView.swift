@@ -33,8 +33,8 @@ struct RecommendContentView: View {
                     Text(route.city[0])
                         .font(.footnote)
                         .foregroundStyle(Color("accentColor"))
-                        .padding(.horizontal, 8)
-                        .padding(5)
+                        .padding(.horizontal, 13)
+                        .padding(.vertical, 5)
                         .background {
                             RoundedRectangle(cornerRadius: 20, style: .circular)
                                 .foregroundStyle(Color("accentColor").opacity(0.2))
