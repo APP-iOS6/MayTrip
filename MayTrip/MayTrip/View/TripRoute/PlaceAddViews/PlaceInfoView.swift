@@ -68,7 +68,6 @@ struct PlaceInfoView: View {
                                         .fill(.clear)
                                         .frame(width: 1)
                                 }
-                                
                             }
                             
                             // 우측 장소 카드 영역
@@ -76,7 +75,6 @@ struct PlaceInfoView: View {
                                 Text("\(place.name)")
                                     .font(.system(size: 16))
                                     .bold()
-                                
                                 Text(PlaceStore.getCategory(place.categoryCode))
                                     .font(.system(size: 12))
                                     .foregroundStyle(.gray)
@@ -107,7 +105,6 @@ struct PlaceInfoView: View {
                 .scrollDisabled(true)
                 .frame(height: CGFloat(places[dateIndex].count) * height * 0.1)   // scrollview 내에 list를 넣게되어 리스트뷰 높이를 지정
             }
-
             
             // 하단 '장소추가' 버튼
             if isEditing {
