@@ -56,7 +56,11 @@ struct PlaceHeaderView: View {
                 )
                 Task {
                     if let tripRoute = tripRoute {
-                        try await tripRouteStore.updateTripRoute(routeId: tripRoute.id, userId: userStore.user.id)
+                        if userStore.user.id == tripRoute.writeUser.id {
+                            try await tripRouteStore.updateTripRoute(routeId: tripRoute.id, userId: userStore.user.id)
+                        } else {
+                            try await tripRouteStore.addTripRoute(userId: userStore.user.id)
+                        }
                     } else {
                         try await tripRouteStore.addTripRoute(userId: userStore.user.id)
                     }
