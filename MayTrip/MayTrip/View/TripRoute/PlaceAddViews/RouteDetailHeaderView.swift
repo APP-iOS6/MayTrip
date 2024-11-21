@@ -131,7 +131,13 @@ struct RouteDetailHeaderView: View {
                         Text("# \(city)")
                             .font(.system(size: 14))
                             .bold()
-                            .foregroundStyle(Color(UIColor.darkGray))
+                            .foregroundStyle(Color("accentColor"))
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 5)
+                            .background {
+                                RoundedRectangle(cornerRadius: 20, style: .circular)
+                                    .foregroundStyle(Color.accent.opacity(0.2))
+                            }
                     }
                 }
             }
