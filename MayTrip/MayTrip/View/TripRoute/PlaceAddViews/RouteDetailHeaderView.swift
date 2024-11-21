@@ -23,59 +23,10 @@ struct RouteDetailHeaderView: View {
     }
     
     var body: some View {
-        headerView
-        titleView
-        cityTagsView
-    }
-    
-    var headerView: some View {
-        HStack {
-            Button {
-                dateStore.initDate()
-                dismiss()
-            } label: {
-                Image(systemName: "chevron.left")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 15, height: 15)
-            }
-            .foregroundStyle(.primary)
-            
-            Spacer()
-            
-            Menu {
-                if isWriter {   // 루트 작성자일때 메뉴버튼
-                    Button("편집하기") {
-                        // TODO: 루트 편집으로 이동, 편집완료시 db에 업데이트 로직
-                        navigationManager.push(.enterBasicInfo(tripRoute: tripRoute))
-                    }
-                    
-                    Button("삭제하기", role: .destructive) {
-                        showingDeleteAlert = true
-                    }
-                    
-                } else {    // 조회하는 사람일때 메뉴버튼
-                    Button("채팅하기") {
-                        // TODO: write유저와 채팅 연결
-                    }
-                    
-                    Button("신고하기", role: .destructive) {
-                        // TODO: write유저 신고 로직
-                    }
-                    .foregroundStyle(.red)
-                }
-                
-            } label: {
-                Image(systemName: "ellipsis")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 25, height: 25)
-            }
+        VStack {
+            titleView
+            cityTagsView
         }
-        .foregroundStyle(.primary)
-        .frame(height: 20)
-        .padding(.bottom, 10)
-        .padding(.horizontal)
         .alert("루트 삭제", isPresented: $showingDeleteAlert) {
             Button("취소", role: .cancel) {
                 
@@ -91,6 +42,54 @@ struct RouteDetailHeaderView: View {
             }
         } message: {
             Text("해당 루트를 삭제하시겠습니까?")
+        }
+        .navigationBarBackButtonHidden()
+        .toolbarBackground(.hidden, for: .navigationBar)
+        .navigationTitle("여행루트")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button {
+                    dateStore.initDate()
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 15, height: 15)
+                }
+                .foregroundStyle(.black)
+            }
+            
+            ToolbarItem(placement: .confirmationAction) {
+                Menu {
+                    if isWriter {   // 루트 작성자일때 메뉴버튼
+                        Button("편집하기") {
+                            // TODO: 루트 편집으로 이동, 편집완료시 db에 업데이트 로직
+                            navigationManager.push(.enterBasicInfo(tripRoute: tripRoute))
+                        }
+                        
+                        Button("삭제하기", role: .destructive) {
+                            showingDeleteAlert = true
+                        }
+                        
+                    } else {    // 조회하는 사람일때 메뉴버튼
+                        Button("채팅하기") {
+                            // TODO: write유저와 채팅 연결
+                        }
+                        
+                        Button("신고하기", role: .destructive) {
+                            // TODO: write유저 신고 로직
+                        }
+                        .foregroundStyle(.red)
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                }
+                .foregroundStyle(.black)
+            }
         }
     }
     

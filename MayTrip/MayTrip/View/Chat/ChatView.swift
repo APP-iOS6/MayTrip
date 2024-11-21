@@ -20,6 +20,7 @@ struct ChatView: View {
                 if components.count == 0 {
                     Spacer()
                     Text("게시물을 공유하고 동행인을 찾아보세요")
+                        .foregroundStyle(.gray)
                     Spacer()
                 } else {
                     List {
@@ -41,9 +42,13 @@ struct ChatView: View {
                                             .frame(width: 60, height: 60)
                                             .clipShape(Circle())
                                     } else {
-                                        Circle()
+                                        Image(systemName: "person.circle.fill")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .padding(5)
                                             .frame(width: 60, height: 60)
-                                            .foregroundStyle(.gray)
+                                            .clipShape(Circle())
+                                            .foregroundStyle(Color("accentColor").opacity(0.2))
                                     }
                                     
                                     VStack(alignment: .leading, spacing: 10) {
@@ -88,6 +93,7 @@ struct ChatView: View {
                                 .tint(.red)
                             }
                         }
+                        .listRowSeparator(.hidden)
                     }
                     .listStyle(.plain)
                 }
@@ -100,7 +106,6 @@ struct ChatView: View {
         }
     }
 }
-
 
 #Preview {
     NavigationStack {

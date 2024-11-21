@@ -43,7 +43,6 @@ struct RouteDetailView: View {
             let dateRange = dateStore.datesInRange()
             places = PlaceStore.convertPlacesToPlacePosts(tripRoute.place, dateRange: dateRange)
         }
-        .toolbar(.hidden)
     }
 }
 
