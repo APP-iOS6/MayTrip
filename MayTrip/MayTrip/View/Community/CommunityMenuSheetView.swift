@@ -70,13 +70,21 @@ struct CommunityMenuSheetView: View {
                                 }
                             }
                         } else {
-                            try await chatStore.saveChatRoom(selectedPostOwner) // 방 생성 후 채팅방 찾아서 이동
-                            
                             if let enteredChatRoom = chatStore.enteredChatRoom {
-                                navigationManager.selection = 2
-                                navigationManager.popToRoot()
+                                // 채팅방 나가기 한 경우
+                                try await chatStore.updateChatRoom(enteredChatRoom)
+                                
                                 DispatchQueue.main.async {
                                     navigationManager.push(.chatRoom(enteredChatRoom, user))
+                                }
+                            } else {
+                                try await chatStore.saveChatRoom(selectedPostOwner) // 방 생성 후 채팅방 찾아서 이동
+                                if let enteredChatRoom = chatStore.enteredChatRoom {
+                                    navigationManager.selection = 2
+                                    navigationManager.popToRoot()
+                                    DispatchQueue.main.async {
+                                        navigationManager.push(.chatRoom(enteredChatRoom, user))
+                                    }
                                 }
                             }
                         }
