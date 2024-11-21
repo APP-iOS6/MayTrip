@@ -95,29 +95,32 @@ struct RouteDetailHeaderView: View {
     }
     
     var titleView: some View {
-        HStack(alignment: .bottom) {
-            Text(tripRoute.title)
-                .font(.title)
-                .bold()
-        
-            Spacer()
+        VStack(alignment: .leading) {
+            HStack {
+                Text(tripRoute.title)
+                    .font(.title)
+                    .bold()
+                
+                Spacer()
+                
+                if !isWriter {
+                    Button {
+                        isScraped.toggle()
+                    } label: {
+                        Image(systemName: isScraped ? "bookmark.fill" : "bookmark")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 24, height: 24)
+                            .foregroundStyle(.orange)
+                    }
+                }
+            }
             
             Text("작성자: \(tripRoute.writeUser.nickname)")
                     .font(.footnote)
-            
-            if !isWriter {
-                Button {
-                    isScraped.toggle()
-                } label: {
-                    Image(systemName: isScraped ? "bookmark.fill" : "bookmark")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 24, height: 24)
-                        .foregroundStyle(.orange)
-                }
-            }
         }
-        .padding([.horizontal, .bottom])
+        .padding(.horizontal)
+        .padding(.bottom, 6)
     }
 
     var cityTagsView: some View {
