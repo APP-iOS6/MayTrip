@@ -179,11 +179,8 @@ struct ChattingRoomView: View {
             focused = false
         }
         .onDisappear {
-            if chatStore.enteredChatLogs.isEmpty {
-                Task {
-                    try await chatStore.deleteChatRoom(chatRoom)
-                }
-            }
+            chatStore.enteredChatRoom = nil
+            chatStore.enteredChatLogs = []
         }
     }
 }
