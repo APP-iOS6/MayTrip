@@ -44,7 +44,7 @@ class ChatStore {
                         switch type {
                         case "INSERT":
                             if table == "CHAT_ROOM" {
-                                if let chatRoom = try await fetchChatRooms(id) { // 최신순으로 채팅방 정렬해둠
+                                if let chatRoom = try await fetchChatRooms(id) {
                                     let chatLogs = try await fetchChatLogs(chatRoom: chatRoom)
                                     let otherUser = try await getOtherUser(chatRoom)
                                     let forChatComponent: (ChatRoom, [ChatLog], User) = (chatRoom, chatLogs, otherUser)
