@@ -101,8 +101,6 @@ struct ChattingRoomView: View {
                 
                 HStack {
                     TextField("메세지를 입력하세요", text: $message)
-                        .onChange(of: message) { oldValue, newValue in
-                        }
                         .keyboardType(.default)
                         .focused($focused)
                         .onSubmit {
