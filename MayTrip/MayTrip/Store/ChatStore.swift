@@ -95,7 +95,13 @@ class ChatStore {
                             print("UPDATE")
                         case "DELETE":
                             // 채팅방에서 모두 나간 경우엔 삭제, 삭제후 다시 패치 해준다
-                            try await setAllComponents()
+                            try await fetchChatRooms()
+                            
+                            // 삭제된 채팅방 걸러냄
+                            forChatComponents = forChatComponents.filter {
+                                chatRooms.contains($0.chatRoom)
+                            }
+                            isNeedUpdate.toggle()
                             print("DELETE")
                         default:
                             print("not supported event")
@@ -112,11 +118,6 @@ class ChatStore {
     func setAllComponents(_ isRefresh: Bool = false) async throws {
         Task {
             try await fetchChatRooms()
-            
-            // 삭제된 채팅방 걸러냄
-            forChatComponents = forChatComponents.filter {
-                chatRooms.contains($0.chatRoom)
-            }
             
             for chatRoom in chatRooms {
                 let chatLogs = try await fetchChatLogs(chatRoom:chatRoom, isRefresh: isRefresh)
