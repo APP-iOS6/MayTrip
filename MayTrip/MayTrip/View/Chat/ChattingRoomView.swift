@@ -50,8 +50,8 @@ struct ChattingRoomView: View {
                                 Text("\(log.message)")
                                     .font(.callout)
                                     .foregroundStyle(.white)
-                                    .padding(10)
-                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 10)
+                                    .padding(.horizontal, 18)
                                     .background {
                                         Rectangle()
                                             .foregroundStyle(Color("accentColor"))
@@ -65,8 +65,8 @@ struct ChattingRoomView: View {
                                 Text(log.message)
                                     .font(.callout)
                                     .foregroundStyle(.black)
-                                    .padding(10)
-                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 10)
+                                    .padding(.horizontal, 18)
                                     .background {
                                         Rectangle()
                                             .foregroundStyle(Color(uiColor: .systemGray6))
@@ -134,8 +134,8 @@ struct ChattingRoomView: View {
                     }
                     .disabled(message.count == 0)
                 }
-                .padding(10)
-                .padding(.horizontal, 8)
+                .padding(.vertical, 10)
+                .padding(.horizontal, 18)
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)
                         .stroke(Color(uiColor: .lightGray).opacity(0.3), lineWidth: 1)
