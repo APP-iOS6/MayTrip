@@ -64,7 +64,7 @@ struct EnterBasicInformationView: View {
                             isCalendarShow = true
                         } label: {
                             Image(systemName: "calendar")
-                            Text("\(dateString)")
+                            Text(dateString)
                         }
                         .foregroundStyle(!isCompleteDateSetting ? Color(uiColor: .lightGray) : Color.primary)
                         
