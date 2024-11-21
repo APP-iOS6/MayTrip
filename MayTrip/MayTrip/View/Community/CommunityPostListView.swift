@@ -95,6 +95,7 @@ struct CommunityPostListView: View {
             }
         }
         .padding(.horizontal)
+        .padding(.bottom, 20)
         .onTapGesture {
             isPresented = false
         }
