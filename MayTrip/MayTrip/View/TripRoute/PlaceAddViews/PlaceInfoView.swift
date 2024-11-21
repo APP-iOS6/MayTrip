@@ -49,7 +49,7 @@ struct PlaceInfoView: View {
                             VStack(spacing: 0) {
                                 if placeIndex != 0 {
                                     Line()
-                                        .stroke(Color(uiColor: .systemGray4), style: StrokeStyle(lineWidth: 1, dash: [5, 2], dashPhase: 0))
+                                        .stroke(Color(uiColor: .systemGray4))
                                         .frame(width: 1)
                                 } else {
                                     Rectangle()
@@ -61,7 +61,7 @@ struct PlaceInfoView: View {
                                 
                                 if placeIndex != places[dateIndex].count - 1 , places[dateIndex].count > 1 {
                                     Line()
-                                        .stroke(Color(uiColor: .systemGray4), style: StrokeStyle(lineWidth: 1, dash: [5, 2], dashPhase: 0))
+                                        .stroke(Color(uiColor: .systemGray4))
                                         .frame(width: 1)
                                 } else {
                                     Rectangle()
