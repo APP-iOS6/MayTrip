@@ -70,7 +70,23 @@ struct CommunityPostListView: View {
                         .font(.system(size: 16))
                     
                     if post.image.count > 0 {
-                        imagesView(image: post.image, width: width, height: height)
+                        ScrollView(.horizontal) {
+                            HStack(spacing: 0) {
+                                ForEach(post.image, id:\.self) { image in
+                                    Image(uiImage:image)
+                                        .resizable()
+                                        .aspectRatio(contentMode: getRatio(image: image) >= 8/3 ? .fit : .fill)
+                                        .scaledToFit()
+                                        .frame(width: width * 0.7, height: height * 0.3)
+                                        .clipped()
+                                        .padding(.horizontal, width * 0.05)
+                                }
+                            }
+                        }
+                        .scrollTargetLayout()
+                        .scrollTargetBehavior(.paging)
+                        .safeAreaPadding(.bottom)
+                        //                        imagesView(image: post.image, width: width, height: height)
                     }
                     
                     HStack {
@@ -111,7 +127,7 @@ struct CommunityPostListView: View {
     NavigationStack {
         CommunityView()
     }
-        .environment(CommunityStore())
+    .environment(CommunityStore())
 }
 
 extension CommunityPostListView {
