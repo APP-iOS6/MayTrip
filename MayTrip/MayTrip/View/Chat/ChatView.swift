@@ -96,7 +96,10 @@ struct ChatView: View {
         .navigationTitle("채팅")
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: chatStore.isNeedUpdate) { oldValue, newValue in
-            components = chatStore.forChatComponents
+            // 로그가 하나도 없는 경우엔 채팅 목록에서 안보이도록 함, 나가기 한 방은 걸러줌
+            components = chatStore.forChatComponents.filter {
+                $0.chatLogs.count > 0 && (($0.chatRoom.user1 == userStore.user.id && $0.chatRoom.isVisible == 1) || ($0.chatRoom.user2 == userStore.user.id && $0.chatRoom.isVisible == 2) || $0.chatRoom.isVisible == 0)
+            }
         }
     }
 }
