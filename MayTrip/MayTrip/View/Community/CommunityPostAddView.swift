@@ -97,6 +97,7 @@ struct CommunityPostAddView: View {
                                         VStack {
                                             HStack {
                                                 Spacer()
+                                                
                                                 Button {
                                                     images = images.filter {
                                                         $0 != image
@@ -189,7 +190,6 @@ struct CommunityPostAddView: View {
                 } label: {
                     Text("닫기")
                 }
-                
             }
         }
     }
