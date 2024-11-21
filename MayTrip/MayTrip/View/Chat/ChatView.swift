@@ -25,7 +25,7 @@ struct ChatView: View {
                     List {
                         ForEach(components, id: \.chatRoom) { component in
                             Button {
-                                chatStore.enteredChatRoom = [component.chatRoom]
+                                chatStore.enteredChatRoom = component.chatRoom
                                 chatStore.enteredChatLogs = component.chatLogs
                                 
                                 DispatchQueue.main.async {
