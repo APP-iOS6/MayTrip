@@ -27,7 +27,6 @@ struct MyTripCardView: View {
                             }
                         } label: {
                             RoundedRectangle(cornerRadius: 10)
-//                                .stroke(Color("accentColor"), lineWidth: 1)
                                 .foregroundStyle(.white)
                                 .overlay {
                                     VStack(alignment: .leading, spacing: 0) {
@@ -36,8 +35,8 @@ struct MyTripCardView: View {
                                             Text(route.city[0])
                                                 .font(.footnote)
                                                 .foregroundStyle(Color("accentColor"))
-                                                .padding(.horizontal, 8)
-                                                .padding(5)
+                                                .padding(.horizontal, 13)
+                                                .padding(.vertical, 5)
                                                 .background {
                                                     RoundedRectangle(cornerRadius: 20, style: .circular)
                                                         .foregroundStyle(Color("accentColor").opacity(0.2))
