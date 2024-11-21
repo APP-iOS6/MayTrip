@@ -155,6 +155,11 @@ struct ChattingRoomView: View {
                             try await chatStore.deleteChatRoom(chatRoom)
                         }
                     }
+                    
+                    // entered 변수 리셋
+                    chatStore.enteredChatRoom = nil
+                    chatStore.enteredChatLogs = []
+                    
                     if navigationManager.chatPath.isEmpty {
                         dismiss()
                     } else {
@@ -172,13 +177,6 @@ struct ChattingRoomView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onTapGesture {
             focused = false
-        }
-        .onDisappear {
-            if chatStore.enteredChatLogs.isEmpty {
-                Task {
-                    try await chatStore.deleteChatRoom(chatRoom)
-                }
-            }
         }
     }
 }
