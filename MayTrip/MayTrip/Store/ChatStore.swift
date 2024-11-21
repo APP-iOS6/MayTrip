@@ -184,8 +184,15 @@ class ChatStore {
                 .execute()
                 .value
             
-            if !enteredChatRoom.isEmpty { // 방 존재시 로그도 업로드
-                enteredChatLogs = try await fetchChatLogs(chatRoom: enteredChatRoom.first!)
+            if let enteredChatRoom = enteredChatRoom.first { // 방 존재시 로그도 업로드
+                if (userID1 == userStore.user.id && enteredChatRoom.isVisible == 2) || (userID2 == userStore.user.id && enteredChatRoom.isVisible == 1) { // 채팅방에서 나갔다가 게시글 보고 다시 채팅 거는 경우를 위해서
+                    try await db.from("CHAT_ROOM")
+                        .update(["is_visible":"0"])
+                        .eq("id", value: enteredChatRoom.id)
+                        .execute()
+                }
+                
+                enteredChatLogs = try await fetchChatLogs(chatRoom: enteredChatRoom)
                 return true
             }
             return false
