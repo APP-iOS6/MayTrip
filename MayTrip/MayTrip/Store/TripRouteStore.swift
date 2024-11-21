@@ -15,7 +15,7 @@ class TripRouteStore: ObservableObject {
     @Published var list: [TripRouteSimple] = []
     @Published var tripRoute: [TripRoute] = []
     @Published var myTripRoutes: [TripRouteSimple] = []
-    @Published private(set) var filteredTripRoutes: [TripRouteSimple] = []
+    @Published var filteredTripRoutes: [TripRouteSimple] = []
     
     //트립 루트 저장용
     @Published var title: String = ""
@@ -24,6 +24,9 @@ class TripRouteStore: ObservableObject {
     @Published var startDate: String = ""
     @Published var endDate: String = ""
     @Published var places: [PlacePost] = []
+    
+    var listStartIndex: Int = 0
+    var listEndIndex: Int = 10
     
     //여행 루트 리스트 가져오는 함수
     @MainActor
@@ -50,19 +53,30 @@ class TripRouteStore: ObservableObject {
     
     //여행 루트 리스트 keyword를 통해 가져오기 - 희철
     @MainActor
-    func getByKeyword(keyword: String) async -> Void {
+    func getByKeyword(keyword: String) async -> [TripRouteSimple] {
         let userId = userStore.user.id
         do {
-            list = try await db
+            let tripRouteList: [TripRouteSimple] = try await db
                 .from("trip_route_with_storage_count")
-                .select("id, title, city, tag, start_date, end_date, user_id, count, created_at")
+                .select("id, title, city, tag, start_date, end_date, user_id, count:count, created_at")
                 .or("user_id.eq.\(userId), user_id.is.null")
                 .or("title.like.%\(keyword)%, tag.cs.{\(keyword)}, city.cs.{\(keyword)}, place_name.like.%\(keyword)%")
-                .order("created_at", ascending: false)
+//                .or("title.like.%\(keyword)%, 'array_to_string(tag, ',')'.like.%\(keyword)%, 'array_to_string(city, ',')'.like.%\(keyword)%, place_name.like.%\(keyword)%")
+                .order("count", ascending: false)
+                .range(from: listStartIndex, to: listEndIndex)
                 .execute()
                 .value
+            tripRouteList.forEach{
+                print($0)
+            }
+            
+            listStartIndex += 10
+            listEndIndex += 9
+            
+            return tripRouteList
         } catch {
             print(error)
+            return []
         }
     }
     
@@ -101,12 +115,8 @@ class TripRouteStore: ObservableObject {
                 .from("TRIP_ROUTE")
                 .select(
                         """
-                        id, title, tag, city, writeUser:write_user(
-                        id,
-                        nickname,
-                        profile_image
-                        )
-                        ,start_date, end_date
+                        id, title, tag, city, writeUser:write_user
+                        ,start_date, end_date, created_at
                         """
                 )
                 .eq("write_user", value: userStore.user.id)

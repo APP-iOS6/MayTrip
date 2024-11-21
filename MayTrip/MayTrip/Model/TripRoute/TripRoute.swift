@@ -73,6 +73,19 @@ struct TripRouteSimple: Identifiable ,Codable{
         case count
         case createdAt = "created_at"
     }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(Int.self, forKey: .id)
+        self.title = try container.decode(String.self, forKey: .title)
+        self.tag = try container.decodeIfPresent([String].self, forKey: .tag)
+        self.city = try container.decode([String].self, forKey: .city)
+        self.startDate = try container.decode(String.self, forKey: .startDate)
+        self.endDate = try container.decode(String.self, forKey: .endDate)
+        self.userId = try container.decodeIfPresent(Int.self, forKey: .userId)
+        self.count = (try? container.decode(Int.self, forKey: .count)) ?? 0
+        self.createdAt = try container.decode(Date.self, forKey: .createdAt)
+    }
 }
 
 struct TripRouteUser: Codable, Hashable {

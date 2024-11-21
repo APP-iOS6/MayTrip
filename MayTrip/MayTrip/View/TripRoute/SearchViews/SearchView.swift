@@ -37,7 +37,8 @@ struct SearchView: View {
                                 Task {
                                     guard searchText != "" else { return }
                                     
-                                    tripRouteStore.searchTripRoute(searchText)
+                                    //tripRouteStore.searchTripRoute(searchText)
+                                    tripRouteStore.filteredTripRoutes = await tripRouteStore.getByKeyword(keyword: searchText)
                                     
                                     if !searchList.contains(searchText) {
                                         searchList.insert(searchText, at: 0)
@@ -45,7 +46,7 @@ struct SearchView: View {
                                     UserDefaults.standard.set(searchList, forKey: "searchList")
                                     
                                     searchText = ""
-                                    focused = true
+                                    focused = false
                                 }
                             }
                             .keyboardType(.default)
