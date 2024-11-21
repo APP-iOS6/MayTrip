@@ -67,7 +67,7 @@ struct RecommendContentView: View {
                     .padding(.top, 8)
                     .multilineTextAlignment(.leading)
                 
-                Text("\(dateStore.convertPeriodToString(route.start_date, end: route.end_date)) 여행")
+                Text("\(dateStore.convertPeriodToString(route.startDate, end: route.endDate)) 여행")
                     .font(.callout)
                     .foregroundStyle(.gray)
                     .padding(.horizontal, 10)

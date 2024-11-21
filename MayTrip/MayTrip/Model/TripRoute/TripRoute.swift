@@ -56,9 +56,23 @@ struct TripRouteSimple: Identifiable ,Codable{
     var title: String
     var tag: [String]?
     var city: [String]
-    let writeUser: TripRouteUser
-    var start_date: String
-    var end_date: String
+    var startDate: String
+    var endDate: String
+    var userId: Int? //북마크 한 사람
+    var count: Int
+    var createdAt: Date
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case tag
+        case city
+        case startDate = "start_date"
+        case endDate = "end_date"
+        case userId = "user_id"
+        case count
+        case createdAt = "created_at"
+    }
 }
 
 struct TripRouteUser: Codable, Hashable {

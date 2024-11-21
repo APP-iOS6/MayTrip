@@ -48,6 +48,24 @@ class TripRouteStore: ObservableObject {
         }
     }
     
+    //여행 루트 리스트 keyword를 통해 가져오기 - 희철
+    @MainActor
+    func getByKeyword(keyword: String) async -> Void {
+        let userId = userStore.user.id
+        do {
+            list = try await db
+                .from("trip_route_with_storage_count")
+                .select("id, title, city, tag, start_date, end_date, user_id, count, created_at")
+                .or("user_id.eq.\(userId), user_id.is.null")
+                .or("title.like.%\(keyword)%, tag.cs.{\(keyword)}, city.cs.{\(keyword)}, place_name.like.%\(keyword)%")
+                .order("created_at", ascending: false)
+                .execute()
+                .value
+        } catch {
+            print(error)
+        }
+    }
+    
     //여행 루트 상세 정보 가져오는 함수
     @MainActor
     func getTripRoute(id: Int) async throws -> Void {
