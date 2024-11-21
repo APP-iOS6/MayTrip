@@ -9,61 +9,90 @@ import SwiftUI
 
 struct SearchView: View {
     @Environment(\.dismiss) var dismiss
+    @StateObject var tripRouteStore: TripRouteStore
     @State var  searchText: String = ""
     @FocusState var focused: Bool
+    @State private var searchList: [String] = []
     
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 15, height:  15)
-                }
-                .padding(.trailing, 5)
-                
+        ZStack {
+            VStack(alignment: .leading, spacing: 0) {
                 HStack {
-                    TextField("어디로 떠나시나요?", text: $searchText)
-                        .onChange(of: searchText) { oldValue, newValue in
-                            
-                        }
-                        .keyboardType(.default)
-                        .focused($focused)
-                    
-                    
                     Button {
-                        searchText = ""
-                        focused = false
+                        tripRouteStore.resetSearchTripRoute()
+                        
+                        dismiss()
                     } label: {
-                        VStack {
-                            if searchText.count > 0 {
-                                Image(systemName: "xmark.circle.fill")
-                            } else {
-                                Image(systemName: "magnifyingglass")
+                        Image(systemName: "chevron.left")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 15, height:  15)
+                            .foregroundStyle(.black)
+                    }
+                    .padding(.trailing, 5)
+                    
+                    HStack {
+                        TextField("어디로 떠나시나요?", text: $searchText)
+                            .onSubmit {
+                                Task {
+                                    guard searchText != "" else { return }
+                                    
+                                    tripRouteStore.searchTripRoute(searchText)
+                                    
+                                    if !searchList.contains(searchText) {
+                                        searchList.insert(searchText, at: 0)
+                                    }
+                                    UserDefaults.standard.set(searchList, forKey: "searchList")
+                                    
+                                    searchText = ""
+                                    focused = true
+                                }
                             }
+                            .keyboardType(.default)
+                            .focused($focused)
+                        
+                        Button {
+                            searchText = ""
+                            focused = false
+                        } label: {
+                            VStack {
+                                if searchText.count > 0 {
+                                    Image(systemName: "xmark.circle.fill")
+                                } else {
+                                    Image(systemName: "magnifyingglass")
+                                }
+                            }
+                            .foregroundStyle(Color(uiColor: .gray))
                         }
-                        .foregroundStyle(Color(uiColor: .gray))
+                    }
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 18)
+                    .background {
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(.gray, lineWidth: 1)
                     }
                 }
-                .padding(10)
-                .background {
-                    RoundedRectangle(cornerRadius: 5)
-                        .stroke(.gray, lineWidth: 1)
+                .padding(.horizontal)
+                
+                if searchList.count > 0 {
+                    RecentlySearchListView(tripRouteStore: tripRouteStore, searchList: $searchList)
+                    
                 }
+                
+                SearchRootView(tripRouteStore: tripRouteStore)
             }
             
-            RecentlySearchListView()
-            
-            Spacer()
+            if tripRouteStore.filteredTripRoutes.count == 0 {
+                Text("검색 결과가 없습니다")
+                    .foregroundStyle(.gray)
+            }
         }
-        .padding()
+        .onAppear {
+            tripRouteStore.resetSearchTripRoute()
+            
+            searchList = UserDefaults.standard.array(forKey: "searchList") as? [String] ?? []
+        }
+        .background(Color(uiColor: .systemGray6))
         .navigationBarBackButtonHidden()
     }
-}
-
-#Preview {
-    SearchView()
 }
