@@ -28,15 +28,23 @@ struct CommunityView: View {
                 ProgressView()
             } else {
                 GeometryReader { proxy in
-                    VStack(spacing: proxy.size.height * 0.015) {
-                        CommunityHeaderView(selectedPostCategory: $selectedPostCategory, selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
-                        
-                        CommunityBodyView(selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
+                    ZStack {
+                        VStack(spacing: proxy.size.height * 0.015) {
+                            CommunityHeaderView(selectedPostCategory: $selectedPostCategory, selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
+
+                            CommunityBodyView(selectedOrderCategory: $selectedOrderCategory, width: screenWidth, height: screenHeight)
+                        }
+
+                        if communityStore.posts.isEmpty {
+                            Text("게시물이 없습니다")
+                                .foregroundStyle(.gray)
+                        }
                     }
+                    .navigationTitle("커뮤니티")
+                    .toolbarTitleDisplayMode(.inline)
                     .toolbar {
                         HStack(spacing: 20) {
                             Spacer()
-                            
                             Button { // 검색 버튼 로직 추가하기
                                 
                             } label: {

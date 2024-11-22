@@ -22,11 +22,12 @@ struct PlaceSearchView: View {
     
     var body: some View {
         VStack {
-            TextField("검색어를 입력하세요.", text: $keyword)
+            TextField("검색어를 입력하세요", text: $keyword)
                 .textInputAutocapitalization(.never)
                 .padding(10)
+                .padding(.leading, 8)
                 .background {
-                    RoundedRectangle(cornerRadius: 10)
+                    RoundedRectangle(cornerRadius: 20)
                         .stroke(.gray, lineWidth: 1)
                 }
                 .padding(.top, 20)
@@ -37,7 +38,7 @@ struct PlaceSearchView: View {
                 
                 VStack {
                     Text("검색어를 입력하여")
-                    Text("방문할 장소를 찾아보세요.")
+                    Text("방문할 장소를 찾아보세요")
                 }
                 .foregroundStyle(.gray)
                 
@@ -80,6 +81,7 @@ struct PlaceSearchView: View {
                 .listStyle(.plain)
             }
         }
+        .padding(.top)
         .onChange(of: keyword) {
             Task {
                 try await searchAddressStore.getAddresses(
