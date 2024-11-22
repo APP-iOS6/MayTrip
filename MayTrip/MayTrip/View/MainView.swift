@@ -114,6 +114,8 @@ struct MainView:  View {
             RouteDetailView(tripRoute: tripRoute)
         case .chatRoom(let chatRoom, let user):
             ChattingRoomView(chatRoom: chatRoom, otherUser: user)
+        case .editPost(let post):
+            CommunityPostEditView(post: post)
         case .enterBasic:
             EnterBasicInformationView()
         }

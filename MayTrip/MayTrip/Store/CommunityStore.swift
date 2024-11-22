@@ -33,6 +33,26 @@ class CommunityStore {
         }
     }
     
+    func editPost(post: PostUserVer, title: String, text: String, image: [UIImage], category: String) async {
+        isUpadting = true
+        let categoryNumber = getCategoryNumber(category: category)
+        
+        do {
+            let images = try await storageStore.uploadImage(images: image)
+            let postForUpdate = PostForDB(title: title, text: text, author: post.author.id, image: images, category: categoryNumber, createAt: post.createAt, updateAt: Date())
+            
+            try await DB.from("POST")
+                .upsert(postForUpdate)
+                .eq("id", value: post.id)
+                .execute()
+            try await updatePost()
+            
+            posts.sort(by: {$0.createAt > $1.createAt})
+        } catch {
+            print("Fail to add content: \(error)")
+        }
+    }
+    
     func updatePost() async throws { // 업데이트된 DB로부터 게시물 불러오기 현재는 최신순으로 해놨는데 나중에 정렬 기준을 받아서 그에 맞춰서도 가능
         do {
             postsForDB = try await DB.from("POST").select().execute().value
