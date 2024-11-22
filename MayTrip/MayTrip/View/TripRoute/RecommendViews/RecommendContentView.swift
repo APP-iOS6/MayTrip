@@ -39,11 +39,20 @@ struct RecommendContentView: View {
                             RoundedRectangle(cornerRadius: 20, style: .circular)
                                 .foregroundStyle(.black)
                         }
-                    Text("\(route.id)")
+                    
                     Spacer()
                     
                     Button {
-                        isScraped.toggle()
+                        Task{
+                            var success: Bool = isScraped
+                            ? await tripRouteStore.deleteStorageByRouteId(routeId: route.id)
+                            : await tripRouteStore.insertStorageByRouteId(routeId: route.id)
+                            if success{
+                                isScraped.toggle()
+                            }else{
+                                print("북마크 실패")
+                            }
+                        }
                     } label: {
                         Image(systemName: "bookmark.fill")
                             .resizable()
@@ -96,6 +105,12 @@ struct RecommendContentView: View {
             }
             .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 10))
+            .onAppear{
+                let userId = UserStore.shared.user.id
+                if let isScraped = route.userId, isScraped == userId {
+                    self.isScraped = true
+                }
+            }
         }
     }
 }
