@@ -28,8 +28,8 @@ struct CommunityPostAddView: View {
     
     var body: some View {
         GeometryReader { proxy in
-            ScrollView {
-                ZStack {
+            ZStack {
+                ScrollView {
                     VStack(alignment: .center) {
                         HStack(alignment: .center) {
                             Picker("", selection: $postCategory) {
@@ -124,7 +124,7 @@ struct CommunityPostAddView: View {
                                             .foregroundStyle(Color(uiColor: .systemGray3))
                                             .frame(width: proxy.size.width * 0.2, height: proxy.size.width * 0.2)
                                     }
-                                    .onChange(of: selectedPhotos) { _ in
+                                    .onChange(of: selectedPhotos) {
                                         loadSelectedPhotos()
                                     }
                                 }
@@ -136,16 +136,16 @@ struct CommunityPostAddView: View {
                     }
                     .padding(.horizontal, proxy.size.width * 0.05)
                     .frame(width: proxy.size.width)
-                    
-                    if isUploading {
-                        ProgressView()
-                            .frame(width: proxy.size.width, height: proxy.size.height * 1.3)
-                            .background(.gray.opacity(0.6))
-                            .ignoresSafeArea()
-                    }
+                }
+                if isUploading {
+                    ProgressView()
+                        .frame(width: proxy.size.width, height: proxy.size.height * 1.3)
+                        .background(.clear)
+                        .ignoresSafeArea()
                 }
             }
             .scrollDisabled(!isFocused)
+            
         }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("게시글 작성")
@@ -172,7 +172,7 @@ struct CommunityPostAddView: View {
                 Button {
                     Task {
                         isUploading = true
-                        try await communityStore.addPost(title: title, text: text, author: userStore.user, image: images, category: postCategory.rawValue)
+                        await communityStore.addPost(title: title, text: text, author: userStore.user, image: images, category: postCategory.rawValue)
                         isUploading = false
                         dismiss()
                     }
@@ -180,7 +180,7 @@ struct CommunityPostAddView: View {
                     Text("완료")
                         .foregroundStyle(title.isEmpty || text.isEmpty ? Color.gray : Color("accentColor"))
                 }
-                .disabled(title.isEmpty || text.isEmpty)
+                .disabled(title.isEmpty || text.isEmpty || isUploading)
             }
             
             ToolbarItemGroup(placement: .keyboard) {
@@ -212,7 +212,7 @@ struct CommunityPostAddView: View {
                 }
                 
                 for await result in taskGroup {
-                    if let error = result.1 {
+                    if result.1 != nil {
                         break
                     } else if let image = result.0 {
                         images.append(image)
