@@ -66,7 +66,7 @@ struct RecommendRouteView: View {
                 }
             }
         }
-        .padding(.horizontal)
+        //.padding(.horizontal)
     }
 }
 

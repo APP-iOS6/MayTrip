@@ -79,12 +79,10 @@ struct MyTripCardView: View {
                                 .background(.white)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
-                        .padding(1)
                         .frame(minWidth: UIScreen.main.bounds.size.width / 4 * 3, minHeight: UIScreen.main.bounds.size.height / 7.8)
                     }
                 }
             }
-            .padding(.horizontal, 10)
         }
     }
 }

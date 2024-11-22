@@ -46,6 +46,7 @@ struct TripRouteView: View {
             }
         }
         .padding(.top, 10)
+        .padding(.horizontal)
         .background(Color(uiColor: .systemGray6))
         .scrollIndicators(.hidden)
         .toolbar {
