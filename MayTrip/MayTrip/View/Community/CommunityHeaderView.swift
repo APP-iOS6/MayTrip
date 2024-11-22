@@ -22,22 +22,21 @@ struct CommunityHeaderView: View {
                         selectedPostCategory = tag
                     } label: {
                         Text(tag.rawValue)
-                            .bold()
-                            .font(.system(size: width * 0.0407))
-                            .foregroundStyle($selectedPostCategory.wrappedValue == tag ? Color(uiColor: .systemBackground) : .gray)
+                            .font(.system(size: width * 0.042))
+                            .foregroundStyle($selectedPostCategory.wrappedValue == tag ? .black : .gray)
                             .padding(.horizontal, width * 0.02)
                             .padding(.vertical, height * 0.007)
                             .background {
                                 if $selectedPostCategory.wrappedValue == tag {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .foregroundStyle(Color.primary)
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .foregroundStyle(Color(uiColor: .systemGray6))
                                 }
                             }
                     }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .center)
-            .padding(.horizontal, width * 0.06)
+            .padding(.horizontal, 10)
             .padding(.bottom, height * 0.01)
         }
         .background(Color(uiColor: .systemBackground))
@@ -48,6 +47,7 @@ struct CommunityHeaderView: View {
                 selectedOrderCategory = .new
             } label: {
                 Text("최신순")
+                    .font(.callout)
             }
             .disabled(selectedOrderCategory == .new)
             .foregroundStyle(selectedOrderCategory == .new ? Color.accent : Color.gray)
@@ -58,11 +58,11 @@ struct CommunityHeaderView: View {
                 selectedOrderCategory = .reply
             } label: {
                 Text("댓글순")
+                    .font(.callout)
             }
             .disabled(selectedOrderCategory == .reply)
             .foregroundStyle(selectedOrderCategory == .reply ? Color.accent : Color.gray)
         }
-        .bold()
         .frame(height: height * 0.03)
         .padding(.horizontal, width * 0.06)
     }

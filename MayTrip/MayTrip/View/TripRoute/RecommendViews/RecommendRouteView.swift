@@ -35,7 +35,6 @@ struct RecommendRouteView: View {
                     } label: {
                         Text("최신순")
                             .font(.callout)
-                            .fontWeight(.semibold)
                             .foregroundStyle(isRecently ? Color("accentColor") : .gray)
                     }
                     
@@ -47,7 +46,6 @@ struct RecommendRouteView: View {
                     } label: {
                         Text("보관많은순")
                             .font(.callout)
-                            .fontWeight(.semibold)
                             .foregroundStyle(!isRecently ? Color("accentColor") : .gray)
                     }
                 }

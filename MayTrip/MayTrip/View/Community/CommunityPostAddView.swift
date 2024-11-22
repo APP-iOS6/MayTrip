@@ -111,21 +111,11 @@ struct CommunityPostAddView: View {
                             
                             if images.count < 5 {
                                 PhotosPicker(selection: $selectedPhotos, maxSelectionCount: 5 - images.count , matching: .images) {
-                                    
-                                    VStack {
-                                        Text("Add Images..")
-                                            .font(.system(size: 12))
-                                            .foregroundStyle(Color(uiColor: .systemGray3))
-                                        Image(systemName: "plus")
-                                            .resizable()
-                                            .foregroundStyle(Color(uiColor: .systemGray3))
-                                            .frame(width: proxy.size.width * 0.05, height: proxy.size.width * 0.05)
-                                    }
-                                    .frame(width: proxy.size.width * 0.2, height: proxy.size.width * 0.2)
-                                    .overlay{
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .stroke(Color(uiColor: .systemGray3), style: .init(dash: [10]))
-                                    }
+                                    Image(systemName: "photo.badge.plus")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .foregroundStyle(Color(uiColor: .systemGray3))
+                                        .frame(width: proxy.size.width * 0.2, height: proxy.size.width * 0.2)
                                 }
                                 .onChange(of: selectedPhotos) { _ in
                                     loadSelectedPhotos()
@@ -143,13 +133,17 @@ struct CommunityPostAddView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("게시글 작성")
+        .toolbarBackground(.hidden, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button {
                     dismiss()
                 } label: {
-                    Image(systemName: "xmark")
+                    Image(systemName: "chevron.left")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 15, height: 15)
                         .foregroundStyle(.black)
                 }
             }
@@ -161,7 +155,8 @@ struct CommunityPostAddView: View {
                         dismiss()
                     }
                 } label: {
-                    Text("작성")
+                    Text("완료")
+                        .foregroundStyle(title.isEmpty || text.isEmpty ? Color.gray : Color("accentColor"))
                 }
                 .disabled(title.isEmpty || text.isEmpty)
             }
