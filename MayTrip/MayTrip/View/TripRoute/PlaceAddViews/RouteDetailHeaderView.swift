@@ -94,29 +94,32 @@ struct RouteDetailHeaderView: View {
     }
     
     var titleView: some View {
-        HStack(alignment: .bottom) {
-            Text(tripRoute.title)
-                .font(.title)
-                .bold()
-        
-            Spacer()
+        VStack(alignment: .leading) {
+            HStack {
+                Text(tripRoute.title)
+                    .font(.title)
+                    .bold()
+                
+                Spacer()
+                
+                if !isWriter {
+                    Button {
+                        isScraped.toggle()
+                    } label: {
+                        Image(systemName: isScraped ? "bookmark.fill" : "bookmark")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 24, height: 24)
+                            .foregroundStyle(.orange)
+                    }
+                }
+            }
             
             Text("작성자: \(tripRoute.writeUser.nickname)")
                     .font(.footnote)
-            
-            if !isWriter {
-                Button {
-                    isScraped.toggle()
-                } label: {
-                    Image(systemName: isScraped ? "bookmark.fill" : "bookmark")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 24, height: 24)
-                        .foregroundStyle(.orange)
-                }
-            }
         }
-        .padding([.horizontal, .bottom])
+        .padding(.horizontal)
+        .padding(.bottom, 6)
     }
 
     var cityTagsView: some View {
@@ -127,7 +130,13 @@ struct RouteDetailHeaderView: View {
                         Text("# \(city)")
                             .font(.system(size: 14))
                             .bold()
-                            .foregroundStyle(Color(UIColor.darkGray))
+                            .foregroundStyle(Color("accentColor"))
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 5)
+                            .background {
+                                RoundedRectangle(cornerRadius: 20, style: .circular)
+                                    .foregroundStyle(Color.accent.opacity(0.2))
+                            }
                     }
                 }
             }
