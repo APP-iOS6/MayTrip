@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct SearchRootView: View {
-    @StateObject var tripRouteStore: TripRouteStore
+    @ObservedObject var tripRouteStore: TripRouteStore
     
     private let gridItems: [GridItem] = [
         GridItem(.flexible()),

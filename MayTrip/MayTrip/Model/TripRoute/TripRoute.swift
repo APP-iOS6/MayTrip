@@ -51,7 +51,7 @@ struct TripRoutePost: Codable{
     }
 }
 
-struct TripRouteSimple: Identifiable ,Codable{
+struct TripRouteSimple: Identifiable ,Codable, Hashable{
     var id: Int
     var title: String
     var tag: [String]?

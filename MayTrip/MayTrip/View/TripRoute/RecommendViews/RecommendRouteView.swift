@@ -60,8 +60,9 @@ struct RecommendRouteView: View {
             }
             .onAppear {
                 Task {
-//                    try await tripRouteStore.getTripRouteList()
-                    tripRouteStore.list = await tripRouteStore.getByKeyword(keyword: "")
+                    tripRouteStore.listStartIndex = 0
+                    tripRouteStore.listEndIndex = 9
+                    tripRouteStore.list = await tripRouteStore.getList()
                 }
             }
         }

@@ -39,7 +39,7 @@ struct RecommendContentView: View {
                             RoundedRectangle(cornerRadius: 20, style: .circular)
                                 .foregroundStyle(.black)
                         }
-                    
+                    Text("\(route.id)")
                     Spacer()
                     
                     Button {

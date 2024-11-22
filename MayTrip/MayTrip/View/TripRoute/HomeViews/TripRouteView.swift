@@ -12,6 +12,8 @@ struct TripRouteView: View {
     @EnvironmentObject var tripRouteStore: TripRouteStore
     let dateStore = DateStore.shared
     
+    @State private var scrollPosition: TripRouteSimple.ID?
+    
     var isExist: Bool {
         tripRouteStore.myTripRoutes.count > 0
     }
@@ -23,12 +25,22 @@ struct TripRouteView: View {
                     MyTripCardView()
                         .padding(.bottom, 10)
                 }
-                
                 RecommendRouteView(background: Color(uiColor: .systemGray6))
                     .padding(.bottom)
+                    .scrollTargetLayout()
             }
         }
+        .scrollPosition(id: $scrollPosition, anchor: .bottomTrailing)
+        .onChange(of: scrollPosition) { oldValue, newValue in
+            if tripRouteStore.isExistRoute && newValue == tripRouteStore.lastTripRouteID{
+                Task{
+                    tripRouteStore.list += await tripRouteStore.getList()
+                }
+            }
+            
+        }
         .onAppear {
+            
             Task {
                 try await tripRouteStore.getCreatedByUserRoutes()
             }
@@ -66,6 +78,7 @@ struct TripRouteView: View {
         }
     }
 }
+
 
 #Preview {
     TripRouteView()
