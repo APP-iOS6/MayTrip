@@ -9,8 +9,9 @@ import SwiftUI
 
 struct RouteDetailHeaderView: View {
     @EnvironmentObject var navigationManager: NavigationManager
-    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var tripRouteStore: TripRouteStore
+    @Environment(\.dismiss) var dismiss
+    @Environment(ChatStore.self) private var chatStore: ChatStore
     @State var isScraped: Bool = false
     @State var showingDeleteAlert: Bool = false
     
@@ -75,7 +76,30 @@ struct RouteDetailHeaderView: View {
                         
                     } else {    // 조회하는 사람일때 메뉴버튼
                         Button("채팅하기") {
-                            // TODO: write유저와 채팅 연결
+                            // write유저와 채팅 연결
+                            Task {
+                                let user = try await userStore.getUserInfo(id: tripRoute.writeUser.id) // 게시글 작성자 정보 찾기
+                                if try await chatStore.findChatRoom(user1: userStore.user.id, user2: tripRoute.writeUser.id) { // 이미 채팅방이 있는 경우
+                                    
+                                    navigationManager.selection = 2 // 채팅탭으로 이동
+                                    navigationManager.popToRoot()
+                                    DispatchQueue.main.async {
+                                        if let enteredChatRoom = chatStore.enteredChatRoom {
+                                            navigationManager.push(.chatRoom(enteredChatRoom, user))
+                                        }
+                                    }
+                                } else {
+                                    try await chatStore.saveChatRoom(tripRoute.writeUser.id) // 방 생성 후 채팅방 찾아서 이동
+                                    
+                                    navigationManager.selection = 2
+                                    navigationManager.popToRoot()
+                                    DispatchQueue.main.async {
+                                        if let enteredChatRoom = chatStore.enteredChatRoom {
+                                            navigationManager.push(.chatRoom(enteredChatRoom, user))
+                                        }
+                                    }
+                                }
+                            }
                         }
                         
                         Button("신고하기", role: .destructive) {
