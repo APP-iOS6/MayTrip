@@ -51,42 +51,8 @@ struct EnterBasicInformationView: View {
         ZStack {
             ScrollView {
                 VStack {
-                    // header
                     HStack {
-                        Button {
-                            dateStore.initDate()
-                            dismiss()
-                        } label: {
-                            Image(systemName: "xmark")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 15, height: 15)
-                        }
-                        .foregroundStyle(.black)
-                        
-                        Spacer()
-                        
-                        Button {
-                            navigationManager.push(.placeAdd(title, tags, tripRoute))
-                        } label: {
-                            Text("다음")
-                                .padding(8)
-                        }
-                        .padding(.horizontal, 5)
-                        .background {
-                            RoundedRectangle(cornerRadius: 20)
-                                .foregroundStyle(dateStore.endDate == nil || !isCompleteDateSetting || title.count == 0 ? Color.gray : Color("accentColor"))
-                        }
-                        .foregroundStyle(.white)
-                        .disabled(dateStore.endDate == nil || !isCompleteDateSetting || title.count == 0)
-                    }
-                    .frame(height: 20)
-                    .padding(.bottom, 10)
-                    
-                    Divider()
-                    
-                    HStack {
-                        TextField("제목", text: $title)
+                        TextField("제목을 입력해주세요", text: $title)
                             .focused($focused)
                     }
                     .padding(.vertical, 10)
@@ -98,9 +64,9 @@ struct EnterBasicInformationView: View {
                             isCalendarShow = true
                         } label: {
                             Image(systemName: "calendar")
-                            Text("\(dateString)")
+                            Text(dateString)
                         }
-                        .foregroundStyle(Color(uiColor: .lightGray))
+                        .foregroundStyle(!isCompleteDateSetting ? Color(uiColor: .lightGray) : Color.primary)
                         
                         Spacer()
                     }
@@ -115,7 +81,7 @@ struct EnterBasicInformationView: View {
                     }
                     .padding(.vertical, 10)
                 }
-                .padding()
+                .padding(.horizontal)
             }
             .onTapGesture {
                 isCalendarShow = false
@@ -129,6 +95,9 @@ struct EnterBasicInformationView: View {
         }
         .animation(.default, value: isCalendarShow)
         .navigationBarBackButtonHidden()
+        .navigationTitle("여행루트 작성")
+        .toolbarBackground(.hidden, for: .navigationBar)
+        .navigationBarTitleDisplayMode(.inline)
         .onChange(of: isEditedDateSetting) { oldValue, newValue in
             isCalendarShow = isEditedDateSetting
         }
@@ -136,6 +105,30 @@ struct EnterBasicInformationView: View {
             if let tripRoute = tripRoute {
                 self.title = tripRoute.title
                 self.tag = tripRoute.tag.map{ "# \($0)" }.joined(separator: " ")
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button {
+                    dateStore.initDate()
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 15, height: 15)
+                }
+                .foregroundStyle(.black)
+            }
+            
+            ToolbarItem(placement: .confirmationAction) {
+                Button {
+                    navigationManager.push(.placeAdd(title, tags, tripRoute))
+                } label: {
+                    Text("다음")
+                        .foregroundStyle(dateStore.endDate == nil || !isCompleteDateSetting || title.count == 0 ? Color.gray : Color("accentColor"))
+                }
+                .disabled(dateStore.endDate == nil || !isCompleteDateSetting || title.count == 0)
             }
         }
     }

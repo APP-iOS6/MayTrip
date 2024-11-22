@@ -12,7 +12,7 @@ struct ChatRoom: Codable, Identifiable, Hashable {
     var user2: Int
     var createdAt: Date
     var updatedAt: Date?
-    var isVisible: Int?
+    var isVisible: Int
     
     enum CodingKeys: String,CodingKey {
         case id

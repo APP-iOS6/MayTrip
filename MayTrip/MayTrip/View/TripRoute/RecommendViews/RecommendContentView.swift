@@ -31,13 +31,13 @@ struct RecommendContentView: View {
                 HStack {
                     // 첫번째 도시만 보여준다
                     Text(route.city[0])
-                        .font(.caption)
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 8)
-                        .padding(5)
+                        .font(.footnote)
+                        .foregroundStyle(Color("accentColor"))
+                        .padding(.horizontal, 13)
+                        .padding(.vertical, 5)
                         .background {
                             RoundedRectangle(cornerRadius: 20, style: .circular)
-                                .foregroundStyle(.black)
+                                .foregroundStyle(Color("accentColor").opacity(0.2))
                         }
                     
                     Spacer()
@@ -60,7 +60,7 @@ struct RecommendContentView: View {
                             .frame(width: 15, height: 15)
                             .padding(5)
                             .foregroundStyle(.white)
-                            .background(isScraped ? .orange : .gray)
+                            .background(isScraped ? .orange : Color(uiColor: .systemGray3))
                             .clipShape(Circle())
                     }
                 }

@@ -12,56 +12,130 @@ struct MyPageView: View {
     @State var isShowingLogoutAlert: Bool = false
     @State var isShowingSignOutAlert: Bool = false
     let userStore = UserStore.shared
+    
     var body: some View {
         NavigationStack {
             GeometryReader { proxy in
                 VStack {
-                    VStack(alignment: .center, spacing: proxy.size.height * 0.04) {
-                        VStack(spacing: proxy.size.height * 0.02) { // 프로필
-                            if userStore.user.profileImage == "" {
-                                ZStack {
-                                    Image(systemName: "person.fill")
-                                        .resizable()
-                                        .frame(width: proxy.size.width * 0.15, height: proxy.size.width * 0.15)
-                                        .foregroundStyle(Color.accent)
-                                        .padding(20)
-                                        .background {
-                                            Circle()
-                                                .foregroundStyle(Color.accent.opacity(0.6))
-                                        }
-                                }
+                    VStack(alignment: .leading) {
+                        HStack {
+                            if let image = userStore.user.profileImage, image != "" {
+                                // TODO: 이미지 띄우기
+                                Image(systemName: image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 60, height: 60)
+                                    .clipShape(Circle())
                             } else {
-                                ZStack { // 나중에 유저 이미지 추가되면 수정
+                                Button {
+                                    // TODO: 이미지 변경하는 로직 추가
+                                } label: {
+                                    ZStack {
+                                        Image(systemName: "person.circle.fill")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .padding(5)
+                                            .frame(width: 60, height: 60)
+                                            .clipShape(Circle())
+                                            .foregroundStyle(Color("accentColor").opacity(0.2))
+                                        
+                                        VStack(alignment: .trailing) {
+                                            Spacer()
+                                            HStack(alignment: .top) {
+                                                Spacer()
+                                                
+                                                Image(systemName: "pencil.circle.fill")
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .frame(width: 20, height: 20)
+                                                    .foregroundStyle(.gray)
+                                            }
+                                        }
+                                    }
+                                }
+                                .frame(width: 60, height: 60)
+                            }
+                            
+                            Text(userStore.user.nickname)
+                                .font(.title3)
+                                .padding(.horizontal, 10)
+                        }
+                        .padding()
+                        
+                        List {
+                            Section("개인") {
+                                NavigationLink {
                                     
+                                } label: {
+                                    Text("여행 관리")
+                                }
+                                
+                                NavigationLink {
+                                    
+                                } label: {
+                                    Text("게시물 관리")
                                 }
                             }
                             
-                            Text("\(userStore.user.nickname)")
-                                .font(.title)
-                        }
-                        .padding(.top, proxy.size.height * 0.05)
-                        
-                        HStack(spacing: proxy.size.width * 0.2) {
-                            Button {
+                            Section("계정") {
+                                Button {
+                                    isShowingLogoutAlert = true
+                                } label: {
+                                    Text("로그아웃")
+                                }
+                                .alert("정말 로그아웃 하시겠습니까?", isPresented: $isShowingLogoutAlert) {
+                                    Button("취소", role: .cancel) {
+                                        isShowingLogoutAlert = false
+                                    }
+                                    Button("로그아웃", role: .destructive) {
+                                        isShowingLogoutAlert = false
+                                        Task {
+                                            try await authStore.signOut()
+                                        }
+                                    }
+                                }
                                 
-                            } label: {
-                                manageButtonLabel(image:"mappin.and.ellipse", text:"루트 관리", width: proxy.size.width)
+                                Button {
+                                    isShowingSignOutAlert = true
+                                } label: {
+                                    Text("회원탈퇴")
+                                }
+                                .alert("정말 회원탈퇴 하시겠습니까?", isPresented: $isShowingSignOutAlert) {
+                                    Button("취소", role: .cancel) {
+                                        isShowingSignOutAlert = false
+                                    }
+                                    Button("회원탈퇴", role: .destructive) {
+                                        isShowingSignOutAlert = false
+                                    }
+                                }
                             }
                             
-                            Button {
+                            Section("고객센터") {
+                                NavigationLink {
+                                    
+                                } label: {
+                                    Text("문의하기")
+                                }
                                 
-                            } label: {
-                                manageButtonLabel(image:"pencil.and.list.clipboard", text:"게시글 관리", width: proxy.size.width)
+                                NavigationLink {
+                                    
+                                } label: {
+                                    Text("공지사항")
+                                }
+                            }
+                            
+                            Section("앱 정보") {
+                                HStack {
+                                    Text("앱 버전")
+                                    
+                                    Spacer()
+                                    
+                                    Text("v 0.0.1")
+                                        .foregroundStyle(.gray)
+                                }
                             }
                         }
-                        
-                        Rectangle()
-                            .frame(width: proxy.size.width, height: proxy.size.height * 0.01)
-                            .foregroundStyle(Color(uiColor: .systemGray6))
-                        
-                        // 이 부분에 추후에 뭔가 추가해야 함
-                        
-                        listView()
+                        .listStyle(.plain)
                         
                         Spacer()
                     }
@@ -69,74 +143,6 @@ struct MyPageView: View {
                 .frame(width: proxy.size.width, height: proxy.size.height)
             }
         }
-    }
-    
-    @ViewBuilder
-    private func listView() -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("고객센터")
-                .padding(.vertical, 5)
-            
-            Divider()
-            
-            Text("알림")
-                .padding(.vertical, 5)
-            
-            Divider()
-            
-            Text("설정")
-                .padding(.vertical, 5)
-            
-            Divider()
-            
-            Button {
-                isShowingLogoutAlert = true
-                
-            } label :{
-                HStack {
-                    Text("로그아웃")
-                        .padding(.vertical, 5)
-                        .foregroundStyle(.black)
-                    Spacer()
-                }
-            }
-            .alert("정말 로그아웃 하시겠습니까?", isPresented: $isShowingLogoutAlert) {
-                Button("취소", role: .cancel) {
-                    isShowingLogoutAlert = false
-                }
-                Button("로그아웃", role: .destructive) {
-                    isShowingLogoutAlert = false
-                    Task {
-                        try await authStore.signOut()
-                    }
-                }
-            }
-            
-            Divider()
-            
-            Button {
-                isShowingSignOutAlert = true
-            } label :{
-                HStack {
-                    Text("회원탈퇴")
-                        .padding(.vertical, 5)
-                        .foregroundStyle(.red.opacity(1))
-                    Spacer()
-                }
-            }
-            .alert("정말 회원탈퇴 하시겠습니까?", isPresented: $isShowingSignOutAlert) {
-                Button("취소", role: .cancel) {
-                    isShowingSignOutAlert = false
-                }
-                Button("회원탈퇴", role: .destructive) {
-                    Task {
-                        try await authStore.cancelAccount()
-                    }
-                    isShowingSignOutAlert = false
-                }
-            }
-        }
-        .padding(.horizontal, 20)
     }
 }
 
