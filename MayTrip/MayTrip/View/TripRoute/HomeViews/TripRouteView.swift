@@ -12,7 +12,7 @@ struct TripRouteView: View {
     @EnvironmentObject var tripRouteStore: TripRouteStore
     let dateStore = DateStore.shared
     
-    @State private var scrollPosition: TripRouteSimple.ID?
+    
     
     var isExist: Bool {
         tripRouteStore.myTripRoutes.count > 0
@@ -30,8 +30,9 @@ struct TripRouteView: View {
                     .scrollTargetLayout()
             }
         }
-        .scrollPosition(id: $scrollPosition, anchor: .bottomTrailing)
-        .onChange(of: scrollPosition) { oldValue, newValue in
+        .scrollPosition(id: $tripRouteStore.scrollPosition, anchor: .bottomTrailing)
+        .onChange(of: tripRouteStore.scrollPosition) { oldValue, newValue in
+            print("ddd \(newValue)")
             if tripRouteStore.isExistRoute && newValue == tripRouteStore.lastTripRouteID{
                 Task{
                     tripRouteStore.list += await tripRouteStore.getList()

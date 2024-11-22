@@ -7,6 +7,10 @@
 import Foundation
 import Observation
 
+enum TripRouteOrderType: String{
+    case createdAt = "created_at"
+    case count = "count"
+}
 
 class TripRouteStore: ObservableObject {
     let db = DBConnection.shared
@@ -29,6 +33,8 @@ class TripRouteStore: ObservableObject {
     var listEndIndex: Int = 9
     var lastTripRouteID: Int = 0
     var isExistRoute: Bool = true
+    var orderType: TripRouteOrderType = .createdAt
+    @Published var scrollPosition: TripRouteSimple.ID?
     
     //여행 루트 리스트 가져오는 함수
     @MainActor
@@ -62,7 +68,7 @@ class TripRouteStore: ObservableObject {
                 .from("trip_route_with_storage_count")
                 .select("id, title, city, tag, start_date, end_date, user_id, count:count, created_at")
                 .or("user_id.eq.\(userId), user_id.is.null")
-                .order("created_at", ascending: false)
+                .order("\(orderType.rawValue)", ascending: false)
                 .range(from: listStartIndex, to: listEndIndex)
                 .execute()
                 .value
@@ -70,7 +76,7 @@ class TripRouteStore: ObservableObject {
             listStartIndex += 10
             listEndIndex += 10
             lastTripRouteID = tripRouteList.last?.id ?? 0
-            
+            print(lastTripRouteID)
             if tripRouteList.count < 10{
                 isExistRoute.toggle()
             }
@@ -282,6 +288,17 @@ class TripRouteStore: ObservableObject {
         } catch {
             print("Places Upsert Error: \(error)")
         }
+    }
+    @MainActor
+    func orderTypeChange(type: TripRouteOrderType){
+        orderType = type
+        listStartIndex = 0
+        listEndIndex = 9
+        isExistRoute = true
+        Task{
+            list = await getList()
+        }
+        scrollPosition = list.first?.id
     }
     
     func searchTripRoute(_ search: String) {
