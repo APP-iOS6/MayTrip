@@ -84,7 +84,9 @@ struct RouteDetailHeaderView: View {
                                     navigationManager.selection = 2 // 채팅탭으로 이동
                                     navigationManager.popToRoot()
                                     DispatchQueue.main.async {
-                                        navigationManager.push(.chatRoom(chatStore.enteredChatRoom.first!, user))
+                                        if let enteredChatRoom = chatStore.enteredChatRoom {
+                                            navigationManager.push(.chatRoom(enteredChatRoom, user))
+                                        }
                                     }
                                 } else {
                                     try await chatStore.saveChatRoom(tripRoute.writeUser.id) // 방 생성 후 채팅방 찾아서 이동
@@ -92,7 +94,9 @@ struct RouteDetailHeaderView: View {
                                     navigationManager.selection = 2
                                     navigationManager.popToRoot()
                                     DispatchQueue.main.async {
-                                        navigationManager.push(.chatRoom(chatStore.enteredChatRoom.first!, user))
+                                        if let enteredChatRoom = chatStore.enteredChatRoom {
+                                            navigationManager.push(.chatRoom(enteredChatRoom, user))
+                                        }
                                     }
                                 }
                             }
