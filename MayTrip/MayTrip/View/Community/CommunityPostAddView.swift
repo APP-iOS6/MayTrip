@@ -22,119 +22,139 @@ struct CommunityPostAddView: View {
     @State private var postCategory: addPostCategory = .question
     @State private var selectedPhotos: [PhotosPickerItem] = []
     @State private var images: [UIImage] = []
+    @State private var isUploading: Bool = false
+    @FocusState private var isFocused: Bool
     private let categories: [addPostCategory] = [.question, .findCompanion, .tripReview, .recommandRestaurant]
     
     var body: some View {
         GeometryReader { proxy in
             ZStack {
-                VStack(alignment: .center) {
-                    HStack(alignment: .center) {
-                        Picker("", selection: $postCategory) {
-                            ForEach(addPostCategory.allCases, id:\.self) {
-                                Text($0.rawValue)
+                ScrollView {
+                    VStack(alignment: .center) {
+                        HStack(alignment: .center) {
+                            Picker("", selection: $postCategory) {
+                                ForEach(addPostCategory.allCases, id:\.self) {
+                                    Text($0.rawValue)
+                                }
+                            }
+                            .accentColor(.black)
+                            .padding(.horizontal, -12)
+                            
+                            Spacer()
+                        }
+                        
+                        Divider()
+                        
+                        TextField("제목을 입력해주세요", text: $title)
+                            .padding(.vertical, 6)
+                            .focused($isFocused)
+                        
+                        Divider()
+                        
+                        TextField("#을 이용해 태그를 입력해주세요", text: $tags)
+                            .padding(.vertical, 6)
+                            .keyboardType(.twitter)
+                            .focused($isFocused)
+                        
+                        Divider()
+                        
+                        Button {
+                            
+                        } label: {
+                            HStack {
+                                Text("여행루트를 선택해주세요")
+                                Spacer()
                             }
                         }
-                        .accentColor(.black)
-                        .padding(.horizontal, -12)
-                        
-                        Spacer()
-                    }
-                    
-                    Divider()
-                    
-                    TextField("제목을 입력해주세요", text: $title)
+                        .foregroundStyle(Color(uiColor: .systemGray3))
                         .padding(.vertical, 6)
-                    
-                    Divider()
-                    
-                    TextField("#을 이용해 태그를 입력해주세요", text: $tags)
-                        .padding(.vertical, 6)
-                        .keyboardType(.twitter)
-                    
-                    Divider()
-                    
-                    Button {
                         
-                    } label: {
+                        Divider()
+                        
+                        TextField("내용을 입력해주세요", text: $text, axis: .vertical)
+                            .padding(.vertical, 6)
+                            .focused($isFocused)
+                            .frame(width: proxy.size.width * 0.9, height: proxy.size.height * 0.4, alignment: .top)
+                        
+                        Divider()
+                        
                         HStack {
-                            Text("여행루트를 선택해주세요")
+                            Text("사진")
                             Spacer()
                         }
-                    }
-                    .foregroundStyle(Color(uiColor: .systemGray3))
-                    .padding(.vertical, 6)
-                    
-                    Divider()
-                    
-                    TextField("내용을 입력해주세요", text: $text, axis: .vertical)
-                        .padding(.vertical, 6)
-                        .frame(width: proxy.size.width * 0.9, height: proxy.size.height * 0.4, alignment: .top)
-                    
-                    Divider()
-                    
-                    HStack {
-                        Text("사진")
-                        Spacer()
-                    }
-                    .padding(.top, 10)
-                    
-                    ScrollView(.horizontal) {
-                        HStack(spacing: proxy.size.width * 0.05) {
-                            ForEach(images, id:\.self) { image in
-                                ZStack {
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .aspectRatio(contentMode: image.size.width > image.size.height ? .fill : .fit)
-                                        .frame(width: proxy.size.width * 0.2, height: proxy.size.width * 0.2)
-                                        .clipped()
-                                    
-                                    VStack {
-                                        HStack {
-                                            Spacer()
-                                            Button {
-                                                images = images.filter {
-                                                    $0 != image
+                        .padding(.top, 10)
+                        
+                        ScrollView(.horizontal) {
+                            HStack(spacing: proxy.size.width * 0.05) {
+                                ForEach(images, id:\.self) { image in
+                                    ZStack {
+                                        Image(uiImage: image)
+                                            .resizable()
+                                            .aspectRatio(contentMode: image.size.width > image.size.height ? .fill : .fit)
+                                            .frame(width: proxy.size.width * 0.2, height: proxy.size.width * 0.2)
+                                            .clipped()
+                                        
+                                        VStack {
+                                            HStack {
+                                                Spacer()
+                                                
+                                                Button {
+                                                    images = images.filter {
+                                                        $0 != image
+                                                    }
+                                                } label: {
+                                                    Image(systemName: "xmark.circle.fill")
+                                                        .resizable()
+                                                        .frame(width: proxy.size.width * 0.05, height: proxy.size.width * 0.05)
+                                                        .foregroundStyle(.red)
                                                 }
-                                            } label: {
-                                                Image(systemName: "xmark.circle.fill")
-                                                    .resizable()
-                                                    .frame(width: proxy.size.width * 0.05, height: proxy.size.width * 0.05)
-                                                    .foregroundStyle(.red)
                                             }
+                                            .frame(width: proxy.size.width * 0.23)
+                                            Spacer()
                                         }
-                                        .frame(width: proxy.size.width * 0.23)
-                                        Spacer()
+                                        .frame(width : proxy.size.width * 0.23, height: proxy.size.width * 0.23)
                                     }
-                                    .frame(width : proxy.size.width * 0.23, height: proxy.size.width * 0.23)
                                 }
+                                
+                                if images.count < 5 {
+                                    PhotosPicker(selection: $selectedPhotos, maxSelectionCount: 5 - images.count , matching: .images) {
+                                        Image(systemName: "photo.badge.plus")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .foregroundStyle(Color(uiColor: .systemGray3))
+                                            .frame(width: proxy.size.width * 0.2, height: proxy.size.width * 0.2)
+                                    }
+                                    .onChange(of: selectedPhotos) {
+                                        loadSelectedPhotos()
+                                    }
+                                }
+                                
+                                Spacer()
                             }
-                            
-                            if images.count < 5 {
-                                PhotosPicker(selection: $selectedPhotos, maxSelectionCount: 5 - images.count , matching: .images) {
-                                    Image(systemName: "photo.badge.plus")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .foregroundStyle(Color(uiColor: .systemGray3))
-                                        .frame(width: proxy.size.width * 0.2, height: proxy.size.width * 0.2)
-                                }
-                                .onChange(of: selectedPhotos) { _ in
-                                    loadSelectedPhotos()
-                                }
-                            }
-                            
-                            Spacer()
+                            .frame(height : proxy.size.width * 0.25)
                         }
-                        .frame(height : proxy.size.width * 0.25)
                     }
+                    .padding(.horizontal, proxy.size.width * 0.05)
+                    .frame(width: proxy.size.width)
                 }
-                .padding(.horizontal, proxy.size.width * 0.05)
-                .frame(width: proxy.size.width)
+                if isUploading {
+                    ProgressView()
+                        .frame(width: proxy.size.width, height: proxy.size.height * 1.3)
+                        .background(.clear)
+                        .ignoresSafeArea()
+                }
             }
+            .scrollDisabled(!isFocused)
+            
         }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("게시글 작성")
         .toolbarBackground(.hidden, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
+        .ignoresSafeArea(.keyboard)
+        .onTapGesture {
+            isFocused = false
+        }
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button {
@@ -151,14 +171,25 @@ struct CommunityPostAddView: View {
             ToolbarItem(placement: .confirmationAction) {
                 Button {
                     Task {
-                        try await communityStore.addPost(title: title, text: text, author: userStore.user, image: images, category: postCategory.rawValue)
+                        isUploading = true
+                        await communityStore.addPost(title: title, text: text, author: userStore.user, image: images, category: postCategory.rawValue)
+                        isUploading = false
                         dismiss()
                     }
                 } label: {
                     Text("완료")
                         .foregroundStyle(title.isEmpty || text.isEmpty ? Color.gray : Color("accentColor"))
                 }
-                .disabled(title.isEmpty || text.isEmpty)
+                .disabled(title.isEmpty || text.isEmpty || isUploading)
+            }
+            
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button {
+                    isFocused = false
+                } label: {
+                    Text("닫기")
+                }
             }
         }
     }
@@ -181,7 +212,7 @@ struct CommunityPostAddView: View {
                 }
                 
                 for await result in taskGroup {
-                    if let error = result.1 {
+                    if result.1 != nil {
                         break
                     } else if let image = result.0 {
                         images.append(image)
