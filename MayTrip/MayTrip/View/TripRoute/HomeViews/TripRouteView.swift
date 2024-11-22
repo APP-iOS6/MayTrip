@@ -32,19 +32,14 @@ struct TripRouteView: View {
         }
         .scrollPosition(id: $tripRouteStore.scrollPosition, anchor: .bottomTrailing)
         .onChange(of: tripRouteStore.scrollPosition) { oldValue, newValue in
-            print("ddd \(newValue)")
             if tripRouteStore.isExistRoute && newValue == tripRouteStore.lastTripRouteID{
                 Task{
                     tripRouteStore.list += await tripRouteStore.getList()
                 }
             }
-            
         }
-        .onAppear {
-            
-            Task {
-                try await tripRouteStore.getCreatedByUserRoutes()
-            }
+        .task {
+            try? await tripRouteStore.getCreatedByUserRoutes()
         }
         .padding(.top, 10)
         .padding(.horizontal)
