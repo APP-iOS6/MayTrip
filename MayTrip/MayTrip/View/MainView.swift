@@ -19,7 +19,7 @@ struct MainView:  View {
             ProfileInitView()
         } else {
             TabView(selection: $selection) {
-                NavigationStack(path: $navigationManager.path) {
+                NavigationStack(path: $navigationManager.tripPath) {
                     TripRouteView()
                         .navigationDestination(for: Destination.self) { destination in
                             handleDestination(destination)
@@ -64,7 +64,7 @@ struct MainView:  View {
                     }
                 }
                 
-                NavigationStack(path: $navigationManager.path) {
+                NavigationStack(path: $navigationManager.storagePath) {
                     StorageView()
                         .navigationDestination(for: Destination.self) { destination in
                             handleDestination(destination)
@@ -77,7 +77,7 @@ struct MainView:  View {
                 }
                 .tag(3)
                 
-                NavigationStack(path: $navigationManager.path) {
+                NavigationStack(path: $navigationManager.myPagePath) {
                     MyPageView()
                         .navigationDestination(for: Destination.self) { destination in
                             handleDestination(destination)

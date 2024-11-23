@@ -15,11 +15,10 @@ class ChatStore {
     private let db = DBConnection.shared
     private let userStore = UserStore.shared
     private var chatRooms: [ChatRoom] = []
-    private var isLeaveEvent: Bool = false
     private(set) var forChatComponents: [(chatRoom: ChatRoom, chatLogs: [ChatLog], otherUser: User)] = []
     private(set) var isNeedUpdate: Bool = false
     
-    var enteredChatRoom: [ChatRoom] = []
+    var enteredChatRoom: ChatRoom? = nil
     var enteredChatLogs: [ChatLog] = []
     
     @MainActor
@@ -44,21 +43,21 @@ class ChatStore {
                         switch type {
                         case "INSERT":
                             if table == "CHAT_ROOM" {
-                                try await fetchChatRooms(id)
-                                
-                                if let chatRoom = chatRooms.last { // 최신순으로 채팅방 정렬해둠
+                                if let chatRoom = try await fetchChatRooms(id) {
                                     let chatLogs = try await fetchChatLogs(chatRoom: chatRoom)
                                     let otherUser = try await getOtherUser(chatRoom)
                                     let forChatComponent: (ChatRoom, [ChatLog], User) = (chatRoom, chatLogs, otherUser)
                                     
+                                    forChatComponents.removeAll(where: { $0.chatRoom.id == chatRoom.id })
                                     forChatComponents.insert(forChatComponent, at: 0) // 최신걸 제일 위에
-                                    isNeedUpdate.toggle()
                                     
-                                    if let room = enteredChatRoom.first {
+                                    if let room = enteredChatRoom {
                                         if chatRoom.id == room.id {
                                             enteredChatLogs = chatLogs
                                         }
                                     }
+                                    // 모든 작업이 끝나고 UI를 업데이트한다
+                                    isNeedUpdate.toggle()
                                 }
                             } else {
                                 // 새로 생긴 채팅만 로그하고 나머지는 이미 fetch 되어 있는 정보를 사용한다.
@@ -73,13 +72,14 @@ class ChatStore {
                                     
                                     forChatComponents.removeAll(where: { $0.chatRoom.id == component.chatRoom.id })
                                     forChatComponents.insert(forChatComponent, at: 0) // 최신걸 제일 위에
-                                    isNeedUpdate.toggle()
                                     
-                                    if let room = enteredChatRoom.first {
+                                    if let room = enteredChatRoom {
                                         if component.chatRoom.id == room.id {
                                             enteredChatLogs = chatLogs
                                         }
                                     }
+                                    // 모든 작업이 끝나고 UI를 업데이트한다
+                                    isNeedUpdate.toggle()
                                 }
                             }
                             print("INSERT")
@@ -87,15 +87,41 @@ class ChatStore {
                             print("UPSERT")
                         case "UPDATE":
                             // 채팅로그는 업데이트 개념이 아니라서 업데이트 이벤트 발생하지 않지만 채팅로그가 쌓일때 채팅방이 업데이트 된다. 하지만 이미 채팅로그 insert에서 최신으로 fetch 하기 때문에 따로 로그를 가져오지 않는다(중복 fetch 방지)
-                            if isLeaveEvent {
-                                // 채팅방 나가기 후 다시 페치해준다
-                                try await setAllComponents()
-                                isLeaveEvent = false
+                            if table == "CHAT_ROOM" {
+                                // 로그나 상대 정보는 그대로 두고 채팅방의 업데이트 정보만 새로 fetch
+                                if let chatRoom = try await fetchChatRooms(id) {
+                                    let forChatComponent: (ChatRoom, [ChatLog], User)? = forChatComponents.filter {
+                                        $0.chatRoom.id == id
+                                    }.first
+                                    
+                                    var chatLogs: [ChatLog] = []
+                                    
+                                    if enteredChatRoom != nil, enteredChatRoom!.id == id {
+                                        chatLogs = try await fetchChatLogs(chatRoom: chatRoom)
+                                        enteredChatRoom = chatRoom // isVisible 업데이트 때문에 새로 넣어줌
+                                        enteredChatLogs = chatLogs
+                                    }
+                                    
+                                    if var forChatComponent = forChatComponent { // 상대유저는 변경되지 않기 때문에 그대로 넣어줌
+                                        forChatComponent.0 = chatRoom
+                                        forChatComponent.1 = chatLogs.count > 0 ? chatLogs : forChatComponent.1
+                                        
+                                        forChatComponents.removeAll(where: { $0.chatRoom.id == id })
+                                        forChatComponents.insert(forChatComponent, at: 0) // 최신걸 제일 위에
+                                        isNeedUpdate.toggle()
+                                    }
+                                }
                             }
                             print("UPDATE")
                         case "DELETE":
                             // 채팅방에서 모두 나간 경우엔 삭제, 삭제후 다시 패치 해준다
-                            try await setAllComponents()
+                            _ = try await fetchChatRooms()
+                            
+                            // 삭제된 채팅방 걸러냄
+                            forChatComponents = forChatComponents.filter {
+                                chatRooms.contains($0.chatRoom)
+                            }
+                            isNeedUpdate.toggle()
                             print("DELETE")
                         default:
                             print("not supported event")
@@ -111,12 +137,7 @@ class ChatStore {
     // 채팅에 필요한 컴포넌트들 세팅
     func setAllComponents(_ isRefresh: Bool = false) async throws {
         Task {
-            try await fetchChatRooms()
-            
-            // 삭제된 채팅방 걸러냄
-            forChatComponents = forChatComponents.filter {
-                chatRooms.contains($0.chatRoom)
-            }
+            _ = try await fetchChatRooms()
             
             for chatRoom in chatRooms {
                 let chatLogs = try await fetchChatLogs(chatRoom:chatRoom, isRefresh: isRefresh)
@@ -131,22 +152,23 @@ class ChatStore {
     }
     
     // 유저가 포함된 대화방만 불러옴
-    private func fetchChatRooms(_ id: Int? = nil) async throws {
+    private func fetchChatRooms(_ id: Int? = nil) async throws -> ChatRoom? {
         do {
             if let id = id {
                 let newRoom: [ChatRoom] = try await db
                     .from("CHAT_ROOM")
                     .select()
                     .eq("id", value: id)
+                    .or("user1.eq.\(userStore.user.id), user2.eq.\(userStore.user.id)")
                     .execute()
                     .value
-                
-                chatRooms = newRoom + chatRooms
+                return newRoom.first
             } else {
                 chatRooms = try await db
                     .from("CHAT_ROOM")
                     .select()
                     .or("user1.eq.\(userStore.user.id), user2.eq.\(userStore.user.id)")
+                    .order("updated_at", ascending: true)
                     .execute()
                     .value
                 
@@ -162,36 +184,43 @@ class ChatStore {
                         return $0.isVisible == 2 ? true : false
                     }
                 }
+                return nil
             }
-            chatRooms.sort(by: { $0.updatedAt! < $1.updatedAt! }) // 업데이트를 기준으로 정렬해야 최신께 위로가짐
         } catch {
             print("Fail to fetch chat rooms: \(error)")
+            throw error
         }
     }
     
     // ID를 기반으로 이미 채팅방이 존재하는지 확인
     func findChatRoom(user1: Int, user2: Int) async throws -> Bool {
-        // 테이블에는 더 낮은 값의 아이디가 user1로 들어가 있음
-        let userID1 = user1 > user2 ? user2 : user1
-        let userID2 = userID1 == user1 ? user2 : user1
+        let component = forChatComponents.filter {
+            $0.otherUser.id == user2
+        }.first
         
-        do {
-            enteredChatRoom = try await db
-                .from("CHAT_ROOM")
-                .select()
-                .eq("user1", value: userID1)
-                .eq("user2", value: userID2)
-                .execute()
-                .value
+        // 제대로 채팅이 진행됐을때 둘다 채팅방에서 나간게 아니면(DELETE가 이루어지지 않은 경우, LEAVE 상황) 로컬 component가 존재해야함
+        if var component = component {
+            enteredChatRoom = component.chatRoom
+            enteredChatLogs = component.chatLogs
             
-            if !enteredChatRoom.isEmpty { // 방 존재시 로그도 업로드
-                enteredChatLogs = try await fetchChatLogs(chatRoom: enteredChatRoom.first!)
+            if (component.chatRoom.user1 == userStore.user.id && component.chatRoom.isVisible == 2) || (component.chatRoom.user2 == userStore.user.id && component.chatRoom.isVisible == 1) { // 채팅방에서 나갔다가 게시글 보고 다시 채팅 거는 경우를 위해서
+                return false
+            } else {
                 return true
             }
+        } else {
             return false
+        }
+    }
+    
+    func updateChatRoom(_ chatRoom: ChatRoom) async throws {
+        do {
+            try await db.from("CHAT_ROOM")
+                .update(["is_visible":"0"])
+                .eq("id", value: chatRoom.id)
+                .execute()
         } catch {
-            print("Fail to fetch chat room: \(error)")
-            return false
+            print("Failed to update chat room: \(error)")
         }
     }
     
@@ -251,13 +280,18 @@ class ChatStore {
                 .insert(chatRoom)
                 .execute()
             
-            enteredChatRoom = try await db.from("CHAT_ROOM")
+            let enteredChatRooms: [ChatRoom] = try await db.from("CHAT_ROOM")
                 .select()
                 .eq("user1", value: chatRoom.user1)
                 .eq("user2", value: chatRoom.user2)
                 .execute()
                 .value
                 
+            if let enteredChatRoom = enteredChatRooms.first {
+                self.enteredChatRoom = enteredChatRoom
+            } else {
+                self.enteredChatRoom = nil
+            }
         } catch {
             print("Fail to save chat room: \(error)")
         }
@@ -294,13 +328,11 @@ class ChatStore {
                     .update(["is_visible":"\(visible)"])
                     .eq("id", value: chatRoom.id)
                     .execute()
-                isLeaveEvent = true
             }
         }
     }
     
     // 채팅방 삭제
-    @MainActor
     func deleteChatRoom(_ chatRoom: ChatRoom) async throws {
         do {
             try await db.from("CHAT_LOG").delete().eq("chat_room", value: chatRoom.id).execute()

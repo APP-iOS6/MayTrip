@@ -104,7 +104,7 @@ struct PlaceMapListView: View {
                             }
                         )
                         
-                        if isEditing, dateIndex != places.count - 1 {
+                        if isEditing && dateIndex != places.count - 1 {
                             Divider()
                                 .foregroundStyle(Color(UIColor.systemGray5))
                                 .padding(.horizontal)
