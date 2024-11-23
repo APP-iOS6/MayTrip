@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CommentView: View {
     @State var isPresented: Bool = false
-    
+    @State var comment: PostComment
     var width: CGFloat
     var height: CGFloat
     
@@ -29,12 +29,12 @@ struct CommentView: View {
                 HStack {
                     VStack(alignment: .leading) {
                         // 닉네임
-                        Text("닉네임")
+                        Text(comment.writeUser.nickname)
                             .font(.system(size: 14))
                             .bold()
                         
                         // 댓글 시간
-                        Text("00분 전")
+                        Text("\(DateStore().timeAgo(from: comment.createdAt))")
                             .font(.system(size: 14))
                             .foregroundStyle(.gray)
                     }
@@ -50,14 +50,14 @@ struct CommentView: View {
                 }
                 
                 // 댓글 내용
-                Text("저도 저번주에 여기 갔다왔었는데, 사진보다 훨씬 퀄리티도 괜찮고, 가격도 착해서 주변 사람들한테 추천하고있어요!")
+                Text(comment.comment)
             }
         }
         .sheet(isPresented: $isPresented) {
             PostMenuSheetView(
                 isPresented: $isPresented,
-                selectedCommentOwner: -1,
-                selectedCommentId: -1
+                selectedCommentOwner: comment.writeUser.id,
+                selectedCommentId: comment.id
             )
             .presentationDetents([.height(170)])
             .presentationDragIndicator(.visible)

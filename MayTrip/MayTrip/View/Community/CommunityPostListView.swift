@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CommunityPostListView: View {
     @EnvironmentObject var navigationManager: NavigationManager
-    @EnvironmentObject var tripRouteStore: TripRouteStore
     @Environment(CommunityStore.self) var communityStore: CommunityStore
     @State private var scrollPosition: CGPoint = .zero
     @State private var scrollIndex: Int = 0
@@ -19,6 +18,7 @@ struct CommunityPostListView: View {
     @State var isPresented: Bool = false
     @State var selectedPostOwner: Int = 0
     @State var selectedPostId: Int = 0
+    @State var commnets: [Int: [PostComment]] = [:]
     
     var body: some View {
         VStack(spacing: 20) {
@@ -138,16 +138,21 @@ struct CommunityPostListView: View {
                     
                     HStack {
                         HStack {
-                            HStack {
-                                Image(systemName: "message")
-                                    .foregroundStyle(.gray)
-                                Text("0")
-                                    .foregroundStyle(.gray)
-                            }
-                            Spacer()
-                            Text(dateStore.timeAgo(from: post.updateAt))
+                            Image(systemName: "message")
                                 .foregroundStyle(.gray)
-                                .font(.system(size: 14))
+                            Text("\(commnets[post.id]?.count ?? 0)")
+                                .foregroundStyle(.gray)
+                        }
+                        Spacer()
+                        Text(dateStore.timeAgo(from: post.updateAt))
+                            .foregroundStyle(.gray)
+                            .font(.system(size: 14))
+                    }
+                    .onAppear{
+                        Task{
+                            if let comments = await communityStore.getPostCommentList(postId: post.id) {
+                                self.commnets.updateValue(comments, forKey: post.id)
+                            }
                         }
                     }
                 }
@@ -159,7 +164,7 @@ struct CommunityPostListView: View {
                         .fill(Color(uiColor: .systemBackground))
                 }
                 .onTapGesture {
-                    navigationManager.push(.postDetail(post))
+                    navigationManager.push(.postDetail(commnets[post.id], post))
                 }
             }
         }

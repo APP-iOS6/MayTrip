@@ -71,6 +71,39 @@ class CommunityStore {
         }
     }
     
+    // 게시물 댓글 생성
+    func insertPostComment(comment: InsertPostComment) async {
+        do {
+            try await DB
+                .from("POST_COMMENT")
+                .insert(comment)
+                .select("id, write_user(id, nickname, profile_image), comment, created_at")
+                .single()
+                .execute()
+                .value
+        } catch {
+            print("POST INSERT ERROR\n",error)
+        }
+    }
+    
+    // 게시물 댓글 리스트 불러오기
+    @MainActor
+    func getPostCommentList(postId: Int) async -> [PostComment]? {
+        do {
+            let postCommentList: [PostComment] = try await DB
+                .from("POST_COMMENT")
+                .select("id, write_user(id, nickname, profile_image), comment, created_at")
+                .eq("post", value: postId)
+                .order("created_at")
+                .execute()
+                .value
+            return postCommentList
+        } catch {
+            print("POST GET LIST ERROR\n",error)
+        }
+        return nil
+    }
+    
     private func getCategoryNumber(category: String) -> Int {
         switch category {
         case "질문" :

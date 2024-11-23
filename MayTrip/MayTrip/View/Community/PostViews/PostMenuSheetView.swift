@@ -19,7 +19,7 @@ struct PostMenuSheetView: View {
         if userStore.user.id == selectedCommentOwner { // 제작자의 경우
             List {
                 Button {
-                    // 게시글 편집
+                    // TODO: 댓글 편집
                 } label: {
                     HStack {
                         Image(systemName: "square.and.pencil")
@@ -42,6 +42,7 @@ struct PostMenuSheetView: View {
                         isPresentedDeleteAlert = false
                     }
                     Button("삭제하기", role: .destructive) {
+                        // TODO: 댓글 삭제
                         isPresentedDeleteAlert = false
                         isPresented = false
                     }
@@ -54,7 +55,7 @@ struct PostMenuSheetView: View {
         } else {
             List {
                 Button { // 대화걸기
-
+                    
                 } label: {
                     HStack {
                         Image(systemName: "message")
