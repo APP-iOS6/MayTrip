@@ -72,14 +72,15 @@ struct CommunityPostListView: View {
                         .lineLimit(3)
                         .font(.system(size: 16))
                     
-                    if let tripRouteID = post.tripRoute {
-                        RecommendContentView(route: tripRouteStore.list.filter{ $0.id == tripRouteID }.first!, isSharing: true)
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.accent)
-                            }
-                    }
-                    
+                    // 커뮤니티 리스트에 각 공유된 루트카드
+//                    if let tripRoute = post.tripRoute {
+//                        RecommendContentView(route: tripRoute, isSharing: true)
+//                            .overlay {
+//                                RoundedRectangle(cornerRadius: 10)
+//                                    .stroke(.accent)
+//                            }
+//                    }
+//                    
                     if post.image.count > 0 {
                         ZStack {
                             ScrollView(.horizontal) {

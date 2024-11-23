@@ -23,11 +23,11 @@ struct PostContentView: View {
                 .padding(.vertical)
             
             // 여행루트 카드
-            if let tripRouteID = post.tripRoute {
+            if let tripRoute = post.tripRoute {
                 Button {
                     navigationManager.selection = 0
                 } label: {
-                    RecommendContentView(route: tripRouteStore.list.filter{ $0.id == tripRouteID }.first ?? sampleRoute, isSharing: false)
+                    RecommendContentView(route: tripRoute, isSharing: false)
                         .overlay {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(.accent)

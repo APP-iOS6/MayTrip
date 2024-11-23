@@ -35,7 +35,17 @@ class CommunityStore {
     
     func updatePost() async throws { // 업데이트된 DB로부터 게시물 불러오기 현재는 최신순으로 해놨는데 나중에 정렬 기준을 받아서 그에 맞춰서도 가능
         do {
-            postsForDB = try await DB.from("POST").select().execute().value
+            postsForDB = try await DB.from("POST")
+                .select("""
+                        id, title, content, write_user ,image, category, created_at, updated_at, tag,
+                        trip_route(id, title, tag, city, writeUser:write_user(
+                        id,
+                        nickname,
+                        profile_image
+                        )
+                        , start_date, end_date)
+                        """)
+                .execute().value
             postsForDB = postsForDB.sorted { $0.id > $1.id }
             
             posts = []
@@ -115,12 +125,4 @@ class CommunityStore {
             return nil
         }
     }
-    
-//    private func getRouteInfo(routeID: Int) async throws -> StorageTripRoute {
-//        var findRoute: StorageTripRoute?
-//        do {
-//            let result: [StorageTripRoute] = try await DB.from("TRIP_ROUTE").select(
-//                ""
-//                }
-//    }
 }

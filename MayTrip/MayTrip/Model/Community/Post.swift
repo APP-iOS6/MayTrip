@@ -15,7 +15,7 @@ struct Post: Codable { // 게시물 DB에서 불러오기용
     let image: [String] // 최대 5개?
     let category: Int // 나중에 이넘으로 제한두기
     let tag: [String]?
-    let tripRoute: Int?
+    let tripRoute: TripRouteSimple?
     let createAt: Date
     let updateAt: Date
     
@@ -41,7 +41,7 @@ struct PostUserVer: Hashable { // 게시물에 유저의 프로필 이미지, �
     let image: [UIImage]
     let category: Int
     let tag: [String]?
-    let tripRoute: Int?
+    let tripRoute: TripRouteSimple?
     let createAt: Date
     let updateAt: Date
 }
