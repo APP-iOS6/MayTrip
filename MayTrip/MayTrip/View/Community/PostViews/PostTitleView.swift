@@ -74,7 +74,7 @@ struct PostTitleView: View {
                 HStack(spacing: 5) {
                     CityTagFlowLayout {
                         ForEach(tags, id: \.self) { tag in
-                            Text("\(tag)")
+                            Text("#\(tag)")
                                 .font(.system(size: 12))
                                 .foregroundStyle(Color(uiColor: .orange))
                                 .padding(.vertical, 5)

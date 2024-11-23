@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CommunityPostListView: View {
     @EnvironmentObject var navigationManager: NavigationManager
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     @Environment(CommunityStore.self) var communityStore: CommunityStore
     @State private var scrollPosition: CGPoint = .zero
     @State private var scrollIndex: Int = 0
@@ -70,6 +71,14 @@ struct CommunityPostListView: View {
                     Text(post.text)
                         .lineLimit(3)
                         .font(.system(size: 16))
+                    
+                    if let tripRouteID = post.tripRoute {
+                        RecommendContentView(route: tripRouteStore.list.filter{ $0.id == tripRouteID }.first!, isSharing: true)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(.accent)
+                            }
+                    }
                     
                     if post.image.count > 0 {
                         ZStack {

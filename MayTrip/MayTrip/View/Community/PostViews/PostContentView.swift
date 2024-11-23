@@ -27,7 +27,7 @@ struct PostContentView: View {
                 Button {
                     navigationManager.selection = 0
                 } label: {
-                    RecommendContentView(route: tripRouteStore.list.filter{ $0.id == tripRouteID }.first ?? sampleRoute)
+                    RecommendContentView(route: tripRouteStore.list.filter{ $0.id == tripRouteID }.first ?? sampleRoute, isSharing: false)
                         .overlay {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(.accent)

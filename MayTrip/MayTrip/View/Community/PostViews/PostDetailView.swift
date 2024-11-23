@@ -34,13 +34,13 @@ struct PostDetailView: View {
             PostContentView(post: post)
                 .padding([.bottom, .horizontal])
             
-            Rectangle()
-                .fill(Color(uiColor: .systemGray6))
-                .frame(width: screenWidth, height: screenHeight * 0.03)
-            
-            // 하단 댓글 뷰
-            PostCommentsView(width: screenWidth, height: screenHeight)
-                .padding(.top)
+//            Rectangle()
+//                .fill(Color(uiColor: .systemGray6))
+//                .frame(width: screenWidth, height: screenHeight * 0.03)
+//            
+//            // 하단 댓글 뷰
+//            PostCommentsView(width: screenWidth, height: screenHeight)
+//                .padding(.top)
         }
         .navigationBarBackButtonHidden()
         .toolbar {

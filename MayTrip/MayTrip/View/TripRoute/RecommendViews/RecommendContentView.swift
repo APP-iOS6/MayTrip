@@ -14,6 +14,7 @@ struct RecommendContentView: View {
     @EnvironmentObject var tripRouteStore: TripRouteStore
     let dateStore: DateStore = .shared
     let route: TripRouteSimple
+    let isSharing: Bool?
     
     @State var isScraped = false
     
@@ -54,6 +55,7 @@ struct RecommendContentView: View {
                             .background(isScraped ? .orange : Color(uiColor: .systemGray3))
                             .clipShape(Circle())
                     }
+                    .disabled(isSharing ?? false)
                 }
                 .padding(10)
                 
@@ -97,6 +99,7 @@ struct RecommendContentView: View {
             .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 10))
         }
+        .disabled(isSharing ?? false)
     }
 }
 

@@ -18,7 +18,7 @@ struct SearchRootView: View {
         ScrollView {
             LazyVGrid(columns: gridItems, alignment: .leading, spacing: 10) {
                 ForEach(tripRouteStore.filteredTripRoutes) { route in
-                    RecommendContentView(route: route)
+                    RecommendContentView(route: route, isSharing: false)
                 }
             }
         }

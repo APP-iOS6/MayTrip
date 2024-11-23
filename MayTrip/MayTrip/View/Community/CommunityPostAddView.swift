@@ -14,6 +14,7 @@ struct CommunityPostAddView: View {
     }
     
     let userStore = UserStore.shared
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     @Environment(\.dismiss) var dismiss
     @Environment(CommunityStore.self) var communityStore: CommunityStore
     @State private var title: String = ""
@@ -23,6 +24,8 @@ struct CommunityPostAddView: View {
     @State private var selectedPhotos: [PhotosPickerItem] = []
     @State private var images: [UIImage] = []
     @State private var isUploading: Bool = false
+    @State private var isShowingRouteSheet: Bool = false
+    @State private var selectedRouteID: Int? = nil
     @FocusState private var isFocused: Bool
     private let categories: [addPostCategory] = [.question, .findCompanion, .tripReview, .recommandRestaurant]
     
@@ -67,15 +70,38 @@ struct CommunityPostAddView: View {
                         Divider()
                         
                         Button {
-                            
+                            isShowingRouteSheet.toggle()
                         } label: {
                             HStack {
-                                Text("여행루트를 선택해주세요")
+                                if let selectedRouteID = selectedRouteID {
+                                    let title = tripRouteStore.myTripRoutes.filter{ $0.id == selectedRouteID }.first!.title
+                                    Text(title)
+                                } else {
+                                    HStack {
+                                        Text("여행루트를 선택해주세요")
+                                    }
+                                }
+                                Image(systemName: "chevron.right")
                                 Spacer()
                             }
+//                            HStack {
+//                                Text("여행루트를 선택해주세요")
+//                                Image(systemName: "chevron.right")
+//                                Spacer()
+//                            }
                         }
-                        .foregroundStyle(Color(uiColor: .systemGray3))
+                        .foregroundStyle(selectedRouteID == nil ? Color(uiColor: .systemGray3) : .primary)
+//                        .foregroundStyle(Color(uiColor: .systemGray3))
                         .padding(.vertical, 6)
+                        
+//                        if let selectedRouteID = selectedRouteID {
+//                            RecommendContentView(route: tripRouteStore.myTripRoutes.filter{ $0.id == selectedRouteID }.first!, isSharing: true)
+//                                .overlay {
+//                                    RoundedRectangle(cornerRadius: 10)
+//                                        .stroke(.accent)
+//                                }
+//                                .padding(.bottom, 6)
+//                        }
                         
                         Divider()
                         
@@ -155,6 +181,12 @@ struct CommunityPostAddView: View {
             .scrollDisabled(!isFocused)
             
         }
+        .padding(.top, 1)
+        .sheet(isPresented: $isShowingRouteSheet) {
+            RouteSelectSheetView(selectedRouteID: $selectedRouteID, isShowingRouteSheet: $isShowingRouteSheet)
+                .presentationDetents([.height(500)])
+                .presentationDragIndicator(.visible)
+        }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("게시글 작성")
         .toolbarBackground(.hidden, for: .navigationBar)
@@ -180,7 +212,7 @@ struct CommunityPostAddView: View {
                 Button {
                     Task {
                         isUploading = true
-                        await communityStore.addPost(title: title, text: text, author: userStore.user, image: images, category: postCategory.rawValue, tag: tagArray, tripRoute: nil)
+                        await communityStore.addPost(title: title, text: text, author: userStore.user, image: images, category: postCategory.rawValue, tag: tagArray, tripRoute: selectedRouteID)
                         isUploading = false
                         dismiss()
                     }
