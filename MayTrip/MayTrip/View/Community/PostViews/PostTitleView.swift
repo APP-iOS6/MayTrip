@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PostTitleView: View {
+    @Environment(CommunityStore.self) var communityStore: CommunityStore
     @State var isPresented: Bool = false
     @State var selectedPostOwner: Int = 0
     @State var selectedPostId: Int = 0
@@ -35,9 +36,8 @@ struct PostTitleView: View {
                 
                 VStack(alignment: .leading, spacing: 5) {
                     HStack {
-                        // TODO: categoryCode -> category값 변환해서 적용
                         // 카테고리
-                        Text("동행찾기")
+                        Text(communityStore.getCategoryName(categoryNumber: post.category))
                             .font(.system(size: 12))
                             .foregroundStyle(Color(uiColor: .systemBackground))
                             .padding(.vertical, 5)
@@ -57,6 +57,7 @@ struct PostTitleView: View {
                                 .foregroundStyle(.gray)
                         }
                     }
+                    // 닉네임
                     Text(post.author.nickname)
                         .font(.system(size: 16))
                         .fontWeight(.semibold)
@@ -69,18 +70,20 @@ struct PostTitleView: View {
                 .bold()
             
             // 태그
-            HStack(spacing: 5) {
-                CityTagFlowLayout {
-                    ForEach(tags, id: \.self) { tag in
-                        Text("\(tag)")
-                            .font(.system(size: 12))
-                            .foregroundStyle(Color(uiColor: .orange))
-                            .padding(.vertical, 5)
-                            .padding(.horizontal, 8)
-                            .background {
-                                RoundedRectangle(cornerRadius: 15)
-                                    .fill(.orange.opacity(0.15))
-                            }
+            if let tags = post.tag {
+                HStack(spacing: 5) {
+                    CityTagFlowLayout {
+                        ForEach(tags, id: \.self) { tag in
+                            Text("\(tag)")
+                                .font(.system(size: 12))
+                                .foregroundStyle(Color(uiColor: .orange))
+                                .padding(.vertical, 5)
+                                .padding(.horizontal, 8)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 15)
+                                        .fill(.orange.opacity(0.15))
+                                }
+                        }
                     }
                 }
             }

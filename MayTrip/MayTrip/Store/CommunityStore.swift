@@ -16,13 +16,13 @@ class CommunityStore {
     var postsForDB: [Post] = []
     var isUpadting: Bool = true
     
-    func addPost(title: String, text: String, author: User, image: [UIImage], category: String) async { // 게시물 작성
+    func addPost(title: String, text: String, author: User, image: [UIImage], category: String, tag: [String]? = nil, tripRoute: Int? = nil) async { // 게시물 작성
         isUpadting = true
         let categoryNumber = getCategoryNumber(category: category)
         
         do {
             let images = try await storageStore.uploadImage(images: image)
-            let postDB: PostDB = PostDB(title: title, text: text, author: author.id, image: images, category: categoryNumber)
+            let postDB: PostDB = PostDB(title: title, text: text, author: author.id, image: images, category: categoryNumber, tag: tag, tripRoute: tripRoute)
             
             try await DB.from("POST").insert(postDB).execute()
             try await updatePost()
@@ -43,7 +43,7 @@ class CommunityStore {
                 let userInfo = try await getUserInfo(userID: post.author)
                 let images = try await storageStore.getImages(pathes: post.image)
                 
-                posts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: images, category: post.category, createAt: post.createAt, updateAt: post.updateAt))
+                posts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: images, category: post.category, tag: post.tag, tripRoute: post.tripRoute, createAt: post.createAt, updateAt: post.updateAt))
             }
             
             isUpadting = false
@@ -76,6 +76,21 @@ class CommunityStore {
         }
     }
     
+    func getCategoryName(categoryNumber: Int) -> String {
+        switch categoryNumber {
+        case 1:
+            return "질문"
+        case 2:
+            return "동행찾기"
+        case 3:
+            return "여행후기"
+        case 4:
+            return "맛집추천"
+        default:
+            return "기타"
+        }
+    }
+    
     private func getUserInfo(userID: Int) async throws -> User? { // 게시물의 유저id로부터 유저 프로필 받아오기용
         var findUser: User?
         do {
@@ -100,4 +115,12 @@ class CommunityStore {
             return nil
         }
     }
+    
+//    private func getRouteInfo(routeID: Int) async throws -> StorageTripRoute {
+//        var findRoute: StorageTripRoute?
+//        do {
+//            let result: [StorageTripRoute] = try await DB.from("TRIP_ROUTE").select(
+//                ""
+//                }
+//    }
 }

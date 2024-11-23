@@ -26,6 +26,14 @@ struct CommunityPostAddView: View {
     @FocusState private var isFocused: Bool
     private let categories: [addPostCategory] = [.question, .findCompanion, .tripReview, .recommandRestaurant]
     
+    private var tagArray: [String] {
+        var tags = tags.components(separatedBy: "#").filter{ $0 != "" }
+        for i in 0..<tags.count {
+            tags[i] = tags[i].components(separatedBy: "#").joined().trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        return tags
+    }
+    
     var body: some View {
         GeometryReader { proxy in
             ZStack {
@@ -172,7 +180,7 @@ struct CommunityPostAddView: View {
                 Button {
                     Task {
                         isUploading = true
-                        await communityStore.addPost(title: title, text: text, author: userStore.user, image: images, category: postCategory.rawValue)
+                        await communityStore.addPost(title: title, text: text, author: userStore.user, image: images, category: postCategory.rawValue, tag: tagArray, tripRoute: nil)
                         isUploading = false
                         dismiss()
                     }

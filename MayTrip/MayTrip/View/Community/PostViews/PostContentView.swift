@@ -12,7 +12,6 @@ struct PostContentView: View {
     @EnvironmentObject var tripRouteStore: TripRouteStore
     
     var post: PostUserVer
-    var tripRouteId: Int?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -24,17 +23,19 @@ struct PostContentView: View {
                 .padding(.vertical)
             
             // 여행루트 카드
-            Button {
-                navigationManager.selection = 0
-            } label: {
-                RecommendContentView(route: tripRouteStore.list.filter{ $0.id == tripRouteId }.first ?? sampleRoute)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(.accent)
-                    }
+            if let tripRouteID = post.tripRoute {
+                Button {
+                    navigationManager.selection = 0
+                } label: {
+                    RecommendContentView(route: tripRouteStore.list.filter{ $0.id == tripRouteID }.first ?? sampleRoute)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.accent)
+                        }
+                }
             }
-            .padding(.bottom)
         }
+        .padding(.bottom)
     }
 }
 

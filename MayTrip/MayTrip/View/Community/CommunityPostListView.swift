@@ -37,8 +37,7 @@ struct CommunityPostListView: View {
                         
                         VStack(alignment: .leading, spacing: 5) {
                             HStack {
-                                // TODO: categoryCode -> category값 변환해서 적용
-                                Text("동행찾기")
+                                Text(communityStore.getCategoryName(categoryNumber: post.category))
                                     .font(.system(size: 12))
                                     .foregroundStyle(Color(uiColor: .systemBackground))
                                     .padding(.vertical, 5)
@@ -150,7 +149,7 @@ struct CommunityPostListView: View {
                         .fill(Color(uiColor: .systemBackground))
                 }
                 .onTapGesture {
-                    navigationManager.push(.postDetail(post, nil))
+                    navigationManager.push(.postDetail(post))
                 }
             }
         }

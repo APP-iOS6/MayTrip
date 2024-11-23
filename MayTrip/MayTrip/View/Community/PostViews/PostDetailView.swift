@@ -11,7 +11,6 @@ struct PostDetailView: View {
     @Environment(CommunityStore.self) var communityStore: CommunityStore
     @Environment(\.dismiss) var dismiss
     var post: PostUserVer
-    var tripRouteId: Int?
     let screenWidth: CGFloat = UIScreen.main.bounds.width
     let screenHeight: CGFloat = UIScreen.main.bounds.height
     
@@ -32,7 +31,7 @@ struct PostDetailView: View {
                 .padding([.top, .horizontal])
             
             // 하단 게시글 내용 뷰
-            PostContentView(post: post, tripRouteId: 53)
+            PostContentView(post: post)
                 .padding([.bottom, .horizontal])
             
             Rectangle()
