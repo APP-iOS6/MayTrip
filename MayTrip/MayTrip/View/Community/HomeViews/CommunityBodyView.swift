@@ -17,7 +17,7 @@ struct CommunityBodyView: View {
     var body: some View {
         ZStack {
             ScrollView {
-                CommunityPostListView(width: width, height: height)
+                CommunityPostListView(posts: communityStore.posts, width: width, height: height)
             }
             .refreshable {
                 Task {
