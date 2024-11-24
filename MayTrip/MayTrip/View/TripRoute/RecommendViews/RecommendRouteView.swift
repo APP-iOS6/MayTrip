@@ -30,22 +30,24 @@ struct RecommendRouteView: View {
                     Spacer()
                     
                     Button {
-                        tripRouteStore.orderTypeChange(type: .createdAt)
+                        // TODO: 리스트 최신순으로 변경
+                        isRecently = true
                     } label: {
                         Text("최신순")
                             .font(.callout)
-                            .foregroundStyle(tripRouteStore.orderType == .createdAt ? Color("accentColor") : .gray)
-                    }.disabled(tripRouteStore.orderType == .createdAt)
+                            .foregroundStyle(isRecently ? Color("accentColor") : .gray)
+                    }
                     
                     Divider()
                     
                     Button {
-                        tripRouteStore.orderTypeChange(type: .count)
+                        // TODO: 리스트 보관많은순으로 변경
+                        isRecently = false
                     } label: {
                         Text("보관많은순")
                             .font(.callout)
-                            .foregroundStyle(tripRouteStore.orderType == .count ? Color("accentColor") : .gray)
-                    }.disabled(tripRouteStore.orderType == .count)
+                            .foregroundStyle(!isRecently ? Color("accentColor") : .gray)
+                    }
                 }
             }
                 .background(background)
@@ -56,13 +58,11 @@ struct RecommendRouteView: View {
             }
             .onAppear {
                 Task {
-                    tripRouteStore.listStartIndex = 0
-                    tripRouteStore.listEndIndex = 9
-                    tripRouteStore.list = await tripRouteStore.getList()
+                    try await tripRouteStore.getTripRouteList()
                 }
             }
         }
-        //.padding(.horizontal)
+        .padding(.horizontal)
     }
 }
 
