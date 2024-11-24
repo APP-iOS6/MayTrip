@@ -81,10 +81,10 @@ struct PlaceAddingView: View {
                         endDate: endDate
                     )
                     Task {
-                        if let tripRoute = tripRoute {
+                        if let tripRoute = tripRoute, tripRoute.writeUser.id == userStore.user.id { // 기존의 루트를 편집하고있고, 작성자 본인일 경우
                             try await tripRouteStore.updateTripRoute(routeId: tripRoute.id, userId: userStore.user.id)
                         } else {
-                            try await tripRouteStore.addTripRoute(userId: userStore.user.id)
+                            try await tripRouteStore.addTripRoute(userId: userStore.user.id)    // 새로운 루트를 생성하고 있거나, 작성자 본인이 아닐경우
                         }
                         tripRouteStore.resetDatas()
                         dateStore.initDate()

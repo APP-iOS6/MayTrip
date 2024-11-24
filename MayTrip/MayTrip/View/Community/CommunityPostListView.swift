@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CommunityPostListView: View {
     @Environment(CommunityStore.self) var communityStore: CommunityStore
+    @State private var scrollPosition: CGPoint = .zero
+    @State private var scrollIndex: Int = 0
     let dateStore = DateStore.shared
     let width: CGFloat
     let height: CGFloat
@@ -70,7 +72,58 @@ struct CommunityPostListView: View {
                         .font(.system(size: 16))
                     
                     if post.image.count > 0 {
-                        imagesView(image: post.image, width: width, height: height)
+                        ZStack {
+                            ScrollView(.horizontal) {
+                                LazyHStack(spacing: 0) {
+                                    ForEach(post.image, id: \.self) { image in
+                                        Image(uiImage: image)
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: width * 0.71, height: height * 0.3)
+                                            .clipped()
+                                            .padding(.horizontal, width * 0.05)
+                                            .containerRelativeFrame(.horizontal, count: post.image.count, span: post.image.count, spacing: 0)
+                                    }
+                                }
+                                .background(GeometryReader { geometry in
+                                    Color.clear
+                                        .preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .named("scroll")).origin)
+                                })
+                                .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
+                                    self.scrollPosition = value
+                                    scrollIndex = Int((abs(value.x - width * 0.125) + width * 0.405) / (width * 0.81))
+                                }
+                            }
+                            .scrollDisabled(post.image.count == 1)
+                            
+                            if post.image.count > 1 { // 이미지가 여러 개일 경우에만 페이징 보여주기
+                                VStack {
+                                    Spacer()
+                                    HStack {
+                                        Spacer()
+                                        
+                                        HStack(spacing: 0) {
+                                            Text("\(scrollIndex + 1)")
+                                                .font(.system(size: 12))
+                                                .foregroundStyle(.white)
+                                            Text(" / \(post.image.count)")
+                                                .font(.system(size: 12))
+                                                .foregroundStyle(Color(uiColor: .systemGray5))
+                                        }
+                                        .padding(.vertical, 5)
+                                        .padding(.horizontal, 10)
+                                        .background {
+                                            Capsule()
+                                                .foregroundStyle(Color(uiColor: .systemGray2))
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .frame(width: width * 0.81)
+                        .scrollTargetLayout()
+                        .scrollTargetBehavior(.paging)
+                        .safeAreaPadding(.bottom)
                     }
                     
                     HStack {
@@ -95,6 +148,7 @@ struct CommunityPostListView: View {
             }
         }
         .padding(.horizontal)
+        .padding(.bottom, 20)
         .onTapGesture {
             isPresented = false
         }
@@ -110,71 +164,15 @@ struct CommunityPostListView: View {
     NavigationStack {
         CommunityView()
     }
-        .environment(CommunityStore())
+    .environment(CommunityStore())
 }
 
 extension CommunityPostListView {
-    @ViewBuilder
-    func imagesView(image: [UIImage], width: CGFloat, height: CGFloat) -> some View { // 이미지 갯수에 따른 배치 수정
-        let count = image.count
+    private struct ScrollOffsetPreferenceKey: PreferenceKey {
+        static var defaultValue: CGPoint = .zero
         
-        switch count {
-        case 1:
-            Image(uiImage:image[0])
-                .resizable()
-                .aspectRatio(contentMode: getRatio(image: image[0]) >= 8/3 ? .fit : .fill)
-                .scaledToFit()
-                .frame(width: width * 0.8, height: height*0.3)
-                .clipped()
-        case 2:
-            HStack {
-                Image(uiImage: image[0])
-                    .resizable()
-                    .aspectRatio(contentMode: getRatio(image: image[0]) >= 4/3 ? .fit : .fill)
-                    .frame(width: width * 0.4, height: height*0.3)
-                    .clipped()
-                Image(uiImage: image[1])
-                    .resizable()
-                    .aspectRatio(contentMode: getRatio(image: image[1]) >= 8/3 ? .fit : .fill)
-                    .frame(width: width * 0.4, height: height*0.3)
-                    .clipped()
-            }
-            .frame(width: width * 0.8, height: height*0.3)
-        default: // 이미지 3개 이상일 때
-            HStack(spacing: 0) {
-                Image(uiImage: image[0])
-                    .resizable()
-                    .aspectRatio(contentMode: getRatio(image: image[0]) >= 4/3 ? .fit : .fill)
-                    .frame(width: width * 0.4, height: height*0.3)
-                    .clipped()
-                VStack(spacing: 0) {
-                    Image(uiImage: image[1])
-                        .resizable()
-                        .aspectRatio(contentMode: getRatio(image: image[1]) >= 8/3 ? .fit : .fill)
-                        .frame(width: width * 0.4, height: height*0.15)
-                        .clipped()
-                    ZStack {
-                        Image(uiImage: image[2])
-                            .resizable()
-                            .aspectRatio(contentMode: getRatio(image: image[2]) >= 8/3 ? .fit : .fill)
-                            .frame(width: width * 0.4, height: height*0.15)
-                            .clipped()
-                        if count > 3 {
-                            Rectangle()
-                                .frame(width: width * 0.4, height: height*0.15)
-                                .foregroundStyle(.black.opacity(0.5))
-                            Text("+\(count-3)")
-                                .foregroundStyle(.white)
-                        }
-                    }
-                }
-            }
-            .frame(width: width * 0.8, height: height*0.3)
+        static func reduce(value: inout CGPoint, nextValue: () -> CGPoint) {
         }
-    }
-    
-    private func getRatio(image: UIImage) -> Double {
-        return image.size.width / image.size.height
     }
     
     private func dateToString(date: Date) -> String {

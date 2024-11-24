@@ -20,16 +20,16 @@ class CommunityStore {
         isUpadting = true
         let categoryNumber = getCategoryNumber(category: category)
         
-        Task {
-            do {
-                let images = try await storageStore.uploadImage(images: image)
-                let postDB: PostDB = PostDB(title: title, text: text, author: author.id, image: images, category: categoryNumber)
-                
-                try await DB.from("POST").insert(postDB).execute()
-                try await updatePost()
-            } catch {
-                print("Fail to add content: \(error)")
-            }
+        do {
+            let images = try await storageStore.uploadImage(images: image)
+            let postDB: PostDB = PostDB(title: title, text: text, author: author.id, image: images, category: categoryNumber)
+            
+            try await DB.from("POST").insert(postDB).execute()
+            try await updatePost()
+            
+            posts.sort(by: {$0.createAt > $1.createAt})
+        } catch {
+            print("Fail to add content: \(error)")
         }
     }
     
