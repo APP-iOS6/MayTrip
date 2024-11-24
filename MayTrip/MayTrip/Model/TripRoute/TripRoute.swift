@@ -51,14 +51,41 @@ struct TripRoutePost: Codable{
     }
 }
 
-struct TripRouteSimple: Identifiable ,Codable{
+struct TripRouteSimple: Identifiable ,Codable, Hashable{
     var id: Int
     var title: String
     var tag: [String]?
     var city: [String]
-    let writeUser: TripRouteUser
-    var start_date: String
-    var end_date: String
+    var startDate: String
+    var endDate: String
+    var userId: Int? //북마크 한 사람
+    var count: Int
+    var createdAt: Date
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case tag
+        case city
+        case startDate = "start_date"
+        case endDate = "end_date"
+        case userId = "user_id"
+        case count
+        case createdAt = "created_at"
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(Int.self, forKey: .id)
+        self.title = try container.decode(String.self, forKey: .title)
+        self.tag = try container.decodeIfPresent([String].self, forKey: .tag)
+        self.city = try container.decode([String].self, forKey: .city)
+        self.startDate = try container.decode(String.self, forKey: .startDate)
+        self.endDate = try container.decode(String.self, forKey: .endDate)
+        self.userId = try container.decodeIfPresent(Int.self, forKey: .userId)
+        self.count = (try? container.decode(Int.self, forKey: .count)) ?? 0
+        self.createdAt = try container.decode(Date.self, forKey: .createdAt)
+    }
 }
 
 struct TripRouteUser: Codable, Hashable {

@@ -15,9 +15,9 @@ struct MyTripCardView: View {
     var body: some View {
         ScrollView(.horizontal) {
             HStack {
-                ForEach(tripRouteStore.myTripRoutes.sorted(by: { $0.start_date < $1.start_date })) { route in
+                ForEach(tripRouteStore.myTripRoutes.sorted(by: { $0.startDate < $1.startDate })) { route in
                     // 메인 화면에서는 여행중 또는 앞으로 갈 여행만 보여준다
-                    if dateStore.convertStringToDate(route.end_date) >= Date() {
+                    if dateStore.convertStringToDate(route.endDate) >= Date() {
                         Button {
                             Task {
                                 try await tripRouteStore.getTripRoute(id: route.id)
@@ -43,10 +43,11 @@ struct MyTripCardView: View {
                                                 }
                                             
                                             Spacer()
-                                            
-                                            Text(dateStore.isOnATrip(route.start_date, end: route.end_date) ? "여행중" : dateStore.calcDDay(route.start_date))
+
+                                            Text(dateStore.isOnATrip(route.startDate, end: route.endDate) ? "여행중" : dateStore.calcDDay(route.startDate))
                                                 .font(.footnote)
-                                                .foregroundStyle(.black)
+                                                .foregroundStyle(Color("accentColor"))
+
                                                 .padding(.horizontal, 8)
                                                 .padding(5)
                                                 .background {
@@ -65,10 +66,10 @@ struct MyTripCardView: View {
                                             .multilineTextAlignment(.leading)
                                         
                                         HStack(spacing: 0) {
-                                            Text(dateStore.convertDateToString(dateStore.convertStringToDate(route.start_date), format: "yy.MM.dd"))
+                                            Text(dateStore.convertDateToString(dateStore.convertStringToDate(route.startDate), format: "yy.MM.dd"))
                                             
-                                            if route.end_date != route.start_date {
-                                                Text(" - \(dateStore.convertDateToString(dateStore.convertStringToDate(route.end_date), format: "yy.MM.dd"))")
+                                            if route.endDate != route.startDate {
+                                                Text(" - \(dateStore.convertDateToString(dateStore.convertStringToDate(route.endDate), format: "yy.MM.dd"))")
                                             }
                                         }
                                         .font(.callout)
@@ -79,12 +80,10 @@ struct MyTripCardView: View {
                                 .background(.white)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
-                        .padding(1)
                         .frame(minWidth: UIScreen.main.bounds.size.width / 4 * 3, minHeight: UIScreen.main.bounds.size.height / 7.8)
                     }
                 }
             }
-            .padding(.horizontal, 10)
         }
     }
 }
