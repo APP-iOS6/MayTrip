@@ -47,7 +47,6 @@ struct MyTripCardView: View {
                                             Text(dateStore.isOnATrip(route.startDate, end: route.endDate) ? "여행중" : dateStore.calcDDay(route.startDate))
                                                 .font(.footnote)
                                                 .foregroundStyle(Color("accentColor"))
-
                                                 .padding(.horizontal, 8)
                                                 .padding(5)
                                                 .background {

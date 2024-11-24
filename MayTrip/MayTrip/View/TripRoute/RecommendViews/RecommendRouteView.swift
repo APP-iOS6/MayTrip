@@ -57,12 +57,9 @@ struct RecommendRouteView: View {
                     RecommendContentView(route: route)
                 }
             }
-            
         }.onAppear{
             scrollProxy.scrollTo(0, anchor: .top)
         }
-        
-        //.padding(.horizontal)
     }
 }
 
@@ -70,5 +67,4 @@ struct RecommendRouteView: View {
     ScrollViewReader { proxy in
         RecommendRouteView(scrollProxy: proxy)
     }
-    
 }

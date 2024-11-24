@@ -76,8 +76,6 @@ class TripRouteStore: ObservableObject {
             listStartIndex += 10
             listEndIndex += 10
             lastTripRouteID = tripRouteList.last?.id ?? 0
-            print(lastTripRouteID)
-            print("스크롤 위치: \(scrollPosition)")
             if tripRouteList.count < 10{
                 isExistRoute = false
             }
