@@ -78,7 +78,7 @@ class TripRouteStore: ObservableObject {
             lastTripRouteID = tripRouteList.last?.id ?? 0
             print(lastTripRouteID)
             if tripRouteList.count < 10{
-                isExistRoute.toggle()
+                isExistRoute = false
             }
             return tripRouteList
         } catch {
@@ -289,6 +289,7 @@ class TripRouteStore: ObservableObject {
             print("Places Upsert Error: \(error)")
         }
     }
+    
     @MainActor
     func orderTypeChange(type: TripRouteOrderType){
         orderType = type

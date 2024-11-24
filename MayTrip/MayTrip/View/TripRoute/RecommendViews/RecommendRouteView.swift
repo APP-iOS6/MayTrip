@@ -54,13 +54,7 @@ struct RecommendRouteView: View {
                     RecommendContentView(route: route)
                 }
             }
-            .onAppear {
-                Task {
-                    tripRouteStore.listStartIndex = 0
-                    tripRouteStore.listEndIndex = 9
-                    tripRouteStore.list = await tripRouteStore.getList()
-                }
-            }
+            
         }
         //.padding(.horizontal)
     }

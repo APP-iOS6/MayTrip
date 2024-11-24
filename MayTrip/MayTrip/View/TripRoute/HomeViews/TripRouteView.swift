@@ -19,58 +19,68 @@ struct TripRouteView: View {
     }
     
     var body: some View {
-        ScrollView {
-            LazyVStack(alignment: .leading, spacing: 10) {
-                if isExist {
-                    MyTripCardView()
-                        .padding(.bottom, 10)
-                }
-                RecommendRouteView(background: Color(uiColor: .systemGray6))
-                    .padding(.bottom)
-                    .scrollTargetLayout()
-            }
-        }
-        .scrollPosition(id: $tripRouteStore.scrollPosition, anchor: .bottomTrailing)
-        .onChange(of: tripRouteStore.scrollPosition) { oldValue, newValue in
-            if tripRouteStore.isExistRoute && newValue == tripRouteStore.lastTripRouteID{
-                Task{
-                    tripRouteStore.list += await tripRouteStore.getList()
+        ScrollViewReader{ proxy in
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 10) {
+                    if isExist {
+                        MyTripCardView()
+                            .padding(.bottom, 10)
+                            .id(0)
+                    }
+                    RecommendRouteView(background: Color(uiColor: .systemGray6))
+                        .padding(.bottom)
+                        .scrollTargetLayout()
                 }
             }
-        }
-        .task {
-            try? await tripRouteStore.getCreatedByUserRoutes()
-        }
-        .padding(.top, 10)
-        .padding(.horizontal)
-        .background(Color(uiColor: .systemGray6))
-        .scrollIndicators(.hidden)
-        .toolbar {
-            HStack(spacing: 20) {
-                Image("appLogo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxHeight: 35)
-                
-                Spacer()
-                
-                NavigationLink {
-                    SearchView(tripRouteStore: tripRouteStore)
-                } label: {
-                    Image(systemName: "magnifyingglass")
-                        .frame(width: 15, height:  15)
-                        .foregroundStyle(Color("accentColor"))
+            .scrollPosition(id: $tripRouteStore.scrollPosition, anchor: .bottomTrailing)
+            .onChange(of: tripRouteStore.scrollPosition) { oldValue, newValue in
+                if tripRouteStore.isExistRoute && newValue == tripRouteStore.lastTripRouteID{
+                    Task{
+                        tripRouteStore.list += await tripRouteStore.getList()
+                    }
                 }
-                
-                Button {
-                    dateStore.initDate()
-                    navigationManager.push(.enterBasicInfo(tripRoute: nil))
-                } label: {
-                    Image(systemName: "calendar.badge.plus")
-                        .frame(width: 15, height:  15)
-                        .foregroundStyle(Color("accentColor"))
-                        .padding(.trailing, UIScreen.main.bounds.width * 0.01)
+            }
+            .task {
+                try? await tripRouteStore.getCreatedByUserRoutes()
+            }
+            .padding(.top, 10)
+            .padding(.horizontal)
+            .background(Color(uiColor: .systemGray6))
+            .scrollIndicators(.hidden)
+            .toolbar {
+                HStack(spacing: 20) {
+                    Image("appLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxHeight: 35)
+                    
+                    Spacer()
+                    
+                    NavigationLink {
+                        SearchView(tripRouteStore: tripRouteStore)
+                    } label: {
+                        Image(systemName: "magnifyingglass")
+                            .frame(width: 15, height:  15)
+                            .foregroundStyle(Color("accentColor"))
+                    }
+                    
+                    Button {
+                        dateStore.initDate()
+                        navigationManager.push(.enterBasicInfo(tripRoute: nil))
+                    } label: {
+                        Image(systemName: "calendar.badge.plus")
+                            .frame(width: 15, height:  15)
+                            .foregroundStyle(Color("accentColor"))
+                            .padding(.trailing, UIScreen.main.bounds.width * 0.01)
+                    }
                 }
+            }
+            .task {
+                tripRouteStore.listStartIndex = 0
+                tripRouteStore.listEndIndex = 9
+                tripRouteStore.isExistRoute = true
+                tripRouteStore.list = await tripRouteStore.getList()
+                proxy.scrollTo(0, anchor: .top)
             }
         }
     }
