@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct RecentlySearchListView: View {
-    @StateObject var tripRouteStore: TripRouteStore
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     @Binding var searchList: [String]
     
     var body: some View {
