@@ -43,7 +43,7 @@ struct TripRouteView: View {
                 tripRouteStore.listStartIndex = 0
                 tripRouteStore.listEndIndex = 9
                 tripRouteStore.isExistRoute = true
-                tripRouteStore.list = await tripRouteStore.getList()d
+                tripRouteStore.list = await tripRouteStore.getList()
             }
             .padding(.top, 10)
             .padding(.horizontal)
