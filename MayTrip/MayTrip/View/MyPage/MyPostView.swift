@@ -164,6 +164,10 @@ struct MyPostView: View {
                 }
             }
             .padding(.vertical, 1)
+            
+            if communityStore.myPosts.count == 0 {
+                Text("나의 게시물이 비어있습니다")
+            }
         }
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {

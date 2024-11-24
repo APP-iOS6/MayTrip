@@ -71,14 +71,12 @@ struct MyPageView: View {
                                 } label: {
                                     Text("여행 관리")
                                 }
-                                .disabled(tripRouteStore.myTripRoutes.count == 0)
                                 
                                 NavigationLink {
                                     MyPostView()
                                 } label: {
                                     Text("게시물 관리")
                                 }
-                                .disabled(communityStore.myPosts.count == 0)
                             }
                             
                             Section("계정") {

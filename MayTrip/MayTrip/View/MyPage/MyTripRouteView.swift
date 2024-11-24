@@ -29,6 +29,10 @@ struct MyTripRouteView: View {
                 .padding()
             }
             .padding(.vertical, 1)
+            
+            if tripRouteStore.myTripRoutes.count == 0 {
+                Text("나의 여행이 비어있습니다")
+            }
         }
         .onAppear {
             Task {
