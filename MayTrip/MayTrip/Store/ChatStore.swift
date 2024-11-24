@@ -20,6 +20,8 @@ class ChatStore {
     
     var enteredChatRoom: ChatRoom? = nil
     var enteredChatLogs: [ChatLog] = []
+    var forShareRoute: Int? = nil
+    var isEditing: Bool = false
     
     @MainActor
     init() {
@@ -199,7 +201,7 @@ class ChatStore {
         }.first
         
         // 제대로 채팅이 진행됐을때 둘다 채팅방에서 나간게 아니면(DELETE가 이루어지지 않은 경우, LEAVE 상황) 로컬 component가 존재해야함
-        if var component = component {
+        if let component = component {
             enteredChatRoom = component.chatRoom
             enteredChatLogs = component.chatLogs
             
