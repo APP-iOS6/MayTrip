@@ -13,6 +13,7 @@ class CommunityStore {
     let storageStore = StorageStore.shared
     
     var posts: [PostUserVer] = []
+    var myPosts: [PostUserVer] = []
     var postsForDB: [Post] = []
     var isUpadting: Bool = true
     
@@ -58,6 +59,27 @@ class CommunityStore {
         
         posts = posts.filter {
             $0.id != postId
+        }
+    }
+    
+    func getUserPost() async throws {
+        do {
+            let postsDB: [Post] = try await DB
+                .from("POST")
+                .select()
+                .eq("write_user", value: UserStore.shared.user.id)
+                .execute()
+                .value
+            
+            myPosts = []
+            for post in postsDB {
+                let userInfo = try await getUserInfo(userID: post.author)
+                let images = try await storageStore.getImages(pathes: post.image)
+                
+                myPosts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: images, category: post.category, createAt: post.createAt, updateAt: post.updateAt))
+            }
+        } catch {
+            print(error)
         }
     }
     
