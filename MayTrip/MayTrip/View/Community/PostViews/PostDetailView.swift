@@ -39,7 +39,7 @@ struct PostDetailView: View {
                     
                     Rectangle()
                         .fill(Color(uiColor: .systemGray6))
-                        .frame(width: screenWidth, height: screenHeight * 0.03)
+                        .frame(width: screenWidth, height: screenHeight * 0.015)
                     
                     // 하단 댓글 뷰
                     PostCommentsView(comments: $comments, postId: post.id, width: screenWidth, height: screenHeight)

@@ -18,7 +18,7 @@ struct PostCommentsView: View {
     var body: some View {
         VStack(spacing: 30) {
             HStack {
-                Text("댓글\(comments.count)")
+                Text("댓글 \(comments.count)")
                 
                 Spacer()
                 

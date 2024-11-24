@@ -69,39 +69,37 @@ struct CommunityPostAddView: View {
                         
                         Divider()
                         
-                        Button {
-                            isShowingRouteSheet.toggle()
-                        } label: {
-                            HStack {
-                                if let selectedRouteID = selectedRouteID {
-                                    let title = tripRouteStore.myTripRoutes.filter{ $0.id == selectedRouteID }.first!.title
-                                    Text(title)
-                                } else {
-                                    HStack {
-                                        Text("여행루트를 선택해주세요")
+                        HStack {
+                            Button {
+                                isShowingRouteSheet.toggle()
+                            } label: {
+                                HStack {
+                                    if let selectedRouteID = selectedRouteID {
+                                        let title = tripRouteStore.myTripRoutes.filter{ $0.id == selectedRouteID }.first!.title
+                                        Text(title)
+                                    } else {
+                                        HStack {
+                                            Text("여행루트를 선택해주세요")
+                                        }
                                     }
+                                    Image(systemName: "chevron.right")
+                                    Spacer()
                                 }
-                                Image(systemName: "chevron.right")
-                                Spacer()
                             }
-//                            HStack {
-//                                Text("여행루트를 선택해주세요")
-//                                Image(systemName: "chevron.right")
-//                                Spacer()
-//                            }
+                            .foregroundStyle(selectedRouteID == nil ? Color(uiColor: .systemGray3) : .primary)
+                            
+                            Spacer()
+                            
+                            if let selectedRouteID = selectedRouteID {
+                                Button {
+                                    self.selectedRouteID = nil
+                                } label: {
+                                    Image(systemName: "xmark.circle.fill")
+                                }
+                                .foregroundStyle(Color(uiColor: .systemGray3))
+                            }
                         }
-                        .foregroundStyle(selectedRouteID == nil ? Color(uiColor: .systemGray3) : .primary)
-//                        .foregroundStyle(Color(uiColor: .systemGray3))
                         .padding(.vertical, 6)
-                        
-//                        if let selectedRouteID = selectedRouteID {
-//                            RecommendContentView(route: tripRouteStore.myTripRoutes.filter{ $0.id == selectedRouteID }.first!, isSharing: true)
-//                                .overlay {
-//                                    RoundedRectangle(cornerRadius: 10)
-//                                        .stroke(.accent)
-//                                }
-//                                .padding(.bottom, 6)
-//                        }
                         
                         Divider()
                         
@@ -179,7 +177,6 @@ struct CommunityPostAddView: View {
                 }
             }
             .scrollDisabled(!isFocused)
-            
         }
         .padding(.top, 1)
         .sheet(isPresented: $isShowingRouteSheet) {
