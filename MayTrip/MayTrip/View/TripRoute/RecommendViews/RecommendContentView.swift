@@ -44,7 +44,7 @@ struct RecommendContentView: View {
                     
                     Button {
                         Task{
-                            var success: Bool = isScraped
+                            let success: Bool = isScraped
                             ? await tripRouteStore.deleteStorageByRouteId(routeId: route.id)
                             : await tripRouteStore.insertStorageByRouteId(routeId: route.id)
                             if success{
@@ -114,4 +114,3 @@ struct RecommendContentView: View {
         }
     }
 }
-

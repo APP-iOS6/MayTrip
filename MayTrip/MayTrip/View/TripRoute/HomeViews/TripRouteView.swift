@@ -39,6 +39,7 @@ struct TripRouteView: View {
                 }
             }
             .task {
+                tripRouteStore.scrollPosition = nil
                 try? await tripRouteStore.getCreatedByUserRoutes()
                 tripRouteStore.listStartIndex = 0
                 tripRouteStore.listEndIndex = 9
