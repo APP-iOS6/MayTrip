@@ -22,14 +22,14 @@ struct StorageView: View {
             
             ScrollView {
                 LazyVGrid(columns: gridItems, alignment: .leading, spacing: 10) {
-                    ForEach(tripRouteStore.list) { route in
+                    ForEach(tripRouteStore.list) { route in // TODO: 보관함에 있는 루트들로 변경
                         RecommendContentView(route: route)
                     }
                 }
                 .padding()
             }
             .padding(.vertical, 1)
-            //            if // 보관된 루트 없을때에 만 보이도록
+            //            if // TODO: 보관된 루트 없을때에 만 보이도록
             //            Text("보관함이 비어있습니다")
             //                .foregroundStyle(.gray)
         }
