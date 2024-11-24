@@ -25,9 +25,7 @@ struct RecentlySearchListView: View {
                     ForEach(searchList, id: \.self) { searchText in
                         HStack(spacing: 15) {
                             Button {
-                                Task{
-                                    tripRouteStore.filteredTripRoutes = await tripRouteStore.getByKeyword(keyword: searchText)
-                                }
+                                tripRouteStore.searchTripRoute(searchText)
                             } label: {
                                 Text(searchText)
                             }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchView: View {
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var tripRouteStore: TripRouteStore
+    @StateObject var tripRouteStore: TripRouteStore
     @State var  searchText: String = ""
     @FocusState var focused: Bool
     @State private var searchList: [String] = []
@@ -20,6 +20,7 @@ struct SearchView: View {
                 HStack {
                     Button {
                         tripRouteStore.resetSearchTripRoute()
+                        
                         dismiss()
                     } label: {
                         Image(systemName: "chevron.left")
@@ -36,9 +37,7 @@ struct SearchView: View {
                                 Task {
                                     guard searchText != "" else { return }
                                     
-                                    //tripRouteStore.searchTripRoute(searchText)
-                                    print(searchText)
-                                    tripRouteStore.filteredTripRoutes = await tripRouteStore.getByKeyword(keyword: searchText)
+                                    tripRouteStore.searchTripRoute(searchText)
                                     
                                     if !searchList.contains(searchText) {
                                         searchList.insert(searchText, at: 0)
@@ -46,7 +45,7 @@ struct SearchView: View {
                                     UserDefaults.standard.set(searchList, forKey: "searchList")
                                     
                                     searchText = ""
-                                    focused = false
+                                    focused = true
                                 }
                             }
                             .keyboardType(.default)
