@@ -26,8 +26,6 @@ class ChatStore {
     @MainActor
     init() {
         Task {
-            try await setAllComponents()
-            
             let channel =  db.realtimeV2.channel("observe")
             let changes = channel.postgresChange(AnyAction.self, schema: "public")
             
