@@ -90,6 +90,11 @@ struct MainView:  View {
                 }
                 .tag(4)
             }
+            .onAppear {
+                Task {
+                    try await chatStore.setAllComponents()
+                }
+            }
             .onChange(of: navigationManager.selection) {
                 selection = navigationManager.selection
             }
