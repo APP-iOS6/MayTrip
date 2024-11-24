@@ -58,6 +58,8 @@ struct RecommendRouteView: View {
                 }
             }
             
+        }.onAppear{
+            scrollProxy.scrollTo(0, anchor: .top)
         }
         
         //.padding(.horizontal)

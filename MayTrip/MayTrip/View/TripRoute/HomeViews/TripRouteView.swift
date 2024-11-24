@@ -43,9 +43,7 @@ struct TripRouteView: View {
                 tripRouteStore.listStartIndex = 0
                 tripRouteStore.listEndIndex = 9
                 tripRouteStore.isExistRoute = true
-                tripRouteStore.list = await tripRouteStore.getList()
-                tripRouteStore.scrollPosition = nil
-                proxy.scrollTo(0, anchor: .top)
+                tripRouteStore.list = await tripRouteStore.getList()d
             }
             .padding(.top, 10)
             .padding(.horizontal)
@@ -81,8 +79,6 @@ struct TripRouteView: View {
             }
             .simultaneousGesture(TapGesture().onEnded { _ in
                 tripRouteStore.scrollPosition = nil
-                // 상호작용 시 스크롤 이동 방지
-                // 여기서 추가적인 로직을 수행할 수 있습니다.
             })
         }
     }
