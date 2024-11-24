@@ -60,6 +60,8 @@
 		6E690E8B2CD8B97E0096DB7C /* TripRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E8A2CD8B97E0096DB7C /* TripRouteView.swift */; };
 		6E690E8F2CD8E2F10096DB7C /* ChatStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E8E2CD8E2EB0096DB7C /* ChatStore.swift */; };
 		6E690E912CD8EE280096DB7C /* ChattingRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E902CD8EE180096DB7C /* ChattingRoomView.swift */; };
+		6E7CF0252CF3040900EDCB59 /* MyTripRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7CF0242CF303FB00EDCB59 /* MyTripRouteView.swift */; };
+		6E7CF0272CF30A2B00EDCB59 /* MyPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7CF0262CF30A2100EDCB59 /* MyPostView.swift */; };
 		6EDBE8AF2CDA468500D9A233 /* DateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E690E792CD8B5A50096DB7C /* DateStore.swift */; };
 		FB36F5EE2CD472F600E356FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB36F5E92CD472F600E356FA /* Assets.xcassets */; };
 		FB36F5EF2CD472F600E356FA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F5EA2CD472F600E356FA /* ContentView.swift */; };
@@ -167,6 +169,8 @@
 		6E690E8A2CD8B97E0096DB7C /* TripRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripRouteView.swift; sourceTree = "<group>"; };
 		6E690E8E2CD8E2EB0096DB7C /* ChatStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStore.swift; sourceTree = "<group>"; };
 		6E690E902CD8EE180096DB7C /* ChattingRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomView.swift; sourceTree = "<group>"; };
+		6E7CF0242CF303FB00EDCB59 /* MyTripRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTripRouteView.swift; sourceTree = "<group>"; };
+		6E7CF0262CF30A2100EDCB59 /* MyPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPostView.swift; sourceTree = "<group>"; };
 		FB36F5D62CD472AF00E356FA /* MayTrip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MayTrip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB36F5E92CD472F600E356FA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FB36F5EA2CD472F600E356FA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -515,6 +519,8 @@
 			children = (
 				FB8AC00B2CDBBF560001AB05 /* ProfileInitView.swift */,
 				FB36F6042CD4740C00E356FA /* MyPageView.swift */,
+				6E7CF0242CF303FB00EDCB59 /* MyTripRouteView.swift */,
+				6E7CF0262CF30A2100EDCB59 /* MyPostView.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -726,6 +732,8 @@
 				FB36F63A2CD4991600E356FA /* LoginViewCommon.swift in Sources */,
 				FBEF99372CEB216700C2A609 /* CommunityMenuSheetView.swift in Sources */,
 				FBC09BA22CD9DBAA00B059FB /* SocialLoginButtons.swift in Sources */,
+				6E7CF0252CF3040900EDCB59 /* MyTripRouteView.swift in Sources */,
+				6E7CF0272CF30A2B00EDCB59 /* MyPostView.swift in Sources */,
 				FB36F63C2CD5150800E356FA /* SignUpView.swift in Sources */,
 				42F2F9DA2CE249CF0013F147 /* PlaceDatePickerView.swift in Sources */,
 				FBC09C382CDA72A800B059FB /* ChatRoom.swift in Sources */,

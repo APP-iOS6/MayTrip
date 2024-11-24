@@ -13,6 +13,7 @@ class CommunityStore {
     let storageStore = StorageStore.shared
     
     var posts: [PostUserVer] = []
+    var myPosts: [PostUserVer] = []
     var postsForDB: [Post] = []
     var isUpadting: Bool = true
     
@@ -102,6 +103,35 @@ class CommunityStore {
             print("POST GET LIST ERROR\n",error)
         }
         return nil
+    }
+    
+    func getUserPost() async throws {
+        do {
+            let postsDB: [Post] = try await DB
+                .from("POST")
+                .select("""
+                        id, title, content, write_user ,image, category, created_at, updated_at, tag,
+                        trip_route(id, title, tag, city, writeUser:write_user(
+                        id,
+                        nickname,
+                        profile_image
+                        )
+                        , start_date, end_date)
+                        """)
+                .eq("write_user", value: UserStore.shared.user.id)
+                .execute()
+                .value
+            
+            myPosts = []
+            for post in postsDB {
+                let userInfo = try await getUserInfo(userID: post.author)
+                let images = try await storageStore.getImages(pathes: post.image)
+                
+                myPosts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: images, category: post.category, tag: post.tag, tripRoute: post.tripRoute, createAt: post.createAt, updateAt: post.updateAt))
+            }
+        } catch {
+            print(error)
+        }
     }
     
     private func getCategoryNumber(category: String) -> Int {
