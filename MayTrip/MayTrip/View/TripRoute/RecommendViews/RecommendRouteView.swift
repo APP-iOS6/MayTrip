@@ -11,7 +11,8 @@ struct RecommendRouteView: View {
     @EnvironmentObject var tripRouteStore: TripRouteStore
     @State var isRecently: Bool = true
     
-    var background: Color
+    var background: Color = Color(uiColor: .systemGray6)
+    var scrollProxy: ScrollViewProxy
     
     private let gridItems: [GridItem] = [
         GridItem(.flexible()),
@@ -31,6 +32,7 @@ struct RecommendRouteView: View {
                     
                     Button {
                         tripRouteStore.orderTypeChange(type: .createdAt)
+                        scrollProxy.scrollTo(0, anchor: .top)
                     } label: {
                         Text("최신순")
                             .font(.callout)
@@ -41,6 +43,7 @@ struct RecommendRouteView: View {
                     
                     Button {
                         tripRouteStore.orderTypeChange(type: .count)
+                        scrollProxy.scrollTo(0, anchor: .top)
                     } label: {
                         Text("보관많은순")
                             .font(.callout)
@@ -56,10 +59,14 @@ struct RecommendRouteView: View {
             }
             
         }
+        
         //.padding(.horizontal)
     }
 }
 
 #Preview {
-    RecommendRouteView(background: .gray)
+    ScrollViewReader { proxy in
+        RecommendRouteView(scrollProxy: proxy)
+    }
+    
 }

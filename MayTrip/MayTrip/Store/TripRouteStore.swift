@@ -77,6 +77,7 @@ class TripRouteStore: ObservableObject {
             listEndIndex += 10
             lastTripRouteID = tripRouteList.last?.id ?? 0
             print(lastTripRouteID)
+            print("스크롤 위치: \(scrollPosition)")
             if tripRouteList.count < 10{
                 isExistRoute = false
             }
@@ -296,10 +297,10 @@ class TripRouteStore: ObservableObject {
         listStartIndex = 0
         listEndIndex = 9
         isExistRoute = true
+        scrollPosition = nil
         Task{
             list = await getList()
         }
-        scrollPosition = list.first?.id
     }
     
     func searchTripRoute(_ search: String) {
