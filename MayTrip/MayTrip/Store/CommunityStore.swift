@@ -35,24 +35,33 @@ class CommunityStore {
     }
     
     func editPost(post: PostUserVer, title: String, text: String, image: [UIImage], category: String, tag: [String]? = nil, tripRoute: Int? = nil) async {
-            isUpadting = true
-            let categoryNumber = getCategoryNumber(category: category)
+        isUpadting = true
+        let categoryNumber = getCategoryNumber(category: category)
+        
+        do {
+            let images = try await storageStore.uploadImage(images: image)
+            let postForUpdate = PostForDB(title: title, text: text, author: post.author.id, image: images, category: categoryNumber, tag: tag, tripRoute: tripRoute, createAt: post.createAt, updateAt: Date())
             
-            do {
-                let images = try await storageStore.uploadImage(images: image)
-                let postForUpdate = PostForDB(title: title, text: text, author: post.author.id, image: images, category: categoryNumber, tag: tag, tripRoute: tripRoute, createAt: post.createAt, updateAt: Date())
-                
+            try await DB.from("POST")
+                .update(postForUpdate)
+                .eq("id", value: post.id)
+                .execute()
+            
+            if tripRoute == nil {
+                let nilRoute: [String: Int?] = ["trip_route": nil]
                 try await DB.from("POST")
-                    .upsert(postForUpdate)
+                    .update(nilRoute)
                     .eq("id", value: post.id)
                     .execute()
-                try await updatePost()
-                
-                posts.sort(by: {$0.createAt > $1.createAt})
-            } catch {
-                print("Fail to add content: \(error)")
             }
+            
+            try await updatePost()
+            
+            posts.sort(by: {$0.createAt > $1.createAt})
+        } catch {
+            print("Fail to add content: \(error)")
         }
+    }
     
     func updatePost() async throws { // 업데이트된 DB로부터 게시물 불러오기 현재는 최신순으로 해놨는데 나중에 정렬 기준을 받아서 그에 맞춰서도 가능
         do {
