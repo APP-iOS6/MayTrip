@@ -180,7 +180,6 @@ struct CommunityPostEditView: View {
                 Button {
                     Task {
                         isUploading = true
-//                        await communityStore.addPost(title: title, text: text, author: userStore.user, image: images, category: postCategory.rawValue)
                         await communityStore.editPost(post: post, title: title, text: text, image: images, category: postCategory.rawValue)
                         isUploading = false
                         dismiss()
