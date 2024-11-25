@@ -18,8 +18,10 @@ struct PostImageView: View {
         ZStack {
             TabView {
                 ForEach(Array(post.image.enumerated()), id: \.element) { index, image in
-                    imageView(image: image, width: screenWidth, height: screenHeight)
-                        .tag(index)
+                    if let image = UserStore.convertStringToImage(image) {
+                        imageView(image: image, width: screenWidth, height: screenHeight)
+                            .tag(index)
+                    }
                 }
             }
             .tabViewStyle(.page)
