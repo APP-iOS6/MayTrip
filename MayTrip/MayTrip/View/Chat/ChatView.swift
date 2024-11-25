@@ -34,11 +34,11 @@ struct ChatView: View {
                                 }
                             } label: {
                                 HStack {
-                                    if let image = component.otherUser.profileImage, image != "" {
-                                        // TODO: 이미지 띄우기
-                                        Image(systemName: image)
+                                    if let image = UserStore.convertStringToImage(component.otherUser.profileImage) {
+                                        Image(uiImage: image)
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
+                                            .padding(5)
                                             .frame(width: 60, height: 60)
                                             .clipShape(Circle())
                                     } else {
