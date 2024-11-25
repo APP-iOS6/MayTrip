@@ -26,16 +26,14 @@ struct CommunityPostListView: View {
                         if let image = UserStore.convertStringToImage(post.author.profileImage) {
                             Image(uiImage: image)
                                 .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .padding(5)
-                                .frame(width: width * 0.07)
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: width * 0.12)
                                 .clipShape(Circle())
                         } else {
                             Image(systemName: "person.circle.fill")
                                 .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .padding(5)
-                                .frame(width: width * 0.07)
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: width * 0.12)
                                 .clipShape(Circle())
                                 .foregroundStyle(Color("accentColor").opacity(0.2))
                         }

@@ -32,14 +32,13 @@ struct MyPageView: View {
                                     if let image = self.image {
                                         Image(uiImage: image)
                                             .resizable()
-                                            .aspectRatio(contentMode: .fit)
+                                            .aspectRatio(contentMode: .fill)
                                             .frame(width: 60, height: 60)
                                             .clipShape(Circle())
                                     } else {
                                         Image(systemName: "person.circle.fill")
                                             .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .padding(5)
+                                            .aspectRatio(contentMode: .fill)
                                             .frame(width: 60, height: 60)
                                             .clipShape(Circle())
                                             .foregroundStyle(Color("accentColor").opacity(0.2))
