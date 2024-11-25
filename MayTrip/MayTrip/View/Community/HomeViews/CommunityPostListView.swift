@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct CommunityPostListView: View {
-    @Environment(CommunityStore.self) var communityStore: CommunityStore
     @State private var scrollPosition: CGPoint = .zero
     @State private var scrollIndex: Int = 0
     let dateStore = DateStore.shared
+    let posts: [PostUserVer]
     let width: CGFloat
     let height: CGFloat
     @State var isPresented: Bool = false
@@ -20,7 +20,7 @@ struct CommunityPostListView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            ForEach(communityStore.posts, id:\.id) { post in
+            ForEach(posts, id:\.id) { post in
                 VStack(alignment: .leading, spacing: 15) {
                     HStack(spacing: 10) {
                         Image(systemName: "person.fill")
@@ -72,58 +72,7 @@ struct CommunityPostListView: View {
                         .font(.system(size: 16))
                     
                     if post.image.count > 0 {
-                        ZStack {
-                            ScrollView(.horizontal) {
-                                LazyHStack(spacing: 0) {
-                                    ForEach(post.image, id: \.self) { image in
-                                        Image(uiImage: image)
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: width * 0.71, height: height * 0.3)
-                                            .clipped()
-                                            .padding(.horizontal, width * 0.05)
-                                            .containerRelativeFrame(.horizontal, count: post.image.count, span: post.image.count, spacing: 0)
-                                    }
-                                }
-                                .background(GeometryReader { geometry in
-                                    Color.clear
-                                        .preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .named("scroll")).origin)
-                                })
-                                .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
-                                    self.scrollPosition = value
-                                    scrollIndex = Int((abs(value.x - width * 0.125) + width * 0.405) / (width * 0.81))
-                                }
-                            }
-                            .scrollDisabled(post.image.count == 1)
-                            
-                            if post.image.count > 1 { // 이미지가 여러 개일 경우에만 페이징 보여주기
-                                VStack {
-                                    Spacer()
-                                    HStack {
-                                        Spacer()
-                                        
-                                        HStack(spacing: 0) {
-                                            Text("\(scrollIndex + 1)")
-                                                .font(.system(size: 12))
-                                                .foregroundStyle(.white)
-                                            Text(" / \(post.image.count)")
-                                                .font(.system(size: 12))
-                                                .foregroundStyle(Color(uiColor: .systemGray5))
-                                        }
-                                        .padding(.vertical, 5)
-                                        .padding(.horizontal, 10)
-                                        .background {
-                                            Capsule()
-                                                .foregroundStyle(Color(uiColor: .systemGray2))
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        .frame(width: width * 0.81)
-                        .scrollTargetLayout()
-                        .scrollTargetBehavior(.paging)
-                        .safeAreaPadding(.bottom)
+                        CommunityPostImageView(post: post, width: width, height: height)
                     }
                     
                     HStack {
@@ -160,21 +109,7 @@ struct CommunityPostListView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        CommunityView()
-    }
-    .environment(CommunityStore())
-}
-
 extension CommunityPostListView {
-    private struct ScrollOffsetPreferenceKey: PreferenceKey {
-        static var defaultValue: CGPoint = .zero
-        
-        static func reduce(value: inout CGPoint, nextValue: () -> CGPoint) {
-        }
-    }
-    
     private func dateToString(date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy.MM.dd HH:mm"

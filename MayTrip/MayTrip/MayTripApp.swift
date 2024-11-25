@@ -16,7 +16,7 @@ struct MayTripApp: App {
     @StateObject var tripRouteStore = TripRouteStore()
     @State var authStore = AuthStore()
     @State private var chatStore: ChatStore = .init()
-    var communityStore = CommunityStore()
+    @State var communityStore = CommunityStore()
     
     var body: some Scene {
         WindowGroup {

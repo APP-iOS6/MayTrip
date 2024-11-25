@@ -45,8 +45,8 @@ struct CommunityView: View {
                     .toolbar {
                         HStack(spacing: 20) {
                             Spacer()
-                            Button { // 검색 버튼 로직 추가하기
-                                
+                            NavigationLink { // 검색 버튼 로직 추가하기
+                                CommunitySearchView()
                             } label: {
                                 Image(systemName: "magnifyingglass")
                                     .frame(width: 15, height:  15)

@@ -87,6 +87,10 @@
 		FB8AC0372CE1F3470001AB05 /* CommunityPostAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC0362CE1F3470001AB05 /* CommunityPostAddView.swift */; };
 		FB8AC05F2CE5F0780001AB05 /* AuthStore+Apple.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC05E2CE5F0730001AB05 /* AuthStore+Apple.swift */; };
 		FB8AC0612CE5F2530001AB05 /* AppleLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC0602CE5F24E0001AB05 /* AppleLoginManager.swift */; };
+		FBB848E42CF2FBDE000A97C9 /* CommunitySearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB848E32CF2FBD4000A97C9 /* CommunitySearchView.swift */; };
+		FBB848E62CF301CA000A97C9 /* CommunityRecentSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB848E52CF301B5000A97C9 /* CommunityRecentSearchView.swift */; };
+		FBB848E82CF30CB1000A97C9 /* CommunitySearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB848E72CF30CA6000A97C9 /* CommunitySearchResultView.swift */; };
+		FBB848EA2CF311EB000A97C9 /* CommunityPostImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB848E92CF311E7000A97C9 /* CommunityPostImageView.swift */; };
 		FBC09BA22CD9DBAA00B059FB /* SocialLoginButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09BA12CD9DBA400B059FB /* SocialLoginButtons.swift */; };
 		FBC09C382CDA72A800B059FB /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C372CDA72A800B059FB /* ChatRoom.swift */; };
 		FBC09C392CDA72A800B059FB /* ChatLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC09C362CDA72A800B059FB /* ChatLog.swift */; };
@@ -180,6 +184,10 @@
 		FB8AC0362CE1F3470001AB05 /* CommunityPostAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostAddView.swift; sourceTree = "<group>"; };
 		FB8AC05E2CE5F0730001AB05 /* AuthStore+Apple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthStore+Apple.swift"; sourceTree = "<group>"; };
 		FB8AC0602CE5F24E0001AB05 /* AppleLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginManager.swift; sourceTree = "<group>"; };
+		FBB848E32CF2FBD4000A97C9 /* CommunitySearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySearchView.swift; sourceTree = "<group>"; };
+		FBB848E52CF301B5000A97C9 /* CommunityRecentSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRecentSearchView.swift; sourceTree = "<group>"; };
+		FBB848E72CF30CA6000A97C9 /* CommunitySearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySearchResultView.swift; sourceTree = "<group>"; };
+		FBB848E92CF311E7000A97C9 /* CommunityPostImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostImageView.swift; sourceTree = "<group>"; };
 		FBC09B952CD8721900B059FB /* MayTrip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MayTrip.entitlements; sourceTree = "<group>"; };
 		FBC09B9A2CD9D68D00B059FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FBC09BA12CD9DBA400B059FB /* SocialLoginButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtons.swift; sourceTree = "<group>"; };
@@ -472,12 +480,9 @@
 		FB36F5FA2CD473C600E356FA /* Community */ = {
 			isa = PBXGroup;
 			children = (
-				FB36F6022CD4740600E356FA /* CommunityView.swift */,
-				FB8AC02A2CE195490001AB05 /* CommunityHeaderView.swift */,
-				FB8AC02C2CE1966B0001AB05 /* CommunityBodyView.swift */,
-				FB8AC0302CE1E8BC0001AB05 /* CommunityPostListView.swift */,
-				FB8AC0362CE1F3470001AB05 /* CommunityPostAddView.swift */,
-				FBEF99362CEB215E00C2A609 /* CommunityMenuSheetView.swift */,
+				FBB848E02CF2F8BA000A97C9 /* HomeViews */,
+				FBB848E12CF2F8D5000A97C9 /* PostManageViews */,
+				FBB848E22CF2F8FB000A97C9 /* SearchViews */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -533,6 +538,37 @@
 				FB8AC0202CDDE2B80001AB05 /* MyPageViewCommon.swift */,
 			);
 			path = MyPageView;
+			sourceTree = "<group>";
+		};
+		FBB848E02CF2F8BA000A97C9 /* HomeViews */ = {
+			isa = PBXGroup;
+			children = (
+				FB36F6022CD4740600E356FA /* CommunityView.swift */,
+				FB8AC02A2CE195490001AB05 /* CommunityHeaderView.swift */,
+				FB8AC02C2CE1966B0001AB05 /* CommunityBodyView.swift */,
+				FB8AC0302CE1E8BC0001AB05 /* CommunityPostListView.swift */,
+				FBB848E92CF311E7000A97C9 /* CommunityPostImageView.swift */,
+				FBEF99362CEB215E00C2A609 /* CommunityMenuSheetView.swift */,
+			);
+			path = HomeViews;
+			sourceTree = "<group>";
+		};
+		FBB848E12CF2F8D5000A97C9 /* PostManageViews */ = {
+			isa = PBXGroup;
+			children = (
+				FB8AC0362CE1F3470001AB05 /* CommunityPostAddView.swift */,
+			);
+			path = PostManageViews;
+			sourceTree = "<group>";
+		};
+		FBB848E22CF2F8FB000A97C9 /* SearchViews */ = {
+			isa = PBXGroup;
+			children = (
+				FBB848E32CF2FBD4000A97C9 /* CommunitySearchView.swift */,
+				FBB848E52CF301B5000A97C9 /* CommunityRecentSearchView.swift */,
+				FBB848E72CF30CA6000A97C9 /* CommunitySearchResultView.swift */,
+			);
+			path = SearchViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -628,6 +664,7 @@
 				6E5D95A72CEB1F9900A9FF95 /* RouteListForChatView.swift in Sources */,
 				42702D502CDA56AE0093F9E3 /* RouteDetailView.swift in Sources */,
 				6EDBE8AF2CDA468500D9A233 /* DateStore.swift in Sources */,
+				FBB848EA2CF311EB000A97C9 /* CommunityPostImageView.swift in Sources */,
 				FB36F6052CD4740F00E356FA /* MyPageView.swift in Sources */,
 				42F2F9DC2CE25CF00013F147 /* RouteDetailHeaderView.swift in Sources */,
 				FB8AC01A2CDCAE8A0001AB05 /* AuthStore+Kakao.swift in Sources */,
@@ -636,6 +673,7 @@
 				2518F6B82CD492A000A8F951 /* DBConnection.swift in Sources */,
 				42F2F9D42CE187F60013F147 /* PlaceStore.swift in Sources */,
 				FB8AC02D2CE1966B0001AB05 /* CommunityBodyView.swift in Sources */,
+				FBB848E82CF30CB1000A97C9 /* CommunitySearchResultView.swift in Sources */,
 				42F2F9D62CE2493D0013F147 /* PlaceHeaderView.swift in Sources */,
 				FB36F5FD2CD473EA00E356FA /* LoginView.swift in Sources */,
 				FB8AC01C2CDCAEC30001AB05 /* AuthStore+Google.swift in Sources */,
@@ -674,6 +712,7 @@
 				FB8AC01E2CDD93CC0001AB05 /* UserStore.swift in Sources */,
 				259AABB42CDA0AB200512CE6 /* MarkerItem.swift in Sources */,
 				259AABB52CDA0AB200512CE6 /* TripRoute.swift in Sources */,
+				FBB848E62CF301CA000A97C9 /* CommunityRecentSearchView.swift in Sources */,
 				259AABC02CDA0AC800512CE6 /* User.swift in Sources */,
 				42630CD12CE735960091ED75 /* NavigationManager.swift in Sources */,
 				FB8AC02F2CE19D010001AB05 /* CommunityStore.swift in Sources */,
@@ -683,6 +722,7 @@
 				FB8AC05F2CE5F0780001AB05 /* AuthStore+Apple.swift in Sources */,
 				FB36F6012CD473FA00E356FA /* ChatView.swift in Sources */,
 				259AABC52CDA0AD900512CE6 /* CityTagFlowLayout.swift in Sources */,
+				FBB848E42CF2FBDE000A97C9 /* CommunitySearchView.swift in Sources */,
 				259AABC62CDA0AD900512CE6 /* PlaceSearchView.swift in Sources */,
 				259AABC72CDA0AD900512CE6 /* PlaceInfoView.swift in Sources */,
 				259AABC82CDA0AD900512CE6 /* PlaceAddingView.swift in Sources */,

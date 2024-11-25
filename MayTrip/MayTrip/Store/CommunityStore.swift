@@ -14,8 +14,10 @@ class CommunityStore {
     
     var posts: [PostUserVer] = []
     var myPosts: [PostUserVer] = []
+    var filteredPosts: [PostUserVer] = []
     var postsForDB: [Post] = []
     var isUpadting: Bool = true
+    var isSearching: Bool = false
     
     func addPost(title: String, text: String, author: User, image: [UIImage], category: String) async { // 게시물 작성
         isUpadting = true
@@ -58,6 +60,10 @@ class CommunityStore {
         try await DB.from("POST").delete().eq("id", value: postId).execute()
         
         posts = posts.filter {
+            $0.id != postId
+        }
+        
+        filteredPosts = filteredPosts.filter {
             $0.id != postId
         }
     }
@@ -121,5 +127,17 @@ class CommunityStore {
             print(error)
             return nil
         }
+    }
+    
+    func searchPost(_ search: String) {
+        filteredPosts = posts.filter {
+            $0.title.contains(search) || $0.text.contains(search) // 추후에 태그 추가
+        }
+        isSearching = true
+    }
+    
+    func resetSearchPost() {
+        filteredPosts = []
+        isSearching = false
     }
 }
