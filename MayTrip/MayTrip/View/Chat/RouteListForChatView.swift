@@ -22,8 +22,9 @@ struct RouteListForChatView: View {
                     RouteCellForChatView(selectedRouted: $selectedRouted, route: route)
                 }
             }
-            .padding(.horizontal, 10)
+            .padding([.bottom, .horizontal], 10)
         }
+        .frame(height: UIScreen.main.bounds.height / 4.9)
         .scrollIndicators(.hidden)
     }
 }
