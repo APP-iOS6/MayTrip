@@ -23,6 +23,7 @@ struct CommunityPostEditView: View {
     @State private var postCategory: addPostCategory = .question
     @State private var selectedPhotos: [PhotosPickerItem] = []
     @State private var images: [UIImage] = []
+    @State private var imageStrs: [String] = []
     @State private var isUploading: Bool = false
     @State private var isShowingRouteSheet: Bool = false
     @State private var selectedRoute: TripRouteSimple? = nil
@@ -191,7 +192,7 @@ struct CommunityPostEditView: View {
             self.title = communityStore.selectedPost.title
             self.text = communityStore.selectedPost.text
             self.postCategory = getCategory(category: communityStore.selectedPost.category)
-            self.images = communityStore.selectedPost.image
+            self.images = StorageStore.getImages(pathes: communityStore.selectedPost.image)
             if let tag = communityStore.selectedPost.tag {
                 self.tags = tag.reduce("") {$0 + "#\($1) "}
             }
@@ -221,7 +222,7 @@ struct CommunityPostEditView: View {
                 Button {
                     Task {
                         isUploading = true
-                        await communityStore.editPost(title: title, text: text, image: images, category: postCategory.rawValue, tag: tagArray, tripRoute: selectedRoute)
+                        await communityStore.editPost(title: title, text: text, image: imageStrs, category: postCategory.rawValue, tag: tagArray, tripRoute: selectedRoute)
                         isUploading = false
                         dismiss()
                     }
@@ -280,6 +281,10 @@ struct CommunityPostEditView: View {
                         break
                     } else if let image = result.0 {
                         images.append(image)
+                        let data = image.pngData()
+                        if let imageStr = data?.base64EncodedString() {
+                            self.imageStrs.append(imageStr)
+                        }
                     }
                 }
                 selectedPhotos.removeAll()
