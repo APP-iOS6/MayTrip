@@ -84,6 +84,7 @@
 		FB36F6342CD4775B00E356FA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FB36F6332CD4775B00E356FA /* GoogleSignInSwift */; };
 		FB36F63A2CD4991600E356FA /* LoginViewCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F6392CD4990900E356FA /* LoginViewCommon.swift */; };
 		FB36F63C2CD5150800E356FA /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB36F63B2CD5150400E356FA /* SignUpView.swift */; };
+		FB6E2FCF2CF409AD00516313 /* CommunityPostEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6E2FCE2CF409A900516313 /* CommunityPostEditView.swift */; };
 		FB8AC00C2CDBBF5C0001AB05 /* ProfileInitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC00B2CDBBF560001AB05 /* ProfileInitView.swift */; };
 		FB8AC01A2CDCAE8A0001AB05 /* AuthStore+Kakao.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC0192CDCAE7C0001AB05 /* AuthStore+Kakao.swift */; };
 		FB8AC01C2CDCAEC30001AB05 /* AuthStore+Google.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8AC01B2CDCAEBE0001AB05 /* AuthStore+Google.swift */; };
@@ -186,6 +187,7 @@
 		FB36F6352CD48F9200E356FA /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		FB36F6392CD4990900E356FA /* LoginViewCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewCommon.swift; sourceTree = "<group>"; };
 		FB36F63B2CD5150400E356FA /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		FB6E2FCE2CF409A900516313 /* CommunityPostEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostEditView.swift; sourceTree = "<group>"; };
 		FB8AC00B2CDBBF560001AB05 /* ProfileInitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInitView.swift; sourceTree = "<group>"; };
 		FB8AC0192CDCAE7C0001AB05 /* AuthStore+Kakao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthStore+Kakao.swift"; sourceTree = "<group>"; };
 		FB8AC01B2CDCAEBE0001AB05 /* AuthStore+Google.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthStore+Google.swift"; sourceTree = "<group>"; };
@@ -510,6 +512,7 @@
 				FB8AC02C2CE1966B0001AB05 /* CommunityBodyView.swift */,
 				FB8AC0302CE1E8BC0001AB05 /* CommunityPostListView.swift */,
 				FB8AC0362CE1F3470001AB05 /* CommunityPostAddView.swift */,
+				FB6E2FCE2CF409A900516313 /* CommunityPostEditView.swift */,
 				FBEF99362CEB215E00C2A609 /* CommunityMenuSheetView.swift */,
 				42D015262CF207A000BB32F2 /* RouteSelectSheetView.swift */,
 				42C1EC712CEDC92600B2A0B7 /* PostViews */,
@@ -698,6 +701,7 @@
 				6E5D959E2CE5E71E00A9FF95 /* RecommendContentView.swift in Sources */,
 				FBEF993B2CED982B00C2A609 /* StorageStore.swift in Sources */,
 				42C1EC772CEDCEF100B2A0B7 /* PostTitleView.swift in Sources */,
+				FB6E2FCF2CF409AD00516313 /* CommunityPostEditView.swift in Sources */,
 				6E5D959F2CE5E71E00A9FF95 /* RecommendRouteView.swift in Sources */,
 				259AAB8B2CDA06CD00512CE6 /* LocationManager.swift in Sources */,
 				42D015272CF207A000BB32F2 /* RouteSelectSheetView.swift in Sources */,
