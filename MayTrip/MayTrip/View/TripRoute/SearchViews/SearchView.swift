@@ -76,7 +76,6 @@ struct SearchView: View {
                 
                 if searchList.count > 0 {
                     RecentlySearchListView(searchList: $searchList)
-                    
                 }
                 
                 SearchRootView(tripRouteStore: tripRouteStore)
