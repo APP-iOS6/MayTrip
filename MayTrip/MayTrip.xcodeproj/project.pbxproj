@@ -94,6 +94,7 @@
 		FBEF99372CEB216700C2A609 /* CommunityMenuSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEF99362CEB215E00C2A609 /* CommunityMenuSheetView.swift */; };
 		FBEF99392CEC643200C2A609 /* AdminDBConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEF99382CEC642900C2A609 /* AdminDBConnection.swift */; };
 		FBEF993B2CED982B00C2A609 /* StorageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEF993A2CED982400C2A609 /* StorageStore.swift */; };
+		FBEF99492CF04CAA00C2A609 /* CommunityPostEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEF99482CF04CA500C2A609 /* CommunityPostEditView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -188,6 +189,7 @@
 		FBEF99362CEB215E00C2A609 /* CommunityMenuSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityMenuSheetView.swift; sourceTree = "<group>"; };
 		FBEF99382CEC642900C2A609 /* AdminDBConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminDBConnection.swift; sourceTree = "<group>"; };
 		FBEF993A2CED982400C2A609 /* StorageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageStore.swift; sourceTree = "<group>"; };
+		FBEF99482CF04CA500C2A609 /* CommunityPostEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostEditView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -474,6 +476,7 @@
 				FB8AC02C2CE1966B0001AB05 /* CommunityBodyView.swift */,
 				FB8AC0302CE1E8BC0001AB05 /* CommunityPostListView.swift */,
 				FB8AC0362CE1F3470001AB05 /* CommunityPostAddView.swift */,
+				FBEF99482CF04CA500C2A609 /* CommunityPostEditView.swift */,
 				FBEF99362CEB215E00C2A609 /* CommunityMenuSheetView.swift */,
 			);
 			path = Community;
@@ -670,6 +673,7 @@
 				FB8AC01E2CDD93CC0001AB05 /* UserStore.swift in Sources */,
 				259AABB42CDA0AB200512CE6 /* MarkerItem.swift in Sources */,
 				259AABB52CDA0AB200512CE6 /* TripRoute.swift in Sources */,
+				FBEF99492CF04CAA00C2A609 /* CommunityPostEditView.swift in Sources */,
 				259AABC02CDA0AC800512CE6 /* User.swift in Sources */,
 				42630CD12CE735960091ED75 /* NavigationManager.swift in Sources */,
 				FB8AC02F2CE19D010001AB05 /* CommunityStore.swift in Sources */,
