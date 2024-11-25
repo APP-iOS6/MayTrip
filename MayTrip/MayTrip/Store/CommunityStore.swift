@@ -68,33 +68,28 @@ class CommunityStore {
     }
     
     func updatePost() async throws { // 업데이트된 DB로부터 게시물 불러오기 현재는 최신순으로 해놨는데 나중에 정렬 기준을 받아서 그에 맞춰서도 가능
-        do {
-            postsForDB = try await DB.from("POST")
-                .select("""
-                        id, title, content, write_user ,image, category, created_at, updated_at, tag,
-                        trip_route(id, title, tag, city, writeUser:write_user(
-                        id,
-                        nickname,
-                        profile_image
-                        )
-                        , start_date, end_date)
-                        """)
-                .execute().value
-            postsForDB = postsForDB.sorted { $0.id > $1.id }
-            
-            posts = []
-            for post in postsForDB {
-                let userInfo = try await getUserInfo(userID: post.author)
-                let images = try await storageStore.getImages(pathes: post.image)
+            do {
+                postsForDB = try await DB.from("POST")
+                    .select("""
+                            id, title, content, write_user ,image, category, created_at, updated_at, tag,
+                            trip_route(id, title, tag, city, start_date, end_date, created_at)
+                            """)
+                    .execute().value
+                postsForDB = postsForDB.sorted { $0.id > $1.id }
                 
-                posts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: images, category: post.category, tag: post.tag, tripRoute: post.tripRoute, createAt: post.createAt, updateAt: post.updateAt))
+                posts = []
+                for post in postsForDB {
+                    let userInfo = try await getUserInfo(userID: post.author)
+                    let images = try await storageStore.getImages(pathes: post.image)
+                    
+                    posts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: images, category: post.category, tag: post.tag, tripRoute: post.tripRoute, createAt: post.createAt, updateAt: post.updateAt))
+                }
+                
+                isUpadting = false
+            } catch {
+                print(error)
             }
-            
-            isUpadting = false
-        } catch {
-            print(error)
         }
-    }
     
     // 게시글 삭제 함수
     func deletePost(postId: Int) async throws {
