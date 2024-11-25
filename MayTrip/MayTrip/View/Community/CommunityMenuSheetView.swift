@@ -63,29 +63,22 @@ struct CommunityMenuSheetView: View {
                     navigationManager.popToRoot()
                     chatStore.enteredChatRoom = nil
                     chatStore.enteredChatLogs = []
-                                        
+                    
                     Task {
                         let user = try await userStore.getUserInfo(id: selectedPostOwner) // 게시글 작성자 정보 찾기
                         if try await chatStore.findChatRoom(user1: userStore.user.id, user2: selectedPostOwner) { // 이미 채팅방이 있는 경우
                             if let enteredChatRoom = chatStore.enteredChatRoom {
-                                DispatchQueue.main.async {
-                                    navigationManager.push(.chatRoom(enteredChatRoom, user))
-                                }
+                                navigationManager.push(.chatRoom(enteredChatRoom, user))
                             }
                         } else {
                             if let enteredChatRoom = chatStore.enteredChatRoom {
                                 // 채팅방 나가기 한 경우
                                 try await chatStore.updateChatRoom(enteredChatRoom)
-                                
-                                DispatchQueue.main.async {
-                                    navigationManager.push(.chatRoom(enteredChatRoom, user))
-                                }
+                                navigationManager.push(.chatRoom(enteredChatRoom, user))
                             } else {
                                 try await chatStore.saveChatRoom(selectedPostOwner) // 방 생성 후 채팅방 찾아서 이동
                                 if let enteredChatRoom = chatStore.enteredChatRoom {
-                                    DispatchQueue.main.async {
-                                        navigationManager.push(.chatRoom(enteredChatRoom, user))
-                                    }
+                                    navigationManager.push(.chatRoom(enteredChatRoom, user))
                                 }
                             }
                         }
