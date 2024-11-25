@@ -65,19 +65,27 @@
 
 <img src="https://github.com/user-attachments/assets/eb844f88-b56e-4888-ad20-fe47ad9a71af">
 
+## 앱 실행방법
+  
+  1. 프로젝트를 클론받아주세요.
+  2. 로그인을 위한 Configuration 파일이 필요합니다. (개발자 멤버에게 문의해주세요)
+  3. 전달받은 두 파일을 xcode실행 후 우측 디렉토리 네비게이션에 프로젝트 폴더에 넣어주세요.
+  5. 프로젝트를 실행해 주세요.
+   * 앱내에서 사용자위치 사용을 서용해주세요.
+
 ## 🛠️ 개발 환경
 
-- Xcode 16.1
-- iOS 17.0
+   - Xcode 16.1
+   - iOS 17.0
 
 ## 📚 Framework
 
-- Swift
-- SwiftUI
-- Supabase
-- MapKit
-- PhotosUI
-- Alamofire
+   - Swift
+   - SwiftUI
+   - Supabase
+   - MapKit
+   - PhotosUI
+   - Alamofire
   
 ## 🧑🏻‍💻 개발자
 
