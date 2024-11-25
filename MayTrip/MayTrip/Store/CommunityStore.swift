@@ -13,6 +13,7 @@ class CommunityStore {
     let storageStore = StorageStore.shared
     
     var posts: [PostUserVer] = []
+    var comments: [Int: [PostComment]] = [:]
     var myPosts: [PostUserVer] = []
     var postsForDB: [Post] = []
     var isUpadting: Bool = true
@@ -35,13 +36,13 @@ class CommunityStore {
         }
     }
     
-    func editPost(/*post: PostUserVer, */title: String, text: String, image: [UIImage], category: String, tag: [String]? = nil, tripRoute: TripRouteSimple? = nil) async {
+    func editPost(title: String, text: String, image: [UIImage], category: String, tag: [String]? = nil, tripRoute: TripRouteSimple? = nil) async {
         isUpadting = true
         let categoryNumber = getCategoryNumber(category: category)
         
         do {
             let images = try await storageStore.uploadImage(images: image)
-            let postForUpdate = PostForDB(title: selectedPost.title, text: text, author: selectedPost.author.id, image: images, category: categoryNumber, tag: tag, tripRoute: tripRoute?.id, createAt: selectedPost.createAt, updateAt: Date())
+            let postForUpdate = PostForDB(title: title, text: text, author: selectedPost.author.id, image: images, category: categoryNumber, tag: tag, tripRoute: tripRoute?.id, createAt: selectedPost.createAt, updateAt: Date())
             
             try await DB.from("POST")
                 .update(postForUpdate)
@@ -121,7 +122,7 @@ class CommunityStore {
     
     // 게시물 댓글 리스트 불러오기
     @MainActor
-    func getPostCommentList(postId: Int) async -> [PostComment]? {
+    func getPostCommentList(postId: Int) async/* -> [PostComment]? */{
         do {
             let postCommentList: [PostComment] = try await DB
                 .from("POST_COMMENT")
@@ -130,11 +131,11 @@ class CommunityStore {
                 .order("created_at")
                 .execute()
                 .value
-            return postCommentList
+            
+            self.comments[postId] = postCommentList
         } catch {
             print("POST GET LIST ERROR\n",error)
         }
-        return nil
     }
     
     func getUserPost() async throws {

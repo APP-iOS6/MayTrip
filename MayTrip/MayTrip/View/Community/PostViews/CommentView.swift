@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CommentView: View {
+    @Environment(CommunityStore.self) var communityStore: CommunityStore
     @State var isPresented: Bool = false
     @State var comment: PostComment
     var width: CGFloat

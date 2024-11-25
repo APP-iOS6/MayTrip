@@ -123,8 +123,8 @@ struct MainView:  View {
             EnterBasicInformationView()
         case .editPost/*(let post)*/:
             CommunityPostEditView(/*post: post*/)
-        case .postDetail(let comments):
-            PostDetailView(comments: comments ?? [])
+        case .postDetail/*(let comments)*/:
+            PostDetailView(/*comments: comments ?? []*/)
         }
     }
 }

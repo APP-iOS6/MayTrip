@@ -25,7 +25,6 @@ struct CommunityPostAddView: View {
     @State private var images: [UIImage] = []
     @State private var isUploading: Bool = false
     @State private var isShowingRouteSheet: Bool = false
-    @State private var selectedRouteID: Int? = nil
     @State private var selectedRoute: TripRouteSimple? = nil
     @FocusState private var isFocused: Bool
     private let categories: [addPostCategory] = [.question, .findCompanion, .tripReview, .recommandRestaurant]
@@ -75,8 +74,8 @@ struct CommunityPostAddView: View {
                                 isShowingRouteSheet.toggle()
                             } label: {
                                 HStack {
-                                    if let selectedRouteID = selectedRouteID {
-                                        let title = tripRouteStore.myTripRoutes.filter{ $0.id == selectedRouteID }.first!.title
+                                    if let selectedRoute = selectedRoute {
+                                        let title = tripRouteStore.myTripRoutes.filter{ $0.id == selectedRoute.id }.first!.title
                                         Text(title)
                                     } else {
                                         HStack {
@@ -87,13 +86,12 @@ struct CommunityPostAddView: View {
                                     Spacer()
                                 }
                             }
-                            .foregroundStyle(selectedRouteID == nil ? Color(uiColor: .systemGray3) : .primary)
+                            .foregroundStyle(selectedRoute == nil ? Color(uiColor: .systemGray3) : .primary)
                             
                             Spacer()
                             
-                            if let selectedRouteID = selectedRouteID {
+                            if let selectedRoute = selectedRoute {
                                 Button {
-                                    self.selectedRouteID = nil
                                     self.selectedRoute = nil
                                 } label: {
                                     Image(systemName: "xmark.circle.fill")
@@ -182,7 +180,7 @@ struct CommunityPostAddView: View {
         }
         .padding(.top, 1)
         .sheet(isPresented: $isShowingRouteSheet) {
-            RouteSelectSheetView(selectedRouteID: $selectedRouteID, selectedRoute: $selectedRoute, isShowingRouteSheet: $isShowingRouteSheet)
+            RouteSelectSheetView(selectedRoute: $selectedRoute, isShowingRouteSheet: $isShowingRouteSheet)
                 .presentationDetents([.height(500)])
                 .presentationDragIndicator(.visible)
         }
@@ -211,7 +209,7 @@ struct CommunityPostAddView: View {
                 Button {
                     Task {
                         isUploading = true
-                        await communityStore.addPost(title: title, text: text, author: userStore.user, image: images, category: postCategory.rawValue, tag: tagArray, tripRoute: selectedRouteID)
+                        await communityStore.addPost(title: title, text: text, author: userStore.user, image: images, category: postCategory.rawValue, tag: tagArray, tripRoute: selectedRoute?.id)
                         isUploading = false
                         dismiss()
                     }

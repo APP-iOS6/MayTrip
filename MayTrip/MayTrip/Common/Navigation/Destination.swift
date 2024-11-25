@@ -14,5 +14,5 @@ enum Destination: Hashable {
     case chatRoom(ChatRoom, User)
     case enterBasic
     case editPost/*(PostUserVer)*/
-    case postDetail([PostComment]?)
+    case postDetail/*([PostComment]?)*/
 }

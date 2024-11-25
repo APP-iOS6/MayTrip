@@ -11,7 +11,6 @@ struct CommunityMenuSheetView: View {
     @Environment(ChatStore.self) private var chatStore: ChatStore
     @Environment(CommunityStore.self) var communityStore: CommunityStore
     @Binding var isPresented: Bool
-//    @Binding var selectedPost: PostUserVer
     @State var isPresentedDeleteAlert: Bool = false
     
     let userStore = UserStore.shared
@@ -21,7 +20,7 @@ struct CommunityMenuSheetView: View {
             List {
                 Button {
                     // 게시글 편집
-                    navigationManager.push(.editPost/*(selectedPost)*/)
+                    navigationManager.push(.editPost)
                     isPresented = false
                 } label: {
                     HStack {
