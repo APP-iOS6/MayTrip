@@ -20,7 +20,7 @@ struct RouteSelectSheetView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
             
-            if tripRouteStore.myTripRoutes.count > 1 {
+            if tripRouteStore.myTripRoutes.count >= 1 {
                 ScrollView(.vertical) {
                     ForEach(tripRouteStore.myTripRoutes) { route in
                         RecommendContentView(route: route, isSharing: true)
