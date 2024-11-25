@@ -14,6 +14,7 @@ struct RecommendContentView: View {
     @EnvironmentObject var tripRouteStore: TripRouteStore
     let dateStore: DateStore = .shared
     let route: TripRouteSimple
+    var isSharing: Bool? = false
     
     @State var isScraped = false
     
@@ -43,7 +44,16 @@ struct RecommendContentView: View {
                     Spacer()
                     
                     Button {
-                        isScraped.toggle()
+                        Task{
+                            let success: Bool = isScraped
+                            ? await tripRouteStore.deleteStorageByRouteId(routeId: route.id)
+                            : await tripRouteStore.insertStorageByRouteId(routeId: route.id)
+                            if success{
+                                isScraped.toggle()
+                            }else{
+                                print("북마크 실패")
+                            }
+                        }
                     } label: {
                         Image(systemName: "bookmark.fill")
                             .resizable()
@@ -54,6 +64,7 @@ struct RecommendContentView: View {
                             .background(isScraped ? .orange : Color(uiColor: .systemGray3))
                             .clipShape(Circle())
                     }
+                    .disabled(isSharing ?? false)
                 }
                 .padding(10)
                 
@@ -67,7 +78,7 @@ struct RecommendContentView: View {
                     .padding(.top, 8)
                     .multilineTextAlignment(.leading)
                 
-                Text("\(dateStore.convertPeriodToString(route.start_date, end: route.end_date)) 여행")
+                Text("\(dateStore.convertPeriodToString(route.startDate, end: route.endDate)) 여행")
                     .font(.callout)
                     .foregroundStyle(.gray)
                     .padding(.horizontal, 10)
@@ -96,7 +107,13 @@ struct RecommendContentView: View {
             }
             .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 10))
+            .onAppear{
+                let userId = UserStore.shared.user.id
+                if let isScraped = route.userId, isScraped == userId {
+                    self.isScraped = true
+                }
+            }
         }
+        .disabled(isSharing ?? false)
     }
 }
-

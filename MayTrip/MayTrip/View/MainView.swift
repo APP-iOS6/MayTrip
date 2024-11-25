@@ -90,6 +90,11 @@ struct MainView:  View {
                 }
                 .tag(4)
             }
+            .onAppear {
+                Task {
+                    try await chatStore.setAllComponents()
+                }
+            }
             .onChange(of: navigationManager.selection) {
                 selection = navigationManager.selection
             }
@@ -116,6 +121,10 @@ struct MainView:  View {
             ChattingRoomView(chatRoom: chatRoom, otherUser: user)
         case .enterBasic:
             EnterBasicInformationView()
+        case .editPost/*(let post)*/:
+            CommunityPostEditView(/*post: post*/)
+        case .postDetail/*(let comments)*/:
+            PostDetailView(/*comments: comments ?? []*/)
         }
     }
 }

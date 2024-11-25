@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject var tripRouteStore: TripRouteStore
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     @State var  searchText: String = ""
     @FocusState var focused: Bool
     @State private var searchList: [String] = []
@@ -37,7 +37,7 @@ struct SearchView: View {
                                 Task {
                                     guard searchText != "" else { return }
                                     
-                                    tripRouteStore.searchTripRoute(searchText)
+                                    tripRouteStore.filteredTripRoutes =  await tripRouteStore.getByKeyword(keyword: searchText)
                                     
                                     if !searchList.contains(searchText) {
                                         searchList.insert(searchText, at: 0)
@@ -75,8 +75,7 @@ struct SearchView: View {
                 .padding(.horizontal)
                 
                 if searchList.count > 0 {
-                    RecentlySearchListView(tripRouteStore: tripRouteStore, searchList: $searchList)
-                    
+                    RecentlySearchListView(searchList: $searchList)
                 }
                 
                 SearchRootView(tripRouteStore: tripRouteStore)

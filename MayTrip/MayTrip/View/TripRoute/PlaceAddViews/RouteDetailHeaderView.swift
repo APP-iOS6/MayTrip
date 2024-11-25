@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct RouteDetailHeaderView: View {
-    @EnvironmentObject var navigationManager: NavigationManager
-    @EnvironmentObject var tripRouteStore: TripRouteStore
     @Environment(\.dismiss) var dismiss
     @Environment(ChatStore.self) private var chatStore: ChatStore
+    @EnvironmentObject var navigationManager: NavigationManager
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     @State var isScraped: Bool = false
     @State var showingDeleteAlert: Bool = false
+    @State private var components: [(chatRoom: ChatRoom, chatLogs: [ChatLog], otherUser: User)] = []
     
     var tripRoute: TripRoute
     let dateStore: DateStore = DateStore.shared
@@ -27,6 +28,11 @@ struct RouteDetailHeaderView: View {
         VStack {
             titleView
             cityTagsView
+        }
+        .onAppear {
+            components = chatStore.forChatComponents.filter {
+                $0.chatLogs.count > 0 && (($0.chatRoom.user1 == userStore.user.id && $0.chatRoom.isVisible == 1) || ($0.chatRoom.user2 == userStore.user.id && $0.chatRoom.isVisible == 2) || $0.chatRoom.isVisible == 0)
+            }
         }
         .alert("루트 삭제", isPresented: $showingDeleteAlert) {
             Button("취소", role: .cancel) {
@@ -70,10 +76,21 @@ struct RouteDetailHeaderView: View {
                             navigationManager.push(.enterBasicInfo(tripRoute: tripRoute))
                         }
                         
+                        if components.count > 0 {
+                            Button("공유하기") {
+                                chatStore.forShareRoute = tripRoute.id
+                                navigationManager.selection = 2 // 채팅탭으로 이동
+                                navigationManager.popToRoot()
+                                chatStore.enteredChatRoom = nil
+                                chatStore.enteredChatLogs = []
+                                chatStore.isEditing = true
+                            }
+                        }
+                        
                         Button("삭제하기", role: .destructive) {
                             showingDeleteAlert = true
                         }
-                        
+
                     } else {    // 조회하는 사람일때 메뉴버튼
                         Button("채팅하기") {
                             // write유저와 채팅 연결
@@ -99,6 +116,17 @@ struct RouteDetailHeaderView: View {
                                         }
                                     }
                                 }
+                            }
+                        }
+                        
+                        if components.count > 0 {
+                            Button("공유하기") {
+                                chatStore.forShareRoute = tripRoute.id
+                                navigationManager.selection = 2 // 채팅탭으로 이동
+                                navigationManager.popToRoot()
+                                chatStore.enteredChatRoom = nil
+                                chatStore.enteredChatLogs = []
+                                chatStore.isEditing = true
                             }
                         }
                         

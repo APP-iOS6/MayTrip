@@ -11,7 +11,8 @@ struct RecommendRouteView: View {
     @EnvironmentObject var tripRouteStore: TripRouteStore
     @State var isRecently: Bool = true
     
-    var background: Color
+    var background: Color = Color(uiColor: .systemGray6)
+    var scrollProxy: ScrollViewProxy
     
     private let gridItems: [GridItem] = [
         GridItem(.flexible()),
@@ -30,24 +31,24 @@ struct RecommendRouteView: View {
                     Spacer()
                     
                     Button {
-                        // TODO: 리스트 최신순으로 변경
-                        isRecently = true
+                        tripRouteStore.orderTypeChange(type: .createdAt)
+                        scrollProxy.scrollTo(0, anchor: .top)
                     } label: {
                         Text("최신순")
                             .font(.callout)
-                            .foregroundStyle(isRecently ? Color("accentColor") : .gray)
-                    }
+                            .foregroundStyle(tripRouteStore.orderType == .createdAt ? Color("accentColor") : .gray)
+                    }.disabled(tripRouteStore.orderType == .createdAt)
                     
                     Divider()
                     
                     Button {
-                        // TODO: 리스트 보관많은순으로 변경
-                        isRecently = false
+                        tripRouteStore.orderTypeChange(type: .count)
+                        scrollProxy.scrollTo(0, anchor: .top)
                     } label: {
                         Text("보관많은순")
                             .font(.callout)
-                            .foregroundStyle(!isRecently ? Color("accentColor") : .gray)
-                    }
+                            .foregroundStyle(tripRouteStore.orderType == .count ? Color("accentColor") : .gray)
+                    }.disabled(tripRouteStore.orderType == .count)
                 }
             }
                 .background(background)
@@ -56,16 +57,14 @@ struct RecommendRouteView: View {
                     RecommendContentView(route: route)
                 }
             }
-            .onAppear {
-                Task {
-                    try await tripRouteStore.getTripRouteList()
-                }
-            }
+        }.onAppear{
+            scrollProxy.scrollTo(0, anchor: .top)
         }
-        .padding(.horizontal)
     }
 }
 
 #Preview {
-    RecommendRouteView(background: .gray)
+    ScrollViewReader { proxy in
+        RecommendRouteView(scrollProxy: proxy)
+    }
 }

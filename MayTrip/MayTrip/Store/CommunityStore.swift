@@ -13,17 +13,19 @@ class CommunityStore {
     let storageStore = StorageStore.shared
     
     var posts: [PostUserVer] = []
+    var comments: [Int: [PostComment]] = [:]
     var myPosts: [PostUserVer] = []
     var postsForDB: [Post] = []
     var isUpadting: Bool = true
+    var selectedPost: PostUserVer = PostUserVer(id: 0, title: "", text: "", author: User(id: 0, nickname: "", profileImage: "", email: "", exp: 0, provider: ""), image: [], category: 0, tag: nil, tripRoute: nil, createAt: Date(), updateAt: Date())
     
-    func addPost(title: String, text: String, author: User, image: [UIImage], category: String) async { // 게시물 작성
+    func addPost(title: String, text: String, author: User, image: [UIImage], category: String, tag: [String]? = nil, tripRoute: Int? = nil) async { // 게시물 작성
         isUpadting = true
         let categoryNumber = getCategoryNumber(category: category)
         
         do {
             let images = try await storageStore.uploadImage(images: image)
-            let postDB: PostDB = PostDB(title: title, text: text, author: author.id, image: images, category: categoryNumber)
+            let postDB: PostDB = PostDB(title: title, text: text, author: author.id, image: images, category: categoryNumber, tag: tag, tripRoute: tripRoute)
             
             try await DB.from("POST").insert(postDB).execute()
             try await updatePost()
@@ -34,9 +36,50 @@ class CommunityStore {
         }
     }
     
+    func editPost(title: String, text: String, image: [UIImage], category: String, tag: [String]? = nil, tripRoute: TripRouteSimple? = nil) async {
+        isUpadting = true
+        let categoryNumber = getCategoryNumber(category: category)
+        
+        do {
+            let images = try await storageStore.uploadImage(images: image)
+            let postForUpdate = PostForDB(title: title, text: text, author: selectedPost.author.id, image: images, category: categoryNumber, tag: tag, tripRoute: tripRoute?.id, createAt: selectedPost.createAt, updateAt: Date())
+            
+            try await DB.from("POST")
+                .update(postForUpdate)
+                .eq("id", value: selectedPost.id)
+                .execute()
+            
+            if tripRoute == nil {
+                let nilRoute: [String: Int?] = ["trip_route": nil]
+                try await DB.from("POST")
+                    .update(nilRoute)
+                    .eq("id", value: selectedPost.id)
+                    .execute()
+            }
+            
+            selectedPost = PostUserVer(id: selectedPost.id, title: postForUpdate.title, text: postForUpdate.text, author: selectedPost.author, image: image, category: postForUpdate.category, tag: postForUpdate.tag, tripRoute: tripRoute, createAt: postForUpdate.createAt, updateAt: postForUpdate.updateAt)
+            
+            try await updatePost()
+            
+            posts.sort(by: {$0.createAt > $1.createAt})
+        } catch {
+            print("Fail to add content: \(error)")
+        }
+    }
+    
     func updatePost() async throws { // 업데이트된 DB로부터 게시물 불러오기 현재는 최신순으로 해놨는데 나중에 정렬 기준을 받아서 그에 맞춰서도 가능
         do {
-            postsForDB = try await DB.from("POST").select().execute().value
+            postsForDB = try await DB.from("POST")
+                .select("""
+                        id, title, content, write_user ,image, category, created_at, updated_at, tag,
+                        trip_route(id, title, tag, city, writeUser:write_user(
+                        id,
+                        nickname,
+                        profile_image
+                        )
+                        , start_date, end_date)
+                        """)
+                .execute().value
             postsForDB = postsForDB.sorted { $0.id > $1.id }
             
             posts = []
@@ -44,7 +87,7 @@ class CommunityStore {
                 let userInfo = try await getUserInfo(userID: post.author)
                 let images = try await storageStore.getImages(pathes: post.image)
                 
-                posts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: images, category: post.category, createAt: post.createAt, updateAt: post.updateAt))
+                posts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: images, category: post.category, tag: post.tag, tripRoute: post.tripRoute, createAt: post.createAt, updateAt: post.updateAt))
             }
             
             isUpadting = false
@@ -62,11 +105,52 @@ class CommunityStore {
         }
     }
     
+    // 게시물 댓글 생성
+    func insertPostComment(comment: InsertPostComment) async {
+        do {
+            try await DB
+                .from("POST_COMMENT")
+                .insert(comment)
+                .select("id, write_user(id, nickname, profile_image), comment, created_at")
+                .single()
+                .execute()
+                .value
+        } catch {
+            print("POST INSERT ERROR\n",error)
+        }
+    }
+    
+    // 게시물 댓글 리스트 불러오기
+    @MainActor
+    func getPostCommentList(postId: Int) async/* -> [PostComment]? */{
+        do {
+            let postCommentList: [PostComment] = try await DB
+                .from("POST_COMMENT")
+                .select("id, write_user(id, nickname, profile_image), comment, created_at")
+                .eq("post", value: postId)
+                .order("created_at")
+                .execute()
+                .value
+            
+            self.comments[postId] = postCommentList
+        } catch {
+            print("POST GET LIST ERROR\n",error)
+        }
+    }
+    
     func getUserPost() async throws {
         do {
             let postsDB: [Post] = try await DB
                 .from("POST")
-                .select()
+                .select("""
+                        id, title, content, write_user ,image, category, created_at, updated_at, tag,
+                        trip_route(id, title, tag, city, writeUser:write_user(
+                        id,
+                        nickname,
+                        profile_image
+                        )
+                        , start_date, end_date)
+                        """)
                 .eq("write_user", value: UserStore.shared.user.id)
                 .execute()
                 .value
@@ -76,7 +160,7 @@ class CommunityStore {
                 let userInfo = try await getUserInfo(userID: post.author)
                 let images = try await storageStore.getImages(pathes: post.image)
                 
-                myPosts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: images, category: post.category, createAt: post.createAt, updateAt: post.updateAt))
+                myPosts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: images, category: post.category, tag: post.tag, tripRoute: post.tripRoute, createAt: post.createAt, updateAt: post.updateAt))
             }
         } catch {
             print(error)
@@ -95,6 +179,21 @@ class CommunityStore {
             return 4
         default:
             return 0
+        }
+    }
+    
+    func getCategoryName(categoryNumber: Int) -> String {
+        switch categoryNumber {
+        case 1:
+            return "질문"
+        case 2:
+            return "동행찾기"
+        case 3:
+            return "여행후기"
+        case 4:
+            return "맛집추천"
+        default:
+            return "기타"
         }
     }
     
