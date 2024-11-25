@@ -37,7 +37,7 @@ struct SearchView: View {
                                 Task {
                                     guard searchText != "" else { return }
                                     
-                                    tripRouteStore.searchTripRoute(searchText)
+                                    tripRouteStore.filteredTripRoutes =  await tripRouteStore.getByKeyword(keyword: searchText)
                                     
                                     if !searchList.contains(searchText) {
                                         searchList.insert(searchText, at: 0)

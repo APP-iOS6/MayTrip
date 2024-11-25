@@ -73,7 +73,7 @@ struct ChattingRoomView: View {
                                                     .padding(.top, 8)
                                                     .multilineTextAlignment(.leading)
                                                 
-                                                Text("\(dateStore.convertPeriodToString(route.start_date, end: route.end_date)) 일정")
+                                                Text("\(dateStore.convertPeriodToString(route.startDate, end: route.endDate)) 일정")
                                                     .font(.callout)
                                                     .foregroundStyle(.gray)
                                                     .padding(.top, 5)
@@ -153,7 +153,7 @@ struct ChattingRoomView: View {
                                                     .padding(.top, 8)
                                                     .multilineTextAlignment(.leading)
                                                 
-                                                Text("\(dateStore.convertPeriodToString(route.start_date, end: route.end_date)) 일정")
+                                                Text("\(dateStore.convertPeriodToString(route.startDate, end: route.endDate)) 일정")
                                                     .font(.callout)
                                                     .foregroundStyle(.gray)
                                                     .padding(.top, 5)
