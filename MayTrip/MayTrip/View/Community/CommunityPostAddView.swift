@@ -23,6 +23,7 @@ struct CommunityPostAddView: View {
     @State private var postCategory: addPostCategory = .question
     @State private var selectedPhotos: [PhotosPickerItem] = []
     @State private var images: [UIImage] = []
+    @State private var imageStrs: [String] = []
     @State private var isUploading: Bool = false
     @State private var isShowingRouteSheet: Bool = false
     @State private var selectedRoute: TripRouteSimple? = nil
@@ -209,7 +210,7 @@ struct CommunityPostAddView: View {
                 Button {
                     Task {
                         isUploading = true
-                        await communityStore.addPost(title: title, text: text, author: userStore.user, image: images, category: postCategory.rawValue, tag: tagArray, tripRoute: selectedRoute?.id)
+                        await communityStore.addPost(title: title, text: text, author: userStore.user, image: imageStrs, category: postCategory.rawValue, tag: tagArray, tripRoute: selectedRoute?.id)
                         isUploading = false
                         dismiss()
                     }
@@ -253,6 +254,10 @@ struct CommunityPostAddView: View {
                         break
                     } else if let image = result.0 {
                         images.append(image)
+                        let data = image.pngData()
+                        if let imageStr = data?.base64EncodedString() {
+                            self.imageStrs.append(imageStr)
+                        }
                     }
                 }
                 selectedPhotos.removeAll()
