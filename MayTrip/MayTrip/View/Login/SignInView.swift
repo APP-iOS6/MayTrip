@@ -79,6 +79,11 @@ struct SignInView : View {
                     .frame(width: screenWidth * 0.9)
                     
                     VStack(spacing : 10) {
+                        
+                        Rectangle()
+                            .frame(width: screenWidth * 0.9, height: screenHeight * 0.07)
+                            .foregroundStyle(.clear)
+                        
                         Button { // 로그인 버튼
                             if email.isEmpty {
                                 errorMessage = "이메일을 입력해주세요"
@@ -110,18 +115,6 @@ struct SignInView : View {
                         }
                         .frame(width: screenWidth * 0.9, height: screenHeight * 0.07)
                         .disabled(email.isEmpty || password.isEmpty)
-                        
-                        Button { // 게스트 로그인
-                            
-                        } label : {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color.accent, lineWidth: 1)
-                                Text("게스트 로그인")
-                                    .foregroundStyle(Color.accent)
-                            }
-                        }
-                        .frame(width: screenWidth * 0.9, height: screenHeight * 0.07)
                         
                         HStack {
                             Text("계정이 없으신가요?")
