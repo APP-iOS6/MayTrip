@@ -46,7 +46,7 @@ struct TripRouteView: View {
                 Spacer()
                 
                 NavigationLink {
-                    SearchView(tripRouteStore: tripRouteStore)
+                    SearchView()
                 } label: {
                     Image(systemName: "magnifyingglass")
                         .frame(width: 15, height:  15)

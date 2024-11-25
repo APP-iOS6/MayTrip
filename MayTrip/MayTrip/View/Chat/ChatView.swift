@@ -13,6 +13,8 @@ struct ChatView: View {
     let userStore = UserStore.shared
     
     @State private var components: [(chatRoom: ChatRoom, chatLogs: [ChatLog], otherUser: User)] = []
+    @State private var selected: Int = -1
+    @State private var isEditing: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -23,8 +25,17 @@ struct ChatView: View {
                         .foregroundStyle(.gray)
                     Spacer()
                 } else {
-                    List {
-                        ForEach(components, id: \.chatRoom) { component in
+                    List(components, id: \.chatRoom) { component in
+                        HStack {
+                            if isEditing {
+                                Button {
+                                    selected = selected == component.chatRoom.id ? -1 : component.chatRoom.id
+                                } label: {
+                                    Image(systemName: selected == component.chatRoom.id ? "checkmark.circle.fill" : "checkmark.circle")
+                                        .foregroundStyle(selected == component.chatRoom.id ? Color("accentColor") : Color(uiColor: .systemGray4))
+                                }
+                            }
+                            
                             Button {
                                 chatStore.enteredChatRoom = component.chatRoom
                                 chatStore.enteredChatLogs = component.chatLogs
@@ -51,12 +62,14 @@ struct ChatView: View {
                                             .foregroundStyle(Color("accentColor").opacity(0.2))
                                     }
                                     
-                                    VStack(alignment: .leading, spacing: 10) {
+                                    VStack(alignment: .leading, spacing: 5) {
                                         Text(component.otherUser.nickname)
                                         
-                                        Text(component.chatLogs.last == nil ? "" : component.chatLogs.last!.message)
-                                            .lineLimit(1)
-                                            .foregroundStyle(.gray)
+                                        if let log = component.chatLogs.last {
+                                            Text(log.message == "" ? "(여행루트)" : log.message)
+                                                .lineLimit(1)
+                                                .foregroundStyle(.gray)
+                                        }
                                     }
                                     .padding(.leading, 5)
                                     
@@ -82,30 +95,57 @@ struct ChatView: View {
                                     }
                                 }
                             }
-                            .swipeActions {
-                                Button {
-                                    Task {
-                                        try await chatStore.leaveChatRoom(component.chatRoom)
-                                    }
-                                } label: {
-                                    Image(systemName: "door.left.hand.open")
-                                }
-                                .tint(.red)
-                            }
+                            .disabled(isEditing)
                         }
                         .listRowSeparator(.hidden)
+                        .swipeActions {
+                            Button {
+                                Task {
+                                    try await chatStore.leaveChatRoom(component.chatRoom)
+                                }
+                            } label: {
+                                Image(systemName: "door.left.hand.open")
+                            }
+                            .tint(.red)
+                        }
                     }
+                    .environment(\.editMode, Binding.constant(self.isEditing ? EditMode.active : EditMode.inactive))
                     .listStyle(.plain)
                 }
             }
         }
+        .onDisappear {
+            selected = -1
+        }
         .navigationTitle("채팅")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                if isEditing {
+                    Button {
+                        Task {
+                            try await chatStore.saveChatLog(selected, message: "", route: chatStore.forShareRoute, image: nil)
+                            chatStore.isEditing.toggle()
+                            chatStore.forShareRoute = nil
+                        }
+                    } label: {
+                        Text("완료")
+                            .foregroundStyle(Color("accentColor"))
+                    }
+                }
+            }
+        }
+        .onAppear {
+            isEditing = chatStore.isEditing
+        }
         .onChange(of: chatStore.isNeedUpdate) { oldValue, newValue in
             // 로그가 하나도 없는 경우엔 채팅 목록에서 안보이도록 함, 나가기 한 방은 걸러줌
             components = chatStore.forChatComponents.filter {
                 $0.chatLogs.count > 0 && (($0.chatRoom.user1 == userStore.user.id && $0.chatRoom.isVisible == 1) || ($0.chatRoom.user2 == userStore.user.id && $0.chatRoom.isVisible == 2) || $0.chatRoom.isVisible == 0)
             }
+        }
+        .onChange(of: chatStore.isEditing) { oldValue, newValue in
+            isEditing = chatStore.isEditing
         }
     }
 }
