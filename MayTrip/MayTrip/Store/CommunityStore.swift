@@ -19,13 +19,13 @@ class CommunityStore {
     var isUpadting: Bool = true
     var selectedPost: PostUserVer = PostUserVer(id: 0, title: "", text: "", author: User(id: 0, nickname: "", profileImage: "", email: "", exp: 0, provider: ""), image: [], category: 0, tag: nil, tripRoute: nil, createAt: Date(), updateAt: Date())
     
-    func addPost(title: String, text: String, author: User, image: [UIImage], category: String, tag: [String]? = nil, tripRoute: Int? = nil) async { // 게시물 작성
+    func addPost(title: String, text: String, author: User, image: [String], category: String, tag: [String]? = nil, tripRoute: Int? = nil) async { // 게시물 작성
         isUpadting = true
         let categoryNumber = getCategoryNumber(category: category)
         
         do {
-            let images = try await storageStore.uploadImage(images: image)
-            let postDB: PostDB = PostDB(title: title, text: text, author: author.id, image: images, category: categoryNumber, tag: tag, tripRoute: tripRoute)
+//            let images = try await storageStore.uploadImage(images: image)
+            let postDB: PostDB = PostDB(title: title, text: text, author: author.id, image: image, category: categoryNumber, tag: tag, tripRoute: tripRoute)
             
             try await DB.from("POST").insert(postDB).execute()
             try await updatePost()
@@ -36,13 +36,13 @@ class CommunityStore {
         }
     }
     
-    func editPost(title: String, text: String, image: [UIImage], category: String, tag: [String]? = nil, tripRoute: TripRouteSimple? = nil) async {
+    func editPost(title: String, text: String, image: [String], category: String, tag: [String]? = nil, tripRoute: TripRouteSimple? = nil) async {
         isUpadting = true
         let categoryNumber = getCategoryNumber(category: category)
         
         do {
-            let images = try await storageStore.uploadImage(images: image)
-            let postForUpdate = PostForDB(title: title, text: text, author: selectedPost.author.id, image: images, category: categoryNumber, tag: tag, tripRoute: tripRoute?.id, createAt: selectedPost.createAt, updateAt: Date())
+//            let images = try await storageStore.uploadImage(images: image)
+            let postForUpdate = PostForDB(title: title, text: text, author: selectedPost.author.id, image: image, category: categoryNumber, tag: tag, tripRoute: tripRoute?.id, createAt: selectedPost.createAt, updateAt: Date())
             
             try await DB.from("POST")
                 .update(postForUpdate)
@@ -85,9 +85,10 @@ class CommunityStore {
             posts = []
             for post in postsForDB {
                 let userInfo = try await getUserInfo(userID: post.author)
-                let images = try await storageStore.getImages(pathes: post.image)
+//                let images = try await storageStore.getImages(pathes: post.image)
+//                let images = storageStore.getImages(pathes: post.image)
                 
-                posts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: images, category: post.category, tag: post.tag, tripRoute: post.tripRoute, createAt: post.createAt, updateAt: post.updateAt))
+                posts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: post.image, category: post.category, tag: post.tag, tripRoute: post.tripRoute, createAt: post.createAt, updateAt: post.updateAt))
             }
             
             isUpadting = false
@@ -158,9 +159,9 @@ class CommunityStore {
             myPosts = []
             for post in postsDB {
                 let userInfo = try await getUserInfo(userID: post.author)
-                let images = try await storageStore.getImages(pathes: post.image)
-                
-                myPosts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: images, category: post.category, tag: post.tag, tripRoute: post.tripRoute, createAt: post.createAt, updateAt: post.updateAt))
+//                let images = try await storageStore.getImages(pathes: post.image)
+//                let images = storageStore.getImages(pathes: post.image)
+                myPosts.append(PostUserVer(id: post.id, title: post.title, text: post.text, author: userInfo!, image: post.image, category: post.category, tag: post.tag, tripRoute: post.tripRoute, createAt: post.createAt, updateAt: post.updateAt))
             }
         } catch {
             print(error)
