@@ -15,7 +15,8 @@ struct CommunityPostListView: View {
     let width: CGFloat
     let height: CGFloat
     @State var isPresented: Bool = false
-    @State var selectedPost: PostUserVer = PostUserVer(id: 0, title: "", text: "", author: User(id: 0, nickname: "", profileImage: "", email: "", exp: 0, provider: ""), image: [], category: 0, createAt: Date(), updateAt: Date())
+    @State var selectedPostOwner: Int = 0
+    @State var selectedPostId: Int = 0
     
     var body: some View {
         VStack(spacing: 20) {
@@ -50,7 +51,8 @@ struct CommunityPostListView: View {
                                 
                                 Button {
                                     isPresented = true
-                                    selectedPost = post
+                                    selectedPostOwner = post.author.id
+                                    selectedPostId = post.id
                                 } label: {
                                     Image(systemName: "ellipsis")
                                         .foregroundStyle(.gray)
@@ -151,7 +153,7 @@ struct CommunityPostListView: View {
             isPresented = false
         }
         .sheet(isPresented: $isPresented) {
-            CommunityMenuSheetView(isPresented: $isPresented, selectedPost: $selectedPost)
+            CommunityMenuSheetView(isPresented: $isPresented, selectedPostOwner: $selectedPostOwner, selectedPostId: $selectedPostId)
                 .presentationDetents([.height(170)])
                 .presentationDragIndicator(.visible)
         }
