@@ -31,10 +31,6 @@ struct RouteCellForChatView: View {
                         }
                     
                     Spacer()
-                    
-                    Circle()
-                        .frame(width: 5, height: 5)
-                        .foregroundStyle(selectedRouted == route.id ? .orange : Color(uiColor: .systemGray3))
                 }
                 Text(route.title)
                     .font(.title3)
@@ -53,11 +49,11 @@ struct RouteCellForChatView: View {
             .padding(.vertical, 15)
             .padding(.horizontal, 15)
             .padding(.trailing, 5)
-            .frame(width: UIScreen.main.bounds.width / 3 * 2)
+            .frame(width: UIScreen.main.bounds.width / 3 * 2, height: UIScreen.main.bounds.height / 6.2)
         }
         .background {
             RoundedRectangle(cornerRadius: 15)
-                .stroke(Color(uiColor: .systemGray5), lineWidth: 1)
+                .stroke(selectedRouted == route.id ? Color("accentColor") : Color(uiColor: .systemGray5), lineWidth: 1)
         }
     }
 }
