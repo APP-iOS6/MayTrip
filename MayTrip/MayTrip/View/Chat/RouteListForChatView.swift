@@ -17,11 +17,12 @@ struct RouteListForChatView: View {
     
     var body: some View {
         ScrollView(.horizontal) {
-            LazyHGrid(rows: gridItems, spacing: 0) {
+            LazyHGrid(rows: gridItems, spacing: 10) {
                 ForEach(routes) { route in
                     RouteCellForChatView(selectedRouted: $selectedRouted, route: route)
                 }
             }
+            .padding(.horizontal, 10)
         }
         .scrollIndicators(.hidden)
     }
