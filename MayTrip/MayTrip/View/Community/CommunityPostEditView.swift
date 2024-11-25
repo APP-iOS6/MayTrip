@@ -26,9 +26,10 @@ struct CommunityPostEditView: View {
     @State private var isUploading: Bool = false
     @State private var isShowingRouteSheet: Bool = false
     @State private var selectedRouteID: Int? = nil
+    @State private var selectedRoute: TripRouteSimple? = nil
     @FocusState private var isFocused: Bool
     private let categories: [addPostCategory] = [.question, .findCompanion, .tripReview, .recommandRestaurant]
-    let post: PostUserVer
+//    let post: PostUserVer
     
     private var tagArray: [String] {
         var tags = tags.components(separatedBy: "#").filter{ $0 != "" }
@@ -189,19 +190,19 @@ struct CommunityPostEditView: View {
             isFocused = false
         }
         .onAppear {
-            self.title = post.title
-            self.text = post.text
-            self.postCategory = getCategory(category: post.category)
-            self.images = post.image
-            if let tag = post.tag {
+            self.title = communityStore.selectedPost.title
+            self.text = communityStore.selectedPost.text
+            self.postCategory = getCategory(category: communityStore.selectedPost.category)
+            self.images = communityStore.selectedPost.image
+            if let tag = communityStore.selectedPost.tag {
                 self.tags = tag.reduce("") {$0 + "#\($1) "}
             }
-            if let tripRoute = post.tripRoute {
+            if let tripRoute = communityStore.selectedPost.tripRoute {
                 self.selectedRouteID = tripRoute.id
             }
         }
         .sheet(isPresented: $isShowingRouteSheet) {
-            RouteSelectSheetView(selectedRouteID: $selectedRouteID, isShowingRouteSheet: $isShowingRouteSheet)
+            RouteSelectSheetView(selectedRouteID: $selectedRouteID, selectedRoute: $selectedRoute, isShowingRouteSheet: $isShowingRouteSheet)
                 .presentationDetents([.height(500)])
                 .presentationDragIndicator(.visible)
         }
@@ -222,7 +223,7 @@ struct CommunityPostEditView: View {
                 Button {
                     Task {
                         isUploading = true
-                        await communityStore.editPost(post: post, title: title, text: text, image: images, category: postCategory.rawValue, tag: tagArray, tripRoute: selectedRouteID)
+                        await communityStore.editPost(/*post: post, */title: title, text: text, image: images, category: postCategory.rawValue, tag: tagArray, tripRoute: selectedRoute)
                         isUploading = false
                         dismiss()
                     }

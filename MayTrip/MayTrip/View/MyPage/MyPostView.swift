@@ -15,7 +15,7 @@ struct MyPostView: View {
     let width: CGFloat = UIScreen.main.bounds.width
     let height: CGFloat = UIScreen.main.bounds.height
     @State var isPresented: Bool = false
-    @State var selectedPost: PostUserVer = PostUserVer(id: 0, title: "", text: "", author: User(id: 0, nickname: "", profileImage: "", email: "", exp: 0, provider: ""), image: [], category: 0, tag: nil, tripRoute: nil, createAt: Date(), updateAt: Date())
+//    @State var selectedPost: PostUserVer = PostUserVer(id: 0, title: "", text: "", author: User(id: 0, nickname: "", profileImage: "", email: "", exp: 0, provider: ""), image: [], category: 0, tag: nil, tripRoute: nil, createAt: Date(), updateAt: Date())
     
     var body: some View {
         ZStack {
@@ -55,7 +55,8 @@ struct MyPostView: View {
                                         
                                         Button {
                                             isPresented = true
-                                            selectedPost = post
+//                                            selectedPost = post
+                                            communityStore.selectedPost = post
                                         } label: {
                                             Image(systemName: "ellipsis")
                                                 .foregroundStyle(.gray)
@@ -156,7 +157,7 @@ struct MyPostView: View {
                     isPresented = false
                 }
                 .sheet(isPresented: $isPresented) {
-                    CommunityMenuSheetView(isPresented: $isPresented, selectedPost: $selectedPost)
+                    CommunityMenuSheetView(isPresented: $isPresented/*, selectedPost: $selectedPost*/)
                         .presentationDetents([.height(170)])
                         .presentationDragIndicator(.visible)
                 }

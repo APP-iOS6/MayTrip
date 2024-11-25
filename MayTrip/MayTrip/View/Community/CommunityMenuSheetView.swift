@@ -11,17 +11,17 @@ struct CommunityMenuSheetView: View {
     @Environment(ChatStore.self) private var chatStore: ChatStore
     @Environment(CommunityStore.self) var communityStore: CommunityStore
     @Binding var isPresented: Bool
-    @Binding var selectedPost: PostUserVer
+//    @Binding var selectedPost: PostUserVer
     @State var isPresentedDeleteAlert: Bool = false
     
     let userStore = UserStore.shared
     
     var body: some View {
-        if userStore.user.id == selectedPost.author.id { // 제작자의 경우
+        if userStore.user.id == communityStore.selectedPost.author.id { // 제작자의 경우
             List {
                 Button {
                     // 게시글 편집
-                    navigationManager.push(.editPost(selectedPost))
+                    navigationManager.push(.editPost/*(selectedPost)*/)
                     isPresented = false
                 } label: {
                     HStack {
@@ -47,7 +47,7 @@ struct CommunityMenuSheetView: View {
                     Button("삭제하기", role: .destructive) {
                         isPresentedDeleteAlert = false
                         Task {
-                            try await communityStore.deletePost(postId: selectedPost.id)
+                            try await communityStore.deletePost(postId: communityStore.selectedPost.id)
                         }
                         isPresented = false
                     }
@@ -66,7 +66,7 @@ struct CommunityMenuSheetView: View {
                     chatStore.enteredChatLogs = []
                     
                     Task {
-                        let user = try await userStore.getUserInfo(id: selectedPost.author.id) // 게시글 작성자 정보 찾기
+                        let user = try await userStore.getUserInfo(id: communityStore.selectedPost.author.id) // 게시글 작성자 정보 찾기
                         if try await chatStore.findChatRoom(user1: userStore.user.id, user2: user.id) { // 이미 채팅방이 있는 경우
                             if let enteredChatRoom = chatStore.enteredChatRoom {
                                 navigationManager.push(.chatRoom(enteredChatRoom, user))

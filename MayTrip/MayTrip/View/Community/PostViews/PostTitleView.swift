@@ -49,7 +49,8 @@ struct PostTitleView: View {
                         Spacer()
                         Button {
                             isPresented = true
-                            selectedPost = post
+//                            selectedPost = post
+                            communityStore.selectedPost = post
                         } label: {
                             Image(systemName: "ellipsis")
                                 .foregroundStyle(.gray)
@@ -91,8 +92,8 @@ struct PostTitleView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .sheet(isPresented: $isPresented) {
             CommunityMenuSheetView(
-                isPresented: $isPresented,
-                selectedPost: $selectedPost
+                isPresented: $isPresented
+//                selectedPost: $selectedPost
             )
             .presentationDetents([.height(170)])
             .presentationDragIndicator(.visible)

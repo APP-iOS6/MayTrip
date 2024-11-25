@@ -9,14 +9,14 @@ import SwiftUI
 
 struct PostDetailView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(CommunityStore.self) var communityStore: CommunityStore
     @State var comments: [PostComment]
     
-    var post: PostUserVer
     let screenWidth: CGFloat = UIScreen.main.bounds.width
     let screenHeight: CGFloat = UIScreen.main.bounds.height
     
     var isImageExist: Bool {
-        !post.image.isEmpty
+        !communityStore.selectedPost.image.isEmpty
     }
     
     var body: some View {
@@ -25,16 +25,16 @@ struct PostDetailView: View {
                 ScrollView {
                     if isImageExist {
                         // 상단 이미지 뷰
-                        PostImageView(post: post)
+                        PostImageView(post: communityStore.selectedPost)
                             .frame(height: screenHeight * 0.3)
                     }
                     
                     // 중앙 게시글 정보 뷰
-                    PostTitleView(post: post, width: screenWidth, height: screenHeight)
+                    PostTitleView(post: communityStore.selectedPost, width: screenWidth, height: screenHeight)
                         .padding([.top, .horizontal])
                     
                     // 하단 게시글 내용 뷰
-                    PostContentView(post: post)
+                    PostContentView(post: communityStore.selectedPost)
                         .padding([.bottom, .horizontal])
                     
                     Rectangle()
@@ -42,7 +42,7 @@ struct PostDetailView: View {
                         .frame(width: screenWidth, height: screenHeight * 0.015)
                     
                     // 하단 댓글 뷰
-                    PostCommentsView(comments: $comments, postId: post.id, width: screenWidth, height: screenHeight)
+                    PostCommentsView(comments: $comments, postId: communityStore.selectedPost.id, width: screenWidth, height: screenHeight)
                         
                     Color.clear.frame(height: 1)
                         .id("comment")
@@ -55,7 +55,7 @@ struct PostDetailView: View {
                 }
             }
             
-            CommentSendView(comments: $comments, postId: post.id)
+            CommentSendView(comments: $comments, postId: communityStore.selectedPost.id)
         }
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -102,10 +102,10 @@ struct CommentSendView: View {
     @MainActor
         func addComment() async {
             let text = inputComment.trimmingCharacters(in: .whitespacesAndNewlines)
-            let comment = InsertPostComment(userId: UserStore.shared.user.id, postId: postId, comment: text)
+            let comment = InsertPostComment(userId: UserStore.shared.user.id, postId: communityStore.selectedPost.id, comment: text)
             await communityStore.insertPostComment(comment: comment)
             inputComment = ""
-            self.comments = await communityStore.getPostCommentList(postId: postId) ?? []
+            self.comments = await communityStore.getPostCommentList(postId: communityStore.selectedPost.id) ?? []
         }
 }
 

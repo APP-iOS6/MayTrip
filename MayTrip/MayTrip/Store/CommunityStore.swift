@@ -16,6 +16,7 @@ class CommunityStore {
     var myPosts: [PostUserVer] = []
     var postsForDB: [Post] = []
     var isUpadting: Bool = true
+    var selectedPost: PostUserVer = PostUserVer(id: 0, title: "", text: "", author: User(id: 0, nickname: "", profileImage: "", email: "", exp: 0, provider: ""), image: [], category: 0, tag: nil, tripRoute: nil, createAt: Date(), updateAt: Date())
     
     func addPost(title: String, text: String, author: User, image: [UIImage], category: String, tag: [String]? = nil, tripRoute: Int? = nil) async { // 게시물 작성
         isUpadting = true
@@ -34,26 +35,28 @@ class CommunityStore {
         }
     }
     
-    func editPost(post: PostUserVer, title: String, text: String, image: [UIImage], category: String, tag: [String]? = nil, tripRoute: Int? = nil) async {
+    func editPost(/*post: PostUserVer, */title: String, text: String, image: [UIImage], category: String, tag: [String]? = nil, tripRoute: TripRouteSimple? = nil) async {
         isUpadting = true
         let categoryNumber = getCategoryNumber(category: category)
         
         do {
             let images = try await storageStore.uploadImage(images: image)
-            let postForUpdate = PostForDB(title: title, text: text, author: post.author.id, image: images, category: categoryNumber, tag: tag, tripRoute: tripRoute, createAt: post.createAt, updateAt: Date())
+            let postForUpdate = PostForDB(title: selectedPost.title, text: text, author: selectedPost.author.id, image: images, category: categoryNumber, tag: tag, tripRoute: tripRoute?.id, createAt: selectedPost.createAt, updateAt: Date())
             
             try await DB.from("POST")
                 .update(postForUpdate)
-                .eq("id", value: post.id)
+                .eq("id", value: selectedPost.id)
                 .execute()
             
             if tripRoute == nil {
                 let nilRoute: [String: Int?] = ["trip_route": nil]
                 try await DB.from("POST")
                     .update(nilRoute)
-                    .eq("id", value: post.id)
+                    .eq("id", value: selectedPost.id)
                     .execute()
             }
+            
+            selectedPost = PostUserVer(id: selectedPost.id, title: postForUpdate.title, text: postForUpdate.text, author: selectedPost.author, image: image, category: postForUpdate.category, tag: postForUpdate.tag, tripRoute: tripRoute, createAt: postForUpdate.createAt, updateAt: postForUpdate.updateAt)
             
             try await updatePost()
             

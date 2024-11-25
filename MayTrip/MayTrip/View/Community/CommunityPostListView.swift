@@ -16,7 +16,7 @@ struct CommunityPostListView: View {
     let width: CGFloat
     let height: CGFloat
     @State var isPresented: Bool = false
-    @State var selectedPost: PostUserVer = PostUserVer(id: 0, title: "", text: "", author: User(id: 0, nickname: "", profileImage: "", email: "", exp: 0, provider: ""), image: [], category: 0, tag: nil, tripRoute: nil, createAt: Date(), updateAt: Date())
+//    @State var selectedPost: PostUserVer = PostUserVer(id: 0, title: "", text: "", author: User(id: 0, nickname: "", profileImage: "", email: "", exp: 0, provider: ""), image: [], category: 0, tag: nil, tripRoute: nil, createAt: Date(), updateAt: Date())
     @State var commnets: [Int: [PostComment]] = [:]
     
     var body: some View {
@@ -51,7 +51,7 @@ struct CommunityPostListView: View {
                                 
                                 Button {
                                     isPresented = true
-                                    selectedPost = post
+                                    communityStore.selectedPost = post
                                 } label: {
                                     Image(systemName: "ellipsis")
                                         .foregroundStyle(.gray)
@@ -162,7 +162,7 @@ struct CommunityPostListView: View {
                         .fill(Color(uiColor: .systemBackground))
                 }
                 .onTapGesture {
-                    navigationManager.push(.postDetail(commnets[post.id], post))
+                    navigationManager.push(.postDetail(commnets[post.id]))
                 }
             }
         }
@@ -172,7 +172,7 @@ struct CommunityPostListView: View {
             isPresented = false
         }
         .sheet(isPresented: $isPresented) {
-            CommunityMenuSheetView(isPresented: $isPresented, selectedPost: $selectedPost)
+            CommunityMenuSheetView(isPresented: $isPresented/*, selectedPost: $selectedPost*/)
                 .presentationDetents([.height(170)])
                 .presentationDragIndicator(.visible)
         }

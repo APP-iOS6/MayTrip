@@ -10,6 +10,7 @@ import SwiftUI
 struct RouteSelectSheetView: View {
     @EnvironmentObject var tripRouteStore: TripRouteStore
     @Binding var selectedRouteID: Int?
+    @Binding var selectedRoute: TripRouteSimple?
     @Binding var isShowingRouteSheet: Bool
     
     var body: some View {
@@ -32,6 +33,7 @@ struct RouteSelectSheetView: View {
                             .padding([.bottom, .horizontal])
                             .onTapGesture {
                                 selectedRouteID = route.id
+                                selectedRoute = route
                                 isShowingRouteSheet.toggle()
                             }
                     }
