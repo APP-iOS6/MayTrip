@@ -8,15 +8,15 @@
 import SwiftUI
 import PhotosUI
 
-struct CommunityPostAddView: View {
+struct CommunityPostEditView: View {
     private enum addPostCategory: String, CaseIterable {
         case question = "질문", findCompanion = "동행찾기", tripReview = "여행후기", recommandRestaurant = "맛집추천"
     }
     
     let userStore = UserStore.shared
-    @EnvironmentObject var tripRouteStore: TripRouteStore
     @Environment(\.dismiss) var dismiss
     @Environment(CommunityStore.self) var communityStore: CommunityStore
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     @State private var title: String = ""
     @State private var tags: String = ""
     @State private var text: String = ""
@@ -177,27 +177,39 @@ struct CommunityPostAddView: View {
                 }
             }
             .scrollDisabled(!isFocused)
-        }
-        .padding(.top, 1)
-        .sheet(isPresented: $isShowingRouteSheet) {
-            RouteSelectSheetView(selectedRoute: $selectedRoute, isShowingRouteSheet: $isShowingRouteSheet)
-                .presentationDetents([.height(500)])
-                .presentationDragIndicator(.visible)
+            
         }
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("게시글 작성")
+        .navigationTitle("게시글 편집")
         .toolbarBackground(.hidden, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
         .ignoresSafeArea(.keyboard)
         .onTapGesture {
             isFocused = false
         }
+        .onAppear {
+            self.title = communityStore.selectedPost.title
+            self.text = communityStore.selectedPost.text
+            self.postCategory = getCategory(category: communityStore.selectedPost.category)
+            self.images = communityStore.selectedPost.image
+            if let tag = communityStore.selectedPost.tag {
+                self.tags = tag.reduce("") {$0 + "#\($1) "}
+            }
+            if let tripRoute = communityStore.selectedPost.tripRoute {
+                self.selectedRoute = tripRoute
+            }
+        }
+        .sheet(isPresented: $isShowingRouteSheet) {
+            RouteSelectSheetView(selectedRoute: $selectedRoute, isShowingRouteSheet: $isShowingRouteSheet)
+                .presentationDetents([.height(500)])
+                .presentationDragIndicator(.visible)
+        }
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button {
                     dismiss()
                 } label: {
-                    Image(systemName: "chevron.left")
+                    Image(systemName: "xmark")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 15, height: 15)
@@ -209,7 +221,7 @@ struct CommunityPostAddView: View {
                 Button {
                     Task {
                         isUploading = true
-                        await communityStore.addPost(title: title, text: text, author: userStore.user, image: images, category: postCategory.rawValue, tag: tagArray, tripRoute: selectedRoute?.id)
+                        await communityStore.editPost(title: title, text: text, image: images, category: postCategory.rawValue, tag: tagArray, tripRoute: selectedRoute)
                         isUploading = false
                         dismiss()
                     }
@@ -228,6 +240,21 @@ struct CommunityPostAddView: View {
                     Text("닫기")
                 }
             }
+        }
+    }
+    
+    private func getCategory(category: Int) -> addPostCategory {
+        switch category {
+        case 1:
+            return .question
+        case 2:
+            return .findCompanion
+        case 3:
+            return .tripReview
+        case 4:
+            return .recommandRestaurant
+        default:
+            return .question
         }
     }
     
@@ -258,11 +285,5 @@ struct CommunityPostAddView: View {
                 selectedPhotos.removeAll()
             }
         }
-    }
-}
-
-#Preview {
-    NavigationStack {
-        CommunityPostAddView()
     }
 }

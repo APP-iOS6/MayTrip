@@ -121,8 +121,10 @@ struct MainView:  View {
             ChattingRoomView(chatRoom: chatRoom, otherUser: user)
         case .enterBasic:
             EnterBasicInformationView()
-        case .postDetail(let comments, let post):
-            PostDetailView(comments: comments ?? [], post: post)
+        case .editPost/*(let post)*/:
+            CommunityPostEditView(/*post: post*/)
+        case .postDetail/*(let comments)*/:
+            PostDetailView(/*comments: comments ?? []*/)
         }
     }
 }

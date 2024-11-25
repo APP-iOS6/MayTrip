@@ -65,3 +65,28 @@ struct PostDB: Codable { // 게시물 업로드용
         case tripRoute = "trip_route"
     }
 }
+
+// DB에 게시글 업데이트 하기 위한 용도
+struct PostForDB: Codable {
+    let title: String
+    let text: String
+    let author: Int
+    let image: [String] // 최대 5개?
+    let category: Int // 나중에 이넘으로 제한두기
+    let tag: [String]?
+    let tripRoute: Int?
+    let createAt: Date
+    let updateAt: Date
+    
+    enum CodingKeys: String, CodingKey {
+        case title
+        case text = "content"
+        case author = "write_user"
+        case image
+        case category
+        case tag
+        case tripRoute = "trip_route"
+        case createAt = "created_at"
+        case updateAt = "updated_at"
+    }
+}

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct PostCommentsView: View {
     @Environment(CommunityStore.self) var communityStore
-    @Binding var comments: [PostComment]
     @State var inputComment: String = ""
     var postId: Int
     var width: CGFloat
@@ -18,13 +17,13 @@ struct PostCommentsView: View {
     var body: some View {
         VStack(spacing: 30) {
             HStack {
-                Text("댓글 \(comments.count)")
+                Text("댓글 \(communityStore.comments[postId] != nil ? communityStore.comments[postId]!.count : 0)")
                 
                 Spacer()
                 
                 Button {
                     Task {
-                        await comments = communityStore.getPostCommentList(postId: postId) ?? []
+                        await communityStore.getPostCommentList(postId: postId)
                     }
                 } label: {
                     Image(systemName: "arrow.clockwise")
@@ -32,7 +31,7 @@ struct PostCommentsView: View {
                 }
             }
             
-            ForEach(comments, id: \.self) { comment in
+            ForEach(communityStore.comments[postId] ?? [], id: \.self) { comment in
                 CommentView(comment: comment, width: width, height: height)
             }
         }

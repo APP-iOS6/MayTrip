@@ -23,7 +23,7 @@ struct StorageView: View {
             ScrollView {
                 LazyVGrid(columns: gridItems, alignment: .leading, spacing: 10) {
                     ForEach(tripRouteStore.list) { route in // TODO: 보관함에 있는 루트들로 변경
-                        RecommendContentView(route: route)
+                        RecommendContentView(route: route, isSharing: false)
                     }
                 }
                 .padding()

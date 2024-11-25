@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RouteSelectSheetView: View {
     @EnvironmentObject var tripRouteStore: TripRouteStore
-    @Binding var selectedRouteID: Int?
+    @Binding var selectedRoute: TripRouteSimple?
     @Binding var isShowingRouteSheet: Bool
     
     var body: some View {
@@ -20,7 +20,7 @@ struct RouteSelectSheetView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
             
-            if tripRouteStore.myTripRoutes.count > 1 {
+            if tripRouteStore.myTripRoutes.count >= 1 {
                 ScrollView(.vertical) {
                     ForEach(tripRouteStore.myTripRoutes) { route in
                         RecommendContentView(route: route, isSharing: true)
@@ -31,7 +31,7 @@ struct RouteSelectSheetView: View {
                             .padding(1)
                             .padding([.bottom, .horizontal])
                             .onTapGesture {
-                                selectedRouteID = route.id
+                                selectedRoute = route
                                 isShowingRouteSheet.toggle()
                             }
                     }

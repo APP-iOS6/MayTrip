@@ -9,14 +9,13 @@ import SwiftUI
 struct MyPostView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(CommunityStore.self) var communityStore: CommunityStore
+    @EnvironmentObject var navigationManager: NavigationManager
     @State private var scrollPosition: CGPoint = .zero
     @State private var scrollIndex: Int = 0
     let dateStore = DateStore.shared
     let width: CGFloat = UIScreen.main.bounds.width
     let height: CGFloat = UIScreen.main.bounds.height
     @State var isPresented: Bool = false
-    @State var selectedPostOwner: Int = 0
-    @State var selectedPostId: Int = 0
     
     var body: some View {
         ZStack {
@@ -42,7 +41,7 @@ struct MyPostView: View {
                                 VStack(alignment: .leading, spacing: 5) {
                                     HStack {
                                         // TODO: categoryCode -> category값 변환해서 적용
-                                        Text("동행찾기")
+                                        Text(communityStore.getCategoryName(categoryNumber: post.category))
                                             .font(.system(size: 12))
                                             .foregroundStyle(Color(uiColor: .systemBackground))
                                             .padding(.vertical, 5)
@@ -56,8 +55,7 @@ struct MyPostView: View {
                                         
                                         Button {
                                             isPresented = true
-                                            selectedPostOwner = post.author.id
-                                            selectedPostId = post.id
+                                            communityStore.selectedPost = post
                                         } label: {
                                             Image(systemName: "ellipsis")
                                                 .foregroundStyle(.gray)
@@ -135,11 +133,11 @@ struct MyPostView: View {
                                 HStack {
                                     Image(systemName: "message")
                                         .foregroundStyle(.gray)
-                                    Text("0")
+                                    Text("\(communityStore.comments[post.id] != nil ? communityStore.comments[post.id]!.count : 0)")
                                         .foregroundStyle(.gray)
                                 }
                                 Spacer()
-                                Text(dateStore.timeAgo(from: post.updateAt))
+                                Text(dateStore.timeAgo(from: post.createAt))
                                     .foregroundStyle(.gray)
                                     .font(.system(size: 14))
                             }
@@ -150,6 +148,10 @@ struct MyPostView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .fill(Color(uiColor: .systemBackground))
                         }
+                        .onTapGesture {
+                            communityStore.selectedPost = post
+                            navigationManager.push(.postDetail)
+                        }
                     }
                 }
                 .padding(.horizontal)
@@ -158,7 +160,7 @@ struct MyPostView: View {
                     isPresented = false
                 }
                 .sheet(isPresented: $isPresented) {
-                    CommunityMenuSheetView(isPresented: $isPresented, selectedPostOwner: $selectedPostOwner, selectedPostId: $selectedPostId)
+                    CommunityMenuSheetView(isPresented: $isPresented)
                         .presentationDetents([.height(170)])
                         .presentationDragIndicator(.visible)
                 }

@@ -9,14 +9,14 @@ import SwiftUI
 
 struct PostDetailView: View {
     @Environment(\.dismiss) var dismiss
-    @State var comments: [PostComment]
+    @Environment(CommunityStore.self) var communityStore: CommunityStore
+//    @State var comments: [PostComment]
     
-    var post: PostUserVer
     let screenWidth: CGFloat = UIScreen.main.bounds.width
     let screenHeight: CGFloat = UIScreen.main.bounds.height
     
     var isImageExist: Bool {
-        !post.image.isEmpty
+        !communityStore.selectedPost.image.isEmpty
     }
     
     var body: some View {
@@ -25,16 +25,16 @@ struct PostDetailView: View {
                 ScrollView {
                     if isImageExist {
                         // 상단 이미지 뷰
-                        PostImageView(post: post)
+                        PostImageView(post: communityStore.selectedPost)
                             .frame(height: screenHeight * 0.3)
                     }
                     
                     // 중앙 게시글 정보 뷰
-                    PostTitleView(post: post, width: screenWidth, height: screenHeight)
+                    PostTitleView(post: communityStore.selectedPost, width: screenWidth, height: screenHeight)
                         .padding([.top, .horizontal])
                     
                     // 하단 게시글 내용 뷰
-                    PostContentView(post: post)
+                    PostContentView(post: communityStore.selectedPost)
                         .padding([.bottom, .horizontal])
                     
                     Rectangle()
@@ -42,20 +42,20 @@ struct PostDetailView: View {
                         .frame(width: screenWidth, height: screenHeight * 0.015)
                     
                     // 하단 댓글 뷰
-                    PostCommentsView(comments: $comments, postId: post.id, width: screenWidth, height: screenHeight)
-                        
+                    PostCommentsView(/*comments: communityStore.comments, */postId: communityStore.selectedPost.id, width: screenWidth, height: screenHeight)
+                    
                     Color.clear.frame(height: 1)
                         .id("comment")
                 }
                 .scrollIndicators(.hidden)
-                .onChange(of: comments.count) {
+                .onChange(of: communityStore.comments[communityStore.selectedPost.id]!.count) {
                     withAnimation {
                         proxy.scrollTo("comment", anchor: .bottom)
                     }
                 }
             }
             
-            CommentSendView(comments: $comments, postId: post.id)
+            CommentSendView(postId: communityStore.selectedPost.id)
         }
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -71,48 +71,10 @@ struct PostDetailView: View {
     }
 }
 
-struct CommentSendView: View {
-    @Environment(CommunityStore.self) var communityStore
-    @Binding var comments: [PostComment]
-    @State var inputComment: String = ""
-    var postId: Int
-    
-    var body: some View {
-        HStack {
-            TextField("댓글을 입력해주세요", text: $inputComment, axis: .vertical)
-            
-            Button {
-                Task {
-                    await addComment()
-                }
-            } label: {
-                Image(systemName: "paperplane")
-                    .foregroundStyle(inputComment == "" ? .gray : Color("accentColor"))
-            }
-        }
-        .padding(.vertical, 10)
-        .padding(.horizontal, 18)
-        .overlay(
-            RoundedRectangle(cornerRadius: 20)
-                .stroke(Color(uiColor: .lightGray).opacity(0.3), lineWidth: 1)
-        )
-        .padding([.horizontal, .bottom])
-    }
-    
-    @MainActor
-        func addComment() async {
-            let text = inputComment.trimmingCharacters(in: .whitespacesAndNewlines)
-            let comment = InsertPostComment(userId: UserStore.shared.user.id, postId: postId, comment: text)
-            await communityStore.insertPostComment(comment: comment)
-            inputComment = ""
-            self.comments = await communityStore.getPostCommentList(postId: postId) ?? []
-        }
-}
-
 #Preview {
     NavigationStack {
         CommunityView()
     }
-        .environment(CommunityStore())
+    .environment(CommunityStore())
 }
 
