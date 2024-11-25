@@ -74,6 +74,18 @@ final class UserStore {
         }
     }
     
+    func updateProfileImage(_ image: String) async throws -> Void {
+        do {
+            try await DB
+                .from("USER")
+                .update(["profile_image":"\(image)"])
+                .eq("id", value: user.id)
+                .execute()
+        } catch {
+            print("failed to update profile image \(error)")
+        }
+    }
+    
     func checkNickname(nickname: String) async throws -> Bool {
         do {
             let result: [User] = try await DB.from("USER").select("id")
@@ -93,5 +105,14 @@ final class UserStore {
     
     func resetUser() {
         user = User(id: 0, nickname: "", profileImage: nil, email: "", exp: 0, provider: "")
+    }
+    
+    static func convertStringToImage(_ string: String?) -> UIImage? {
+        if let string = string {
+            if let data = Data(base64Encoded: string) {
+                return UIImage(data: data)
+            }
+        }
+        return nil
     }
 }
