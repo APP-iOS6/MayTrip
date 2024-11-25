@@ -23,7 +23,7 @@ struct MyTripRouteView: View {
             ScrollView {
                 LazyVGrid(columns: gridItems, alignment: .leading, spacing: 10) {
                     ForEach(tripRouteStore.myTripRoutes) { route in
-                        RecommendContentView(route: route)
+                        RecommendContentView(route: route, isSharing: false)
                     }
                 }
                 .padding()

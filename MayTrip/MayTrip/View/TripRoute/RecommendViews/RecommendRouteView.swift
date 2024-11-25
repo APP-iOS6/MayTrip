@@ -53,7 +53,7 @@ struct RecommendRouteView: View {
                 .background(background)
             ) {
                 ForEach(tripRouteStore.list) { route in
-                    RecommendContentView(route: route)
+                    RecommendContentView(route: route, isSharing: false)
                 }
             }
             .onAppear {

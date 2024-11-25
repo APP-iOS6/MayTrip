@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CommunityPostListView: View {
+    @EnvironmentObject var navigationManager: NavigationManager
     @Environment(CommunityStore.self) var communityStore: CommunityStore
     @State private var scrollPosition: CGPoint = .zero
     @State private var scrollIndex: Int = 0
@@ -17,6 +18,7 @@ struct CommunityPostListView: View {
     @State var isPresented: Bool = false
     @State var selectedPostOwner: Int = 0
     @State var selectedPostId: Int = 0
+    @State var commnets: [Int: [PostComment]] = [:]
     
     var body: some View {
         VStack(spacing: 20) {
@@ -36,8 +38,7 @@ struct CommunityPostListView: View {
                         
                         VStack(alignment: .leading, spacing: 5) {
                             HStack {
-                                // TODO: categoryCode -> category값 변환해서 적용
-                                Text("동행찾기")
+                                Text(communityStore.getCategoryName(categoryNumber: post.category))
                                     .font(.system(size: 12))
                                     .foregroundStyle(Color(uiColor: .systemBackground))
                                     .padding(.vertical, 5)
@@ -71,6 +72,15 @@ struct CommunityPostListView: View {
                         .lineLimit(3)
                         .font(.system(size: 16))
                     
+                    // 커뮤니티 리스트에 각 공유된 루트카드
+//                    if let tripRoute = post.tripRoute {
+//                        RecommendContentView(route: tripRoute, isSharing: true)
+//                            .overlay {
+//                                RoundedRectangle(cornerRadius: 10)
+//                                    .stroke(.accent)
+//                            }
+//                    }
+//                    
                     if post.image.count > 0 {
                         ZStack {
                             ScrollView(.horizontal) {
@@ -130,7 +140,7 @@ struct CommunityPostListView: View {
                         HStack {
                             Image(systemName: "message")
                                 .foregroundStyle(.gray)
-                            Text("0")
+                            Text("\(commnets[post.id]?.count ?? 0)")
                                 .foregroundStyle(.gray)
                         }
                         Spacer()
@@ -138,12 +148,23 @@ struct CommunityPostListView: View {
                             .foregroundStyle(.gray)
                             .font(.system(size: 14))
                     }
+                    .onAppear{
+                        Task{
+                            if let comments = await communityStore.getPostCommentList(postId: post.id) {
+                                self.commnets.updateValue(comments, forKey: post.id)
+                            }
+                        }
+                    }
                 }
+                .foregroundStyle(Color.primary)
                 .padding(.vertical, height * 0.02)
                 .padding(.horizontal, width * 0.06)
                 .background {
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color(uiColor: .systemBackground))
+                }
+                .onTapGesture {
+                    navigationManager.push(.postDetail(commnets[post.id], post))
                 }
             }
         }
