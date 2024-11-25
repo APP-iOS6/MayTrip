@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct RecentlySearchListView: View {
-    @StateObject var tripRouteStore: TripRouteStore
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     @Binding var searchList: [String]
     
     var body: some View {
@@ -25,7 +25,9 @@ struct RecentlySearchListView: View {
                     ForEach(searchList, id: \.self) { searchText in
                         HStack(spacing: 15) {
                             Button {
-                                tripRouteStore.searchTripRoute(searchText)
+                                Task{
+                                    tripRouteStore.filteredTripRoutes =  await tripRouteStore.getByKeyword(keyword: searchText)
+                                }
                             } label: {
                                 Text(searchText)
                             }

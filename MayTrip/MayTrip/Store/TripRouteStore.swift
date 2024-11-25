@@ -289,6 +289,7 @@ class TripRouteStore: ObservableObject {
         }
     }
     
+    
     @MainActor
     func orderTypeChange(type: TripRouteOrderType){
         orderType = type
@@ -299,6 +300,16 @@ class TripRouteStore: ObservableObject {
         Task{
             list = await getList()
         }
+    }
+    // TODO: 보관된 루트 추가하기
+    func getSharedTripRoute(_ id: Int?) -> TripRouteSimple? {
+        guard let id else { return nil }
+        
+        let list = list.filter {
+            $0.id == id
+        }
+        
+        return list.first
     }
     
     func searchTripRoute(_ search: String) {

@@ -28,6 +28,7 @@ struct TripRouteView: View {
                     RecommendRouteView(scrollProxy: proxy)
                         .padding(.bottom)
                         .scrollTargetLayout()
+                    
                 }
             }
             .scrollPosition(id: $tripRouteStore.scrollPosition, anchor: .bottomTrailing)
@@ -60,7 +61,7 @@ struct TripRouteView: View {
                     Spacer()
                     
                     NavigationLink {
-                        SearchView(tripRouteStore: tripRouteStore)
+                        SearchView()
                     } label: {
                         Image(systemName: "magnifyingglass")
                             .frame(width: 15, height:  15)

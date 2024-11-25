@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct MyPageView: View {
+    @Environment(CommunityStore.self) var communityStore: CommunityStore
     @Environment(AuthStore.self) var authStore: AuthStore
+    @EnvironmentObject var tripRouteStore: TripRouteStore
     @State var isShowingLogoutAlert: Bool = false
     @State var isShowingSignOutAlert: Bool = false
     let userStore = UserStore.shared
@@ -65,13 +67,13 @@ struct MyPageView: View {
                         List {
                             Section("개인") {
                                 NavigationLink {
-                                    
+                                    MyTripRouteView()
                                 } label: {
                                     Text("여행 관리")
                                 }
                                 
                                 NavigationLink {
-                                    
+                                    MyPostView()
                                 } label: {
                                     Text("게시물 관리")
                                 }
@@ -141,6 +143,11 @@ struct MyPageView: View {
                     }
                 }
                 .frame(width: proxy.size.width, height: proxy.size.height)
+            }
+        }
+        .onAppear {
+            Task {
+                try await communityStore.getUserPost()
             }
         }
     }

@@ -13,4 +13,5 @@ enum Destination: Hashable {
     case routeDetail(TripRoute)
     case chatRoom(ChatRoom, User)
     case enterBasic
+    case postDetail([PostComment]?, PostUserVer)
 }
