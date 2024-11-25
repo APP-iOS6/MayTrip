@@ -38,7 +38,7 @@ struct PostUserVer: Hashable { // 게시물에 유저의 프로필 이미지, �
     let title: String
     let text: String
     let author: User
-    let image: [UIImage]
+    let image: [String]
     let category: Int
     let tag: [String]?
     let tripRoute: TripRouteSimple?
