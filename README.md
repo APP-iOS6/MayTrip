@@ -73,6 +73,31 @@
   5. 프로젝트를 실행해 주세요.
    * 앱내에서 사용자위치 사용을 서용해주세요.
 
+## 앱 실행화면
+<img src="https://github.com/user-attachments/assets/5c3a9ab0-de89-4947-a28f-3b703692f359" style="width: 20%;" alt="Image 2">
+
+<img src="https://github.com/user-attachments/assets/c447a957-c683-4d68-ba66-0a662ba601eb" style="width: 20%;" alt="Image 2">
+
+<img src="https://github.com/user-attachments/assets/468a6c9b-348e-4646-80a8-c584643ef4b6" style="width: 20%;" alt="Image 2">
+
+<img src="https://github.com/user-attachments/assets/a6f5145e-b4d8-4efa-a416-b8989e540d28" style="width: 20%;" alt="Image 2">
+
+<img src="https://github.com/user-attachments/assets/4da685b9-755e-4bc0-815d-bde240083200" style="width: 20%;" alt="Image 2">
+
+<img src="https://github.com/user-attachments/assets/c8cf1cc0-46a2-4265-8597-9ea23ca01268" style="width: 20%;" alt="Image 2">
+
+<img src="https://github.com/user-attachments/assets/53164328-b161-486f-8f8c-dcbce3f7be2d" style="width: 20%;" alt="Image 2">
+
+<img src="https://github.com/user-attachments/assets/5588f5df-62bc-4f32-9a20-743200cbc7c9" style="width: 20%;" alt="Image 2">
+
+<img src="https://github.com/user-attachments/assets/4120d43d-23d4-4ff4-becc-548bd6c53983" style="width: 20%;" alt="Image 2">
+
+<img src="https://github.com/user-attachments/assets/aeebf93c-78da-4b7f-8fbd-af7ec2676d89" style="width: 20%;" alt="Image 2">
+
+<img src="https://github.com/user-attachments/assets/457e46f6-24f9-4a14-91cc-971e336e1164" style="width: 20%;" alt="Image 2">
+
+<img src="https://github.com/user-attachments/assets/b3a54786-6bd7-4832-a1e4-4b13c22d01a8" style="width: 20%;" alt="Image 2">
+
 ## 🛠️ 개발 환경
 
    - Xcode 16.1
