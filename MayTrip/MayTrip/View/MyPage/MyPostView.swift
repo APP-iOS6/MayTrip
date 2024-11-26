@@ -27,16 +27,20 @@ struct MyPostView: View {
                     ForEach(communityStore.myPosts, id:\.id) { post in
                         VStack(alignment: .leading, spacing: 15) {
                             HStack(spacing: 10) {
-                                Image(systemName: "person.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: width * 0.07)
-                                    .foregroundStyle(Color.accent)
-                                    .padding(7)
-                                    .overlay {
-                                        Circle()
-                                            .foregroundStyle(Color.accent.opacity(0.5))
-                                    }
+                                if let image = UserStore.convertStringToImage(post.author.profileImage) {
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: width * 0.12)
+                                        .clipShape(Circle())
+                                } else {
+                                    Image(systemName: "person.circle.fill")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: width * 0.12)
+                                        .clipShape(Circle())
+                                        .foregroundStyle(Color("accentColor").opacity(0.2))
+                                }
                                 
                                 VStack(alignment: .leading, spacing: 5) {
                                     HStack {

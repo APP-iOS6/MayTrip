@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct MyPageView: View {
     @Environment(CommunityStore.self) var communityStore: CommunityStore
@@ -13,6 +14,11 @@ struct MyPageView: View {
     @EnvironmentObject var tripRouteStore: TripRouteStore
     @State var isShowingLogoutAlert: Bool = false
     @State var isShowingSignOutAlert: Bool = false
+    @State private var selectedPhotos: [PhotosPickerItem] = []
+    @State private var imageStr: String? = ""
+    var image: UIImage? {
+        UserStore.convertStringToImage(imageStr)
+    }
     let userStore = UserStore.shared
     
     var body: some View {
@@ -21,39 +27,38 @@ struct MyPageView: View {
                 VStack {
                     VStack(alignment: .leading) {
                         HStack {
-                            if let image = userStore.user.profileImage, image != "" {
-                                // TODO: 이미지 띄우기
-                                Image(systemName: image)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 60, height: 60)
-                                    .clipShape(Circle())
-                            } else {
-                                Button {
-                                    // TODO: 이미지 변경하는 로직 추가
-                                } label: {
-                                    ZStack {
+                            PhotosPicker(selection: $selectedPhotos, maxSelectionCount: 1, matching: .images) {
+                                ZStack {
+                                    if let image = self.image {
+                                        Image(uiImage: image)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 60, height: 60)
+                                            .clipShape(Circle())
+                                    } else {
                                         Image(systemName: "person.circle.fill")
                                             .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .padding(5)
+                                            .aspectRatio(contentMode: .fill)
                                             .frame(width: 60, height: 60)
                                             .clipShape(Circle())
                                             .foregroundStyle(Color("accentColor").opacity(0.2))
-                                        
-                                        VStack(alignment: .trailing) {
+                                    }
+                                    
+                                    VStack(alignment: .trailing) {
+                                        Spacer()
+                                        HStack(alignment: .top) {
                                             Spacer()
-                                            HStack(alignment: .top) {
-                                                Spacer()
-                                                
-                                                Image(systemName: "pencil.circle.fill")
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fit)
-                                                    .frame(width: 20, height: 20)
-                                                    .foregroundStyle(.gray)
-                                            }
+                                            
+                                            Image(systemName: "pencil.circle.fill")
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 20, height: 20)
+                                                .foregroundStyle(.gray)
                                         }
                                     }
+                                }
+                                .onChange(of: selectedPhotos) {
+                                    loadSelectedPhotos()
                                 }
                                 .frame(width: 60, height: 60)
                             }
@@ -146,8 +151,45 @@ struct MyPageView: View {
             }
         }
         .onAppear {
+            imageStr = userStore.user.profileImage
+            
             Task {
                 try await communityStore.getUserPost()
+            }
+        }
+    }
+    
+    private func loadSelectedPhotos() { // 이미지 추가 함수
+        Task {
+            await withTaskGroup(of: (UIImage?, Error?).self) { taskGroup in
+                for photoItem in selectedPhotos {
+                    taskGroup.addTask {
+                        do {
+                            if let imageData = try await photoItem.loadTransferable(type: Data.self),
+                               let image = UIImage(data: imageData) {
+                                return (image, nil)
+                            }
+                            return (nil, nil)
+                        } catch {
+                            return (nil, error)
+                        }
+                    }
+                }
+                
+                for await result in taskGroup {
+                    if result.1 != nil {
+                        break
+                    } else if let image = result.0 {
+                        let data = image.pngData()
+                        self.imageStr = data?.base64EncodedString()
+                        if let imageStr = self.imageStr {
+                            Task {
+                                try await userStore.updateProfileImage(imageStr)
+                            }
+                        }
+                    }
+                }
+                selectedPhotos.removeAll()
             }
         }
     }
